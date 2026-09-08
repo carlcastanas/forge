@@ -101,25 +101,25 @@ buf lint && buf breaking --against '.git#branch=main'   # fails on any wire-inco
 
 ```go
 func (s *server) WatchInvoices(req *billingv1.WatchInvoicesRequest,
-	stream billingv1.InvoiceService_WatchInvoicesServer) error {
-	ctx := stream.Context()
-	events, err := s.bus.Subscribe(ctx, req.GetCustomerId())
-	if err != nil {
-		return status.Errorf(codes.Internal, "subscribe: %v", err)
-	}
-	for {
-		select {
-		case <-ctx.Done():
-			return status.FromContextError(ctx.Err()).Err() // CANCELLED or DEADLINE_EXCEEDED
-		case ev, ok := <-events:
-			if !ok {
-				return nil // clean end of stream
-			}
-			if err := stream.Send(ev); err != nil {
-				return err // client went away; return as-is
-			}
-		}
-	}
+ stream billingv1.InvoiceService_WatchInvoicesServer) error {
+ ctx := stream.Context()
+ events, err := s.bus.Subscribe(ctx, req.GetCustomerId())
+ if err != nil {
+  return status.Errorf(codes.Internal, "subscribe: %v", err)
+ }
+ for {
+  select {
+  case <-ctx.Done():
+   return status.FromContextError(ctx.Err()).Err() // CANCELLED or DEADLINE_EXCEEDED
+  case ev, ok := <-events:
+   if !ok {
+    return nil // clean end of stream
+   }
+   if err := stream.Send(ev); err != nil {
+    return err // client went away; return as-is
+   }
+  }
+ }
 }
 ```
 
@@ -137,15 +137,15 @@ inv, err := client.GetInvoice(ctx, &billingv1.GetInvoiceRequest{Id: id})
 
 // server: derive downstream calls from the inbound ctx so the budget shrinks, never grows
 func (s *server) GetInvoice(ctx context.Context, req *billingv1.GetInvoiceRequest) (*billingv1.Invoice, error) {
-	if dl, ok := ctx.Deadline(); ok {
-		if time.Until(dl) < 50*time.Millisecond {
-			return nil, status.Error(codes.DeadlineExceeded, "insufficient budget remaining")
-		}
-		var cancel context.CancelFunc // headroom to still build an error response
-		ctx, cancel = context.WithDeadline(ctx, dl.Add(-30*time.Millisecond))
-		defer cancel()
-	}
-	return s.repo.Load(ctx, req.GetId())
+ if dl, ok := ctx.Deadline(); ok {
+  if time.Until(dl) < 50*time.Millisecond {
+   return nil, status.Error(codes.DeadlineExceeded, "insufficient budget remaining")
+  }
+  var cancel context.CancelFunc // headroom to still build an error response
+  ctx, cancel = context.WithDeadline(ctx, dl.Add(-30*time.Millisecond))
+  defer cancel()
+ }
+ return s.repo.Load(ctx, req.GetId())
 }
 ```
 
@@ -157,23 +157,23 @@ Four interceptor slots exist: unary and stream, client and server. Register all 
 
 ```go
 func AuthUnary(verify TokenVerifier) grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req any, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
-		md, _ := metadata.FromIncomingContext(ctx)
-		vals := md.Get("authorization")
-		if len(vals) == 0 {
-			return nil, status.Error(codes.Unauthenticated, "missing authorization metadata")
-		}
-		principal, err := verify(ctx, strings.TrimPrefix(vals[0], "Bearer "))
-		if err != nil {
-			return nil, status.Error(codes.Unauthenticated, "invalid token") // never echo why
-		}
-		return handler(WithPrincipal(ctx, principal), req)
-	}
+ return func(ctx context.Context, req any, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+  md, _ := metadata.FromIncomingContext(ctx)
+  vals := md.Get("authorization")
+  if len(vals) == 0 {
+   return nil, status.Error(codes.Unauthenticated, "missing authorization metadata")
+  }
+  principal, err := verify(ctx, strings.TrimPrefix(vals[0], "Bearer "))
+  if err != nil {
+   return nil, status.Error(codes.Unauthenticated, "invalid token") // never echo why
+  }
+  return handler(WithPrincipal(ctx, principal), req)
+ }
 }
 
 srv := grpc.NewServer(
-	grpc.ChainUnaryInterceptor(RecoverUnary(), TraceUnary(), AuthUnary(verify), LogUnary()),
-	grpc.ChainStreamInterceptor(RecoverStream(), TraceStream(), AuthStream(verify), LogStream()),
+ grpc.ChainUnaryInterceptor(RecoverUnary(), TraceUnary(), AuthUnary(verify), LogUnary()),
+ grpc.ChainStreamInterceptor(RecoverStream(), TraceStream(), AuthStream(verify), LogStream()),
 )
 ```
 
@@ -195,10 +195,10 @@ Callers branch on the code, log the message, and program against the details. Pi
 
 ```go
 st, _ := status.New(codes.InvalidArgument, "invoice validation failed").WithDetails(
-	&errdetails.BadRequest{FieldViolations: []*errdetails.BadRequest_FieldViolation{
-		{Field: "line_items[0].quantity", Description: "must be greater than zero"},
-	}},
-	&errdetails.RequestInfo{RequestId: reqID})
+ &errdetails.BadRequest{FieldViolations: []*errdetails.BadRequest_FieldViolation{
+  {Field: "line_items[0].quantity", Description: "must be greater than zero"},
+ }},
+ &errdetails.RequestInfo{RequestId: reqID})
 return nil, st.Err()
 ```
 

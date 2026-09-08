@@ -202,7 +202,7 @@ function runTests() {
 
     try {
       seedRepo(rootDir, {
-        [`${RELEASE_DIR}/quickstart.md`]: 'Do not ship /Users/affoon/private-state in public docs.',
+        [`${RELEASE_DIR}/quickstart.md`]: 'Do not ship /Users/operator/private-state in public docs.',
       });
 
       const report = buildReport({ root: rootDir });

@@ -123,7 +123,8 @@ link stops the chain. Fix the first failure before re-running.
   ```
 
   Use `origin: FORGE` for first-party skills and `origin: community` for imported ones.
-  A `description` containing `: ` must be quoted, or the YAML parse fails.
+  A `description` containing a colon followed by a space must be quoted, or the YAML
+  parse fails.
 - The body needs a "when to use" section, concrete mechanics, and examples that were run.
 - Curated skills live in `skills/`. Generated or user-imported skills belong in the user's own
   skills directory, not here — see [docs/SKILL-PLACEMENT-POLICY.md](docs/SKILL-PLACEMENT-POLICY.md).

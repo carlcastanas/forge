@@ -48,8 +48,8 @@ test('renders the cfonts block FORGE wordmark with a welcome, version, and boxed
   const boxBottom = lines.findIndex(line => line.startsWith('  ╰'));
 
   // The wordmark spells FORGE; assert its first and last rows.
-  assert.match(welcome, /███████╗ ██████╗ ██████╗  ██████╗ ███████╗/);
-  assert.match(welcome, /╚═╝\s+╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝/);
+  assert.match(welcome, /███████╗ ██████╗ ██████╗ {2}██████╗ ███████╗/);
+  assert.match(welcome, /╚═╝\s+╚═════╝ ╚═╝ {2}╚═╝ ╚═════╝ ╚══════╝/);
   assert.strictEqual(welcome.includes('◕'), false);
   assert.strictEqual(welcome.includes('ᴗ'), false);
   assert.match(welcome, /Welcome to FORGE!/);

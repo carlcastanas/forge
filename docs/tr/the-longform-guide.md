@@ -32,7 +32,7 @@ Lazy loading ile, context window sorunu çoğunlukla çözülmüştür. Ancak to
 
 Oturumlar arasında memory paylaşımı için, ilerlemeyi özetleyen ve kontrol eden, ardından `.claude` klasörünüzde bir `.tmp` dosyasına kaydeden ve oturumunuz sonuna kadar ona ekleyen bir skill veya command en iyi bahistir. Ertesi gün bunu context olarak kullanabilir ve kaldığı yerden devam edebilir, her oturum için yeni bir dosya oluşturun böylece eski context'i yeni işe kirletmezsiniz.
 
-![Session Storage File Tree](../assets/images/longform/03-session-storage.png)
+![Session Storage File Tree](../../assets/images/longform/03-session-storage.png)
 *Oturum depolama örneği -> <https://github.com/your-org/forge/tree/main/examples/sessions>*
 
 Claude mevcut durumu özetleyen bir dosya oluşturur. İnceleyin, gerekirse düzenlemeler isteyin, ardından yeniden başlayın. Yeni konuşma için, sadece dosya yolunu sağlayın. Özellikle context limitlerini aşarken ve karmaşık işi sürdürmeniz gerektiğinde kullanışlıdır. Bu dosyalar şunları içermelidir:
@@ -103,7 +103,7 @@ Kullandığınız araçları optimize edin ve görev için yeterli olan en ucuz 
 
 **Model Seçimi Hızlı Referans:**
 
-![Model Selection Table](../assets/images/longform/04-model-selection.png)
+![Model Selection Table](../../assets/images/longform/04-model-selection.png)
 *Çeşitli yaygın görevlerde subagent'ların varsayımsal kurulumu ve seçimlerin arkasındaki akıl yürütme*
 
 | Görev Türü                    | Model  | Neden                                            |
@@ -121,14 +121,14 @@ Kodlama görevlerinin %90'ı için Sonnet'i varsayılan yapın. İlk deneme baş
 
 **Fiyatlandırma Referansı:**
 
-![Claude Model Pricing](../assets/images/longform/05-pricing-table.png)
+![Claude Model Pricing](../../assets/images/longform/05-pricing-table.png)
 *Kaynak: <https://platform.claude.com/docs/en/about-claude/pricing>*
 
 **Araca Özgü Optimizasyonlar:**
 
 grep'i mgrep ile değiştirin - geleneksel grep veya ripgrep'e kıyasla ortalama ~%50 token azaltması:
 
-![mgrep Benchmark](../assets/images/longform/06-mgrep-benchmark.png)
+![mgrep Benchmark](../../assets/images/longform/06-mgrep-benchmark.png)
 *50 görevlik benchmark'ımızda, mgrep + Claude Code, grep tabanlı iş akışlarına kıyasla benzer veya daha iyi değerlendirilen kalitede ~2 kat daha az token kullandı. Kaynak: @mixedbread-ai tarafından mgrep*
 
 **Modüler Kod Tabanı Faydaları:**
@@ -227,7 +227,7 @@ Mevcutsa, doküman sayfalarına ulaştıktan sonra üzerlerinde `/llms.txt` yapa
 
 **Felsefe: Yeniden Kullanılabilir Desenler Oluşturun**
 
-@omarsar0'dan: "Erken dönemde, yeniden kullanılabilir iş akışları/desenler oluşturmaya zaman harcadım. Oluşturması sıkıcı, ancak model'ler ve agent harness'leri geliştikçe bunun çılgın bir bileşik etkisi oldu."
+Sık tekrarlanan bir gözlem: erken dönemde yeniden kullanılabilir iş akışları ve desenler oluşturmak sıkıcıdır, ancak model'ler ve agent harness'leri geliştikçe muazzam bir bileşik etkisi olur.
 
 **Yatırım yapılacaklar:**
 
@@ -326,10 +326,10 @@ alias q='cd ~/Desktop/projects'
 
 - [Anthropic: AI agent'ları için eval'ların gizemini çözme](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - [YK: 32 Claude Code İpucu](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to)
-- [RLanceMartin: Oturum Yansıma Deseni](https://rlancemartin.github.io/2025/12/01/claude_diary/)
-- @PerceptualPeak: Sub-Agent Context Müzakeresi
-- @menhguin: Agent Soyutlamaları Seviye Listesi
-- @omarsar0: Bileşik Etkiler Felsefesi
+- [Oturum Yansıma Deseni](https://rlancemartin.github.io/2025/12/01/claude_diary/)
+- Sub-Agent Context Müzakeresi
+- Agent Soyutlamaları Seviye Listesi
+- Bileşik Etkiler Felsefesi
 
 ---
 

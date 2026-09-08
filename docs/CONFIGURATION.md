@@ -203,9 +203,8 @@ Set by the test suite to stub external behavior. They have no effect on a normal
 | `FORGE_WORKTREE_ROOT` | a research note | Proposed, not implemented |
 | `FORGE_DEFAULT_AGENT` | a research note | Proposed, not implemented |
 | `FORGE_HARNESS` | `README.md` storage-and-harness example | No shipped script reads it |
-| `FORGE_ITO_CLI_EXECUTABLE` | translated `docs/<locale>/README.md` files only | The compute bridge it configured is no longer present in `scripts/` |
 
-All six are unverified — confirm against your installed version before depending on them.
+All five are unverified — confirm against your installed version before depending on them.
 
 ### Not environment variables
 

@@ -358,7 +358,7 @@ mgrep@Mixedbread-Grep                  # 更好的搜索
 显示用户、目录、带脏标记的 git 分支、剩余上下文百分比、模型、时间和待办事项计数：
 
 ```
-affoon:~ ctx:65% Opus 4.5 19:52
+operator:~ ctx:65% Opus 4.5 19:52
 ▌▌ 计划模式开启（按 shift+tab 循环切换）
 ```
 

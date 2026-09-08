@@ -6,12 +6,9 @@
 
 ![FORGE - el sistema operativo nativo del harness para trabajo agentivo](../../assets/hero.png)
 
-[![Stars](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fstars&style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fforks&style=flat)](https://github.com/your-org/forge/network/members)
 [![Contributors](https://img.shields.io/github/contributors/your-org/FORGE?style=flat)](https://github.com/your-org/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
-[![GitHub App Install](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Shell](https://img.shields.io/badge/-Shell-4EAA25?logo=gnu-bash&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -102,7 +99,7 @@ Este repositorio contiene solo el código. Las guías explican todo.
 - **Expansión de flujos de trabajo de operador y salida** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `forge-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` y `workspace-surface-audit` completan el carril de operador.
 - **Herramientas de medios y lanzamiento** — `manim-video`, `remotion-video-creation` y superficies de publicación social actualizadas integran la creación de contenido técnico y de lanzamiento en el mismo sistema.
 - **Crecimiento de frameworks y productos** — `nestjs-patterns`, superficies de instalación más ricas para Codex/OpenCode y empaquetado cross-harness expandido mantienen el repo utilizable más allá de Claude Code.
-- **Pack de skills de mercados de predicción** — la skill consolidada `ito-baskets` (índice de cestas de solo lectura, comparación, briefs de mercado y hojas de planificación no ejecutables; reemplaza a las antiguas `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner` y `ito-data-atlas-agent`), junto con `prediction-market-oracle-research` y `prediction-market-risk-review`, añaden flujos de trabajo públicos de mercado/cesta no asesorados, manteniendo el acceso a la API externa separado de la facturación de FORGE Tools.
+- **Pack de skills de mercados de predicción** — `prediction-market-oracle-research` y `prediction-market-risk-review` añaden flujos de trabajo públicos de mercado/cesta no asesorados, manteniendo el acceso a la API externa separado de la facturación de FORGE Tools.
 - **Pack de skills de optimización** — `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` y `recursive-decision-ledger` convierten los prompts de velocidad/recursión repetidos en flujos de trabajo acotados de benchmark, rendimiento y decisiones.
 - **FORGE 2.0 alpha incluido en el árbol** — el prototipo del plano de control en Rust en `forge2/` ya compila localmente y expone los comandos `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` y `daemon`. Está disponible como alpha, aún no como versión general.
 - **Instantáneas de estado del operador** — `forge status --markdown --write status.md` convierte el almacén de estado local en un informe portátil de transferencia que cubre disponibilidad, sesiones activas, estado de ejecución de skills, estado de la instalación, eventos de gobernanza pendientes y elementos de trabajo vinculados de Linear/GitHub/transferencias. Usa `forge work-items upsert ...` para entradas manuales, `forge work-items sync-github --repo owner/repo` para el estado de la cola de PRs/issues, y `forge status --exit-code` para hacer fallar la automatización cuando la disponibilidad requiere atención.
@@ -1325,7 +1322,7 @@ Proyectos construidos sobre o inspirados en FORGE:
 
 ## Historial de Estrellas
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/FORGE&type=Date)](https://star-history.com/#your-org/FORGE&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
 
 ---
 
@@ -1333,7 +1330,7 @@ Proyectos construidos sobre o inspirados en FORGE:
 
 - **Guía Resumida (Empieza aquí):** [La Guía Resumida de FORGE](/status/2012378465664745795)
 - **Guía Extensa (Avanzado):** [La Guía Extensa de FORGE](/status/2014040193557471352)
-- **Guía de Seguridad:** [Guía de Seguridad](../../the-security-guide.md) | [Hilo](/status/2033263813387223421)
+- **Guía de Seguridad:** [Guía de Seguridad](the-security-guide.md) | [Hilo](/status/2033263813387223421)
 - **Seguir:**
 
 ---

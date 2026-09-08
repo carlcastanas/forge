@@ -2,6 +2,8 @@
 
 This document lists each slash command and the primary agent(s) or skills it invokes, plus notable direct-invoke agents. Use it to discover which commands use which agents and to keep refactoring consistent.
 
+This map is harness-independent: it says what a command does, not where the command exists. Command availability is not uniform. `commands-core` does not resolve for the `codex` or `gemini` targets, and the `orchestration` module resolves only for `claude`, `claude-project`, `codex`, and `opencode`, so the `/orch-*` and `/multi-*` entries below are absent on most harnesses. Copilot has five prompt files rather than the full command set. Check [HARNESS-MATRIX.md](HARNESS-MATRIX.md) for the per-harness picture, and `forge plan --profile full --target <id> --json` for the ground truth on your own machine.
+
 | Command | Primary agent(s) | Notes |
 |---------|------------------|--------|
 | `/plan` | planner | Implementation planning before code |

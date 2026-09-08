@@ -145,7 +145,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      const transcriptPath = writeTranscript(homeDir, '-Users-affoon-project-a', 'session-a.jsonl', [
+      const transcriptPath = writeTranscript(homeDir, '-Users-operator-project-a', 'session-a.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-a', 'toolu_wake', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Iter 15: continue autonomous loop',
@@ -172,7 +172,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      const transcriptPath = writeTranscript(homeDir, '-Users-affoon-project-direct', 'session-direct.jsonl', [
+      const transcriptPath = writeTranscript(homeDir, '-Users-operator-project-direct', 'session-direct.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-direct', 'toolu_direct_wake', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Direct API default threshold check',
@@ -192,7 +192,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-b', 'session-b.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-b', 'session-b.jsonl', [
         toolUse('2026-04-30T09:10:00.000Z', 'session-b', 'toolu_bash', 'Bash', {
           command: 'pytest tests/integration/test_pipeline.py',
         }),
@@ -217,7 +217,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-c', 'session-c.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-c', 'session-c.jsonl', [
         toolUse('2026-04-30T09:40:00.000Z', 'session-c', 'toolu_bash_ok', 'Bash', {
           command: 'npm test',
         }),
@@ -240,7 +240,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-d', 'session-d.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-d', 'session-d.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-d', 'toolu_wake_ok', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Loop checkpoint',
@@ -263,7 +263,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      const transcriptPath = writeTranscript(homeDir, '-Users-affoon-project-e', 'session-e.jsonl', [
+      const transcriptPath = writeTranscript(homeDir, '-Users-operator-project-e', 'session-e.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-e', 'toolu_direct', 'Bash', {
           command: 'sleep 999',
         }),
@@ -285,7 +285,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-f', 'session-f.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-f', 'session-f.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-f', 'toolu_text', 'ScheduleWakeup', {
           delaySeconds: 600,
           reason: 'Loop checkpoint',
@@ -333,7 +333,7 @@ function runTests() {
     const originalReaddirSync = fs.readdirSync;
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-readable', 'session-readable.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-readable', 'session-readable.jsonl', [
         toolResult('2026-04-30T09:41:00.000Z', 'session-readable', 'toolu_done', 'done'),
       ]);
       fs.mkdirSync(blockedDir, { recursive: true });
@@ -363,7 +363,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      const transcriptDir = path.join(homeDir, '.claude', 'projects', '-Users-affoon-project-malformed');
+      const transcriptDir = path.join(homeDir, '.claude', 'projects', '-Users-operator-project-malformed');
       fs.mkdirSync(transcriptDir, { recursive: true });
       fs.writeFileSync(
         path.join(transcriptDir, 'session-malformed.jsonl'),
@@ -432,7 +432,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-exit-code', 'session-exit-code.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-exit-code', 'session-exit-code.jsonl', [
         toolUse('2026-04-30T09:10:00.000Z', 'session-exit-code', 'toolu_exit_bash', 'Bash', {
           command: 'pytest tests/integration/test_pipeline.py',
         }),
@@ -483,7 +483,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-watch', 'session-watch.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-watch', 'session-watch.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-watch', 'toolu_watch', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Loop checkpoint',
@@ -519,7 +519,7 @@ function runTests() {
     const homeDir = createTempHome();
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-watch-exit', 'session-watch-exit.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-watch-exit', 'session-watch-exit.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-watch-exit', 'toolu_watch_exit', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Loop checkpoint',
@@ -553,7 +553,7 @@ function runTests() {
     const snapshotDir = fs.mkdtempSync(path.join(os.tmpdir(), 'forge-loop-status-snapshots-'));
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-snapshot', 'session-snapshot.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-snapshot', 'session-snapshot.jsonl', [
         toolUse('2026-04-30T09:00:00.000Z', 'session-snapshot', 'toolu_snapshot', 'ScheduleWakeup', {
           delaySeconds: 300,
           reason: 'Loop checkpoint',
@@ -602,7 +602,7 @@ function runTests() {
     const snapshotDir = fs.mkdtempSync(path.join(os.tmpdir(), 'forge-loop-status-index-collision-'));
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-index-collision', 'index.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-index-collision', 'index.jsonl', [
         assistantMessage('2026-04-30T09:55:00.000Z', 'index', 'Loop checkpoint.'),
       ]);
 
@@ -639,10 +639,10 @@ function runTests() {
     const snapshotDir = fs.mkdtempSync(path.join(os.tmpdir(), 'forge-loop-status-windows-name-'));
 
     try {
-      writeTranscript(homeDir, '-Users-affoon-project-windows-name', 'con.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-windows-name', 'con.jsonl', [
         assistantMessage('2026-04-30T09:55:00.000Z', 'con', 'Loop checkpoint.'),
       ]);
-      writeTranscript(homeDir, '-Users-affoon-project-windows-name', 'con-txt.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-windows-name', 'con-txt.jsonl', [
         assistantMessage('2026-04-30T09:56:00.000Z', 'con.txt', 'Loop checkpoint.'),
       ]);
 
@@ -718,7 +718,7 @@ function runTests() {
     try {
       const blockedPath = path.join(homeDir, 'snapshot-target-is-a-file');
       fs.writeFileSync(blockedPath, 'not a directory\n', 'utf8');
-      writeTranscript(homeDir, '-Users-affoon-project-write-error', 'session-write-error.jsonl', [
+      writeTranscript(homeDir, '-Users-operator-project-write-error', 'session-write-error.jsonl', [
         assistantMessage('2026-04-30T09:55:00.000Z', 'session-write-error', 'Loop checkpoint.'),
       ]);
 

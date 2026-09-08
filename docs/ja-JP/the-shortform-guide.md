@@ -59,7 +59,7 @@ FORGEは依然として`commands/`レイヤーを提供していますが、マ�
 }
 ```
 
-![PostToolUse hook feedback](./assets/images/shortform/03-posttooluse-hook.png)
+![PostToolUse hook feedback](../../assets/images/shortform/03-posttooluse-hook.png)
 *PostToolUseフック実行中のClaude Codeでのフィードバック例*
 
 **プロヒント：** JSONを手動で書く代わりに`hookify`プラグインを使ってフックを会話的に作成できます。`/hookify`を実行して欲しいものを説明してください。
@@ -122,7 +122,7 @@ MCPはClaudeを外部サービスに直接接続します。APIの置き換え�
 
 **例：** Supabase MCPにより、Claudeはコピー&ペーストなしで特定のデータを取得し、上流で直接SQLを実行できます。データベース、デプロイメントプラットフォームなども同様です。
 
-![Supabase MCP listing tables](./assets/images/shortform/04-supabase-mcp.jpeg)
+![Supabase MCP listing tables](../../assets/images/shortform/04-supabase-mcp.jpeg)
 *Supabase MCPがpublicスキーマ内のテーブルを一覧表示している例*
 
 **Claude内のChrome：** Claudeがブラウザを自律的に制御する組み込みプラグインMCP — クリックして動作を確認できます。
@@ -131,7 +131,7 @@ MCPはClaudeを外部サービスに直接接続します。APIの置き換え�
 
 MCPは厳選してください。すべてのMCPをユーザー設定に入れていますが、**未使用のものはすべて無効化**しています。`/plugins`に移動してスクロールするか、`/mcp`を実行してください。
 
-![/plugins interface](./assets/images/shortform/05-plugins-interface.jpeg)
+![/plugins interface](../../assets/images/shortform/05-plugins-interface.jpeg)
 */pluginsを使用してMCPのインストール状況とステータスを確認*
 
 圧縮前の200kコンテキストウィンドウも、有効なツールが多すぎると70kにしかならない場合があります。パフォーマンスが大幅に低下します。
@@ -161,7 +161,7 @@ claude plugin marketplace add https://github.com/mixedbread-ai/mgrep
 # Claudeを開き、/plugins を実行、新しいマーケットプレイスを見つけてインストール
 ```
 
-![Marketplaces tab showing mgrep](./assets/images/shortform/06-marketplaces-mgrep.jpeg)
+![Marketplaces tab showing mgrep](../../assets/images/shortform/06-marketplaces-mgrep.jpeg)
 *新しくインストールされたMixedbread-Grepマーケットプレイスの表示*
 
 **LSPプラグイン**は、エディタ外でClaude Codeを頻繁に使用する場合に特に便利です。Language Server Protocolにより、IDEを開かずにClaudeにリアルタイムの型チェック、定義ジャンプ、インテリジェント補完を提供します。
@@ -230,7 +230,7 @@ mgrep --web "Next.js 15 app router changes"  # Web検索
 
 GitHub ActionsでPRにコードレビューを設定。設定すればClaudeがPRを自動的にレビューできます。
 
-![Claude bot approving a PR](./assets/images/shortform/08-github-pr-review.jpeg)
+![Claude bot approving a PR](../../assets/images/shortform/08-github-pr-review.jpeg)
 *Claudeがバグ修正PRを承認*
 
 ### サンドボックス
@@ -255,7 +255,7 @@ GitHub ActionsでPRにコードレビューを設定。設定すればClaudeがP
 - **最小限のリソース使用** — 重い操作中にClaudeとRAM/CPUを競合しない。Opus実行時に重要
 - **Vimモード** — お好みならフルVimキーバインド
 
-![Zed Editor with custom commands](./assets/images/shortform/09-zed-editor.jpeg)
+![Zed Editor with custom commands](../../assets/images/shortform/09-zed-editor.jpeg)
 *CMD+Shift+Rでカスタムコマンドドロップダウンを表示するZedエディタ。右下にフォローモードが牛眼として表示。*
 
 **エディタに依存しないヒント：**
@@ -270,7 +270,7 @@ GitHub ActionsでPRにコードレビューを設定。設定すればClaudeがP
 
 これも実用的な選択肢でClaude Codeとうまく連携します。`\ide`でLSP機能を有効にしたターミナル形式（プラグインでやや冗長になりました）、またはエディタにより統合されたマッチするUIの拡張機能を選択できます。
 
-![VS Code Claude Code Extension](./assets/images/shortform/10-vscode-extension.jpeg)
+![VS Code Claude Code Extension](../../assets/images/shortform/10-vscode-extension.jpeg)
 *VS Code拡張機能はClaude CodeのネイティブグラフィカルインターフェースをIDE内に直接統合して提供。*
 
 ---
@@ -355,7 +355,7 @@ mgrep@Mixedbread-Grep                  # より良い検索
 ユーザー、ディレクトリ、ダーティインジケーター付きgitブランチ、残りコンテキスト%、モデル、時間、Todoカウントを表示：
 
 ```
-affoon:~ ctx:65% Opus 4.5 19:52
+operator:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
 ```
 

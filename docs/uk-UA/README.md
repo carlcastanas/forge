@@ -28,10 +28,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/your-org/forge/stargazers"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fstars&style=flat" alt="Stars" /></a>
-  <a href="https://github.com/your-org/forge/network/members"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fforks&style=flat" alt="Forks" /></a>
   <a href="https://github.com/your-org/forge/graphs/contributors"><img src="https://img.shields.io/github/contributors/your-org/FORGE?style=flat" alt="Contributors" /></a>
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github" alt="GitHub App installs" />
 </p>
 
 <p align="center">
@@ -455,7 +452,6 @@ claude
 </td>
 <td width="33%" align="center">
   <a href="https://www.moonshot.ai">
-    <picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/moonshot-dark.png" /><img src="../../assets/images/sponsors/moonshot.png" width="126" alt="Moonshot AI - Kimi" /></picture><br />
     <strong>2. Обслуговуйте Kimi</strong>
   </a><br />
   <sub>Відкрийте обраний чекпоінт через сумісний ендпоінт.</sub>
@@ -734,7 +730,7 @@ FORGE також постачає розширені керовані адапт
 - **Розширення операторних і вихідних процесів**: `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `forge-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` та `workspace-surface-audit` доповнюють операторну гілку.
 - **Медіа та інструменти запуску**: `manim-video`, `remotion-video-creation` та вдосконалені поверхні публікації в соцмережах роблять технічні роз'яснення та контент для запуску частиною тієї ж системи.
 - **Зростання фреймворків і продуктових поверхонь**: `nestjs-patterns`, більш насичені поверхні встановлення Codex/OpenCode та розширена крос-оболонкова упаковка роблять репозиторій придатним для використання поза межами однієї оболонки.
-- **Пакет навичок для ринків прогнозів**: `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до зовнішнього API окремим від білінгу FORGE Tools.
+- **Пакет навичок для ринків прогнозів**: `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до зовнішнього API окремим від білінгу FORGE Tools.
 - **Пакет навичок оптимізації**: `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` та `recursive-decision-ledger` перетворюють повторювані запити про швидкість/рекурсію на обмежені процеси тестування продуктивності, пропускної здатності та журналу рішень.
 - **FORGE 2.0 alpha у дереві**: прототип площини управління на Rust у `forge2/` збирається локально та надає команди `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` та `daemon`.
 - **Знімки статусу оператора**: `forge status --markdown --write status.md` перетворює локальне сховище стану на портативне передавання, яке охоплює готовність, активні сесії, стан виконання навичок, стан встановлення, очікувані події управління та пов'язані робочі елементи з Linear/GitHub/handoffs.
@@ -905,22 +901,15 @@ forge memory doctor
 <table aria-label="Посібники FORGE" width="100%">
 <tr>
 <td width="33%" align="center">
-<a href="../../the-shortform-guide.md">
-<img src="../../assets/images/guides/shorthand-guide.png" width="213" height="120" alt="Короткий посібник з FORGE" /><br />
 <strong>Короткий посібник</strong>
-</a>
 <br /><sub>Налаштування, основи та використання з першого дня. <b>Читайте спочатку.</b> </sub>
 </td>
 <td width="33%" align="center">
-<a href="../../the-longform-guide.md">
-<img src="../../assets/images/guides/longform-guide.png" width="213" height="120" alt="Розширений посібник з FORGE" /><br />
 <strong>Розширений посібник</strong>
-</a>
 <br /><sub>Економіка контексту, пам'ять, оцінки та паралельні агенти. </sub>
 </td>
 <td width="33%" align="center">
-<a href="../../the-security-guide.md">
-<img src="../../assets/images/guides/security-guide.png" width="213" height="120" alt="Посібник з безпеки FORGE" /><br />
+<a href="../../guides/the-security-guide.md">
 <strong>Посібник з безпеки</strong>
 </a>
 <br /><sub>Ін'єкція промптів, хуки, MCP та Forge Shield. </sub>
@@ -1686,7 +1675,7 @@ npx -y forge-shield scan --path .
 Посилання з безпеки:
 
 - [Політика безпеки](../../SECURITY.md)
-- [Посібник з безпеки](../../the-security-guide.md)
+- [Посібник з безпеки](../../guides/the-security-guide.md)
 - [Політика конекторів MCP](../../docs/MCP-CONNECTOR-POLICY.md)
 - [Реагування на інциденти ланцюжка поставок](../../docs/security/supply-chain-incident-response.md)
 
@@ -1832,7 +1821,7 @@ FORGE Pro додає аналіз приватних репозиторіїв, �
 
 - **Короткий посібник (Почніть тут):** Короткий посібник з FORGE
 - **Розширений посібник (Для досвідчених):** Розширений посібник з FORGE
-- **Посібник з безпеки:** [Посібник з безпеки](../../the-security-guide.md) | Нитка
+- **Посібник з безпеки:** [Посібник з безпеки](../../guides/the-security-guide.md) | Нитка
 
 ## Ліцензія
 

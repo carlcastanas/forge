@@ -227,7 +227,7 @@ Si está disponible, puedes encontrar un `llms.txt` en muchas referencias de doc
 
 **Filosofía: Construir Patrones Reutilizables**
 
-De @omarsar0: "Al principio, dediqué tiempo a construir flujos de trabajo/patrones reutilizables. Tedioso de construir, pero tuvo un efecto compuesto enorme a medida que los modelos y los harnesses de agentes mejoraron."
+Una observación que vale la pena repetir: dedicar tiempo al principio a construir flujos de trabajo y patrones reutilizables es tedioso, pero tiene un efecto compuesto enorme a medida que los modelos y los harnesses de agentes mejoran.
 
 **En qué invertir:**
 
@@ -326,10 +326,10 @@ alias q='cd ~/Desktop/projects'
 
 - [Anthropic: Desmitificando las evaluaciones para agentes de IA](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - [YK: 32 Consejos de Claude Code](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to)
-- [RLanceMartin: Patrón de Reflexión de Sesión](https://rlancemartin.github.io/2025/12/01/claude_diary/)
-- @PerceptualPeak: Negociación de Contexto de Subagentes
-- @menhguin: Tierlist de Abstracciones de Agentes
-- @omarsar0: Filosofía de Efectos Compuestos
+- [Patrón de Reflexión de Sesión](https://rlancemartin.github.io/2025/12/01/claude_diary/)
+- Negociación de Contexto de Subagentes
+- Tierlist de Abstracciones de Agentes
+- Filosofía de Efectos Compuestos
 
 ---
 

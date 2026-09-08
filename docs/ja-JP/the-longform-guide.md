@@ -32,7 +32,7 @@ MCPを実際に使用せずにCLIをMCPのように機能させるには（そ�
 
 セッション間でメモリを共有するには、進捗を要約してチェックインし、`.claude`フォルダの`.tmp`ファイルに保存してセッション終了まで追記するスキルまたはコマンドが最善策です。翌日にはそれをコンテキストとして使用し、中断した箇所から再開できます。古いコンテキストが新しい作業を汚染しないよう、各セッションごとに新しいファイルを作成してください。
 
-![Session Storage File Tree](./assets/images/longform/03-session-storage.png)
+![Session Storage File Tree](../../assets/images/longform/03-session-storage.png)
 *セッションストレージの例 -> <https://github.com/your-org/forge/tree/main/examples/sessions>*
 
 Claudeが現在の状態を要約するファイルを作成します。レビューし、必要に応じて編集を依頼し、新しく開始。新しい会話では、ファイルパスを提供するだけです。コンテキスト制限に達して複雑な作業を継続する必要がある場合に特に便利です。これらのファイルには以下を含めるべきです：
@@ -103,7 +103,7 @@ alias claude-research='claude --system-prompt "$(cat ~/.claude/contexts/research
 
 **モデル選択クイックリファレンス：**
 
-![Model Selection Table](./assets/images/longform/04-model-selection.png)
+![Model Selection Table](../../assets/images/longform/04-model-selection.png)
 *さまざまな一般的タスクにおけるサブエージェントの仮想セットアップと選択理由*
 
 | タスクタイプ | モデル | 理由 |
@@ -121,14 +121,14 @@ alias claude-research='claude --system-prompt "$(cat ~/.claude/contexts/research
 
 **価格リファレンス：**
 
-![Claude Model Pricing](./assets/images/longform/05-pricing-table.png)
+![Claude Model Pricing](../../assets/images/longform/05-pricing-table.png)
 *出典: <https://platform.claude.com/docs/en/about-claude/pricing>*
 
 **ツール固有の最適化：**
 
 grepをmgrepに置き換え — 従来のgrepやripgrepと比較して平均約50%のトークン削減：
 
-![mgrep Benchmark](./assets/images/longform/06-mgrep-benchmark.png)
+![mgrep Benchmark](../../assets/images/longform/06-mgrep-benchmark.png)
 *50タスクのベンチマークで、mgrep + Claude Codeはgrepベースのワークフローと同等以上の品質で約2倍少ないトークンを使用。出典：@mixedbread-aiによるmgrep*
 
 **モジュラーコードベースの利点：**
@@ -227,7 +227,7 @@ cd ../project-feature-a && claude
 
 **哲学：再利用可能なパターンの構築**
 
-@omarsar0より：「早い段階で再利用可能なワークフロー/パターンの構築に時間を費やしました。構築は面倒でしたが、モデルとエージェントハーネスが改善されるにつれ、驚異的な複利効果をもたらしました。」
+よく指摘されることですが、早い段階で再利用可能なワークフローやパターンの構築に時間を費やすのは面倒でも、モデルとエージェントハーネスが改善されるにつれて大きな複利効果をもたらします。
 
 **投資すべきもの：**
 
@@ -326,10 +326,10 @@ alias q='cd ~/Desktop/projects'
 
 - [Anthropic: AIエージェントの評価を解明する](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - [YK: 32のClaude Codeヒント](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to)
-- [RLanceMartin: セッション振り返りパターン](https://rlancemartin.github.io/2025/12/01/claude_diary/)
-- @PerceptualPeak: サブエージェントコンテキストネゴシエーション
-- @menhguin: エージェント抽象化ティアリスト
-- @omarsar0: 複利効果の哲学
+- [セッション振り返りパターン](https://rlancemartin.github.io/2025/12/01/claude_diary/)
+- サブエージェントコンテキストネゴシエーション
+- エージェント抽象化ティアリスト
+- 複利効果の哲学
 
 ---
 

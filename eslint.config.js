@@ -3,7 +3,22 @@ const globals = require('globals');
 
 module.exports = [
     {
-        ignores: ['.opencode/dist/**', '.cursor/**', 'node_modules/**', '.venv/**', 'venv/**', 'coverage/**', 'workflows/**/*.workflow.*', '.claude/workflows/**']
+        // site/ is a separate Next.js workspace with its own flat config and its own
+        // eslint install. Linting it from here makes the root run load
+        // site/node_modules/eslint-config-next, which needs dependencies the root
+        // install does not have, and aborts the entire run. Lint it with
+        // `npm run lint` inside site/ instead.
+        ignores: [
+            '.opencode/dist/**',
+            '.cursor/**',
+            'node_modules/**',
+            'site/**',
+            '.venv/**',
+            'venv/**',
+            'coverage/**',
+            'workflows/**/*.workflow.*',
+            '.claude/workflows/**'
+        ]
     },
     js.configs.recommended,
     {

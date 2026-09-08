@@ -230,7 +230,7 @@ cd ../project-feature-a && claude
 
 **理念：构建可重用的模式**
 
-来自 @omarsar0："早期，我花时间构建可重用的工作流/模式。构建过程很繁琐，但随着模型和代理框架的改进，这产生了惊人的复合效应。"
+一个值得反复强调的观察：早期花时间构建可重用的工作流和模式虽然繁琐，但随着模型和代理框架的改进，会产生惊人的复合效应。
 
 **应该投资于：**
 
@@ -332,10 +332,10 @@ alias q='cd ~/Desktop/projects'
 
 * [Anthropic: 解密 AI 智能体的评估](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 * [YK: 32 个 Claude Code 技巧](https://agenticcoding.substack.com/p/32-claude-code-tips-from-basics-to)
-* [RLanceMartin: 会话反思模式](https://rlancemartin.github.io/2025/12/01/claude_diary/)
-* @PerceptualPeak: 子智能体上下文协商
-* @menhguin: 智能体抽象层分级
-* @omarsar0: 复合效应哲学
+* [会话反思模式](https://rlancemartin.github.io/2025/12/01/claude_diary/)
+* 子智能体上下文协商
+* 智能体抽象层分级
+* 复合效应哲学
 
 ***
 

@@ -220,7 +220,6 @@ Never take a global lock in a per-tenant migration. `ALTER TABLE ... ADD COLUMN`
 3. Purge derived copies: warehouse, data-lake partitions, log retention. Backups usually cannot be edited — the backup retention window is the true deletion horizon and belongs in the contract.
 4. Write an immutable deletion receipt (tenant id, requester, timestamps, row counts) to an audit store that survives the purge, then set `purged`.
 
-
 **Residency.** Placement is decided at provisioning. Route by region from the registry, keep regional clusters and regional object storage, and make cross-region reads impossible rather than discouraged. The global control plane holds only non-personal metadata — id, slug, region, plan. Anything else pins the tenant to a region and cannot live in a global table.
 
 ## Checklist

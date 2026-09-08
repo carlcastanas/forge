@@ -6,12 +6,9 @@
 
 ![FORGE - ایجنٹک کام کے لیے ہارنس-نیٹو آپریٹر سسٹم](../../assets/hero.png)
 
-[![Stars](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fstars&style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fforks&style=flat)](https://github.com/your-org/forge/network/members)
 [![Contributors](https://img.shields.io/github/contributors/your-org/FORGE?style=flat)](https://github.com/your-org/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
-[![GitHub App Install](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
 ![Shell](https://img.shields.io/badge/-Shell-4EAA25?logo=gnu-bash&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -20,10 +17,6 @@
 ![Java](https://img.shields.io/badge/-Java-ED8B00?logo=openjdk&logoColor=white)
 ![Perl](https://img.shields.io/badge/-Perl-39457E?logo=perl&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
-
-> **182K+ ستارے** | **28K+ فورکس** | **170+ تعاون کار** | **12+ زبانی ماحولیاتی نظام** | **Anthropic Hackathon فاتح**
-
----
 
 <div align="center">
 
@@ -35,7 +28,7 @@
 
 ---
 
-**ایجنٹک کام کے لیے ہارنس-نیٹو آپریٹر سسٹم۔ Anthropic Hackathon فاتح کی طرف سے۔**
+**ایجنٹک کام کے لیے ہارنس-نیٹو آپریٹر سسٹم۔**
 
 صرف کنفیگریشن نہیں۔ ایک مکمل نظام: skills، instincts، میموری آپٹیمائزیشن، مسلسل سیکھنا، سیکیورٹی اسکیننگ، اور research-first ڈیویلپمنٹ۔ 10+ مہینوں کی گہری روزانہ استعمال سے تیار کیے گئے پروڈکشن-ریڈی agents، skills، hooks، rules، MCP کنفیگریشن، اور legacy command shims۔
 
@@ -47,32 +40,25 @@ FORGE v2.0.0-rc.1 اس قابل استعمال پرت پر عوامی Hermes آ�
 
 <table>
 <tr>
-<td width="25%" align="center">
-  <strong> FORGE Pro</strong><br />
-    <sub>نجی ریپوز · GitHub App · $19/نشست/ماہ</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>FORGE Pro</strong><br />
+  <sub>نجی ریپوز · GitHub App · $19/نشست/ماہ</sub>
 </td>
-<td width="25%" align="center">
-  <strong> اسپانسر</strong><br />
-    <sub>OSS کو فنڈ کریں · $5/ماہ سے</sub>
-  </a>
-</td>
-<td width="25%" align="center">
+<td width="33%" align="center">
   <a href="https://github.com/your-org/forge/discussions">
-    <strong> کمیونٹی</strong>
+    <strong>کمیونٹی</strong>
     <br />
-    <sub>Discussions · Q&amp;A · Show & Tell</sub>
+    <sub>Discussions · Q&amp;A · Show &amp; Tell</sub>
   </a>
 </td>
-<td width="25%" align="center">
-  <strong> GitHub App</strong><br />
-    <sub>انسٹال · PR آڈٹس · مفت ٹیئر</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>GitHub App</strong><br />
+  <sub>انسٹال · PR آڈٹس · مفت ٹیئر</sub>
 </td>
 </tr>
 </table>
 
-<sub>**OSS مفت رہتا ہے۔** یہ ریپو ہمیشہ کے لیے MIT لائسنس یافتہ ہے۔ FORGE Pro نجی ریپوز کے لیے ہوسٹڈ GitHub App ہے۔ اسپانسرز</a> اور Pro سبسکرائبرز</a> اس کام کو فنڈ کرتے ہیں۔</sub>
+<sub>**OSS مفت رہتا ہے۔** یہ ریپو ہمیشہ کے لیے MIT لائسنس یافتہ ہے۔ FORGE Pro نجی ریپوز کے لیے ہوسٹڈ GitHub App ہے۔</sub>
 
 ---
 
@@ -182,8 +168,6 @@ FORGE/
 ---
 
 ## Forge Shield — سیکیورٹی آڈیٹر
-
-Claude Code Hackathon (Cerebral Valley x Anthropic) میں بنایا گیا۔ 1282 ٹیسٹ، 98% کوریج، 102 static analysis rules۔
 
 ```bash
 # فوری اسکین (کوئی انسٹال ضروری نہیں)

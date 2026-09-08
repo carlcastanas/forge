@@ -1,7 +1,5 @@
 # OpenClaw 的隐藏危险
 
-![标题：OpenClaw 的隐藏危险——来自智能体前沿的安全教训](../../assets/images/openclaw/01-header.png)
-
 ***
 
 > **这是《FORGE 指南系列》的第 3 部分。** 第 1 部分是 [速成指南](the-shortform-guide.md)（设置和配置）。第 2 部分是 [长篇指南](the-longform-guide.md)（高级模式和工作流程）。本指南是关于安全性的——具体来说，当递归智能体基础设施将其视为次要问题时会发生什么。

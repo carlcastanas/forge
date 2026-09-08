@@ -11,7 +11,6 @@
 [![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
-[![GitHub App Install](https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
 ![Shell](https://img.shields.io/badge/-Shell-4EAA25?logo=gnu-bash&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -1570,7 +1569,7 @@ Agent Teams создаёт несколько context windows. Каждый уч
 
 - **Краткое руководство (начните здесь):** [The Shorthand Guide to FORGE](/status/2012378465664745795)
 - **Подробное руководство (продвинутый уровень):** [The Longform Guide to FORGE](/status/2014040193557471352)
-- **Руководство по безопасности:** [Security Guide](../../the-security-guide.md) | [Тред](/status/2033263813387223421)
+- **Руководство по безопасности:** [Security Guide](../../guides/the-security-guide.md) | [Тред](/status/2033263813387223421)
 - **Подписаться:**
 
 ---

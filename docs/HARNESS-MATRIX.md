@@ -19,11 +19,15 @@ Prerequisites:
 
 Three separate lists of harnesses exist in this repository and they do not agree:
 
-1. `SUPPORTED_INSTALL_TARGETS` in `scripts/lib/install-manifests.js` — 15 install targets.
-2. `HARNESS_CAPABILITIES` in `scripts/lib/harness-capabilities.js` — 14 harnesses, validated against the target list at module load.
-3. `ADAPTER_RECORDS` in `scripts/lib/harness-adapter-compliance.js` — 12 compliance entries, including reference-only harnesses that have no installer.
+1. `SUPPORTED_INSTALL_TARGETS` in `scripts/lib/install-manifests.js` — 15 install targets: `claude`, `claude-project`, `cursor`, `antigravity`, `codex`, `gemini`, `opencode`, `codebuddy`, `joycode`, `qwen`, `zed`, `hermes`, `openclaw`, `kimi`, `adal`.
+2. `HARNESS_CAPABILITIES` in `scripts/lib/harness-capabilities.js` — 14 harnesses, validated against the target list at module load (Claude Code owns two target ids, which is where the fourteenth-versus-fifteenth difference comes from).
+3. `ADAPTER_RECORDS` in `scripts/lib/harness-adapter-compliance.js` — 12 compliance entries: `claude-code`, `codex`, `opencode`, `pi`, `cursor`, `gemini`, `zed`, `dmux`, `orca`, `superset`, `ghast`, `terminal-only`. Only this list is machine-validated, and only against [architecture/harness-adapter-compliance.md](architecture/harness-adapter-compliance.md), between its `harness-adapter-compliance:matrix-start` and `matrix-end` markers.
+
+The compliance scorecard is therefore not a complete adapter census. It has no record for Kimi Code, CodeBuddy, JoyCode, Qwen Code, Antigravity, Hermes, OpenClaw, AdaL, Kiro, Trae, or Copilot, even though eight of those are install targets. `npm run harness:adapters` reporting `Adapters: 12` is a count of scored entries, not of adapters that exist.
 
 Two more harnesses ship their own shell installers and appear in none of the three lists: Kiro and Trae. Copilot has instruction and prompt files but no installer at all. This page covers everything present in the repository.
+
+Neither this page nor the README table has a generator or a CI check behind it. Both are maintained by hand against `forge plan --profile full --target <id> --json` and the committed adapter directories. If they disagree with your machine, your machine is right.
 
 ## Support matrix
 

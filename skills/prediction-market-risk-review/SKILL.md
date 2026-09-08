@@ -36,7 +36,7 @@ tools.
 ### Security
 
 - Do not request or store private keys, seed phrases, or passwords.
-- Keep `ITO_API_KEY` and venue API keys out of logs and docs.
+- Keep venue API keys out of logs and docs.
 - Use read-only scopes by default.
 - Require circuit breakers, spend limits, dry runs, and human approval before
   any private implementation adds execution.

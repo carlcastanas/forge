@@ -276,7 +276,7 @@ function runTests() {
     try {
       const releaseDir = releaseDirFor(CURRENT_RELEASE);
       seedRepo(rootDir, {
-        [`${releaseDir}/video-suite-production.md`]: videoManifestContent('/Users/affoon/private-media'),
+        [`${releaseDir}/video-suite-production.md`]: videoManifestContent('/Users/operator/private-media'),
       });
       seedMedia(sourceRoot, suiteRoot);
 

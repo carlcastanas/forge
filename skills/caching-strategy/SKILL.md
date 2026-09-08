@@ -115,31 +115,31 @@ When a hot key expires under load, every concurrent request misses and hits the 
 
 ```go
 func (c *Cache) GetOrLoad(ctx context.Context, key string, ttl time.Duration,
-	load func(context.Context) ([]byte, error)) ([]byte, error) {
+ load func(context.Context) ([]byte, error)) ([]byte, error) {
 
-	if v, err := c.rdb.Get(ctx, key).Bytes(); err == nil {
-		return v, nil
-	}
+ if v, err := c.rdb.Get(ctx, key).Bytes(); err == nil {
+  return v, nil
+ }
 
-	lockKey, token := "lock:"+key, uuid.NewString()
-	ok, err := c.rdb.SetNX(ctx, lockKey, token, 10*time.Second).Result()
-	if err != nil {
-		return load(ctx) // cache unavailable: fail open to the origin
-	}
-	if !ok { // another worker is loading; bounded wait, then fall back
-		if v, found := c.waitForKey(ctx, key, 250*time.Millisecond); found {
-			return v, nil
-		}
-		return load(ctx)
-	}
-	defer c.releaseIfOwner(ctx, lockKey, token) // compare-and-delete via Lua
+ lockKey, token := "lock:"+key, uuid.NewString()
+ ok, err := c.rdb.SetNX(ctx, lockKey, token, 10*time.Second).Result()
+ if err != nil {
+  return load(ctx) // cache unavailable: fail open to the origin
+ }
+ if !ok { // another worker is loading; bounded wait, then fall back
+  if v, found := c.waitForKey(ctx, key, 250*time.Millisecond); found {
+   return v, nil
+  }
+  return load(ctx)
+ }
+ defer c.releaseIfOwner(ctx, lockKey, token) // compare-and-delete via Lua
 
-	v, err := load(ctx)
-	if err != nil {
-		return nil, err
-	}
-	c.rdb.Set(ctx, key, v, jitter(ttl))
-	return v, nil
+ v, err := load(ctx)
+ if err != nil {
+  return nil, err
+ }
+ c.rdb.Set(ctx, key, v, jitter(ttl))
+ return v, nil
 }
 ```
 

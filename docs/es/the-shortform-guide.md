@@ -355,7 +355,7 @@ Esta es la clave — tengo 14 MCPs configurados pero solo ~5-6 habilitados por p
 Muestra usuario, directorio, rama de git con indicador de modificaciones, % de contexto restante, modelo, hora y conteo de todos:
 
 ```
-affoon:~ ctx:65% Opus 4.5 19:52
+operator:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
 ```
 

@@ -14,7 +14,7 @@ Si descubres una vulnerabilidad de seguridad en FORGE, por favor repórtala de f
 
 **No abras un issue público de GitHub para vulnerabilidades de seguridad.**
 
-En cambio, envía un correo a security@example.com>** con:
+En cambio, envía un correo a <security@example.com>>** con:
 
 - Una descripción de la vulnerabilidad
 - Pasos para reproducirla

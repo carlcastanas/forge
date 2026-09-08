@@ -13,7 +13,7 @@
       "C": "Cyan - kullanıcı adı, todos",
       "T": "Gri - model adı"
     },
-    "output_example": "affoon:~/projects/myapp main* ctx:73% sonnet-4.6 14:30 todos:3",
+    "output_example": "operator:~/projects/myapp main* ctx:73% sonnet-4.6 14:30 todos:3",
     "usage": "statusLine objesini ~/.claude/settings.json dosyanıza kopyalayın"
   }
 }

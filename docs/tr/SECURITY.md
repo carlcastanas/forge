@@ -14,7 +14,7 @@ FORGE'de bir güvenlik açığı keşfederseniz, lütfen sorumlu bir şekilde bi
 
 **Güvenlik açıkları için herkese açık GitHub issue açmayın.**
 
-Bunun yerine, security@example.com>** adresine aşağıdaki bilgilerle e-posta gönderin:
+Bunun yerine, <security@example.com>>** adresine aşağıdaki bilgilerle e-posta gönderin:
 
 - Güvenlik açığının açıklaması
 - Yeniden oluşturma adımları

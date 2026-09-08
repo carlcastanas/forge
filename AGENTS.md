@@ -12,7 +12,6 @@ Prerequisites: you understand the difference between an agent, a skill, and a co
 [docs/CONCEPTS.md](docs/CONCEPTS.md). To write a new agent, read
 [docs/AGENT-AUTHORING.md](docs/AGENT-AUTHORING.md) after this page.
 
-
 ## Project structure
 
 ```text
