@@ -245,44 +245,18 @@ evaluate every return, ask follow-ups before accepting, cap the loop at three cy
 Skills and rules are advice. The model can rationalize its way past advice. Hooks are code that
 the runtime executes on lifecycle events, and they do not care what the model concluded.
 
-FORGE registers hooks on seven events:
+FORGE registers hooks on seven events. Registrations live in
+[hooks/hooks.json](../hooks/hooks.json), implementations in `scripts/hooks/`:
 
-| Event | What it is good for |
-|---|---|
-| `SessionStart` | Bootstrap context, load prior session state |
-| `PreToolUse` | Block or gate an action before it happens |
-| `PostToolUse` | Format, typecheck, warn on what just landed |
-| `PostToolUseFailure` | Health checks and failure tracking |
-| `PreCompact` | Persist state before the window is rewritten |
-| `Stop` | Verification gates before the turn ends |
-| `SessionEnd` | Record and close out the session |
-
-The registrations live in [hooks/hooks.json](../hooks/hooks.json) and the implementations in
-`scripts/hooks/`. A representative set of what actually fires:
-
-```text
-PreToolUse
-  Bash                     pre-bash-dispatcher.js   tmux reminder, git push reminder,
-                                                    dev-server block, commit quality,
-                                                    --no-verify block
-  Edit|Write|MultiEdit     gateguard-fact-force.js  demand investigation before first edit
-  Write|Edit|MultiEdit     config-protection.js     block edits to linter/formatter config
-  Write                    doc-file-warning.js      stop stray .md files being generated
-  Edit|Write               suggest-compact.js       flag when the window is getting tight
-  .*                       mcp-health-check.js      catch dead MCP servers early
-
-PostToolUse
-  Edit|Write               post-edit-format.js      run the project formatter
-                           post-edit-typecheck.js   typecheck the touched file
-                           post-edit-console-warn.js flag leftover console statements
-  Bash                     post-bash-build-complete.js, post-bash-pr-created.js
-
-Stop
-  .*                       stop-format-typecheck.js verification before the turn ends
-                           check-console-log.js
-                           evaluate-session.js      session self-evaluation
-                           cost-tracker.js          append to the local metrics log
-```
+| Event | Purpose | Representative hooks |
+|---|---|---|
+| `SessionStart` | Bootstrap context, load prior state | `session-start-bootstrap.js` |
+| `PreToolUse` | Block or gate before the action happens | `pre-bash-dispatcher.js` (tmux reminder, push reminder, dev-server block, commit quality, `--no-verify` block), `gateguard-fact-force.js`, `config-protection.js`, `doc-file-warning.js`, `suggest-compact.js`, `mcp-health-check.js` |
+| `PostToolUse` | Format, typecheck, warn on what landed | `post-edit-format.js`, `post-edit-typecheck.js`, `post-edit-console-warn.js`, `post-bash-build-complete.js` |
+| `PostToolUseFailure` | Health checks and failure tracking | `mcp-health-check.js`, `skill-run-tracker.js` |
+| `PreCompact` | Persist state before the window is rewritten | `pre-compact.js` |
+| `Stop` | Verification before the turn ends | `stop-format-typecheck.js`, `check-console-log.js`, `evaluate-session.js`, `cost-tracker.js` |
+| `SessionEnd` | Record and close the session | `session-end-marker.js` |
 
 ![PostToolUse hook feedback inside the harness](../assets/images/shortform/03-posttooluse-hook.png)
 
@@ -368,16 +342,12 @@ FORGE's position is documented in
 state that a one-shot CLI cannot provide. Everything else is a skill wrapping a CLI or REST API,
 or an opt-in entry in [mcp-configs/mcp-servers.json](../mcp-configs/mcp-servers.json).
 
-The test for whether something deserves a connector slot:
-
-1. Is it universal — needed by essentially every user on every harness?
-2. Does MCP genuinely beat a CLI wrapped in a skill — is there session state, streaming, an auth
-   handshake, or structured browsing that a stateless call cannot express?
-
-Stateless request/response work fails the second test. `gh` already exists, is already in the
-model's training data, and costs a few tokens per invocation instead of thirty tool schemas per
-session. The `github-ops` skill wraps it. Same reasoning retired the documentation, search, and
-memory servers from the defaults.
+A connector earns a slot only if it is universal across harnesses and genuinely beats a CLI
+wrapped in a skill — meaning the job needs session state, streaming, an auth handshake, or
+structured browsing that a stateless call cannot express. Stateless request/response work fails
+that test. `gh` already exists, is already in the model's training data, and costs a few tokens
+per invocation instead of thirty tool schemas per session; the `github-ops` skill wraps it. The
+same reasoning retired the documentation, search, and memory servers from the defaults.
 
 ![An MCP server enumerating database tables](../assets/images/shortform/04-supabase-mcp.jpeg)
 
@@ -416,13 +386,11 @@ Language Server Protocol plugins are the highest-value category if you run your 
 editor. They give it real type information, go-to-definition, and diagnostics without an IDE
 process attached.
 
-Two cautions, both real:
-
-- Plugins carry the same context cost as anything else they install. A plugin that adds twelve
-  commands and an MCP server is not free.
-- A marketplace is a supply chain. Skills and hooks are executable instructions and executable
-  code respectively. Read what you install, pin what you can, and run `/security-scan` over the
-  result. The reasoning is in [the security guide](./the-security-guide.md#supply-chain-risk-in-skills-plugins-and-marketplaces).
+Two cautions. Plugins carry the same context cost as anything else they install; a plugin adding
+twelve commands and an MCP server is not free. And a marketplace is a supply chain — skills are
+instructions the model follows and hooks are code the runtime executes. Read what you install,
+pin what you can, and run `/security-scan` over the result. Reasoning in
+[the security guide](./the-security-guide.md#supply-chain-risk-in-skills-plugins-and-marketplaces).
 
 ---
 
@@ -453,10 +421,10 @@ generates process manager commands for the services it detects in the project.
 
 ### Keyboard
 
-The interaction primitives that matter, whatever harness you are on: a prefix for direct shell
-commands, a prefix for file references, a prefix for slash commands, multi-line input, and an
-interrupt that stops generation without killing the session. Learn the interrupt first. The
-difference between a good session and a bad one is often how early you stop a wrong direction.
+The interaction primitives that matter on any harness: a prefix for direct shell commands, a
+prefix for file references, a prefix for slash commands, multi-line input, and an interrupt that
+stops generation without killing the session. Learn the interrupt first. The difference between
+a good session and a bad one is often how early you stop a wrong direction.
 
 ---
 
@@ -615,16 +583,9 @@ The mechanics and the reasoning are in
 ## Editors
 
 Any terminal works. What an editor adds is the ability to see what changed while it is changing.
-
-The properties that matter, in priority order:
-
-1. **Responsiveness under rapid external file changes.** An agent rewrites ten files in twenty
-   seconds. An editor that reindexes the world on every write becomes unusable.
-2. **Reliable file watching.** Stale buffers cause the worst class of confusion, where you review
-   a version of the file that no longer exists.
-3. **Autosave.** The agent reads from disk. Unsaved buffers mean it reads stale content.
-4. **Good diff and staging UI.** You will review every change; make that cheap.
-5. **Low resource usage.** The editor competes with the agent for memory.
+The properties that matter, in priority order: responsiveness under rapid external file changes,
+reliable file watching, autosave (the agent reads from disk, so unsaved buffers are stale
+content), a good diff and staging surface, and low resource usage.
 
 ![An editor with a custom command palette open](../assets/images/shortform/09-zed-editor.jpeg)
 
@@ -646,56 +607,38 @@ yours.
 
 A medium feature — add tenant scoping to an existing API — start to finish.
 
-**Orient.** New repository, or one you have not touched in weeks:
-
 ```text
 /resume-session
-```
-
-If there is no session file, `codebase-onboarding` produces an architecture map, entry points,
-and conventions without reading the whole tree.
-
-**Plan before anything writes.**
-
-```text
 /plan add tenant scoping to the orders API, including the middleware and every query path
-```
-
-`/plan` restates the requirement, names the risks, and stops for confirmation. Read the plan. A
-wrong plan caught here costs one message; caught after implementation it costs the session.
-
-**Establish the contract in tests.** The `tdd-guide` agent writes failing tests describing tenant
-isolation before any implementation exists. If you cannot state the test, the requirement is not
-yet clear enough to implement.
-
-**Implement.** `post-edit-format.js` and `post-edit-typecheck.js` run on each write. Type errors
-surface within seconds of being introduced rather than at the end. `gateguard-fact-force.js`
-blocks the first edit until the model has enumerated every call site.
-
-**Review from clean context.**
-
-```text
+# tdd-guide writes failing isolation tests, then the implementation
 /code-review
-```
-
-Then, because this touches an authorization boundary:
-
-```text
 /security-scan
-```
-
-**Verify.** Full test suite, and the `delivery-gate` stop hook refuses to let the turn end while
-checks fail.
-
-**Remember.**
-
-```text
 /learn
 /save-session
 ```
 
-`/learn` extracts anything non-obvious — a library quirk, a project convention, a debugging
-technique — into a candidate instinct or skill. `/save-session` writes the state file.
+**Orient.** `/resume-session` loads the last state file. If there is none,
+`codebase-onboarding` produces an architecture map, entry points, and conventions without
+reading the whole tree.
+
+**Plan before anything writes.** `/plan` restates the requirement, names the risks, and stops
+for confirmation. Read the plan. A wrong plan caught here costs one message; caught after
+implementation it costs the session.
+
+**Establish the contract in tests.** Failing tests describing tenant isolation land before any
+implementation exists. If you cannot state the test, the requirement is not yet clear enough to
+implement.
+
+**Implement.** `post-edit-format.js` and `post-edit-typecheck.js` run on each write, so type
+errors surface within seconds rather than at the end. `gateguard-fact-force.js` blocks the first
+edit until the model has enumerated every call site.
+
+**Review from clean context.** `/code-review` on the diff, and `/security-scan` because this
+touches an authorization boundary. Then the full test suite, with the `delivery-gate` stop hook
+refusing to end the turn while checks fail.
+
+**Remember.** `/learn` extracts anything non-obvious — a library quirk, a project convention, a
+debugging technique — into a candidate instinct or skill. `/save-session` writes the state file.
 
 Seven steps, most of them one command. The value is that the same seven happen every time,
 including on the day you are tired and would have skipped review.

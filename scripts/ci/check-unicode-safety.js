@@ -14,6 +14,7 @@ const ignoredDirs = new Set([
   'node_modules',
   '.dmux',
   '.next',
+  'out',
   '.venv',
   '.pytest_cache',
   '.ruff_cache',

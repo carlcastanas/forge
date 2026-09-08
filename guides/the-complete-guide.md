@@ -44,7 +44,7 @@ Prerequisites:
   - [Memory hygiene](#memory-hygiene)
 - [Evaluation](#evaluation)
   - [Why an eval and not an opinion](#why-an-eval-and-not-an-opinion)
-  - [pass@k and pass^k](#passk-and-passk-1)
+  - [pass@k and pass^k](#passk-and-passk)
   - [A and B with the same task](#a-and-b-with-the-same-task)
   - [Eval surfaces in the repository](#eval-surfaces-in-the-repository)
   - [Checkpoint and continuous evals](#checkpoint-and-continuous-evals)

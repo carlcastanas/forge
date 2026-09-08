@@ -1,273 +1,108 @@
 # Hooks
 
-Hooks are event-driven automations that fire before or after Claude Code tool executions. They enforce code quality, catch mistakes early, and automate repetitive checks.
+Hooks are the only part of FORGE the model cannot decide to skip. The harness runs them on
+lifecycle events, which makes them the right place for enforcement and the wrong place for
+anything slow or clever.
 
-## How Hooks Work
+This page is the map of what ships. The authoring contract, the exit-code semantics, the
+profiles, and the debugging procedure live in
+[../docs/HOOKS-GUIDE.md](../docs/HOOKS-GUIDE.md) — read that before writing one.
 
-```
-User request → Claude picks a tool → PreToolUse hook runs → Tool executes → PostToolUse hook runs
-```
+## Files
 
-- **PreToolUse** hooks run before the tool executes. They can **block** (exit code 2) or **warn** (stderr without blocking).
-- **PostToolUse** hooks run after the tool completes. They can analyze output but cannot block.
-- **Stop** hooks run after each Claude response.
-- **SessionStart/SessionEnd** hooks run at session lifecycle boundaries.
-- **PreCompact** hooks run before context compaction, useful for saving state.
+| Path | Purpose |
+| --- | --- |
+| `hooks.json` | The executable hook graph the harness loads |
+| `codex-hooks.json` | The Codex-adapted graph |
+| `memory-persistence/` | Session summary and continuous-learning hook definitions |
+| `../scripts/hooks/` | The hook implementations |
 
-## Hooks in This Plugin
+## Dispatchers, not a flat list
 
-Memory persistence lifecycle definitions live in `hooks/memory-persistence/`.
-The executable hook graph remains `hooks/hooks.json`; the memory persistence directory is the stable contract for SessionStart, PreCompact, observation, activity tracking, and SessionEnd behavior.
+Most events route through a single dispatcher rather than registering one harness entry per
+check. `pre:bash:dispatcher` fans out to the Bash pre-checks; `posttooluse-dispatcher.js`
+fans out to the post-tool observers. This keeps the harness-visible graph small and lets a
+check be disabled by id without editing `hooks.json`.
 
-## Installing These Hooks Manually
+The consequence worth knowing: a check named below may not appear as its own entry in
+`hooks.json`. Its id is still what `FORGE_DISABLED_HOOKS` expects.
 
-For Claude Code manual installs, do not paste the raw repo `hooks.json` into `~/.claude/settings.json` or copy it directly into `~/.claude/hooks/hooks.json`. The checked-in file is plugin/repo-oriented and is meant to be installed through the FORGE installer or loaded as a plugin.
+## Hook ids
 
-Use the installer instead so hook commands are rewritten against your actual Claude root:
-
-```bash
-bash ./install.sh --target claude --modules hooks-runtime --enable-hooks
-```
-
-```powershell
-pwsh -File .\install.ps1 --target claude --modules hooks-runtime --enable-hooks
-```
-
-That installs the hook scripts under `~/.claude/` and registers the resolved
-hook entries in `~/.claude/settings.json`. Existing user settings and hook
-entries are preserved, while FORGE-owned entries are tracked by stable ID for
-idempotent updates and safe uninstall. On Windows, the Claude config root is
-`%USERPROFILE%\.claude`.
-
-### PreToolUse Hooks
-
-| Hook | Matcher | Behavior | Exit Code |
-|------|---------|----------|-----------|
-| **Dev server blocker** | `Bash` | Blocks `npm run dev` etc. outside tmux — ensures log access | 2 (blocks) |
-| **Tmux reminder** | `Bash` | Suggests tmux for long-running commands (npm test, cargo build, docker) | 0 (warns) |
-| **Git push reminder** | `Bash` | Reminds to review changes before `git push` | 0 (warns) |
-| **Pre-commit quality check** | `Bash` | Runs quality checks before `git commit`: lints staged files, validates commit message format when provided via `-m/--message`, detects console.log/debugger/secrets | 2 (blocks critical) / 0 (warns) |
-| **Doc file warning** | `Write` | Warns about non-standard `.md`/`.txt` files (allows README, CLAUDE, CONTRIBUTING, CHANGELOG, LICENSE, SKILL, docs/, skills/); cross-platform path handling | 0 (warns) |
-| **Strategic compact** | `Edit\|Write` | Suggests manual `/compact` at logical intervals (every ~50 tool calls) | 0 (warns) |
-
-### PostToolUse Hooks
-
-| Hook | Matcher | What It Does |
-|------|---------|-------------|
-| **PR logger** | `Bash` | Logs PR URL and review command after `gh pr create` |
-| **Build analysis** | `Bash` | Background analysis after build commands (async, non-blocking) |
-| **Quality gate** | `Edit\|Write\|MultiEdit` | Runs fast quality checks after edits |
-| **Design quality check** | `Edit\|Write\|MultiEdit` | Warns when frontend edits drift toward generic template-looking UI |
-| **Prettier format** | `Edit` | Auto-formats JS/TS files with Prettier after edits |
-| **TypeScript check** | `Edit` | Runs `tsc --noEmit` after editing `.ts`/`.tsx` files |
-| **console.log warning** | `Edit` | Warns about `console.log` statements in edited files |
-
-### Lifecycle Hooks
-
-| Hook | Event | What It Does |
-|------|-------|-------------|
-| **Session start** | `SessionStart` | Loads previous context and detects package manager |
-| **Plan Canvas sessions** | `SessionStart` | Surfaces open Plan Canvas browser reviews so a fresh session can resume the loop |
-| **Pre-compact** | `PreCompact` | Saves state before context compaction |
-| **Console.log audit** | `Stop` | Checks all modified files for `console.log` after each response |
-| **Session summary** | `Stop` | Persists session state when transcript path is available |
-| **Pattern extraction** | `Stop` | Evaluates session for extractable patterns (continuous learning) |
-| **Cost tracker** | `Stop` | Emits lightweight run-cost telemetry markers |
-| **Desktop notify** | `Stop` | Sends macOS desktop notification with task summary (standard+) |
-| **Session end marker** | `SessionEnd` | Lifecycle marker and cleanup log |
-
-## Customizing Hooks
-
-### Disabling a Hook
-
-Remove or comment out the hook entry in `hooks.json`. If installed as a plugin, override in your `~/.claude/settings.json`:
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [],
-        "description": "Override: allow all .md file creation"
-      }
-    ]
-  }
-}
-```
-
-### Runtime Hook Controls (Recommended)
-
-Use environment variables to control hook behavior without editing `hooks.json`:
+Disable any of these by id:
 
 ```bash
-# Master switch. Explicit environment values override plugin preferences.
-export FORGE_HOOKS_ENABLED=true
-
-# minimal | standard | strict (default: standard)
-export FORGE_HOOK_PROFILE=standard
-
-# Disable specific hook IDs (comma-separated)
-export FORGE_DISABLED_HOOKS="pre:bash:tmux-reminder,post:edit:typecheck"
-
-# Disable only GateGuard during setup or recovery
-export FORGE_GATEGUARD=off
-
-# Cap SessionStart additional context (default: 8000 chars)
-export FORGE_SESSION_START_MAX_CHARS=4000
-
-# Disable SessionStart additional context entirely
-export FORGE_SESSION_START_CONTEXT=off
-
-# Keep context/scope/loop warnings but suppress API-rate cost estimates
-export FORGE_CONTEXT_MONITOR_COST_WARNINGS=off
+export FORGE_DISABLED_HOOKS="pre:bash:tmux-reminder,stop:desktop-notify"
 ```
 
-Windows PowerShell:
+### PreToolUse
 
-```powershell
-[Environment]::SetEnvironmentVariable('FORGE_CONTEXT_MONITOR_COST_WARNINGS', 'off', 'User')
-```
+| Id | Trigger | Effect |
+| --- | --- | --- |
+| `pre:bash:dispatcher` | `Bash` | Fans out to the Bash pre-checks below |
+| `pre:bash:auto-tmux-dev` | Dev-server commands | Routes long-running servers into tmux so logs stay readable |
+| `pre:bash:tmux-reminder` | Long-running commands | Warns only |
+| `pre:bash:commit-quality` | `git commit` | Checks the commit before it lands |
+| `pre:bash:block-no-verify` | `--no-verify` | Blocks the hook-bypass flag |
+| `pre:bash:git-push-reminder` | `git push` | Warns only |
+| `pre:bash:gateguard-fact-force` | `Bash` | Fact-check gate |
+| `pre:edit-write:gateguard-fact-force` | `Edit`, `Write` | Fact-check gate |
+| `pre:powershell:gateguard-fact-force` | `PowerShell` | Fact-check gate |
 
-Claude setup-only value:
-- `off` — disables local FORGE hook work through `forge setup`; it is not a runtime hook profile.
+### PostToolUse
 
-Runtime hook profiles:
-- `minimal` — keep essential lifecycle and safety hooks only.
-- `standard` — default; balanced quality + safety checks.
-- `strict` — enables additional reminders and stricter guardrails.
+| Id | Effect |
+| --- | --- |
+| `post:bash:dispatcher` | Fans out to the Bash post-checks |
+| `post:bash:build-complete` | Reports build results |
+| `post:bash:command-log-audit` | Command audit log |
+| `post:bash:command-log-cost` | Cost accounting per command |
+| `post:bash:pr-created` | Notices a PR was opened |
+| `post:edit:accumulator` | Batches edits for the end-of-turn checks |
+| `post:edit:console-warn` | Flags stray console statements |
+| `post:edit:design-quality-check` | UI change quality check |
+| `post:observe:continuous-learning` | Feeds the learning loop (runs inside the dispatcher) |
+| `post:governance-capture` | Governance trail |
+| `post:quality-gate` | Quality gate evaluation |
+| `post:skill:track` | Records which skills fired |
+| `post:session-activity-tracker` | Session activity |
+| `post:forge-context-monitor` | Context and cost warnings |
+| `post:forge-metrics-bridge` | Metrics export |
 
-The Claude plugin exposes the same choices as the personal `hooks_enabled` and
-`hook_profile` settings. Run `forge setup --mode claude-plugin` to install or
-update the plugin and change those preferences.
+### Stop and session events
 
-### Writing Your Own Hook
+| Id | Event | Effect |
+| --- | --- | --- |
+| `session:start` | SessionStart | Injects rules, memory, and instincts |
+| `session:end:marker` | SessionEnd | Writes the session marker |
+| `stop:format-typecheck` | Stop | Formats and type-checks accumulated edits |
+| `stop:check-console-log` | Stop | Final console-statement sweep |
+| `stop:evaluate-session` | Stop | Session evaluation |
+| `stop:cost-tracker` | Stop | Records session cost |
+| `stop:session-end` | Stop | Session summary |
+| `stop:plan-canvas-pending` | Stop | Warns about an unreviewed plan |
+| `stop:desktop-notify` | Stop | Desktop notification |
+| `post-failure-reconnect` | PostToolUseFailure | MCP reconnect attempt |
 
-Hooks are shell commands that receive tool input as JSON on stdin and must output JSON on stdout.
+## Profiles
 
-**Basic structure:**
+`FORGE_HOOK_PROFILE` selects how much of the graph runs. An unrecognised value falls back to
+`standard`.
 
-```javascript
-// my-hook.js
-let data = '';
-process.stdin.on('data', chunk => data += chunk);
-process.stdin.on('end', () => {
-  const input = JSON.parse(data);
+| Profile | Runs |
+| --- | --- |
+| `minimal` | Session bookkeeping only; nothing that can block |
+| `standard` | Adds write-time checks and verification prompts (default) |
+| `strict` | Blocks on failed checks instead of warning |
 
-  // Access tool info
-  const toolName = input.tool_name;        // "Edit", "Bash", "Write", etc.
-  const toolInput = input.tool_input;      // Tool-specific parameters
-  const toolOutput = input.tool_output;    // Only available in PostToolUse
+## Two rules that prevent most hook incidents
 
-  // Warn (non-blocking): write to stderr
-  console.error('[Hook] Warning message shown to Claude');
+A hook runs on every matching event, in the critical path of the user's work.
 
-  // Block (PreToolUse only): exit with code 2
-  // process.exit(2);
+1. **Never block on the network.** A hook that calls an API adds its latency and its outages
+   to every tool call.
+2. **Warn before you block.** A blocking hook that is wrong is worse than no hook. Ship it as
+   a warning, watch what it would have blocked, then promote it.
 
-  // Always output the original data to stdout
-  console.log(data);
-});
-```
-
-**Exit codes:**
-- `0` — Success (continue execution)
-- `2` — Block the tool call (PreToolUse only)
-- Other non-zero — Error (logged but does not block)
-
-### Hook Input Schema
-
-```typescript
-interface HookInput {
-  tool_name: string;          // "Bash", "Edit", "Write", "Read", etc.
-  tool_input: {
-    command?: string;         // Bash: the command being run
-    file_path?: string;       // Edit/Write/Read: target file
-    old_string?: string;      // Edit: text being replaced
-    new_string?: string;      // Edit: replacement text
-    content?: string;         // Write: file content
-  };
-  tool_output?: {             // PostToolUse only
-    output?: string;          // Command/tool output
-  };
-}
-```
-
-### Async Hooks
-
-For hooks that should not block the main flow (e.g., background analysis):
-
-```json
-{
-  "type": "command",
-  "command": "node my-slow-hook.js",
-  "async": true,
-  "timeout": 30
-}
-```
-
-Async hooks run in the background. They cannot block tool execution.
-
-## Common Hook Recipes
-
-### Warn about TODO comments
-
-```json
-{
-  "matcher": "Edit",
-  "hooks": [{
-    "type": "command",
-    "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const ns=i.tool_input?.new_string||'';if(/TODO|FIXME|HACK/.test(ns)){console.error('[Hook] New TODO/FIXME added - consider creating an issue')}console.log(d)})\""
-  }],
-  "description": "Warn when adding TODO/FIXME comments"
-}
-```
-
-### Block large file creation
-
-```json
-{
-  "matcher": "Write",
-  "hooks": [{
-    "type": "command",
-    "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const c=i.tool_input?.content||'';const lines=c.split('\\n').length;if(lines>800){console.error('[Hook] BLOCKED: File exceeds 800 lines ('+lines+' lines)');console.error('[Hook] Split into smaller, focused modules');process.exit(2)}console.log(d)})\""
-  }],
-  "description": "Block creation of files larger than 800 lines"
-}
-```
-
-### Auto-format Python files with ruff
-
-```json
-{
-  "matcher": "Edit",
-  "hooks": [{
-    "type": "command",
-    "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const p=i.tool_input?.file_path||'';if(/\\.py$/.test(p)){const{execFileSync}=require('child_process');try{execFileSync('ruff',['format',p],{stdio:'pipe'})}catch(e){}}console.log(d)})\""
-  }],
-  "description": "Auto-format Python files with ruff after edits"
-}
-```
-
-### Require test files alongside new source files
-
-```json
-{
-  "matcher": "Write",
-  "hooks": [{
-    "type": "command",
-    "command": "node -e \"const fs=require('fs');let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const p=i.tool_input?.file_path||'';if(/src\\/.*\\.(ts|js)$/.test(p)&&!/\\.test\\.|\\.spec\\./.test(p)){const testPath=p.replace(/\\.(ts|js)$/,'.test.$1');if(!fs.existsSync(testPath)){console.error('[Hook] No test file found for: '+p);console.error('[Hook] Expected: '+testPath);console.error('[Hook] Consider writing tests first (/tdd)')}}console.log(d)})\""
-  }],
-  "description": "Remind to create tests when adding new source files"
-}
-```
-
-## Cross-Platform Notes
-
-Hook logic is implemented in Node.js scripts for cross-platform behavior on Windows, macOS, and Linux. The continuous-learning observer is exposed as a Node-mode hook and delegates to its existing `observe.sh` implementation through a profile-gated runner with Windows-safe fallback behavior.
-
-## Related
-
-- [rules/common/hooks.md](../rules/common/hooks.md) — Hook architecture guidelines
-- [skills/strategic-compact/](../skills/strategic-compact/) — Strategic compaction skill
-- [scripts/hooks/](../scripts/hooks/) — Hook script implementations
+Turn the whole layer off with `FORGE_HOOKS_ENABLED=0`. Hooks are read at session start, so a
+change takes effect in the next session, not the current one.

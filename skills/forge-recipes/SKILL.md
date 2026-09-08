@@ -2,9 +2,9 @@
 name: forge-recipes
 description: "Map a described workflow to the right FORGE command-GROUP with run-order and stop condition, and browse all command-group recipe families. Adds a family-grouping + run-order + when-to-stop layer on top of the flat command catalog. Advisory only. TRIGGER when the user says which commands for X, what command group runs X, show FORGE recipes, list FORGE pipelines, or how do I run a workflow with FORGE. DO NOT TRIGGER when the user wants the task executed directly, wants a single-command deep doc (use forge-guide), or wants a draft prompt rewritten (use prompt-optimizer)."
 argument-hint: <workflow description | empty=list all>
-origin: community
 author: KyawZinLatt
 metadata:
+  origin: community
   version: "1.0.0"
 ---
 

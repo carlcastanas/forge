@@ -7,6 +7,8 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   output: 'export',
+  // Several lockfiles exist above this directory; pin tracing to the site itself.
+  outputFileTracingRoot: import.meta.dirname,
   trailingSlash: true,
   images: {
     // Static export cannot run the image optimizer.

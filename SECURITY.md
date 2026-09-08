@@ -1,156 +1,218 @@
-# Security Policy
+# Security policy
 
-## Supported Versions
+This page states which versions receive security fixes, how to report a vulnerability, what is
+in and out of scope, what FORGE does to defend itself, and how an operator should harden a
+deployment.
 
-| Version | Supported |
+Prerequisites: for the reasoning behind these controls, read
+[docs/THREAT-MODEL.md](docs/THREAT-MODEL.md); for the practical defensive workflow, read
+[guides/the-security-guide.md](guides/the-security-guide.md).
+
+## Supported versions
+
+| Version | Status |
 | --- | --- |
-| 2.x / rc builds | :white_check_mark: |
-| 1.10.x | :white_check_mark: |
-| 1.9.x | Critical fixes only |
-| < 1.9 | :x: |
+| 1.0.x | Supported |
+| Pre-1.0 development builds | Not supported |
 
-Security fixes land on `main` first. Backports are best-effort and only for currently supported release lines.
+Fixes land on the default branch first. There is one supported release line; backports to
+anything older are not provided.
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-Use GitHub private vulnerability reporting whenever possible — it reaches the maintainer directly:
+> **The contact address below is a placeholder.** `security@example.com` is not a monitored
+> mailbox. Whoever deploys or forks this repository must replace it with a real address, or
+> with that fork's private vulnerability reporting channel, before publishing. Leaving the
+> placeholder in place means reports go nowhere.
 
-- <https://github.com/your-org/forge/security/advisories/new>
+Send reports to `security@example.com`.
 
-You can also email security@example.com>** (the security@example.com` alias is not monitored — use security@example.com`).
+Do not open a public issue for a security problem. Do not post it in a pull request, a
+discussion thread, or any other public surface until a fix or a coordinated disclosure date
+exists.
 
-Do **not** open a public GitHub issue for security vulnerabilities.
+Include, at minimum:
 
-Include:
+- The affected file, package, version, and commit.
+- Reproduction steps starting from a clean checkout.
+- The trust boundary that is crossed and the resulting impact.
+- Whether exploitation requires local shell access, a malicious repository, a malicious
+  package, a remote unauthenticated actor, or privileged credentials.
+- Proof-of-concept output with tokens, keys, local paths, and personal data redacted.
 
-- affected file, package, version, commit, and install path
-- steps to reproduce from a clean checkout
-- expected impact and affected trust boundary
-- whether exploitation requires local shell access, a malicious repo, a malicious package, a remote unauthenticated actor, or maintainer credentials
-- any PoC logs with tokens, keys, local paths, and private data redacted
+Reports without a reproduction are triaged last, because a claim that cannot be reproduced
+cannot be fixed or verified.
 
-Expected response:
+## Disclosure timeline
 
-- **Acknowledgment:** within 48 hours
-- **Initial assessment:** within 7 days
-- **Critical fix or mitigation target:** within 14 days when the report affects a supported release and crosses a real trust boundary
-- **Coordinated disclosure:** before public advisory publication
+| Stage | Target |
+| --- | --- |
+| Acknowledgment of receipt | 48 hours |
+| Initial assessment and severity call | 7 days |
+| Fix or documented mitigation for a critical, in-scope report | 14 days |
+| Public advisory | After a fix ships, or on an agreed coordinated date |
 
-If a report is declined, we will explain whether it is not reproducible, out of scope, already fixed, or needs a stronger attack path.
+Requested embargo: hold public disclosure until a fix is released or 90 days have passed,
+whichever comes first. If a report is declined, the response will say which of the following
+applies — not reproducible, out of scope, already fixed, or requires a stronger attack path
+than the report demonstrates.
 
 ## Scope
 
-This policy covers:
+### In scope
 
-- the `your-org/FORGE` repository
-- the `forge-universal` npm package
-- FORGE plugin, install, repair, dashboard, hook, rule, skill, MCP, and command surfaces shipped from this repository
-- GitHub Actions workflows and release automation in this repository
-- the FORGE Tools GitHub App integration points documented by this repository
-- Forge Shield usage docs when they are embedded here. Forge Shield code issues belong in <https://github.com/your-org/forge-shield>
+- The catalog shipped from this repository: `agents/`, `skills/`, `commands/`, `rules/`,
+  `hooks/`, `mcp-configs/`, `manifests/`, `schemas/`, `workflows/`.
+- The install, repair, and uninstall paths under `scripts/`.
+- Hook entrypoints in `scripts/hooks/` and their registrations in `hooks/`.
+- The validators in `scripts/ci/`, where a bypass would let unsafe content into the catalog.
+- Harness adapter directories, where an adapter grants capability the canonical catalog does
+  not.
+- The published `forge-universal` package contents and its `files` allowlist.
+- Release automation and CI workflows in `.github/workflows/`.
 
-## Official Distribution Surfaces
+Prompt-injection findings are in scope when they show a concrete path from untrusted content
+to an action the operator did not authorize — a hook bypass, a permission escalation, a secret
+in output, a write outside the intended path.
 
-Official FORGE surfaces are:
+### Out of scope
 
-- GitHub repo: <https://github.com/your-org/forge>
-- npm package: `forge-universal`
-- GitHub App: <>
-- marketplace/plugin slug: `forge@forge`
-- website: <>
+- Local command execution by a user who already controls the shell, where no higher-privilege
+  boundary is crossed.
+- The underlying coding agent, model provider, operating system, or terminal emulator. Report
+  those to their own maintainers.
+- Third-party MCP servers, plugins, or packages not shipped from this repository. Their
+  configuration templates here are in scope; their implementations are not.
+- Model output quality, hallucination, or refusal behavior absent a security consequence.
+- Findings that require the reporter to first modify tracked files in the checkout.
+- Missing hardening that is documented as the operator's responsibility below.
+- Automated scanner output submitted without a demonstrated attack path.
+- Social engineering of contributors.
 
-Official Forge Shield surface:
+### Distribution
 
-- npm package: `forge-shield`
-- GitHub repo: <https://github.com/your-org/forge-shield>
+Verify what you install. This repository publishes the `forge-universal` npm package and the
+`forge@forge` plugin slug; the companion security scanner publishes as `forge-shield`. Packages
+with similar names are not covered by this policy and should be treated as unverified until
+confirmed against the repository's own metadata. The repository host is a deployment detail —
+consult the source you cloned from rather than assuming a canonical URL.
 
-The following packages have been observed using FORGE repository metadata but are **not maintained by FORGE**:
+## FORGE's own security posture
 
-- `@chil_ntl/forge-cli`
-- `forge-100xprompt-plugin`
+Four layers. Each is independent; none is sufficient alone.
 
-Treat any package not listed under official surfaces as unofficial until verified. Do not install packages named `opencode-forge`, `forge`, or other FORGE-like aliases unless this repository explicitly documents them as official.
+### Forge Shield
 
-GitHub dependency graph may also show Go module aliases such as `github.com/your-org/forge` or historical repository paths. FORGE is not currently distributed as a supported Go module.
-
-## Out of Scope
-
-Reports are usually out of scope when they only show:
-
-- local command execution where the user already controls the local shell and no higher-privilege trust boundary is crossed
-- screenshots, stale line numbers, or reports against `your-org/forge` that do not reproduce on current `your-org/FORGE`
-- self-XSS or social engineering with no repository-controlled exploit path
-- dependency graph/package metadata confusion without an install path to an official FORGE package
-- vulnerabilities in third-party packages unless FORGE pins, installs, or executes them in a way that creates extra impact
-
-Local developer tools can still be valid security issues when untrusted repository content, package installation, generated hooks, or CI automation can trigger execution without clear user intent. Show that trust boundary in the report.
-
-## Supply-Chain Rules
-
-FORGE treats supply-chain exposure as a first-class security surface.
-
-- GitHub Actions must use pinned commit SHAs for third-party actions.
-- Workflows must avoid shelling untrusted GitHub context directly into `run:` blocks.
-- Release and install docs must point only to official packages.
-- Package metadata should point at `your-org/FORGE`, not historical repo paths.
-- Private vulnerability reports are triaged privately before public disclosure.
-- Security advisories are published only when a supported release is affected and coordinated disclosure is appropriate.
-
-## Operational Guidance
-
-### Secrets Handling
-
-`mcp-configs/mcp-servers.json` is a **template**. All `YOUR_*_HERE` values must be replaced at install time from env-vars or a secrets manager. Never commit real credentials. If a secret is accidentally committed, rotate it immediately and rewrite history. Do not rely on a plain revert.
-
-The same rule applies to user-scope Claude Code config (`~/.claude/settings.json` or `%USERPROFILE%\.claude\settings.json`). That file is outside this repository, but it is commonly shared through `claude doctor` output, screenshots, and bug reports. Do not hardcode PATs, API keys, or OAuth tokens into `mcpServers[*].env` blocks. Resolve them at spawn time from the OS keychain or env-vars your MCP server already supports.
-
-Quick audit:
+Forge Shield is the deterministic scanner that inspects agent, hook, MCP, permission, and
+secret surfaces and reports findings with severities. It ships as the separate `forge-shield`
+package and is driven by `/security-scan`.
 
 ```bash
-# macOS / Linux
-grep -EnH '(TOKEN|SECRET|KEY|PASSWORD)\s*"\s*:\s*"[A-Za-z0-9_-]{16,}"' ~/.claude/settings.json
-
-# Windows PowerShell
-Select-String -Path "$env:USERPROFILE\.claude\settings.json" -Pattern '(TOKEN|SECRET|KEY|PASSWORD)"\s*:\s*"[A-Za-z0-9_-]{16,}"'
+npx forge-shield scan --path . --format text
 ```
 
-If the audit matches, rotate the secret at the issuing provider, then move it out of the file.
+Options that matter: `--format json` for CI gating, `--min-severity` to filter noise, and
+`--fix` to apply only the fixes the scanner marks as safe and auto-fixable. The scanner is the
+source of truth for what it finds; treat anything beyond its output as judgment, and label it
+as such.
 
-### Local MCP Ports
+Run it before publishing a repository, before installing a plugin or agent pack from anywhere,
+and in CI on every change to `hooks/`, `mcp-configs/`, or an adapter directory.
 
-Some bundled MCP servers connect over plain HTTP to a localhost port. Before first use, verify the listening process:
+### Lifecycle hooks
 
-```bash
-# Windows
-netstat -ano | findstr :18801
+Hooks are the enforcement layer that runs whether or not the model cooperates. They register in
+`hooks/hooks.json` against specific tool matchers and execute Node entrypoints from
+`scripts/hooks/`. The security-relevant ones:
 
-# macOS / Linux
-lsof -iTCP:18801 -sTCP:LISTEN
-```
+| Concern | Mechanism |
+| --- | --- |
+| Destructive shell commands | Pre-Bash dispatcher with fact-forcing gates before execution |
+| Verification bypass | `block-no-verify.js` refuses `--no-verify` on commits |
+| Configuration tampering | `config-protection.js` guards protected configuration paths |
+| Governance evidence | `governance-capture.js` records secret, policy, and approval events |
+| Heredoc smuggling | `gateguard-heredoc.js` inspects heredoc payloads |
+| Supply-chain drift | `security:ioc-scan` checks against advisory sources |
 
-Compare the PID against the expected binary. Any other process on that port can intercept MCP traffic.
+A hook that blocks exits `1` and prints why. A hook that warns exits `0`. Hooks run in the
+harness process, so a malicious hook is a full compromise — review `hooks/hooks.json` after any
+install or update, and treat a hook you did not add as an incident.
 
-## Triage: suspicious `<system-reminder>` blocks
+### Permission model
 
-FORGE runs inside agent harnesses that may inject ephemeral client-side system reminders into the model input on every turn. These blocks are not automatically repository-carried payloads.
+FORGE narrows capability at three points:
 
-Before treating one as an attack, verify:
+1. **Agent tool allowlists.** Each of the 68 agents declares an explicit `tools` list.
+   Reviewers get read and search tools; only resolvers and generators get `Write` and `Edit`;
+   MCP tools are granted individually and never as a whole server. Widening an allowlist is a
+   reviewable change on its own.
+2. **Command restrictions.** Commands may declare `allowed-tools` and
+   `disable-model-invocation` so a shim cannot be triggered by model reasoning alone.
+3. **Install profiles.** `manifests/install-profiles.json` controls what is written into a
+   target harness. `minimal` and `core` install materially less surface than `full`.
 
-1. Is the block actually in a file under this repo?
+### Repository-level controls
 
-   ```bash
-   grep -rEn "system-reminder|NEVER mention|DO NOT mention" .
-   ```
+`npm test` refuses content that fails a security check before it can be committed:
+`check-unicode-safety.js` rejects homoglyphs and zero-width payloads,
+`validate-no-personal-paths.js` rejects absolute home paths, and `validate-hooks.js` rejects
+malformed or unregistered hook entrypoints. `.gitleaksignore` scopes secret scanning, and
+supply-chain workflows watch advisory sources.
 
-2. Is the block stored in the session transcript as part of a tool result?
-3. Is it consistent with known client reminders such as TodoWrite nudges, date notices, or file-modified notices?
+## Hardening guidance for operators
 
-Escalate upstream only when the block is present inside a tool result or repository file and is not attributable to the file, URL, or command that was actually read.
+Ordered roughly by return on effort.
 
-## Security Resources
+**1. Replace the reporting contact.** Before you publish a fork, change
+`security@example.com` in this file to a channel someone actually reads.
 
-- **Forge Shield:** `npx forge-shield scan`
-- **Security Guide:** [The Shorthand Guide to Everything Agentic Security](./the-security-guide.md)
-- **Supply-chain incident response:** [npm/GitHub Actions package-registry playbook](./docs/security/supply-chain-incident-response.md)
-- **OWASP MCP Top 10:** <https://owasp.org/www-project-mcp-top-10/>
-- **OWASP Agentic Applications Top 10:** <https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/>
+**2. Install the smallest profile that works.** Start at `core` or `developer`. `full` installs
+every module and every rule set, which is both a larger attack surface and a larger context
+cost. Add modules when you need them.
+
+**3. Review hooks after every install and update.** Read `hooks/hooks.json` and diff it against
+the previous version. Hooks execute; anything that appears there without your knowledge is an
+incident, not a surprise.
+
+**4. Audit the agent allowlists you install.** Confirm no agent that should be read-only has
+`Write`, `Edit`, or `Bash`. `/security-scan` checks this mechanically.
+
+**5. Pin MCP servers.** Point at pinned versions or vendored copies rather than floating tags,
+and grant each server only the tools it needs. See [docs/MCP-GUIDE.md](docs/MCP-GUIDE.md).
+
+**6. Sandbox anything that reads untrusted input.** Run agents that fetch web pages, process
+issue bodies, or read third-party repositories in a container or an isolated worktree with no
+credentials mounted. Fetched content is data, never instruction.
+
+**7. Keep credentials out of the agent's environment.** Do not export production tokens into a
+shell an agent can invoke. Use short-lived, least-privilege credentials scoped to the task.
+
+**8. Gate CI on the scanner.** Run `npx forge-shield scan --format json` and fail the build on
+findings at or above your severity floor. Add `npm run security:ioc-scan` to the same job.
+
+**9. Never disable verification to ship.** `--no-verify` exists in Git; it is blocked here for
+a reason. A bypassed gate is an unreviewed change.
+
+**10. Log and retain what agents do.** Enable governance capture, keep the tool-use log, and
+retain it long enough to investigate. Detection without a record is a guess.
+
+**11. Review generated dependency and configuration changes by hand.** A lockfile edit or an
+MCP configuration change proposed by an agent deserves the same scrutiny as one proposed by a
+stranger.
+
+## What is deliberately not defended
+
+Stated plainly so nobody assumes otherwise:
+
+- FORGE does not sandbox the coding agent. If the harness can run a command, FORGE's hooks can
+  inspect and block specific patterns, but they are not a security boundary against a
+  determined local attacker.
+- FORGE does not verify model output for correctness. Reviews are advisory; the operator
+  decides.
+- FORGE does not scan the code of third-party MCP servers or plugins you choose to install.
+- FORGE does not protect against a compromised coding agent, model provider, or operating
+  system.
+
+Defense in depth belongs at the layer below this one. Read
+[docs/THREAT-MODEL.md](docs/THREAT-MODEL.md) for the boundaries this system does and does not
+claim.

@@ -1,7 +1,8 @@
 ---
 name: mailtrap-email-integration
 description: Guides agents through integrating transactional email sending via Mailtrap's Email API, including sandbox testing, domain verification, and API authentication. Use when implementing email-sending features, debugging delivery issues, or setting up safe dev/staging email testing.
-origin: FORGE
+metadata:
+  origin: FORGE
 ---
 
 # Mailtrap Email Integration

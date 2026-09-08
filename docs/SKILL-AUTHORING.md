@@ -48,7 +48,7 @@ Three concrete rules follow.
 
 **Bound the scope explicitly when a sibling exists.** [`skills/product-lens/`](../skills/product-lens/) and [`skills/product-capability/`](../skills/product-capability/) sit next to each other in the catalog; each says what it owns so the model can tell them apart. Do the same whenever you add a skill near an existing one.
 
-The description must also be a single-line YAML scalar. [`scripts/ci/validate-skills.js`](../scripts/ci/validate-skills.js) flags block scalars (`|`, `|-`, `>`) because the embedded newlines break flat-table renderers that key off `description`, and it flags unquoted values containing `: ` or starting with a reserved character.
+The description must also be a single-line YAML scalar. [`scripts/ci/validate-skills.js`](../scripts/ci/validate-skills.js) flags block scalars (`|`, `|-`, `>`) because the embedded newlines break flat-table renderers that key off `description`, and it flags unquoted values containing a colon followed by a space, or starting with a reserved character such as `@` or a backtick.
 
 ## Naming
 

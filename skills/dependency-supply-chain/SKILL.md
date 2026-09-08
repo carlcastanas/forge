@@ -52,21 +52,19 @@ triaged by whether the vulnerable code path is reachable.
 A lockfile that CI ignores is decoration.
 
 ```bash
-npm ci                  # fails if package.json and package-lock.json disagree
+npm ci                          # fails if package.json and the lockfile disagree
 pnpm install --frozen-lockfile
 yarn install --immutable
 pip install --require-hashes -r requirements.txt
-go mod download && go mod verify
+go mod verify
 cargo build --locked
 ```
 
-- Commit lockfiles for applications. For libraries, commit one for CI reproducibility
-  but keep the published dependency ranges honest.
-- Enable integrity hashes. `--require-hashes` in pip and `integrity` fields in npm
-  lockfiles turn a registry substitution into a build failure.
-- Keep `go.sum` and, where checksum-database verification is available, keep it on.
-- One lockfile per repository. Two package managers means two resolution graphs and one
-  of them is unscanned.
+Commit lockfiles for applications. Enable integrity hashes — `--require-hashes` in pip
+and `integrity` fields in npm lockfiles turn a registry substitution into a build
+failure — and keep `go.sum` checksum-database verification on. One lockfile per
+repository: two package managers means two resolution graphs, and one of them is
+unscanned.
 
 ### 2. Gate what gets installed, not only what gets flagged
 
@@ -74,20 +72,13 @@ Install-time code execution is the shortest path from a malicious publish to a
 developer's SSH keys.
 
 ```bash
-# npm: refuse lifecycle scripts by default, allow only what is known to need them
-npm config set ignore-scripts true
-# .npmrc committed to the repo
+# npm: refuse lifecycle scripts by default; commit this to the repo's .npmrc
 echo "ignore-scripts=true" >> .npmrc
 ```
 
-```yaml
-# pnpm: explicit allowlist, everything else is skipped
-# package.json
-{
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
-  }
-}
+```json
+// package.json — pnpm: explicit allowlist, everything else is skipped
+{ "pnpm": { "onlyBuiltDependencies": ["esbuild", "sharp"] } }
 ```
 
 Additional intake gates worth enforcing:
@@ -96,15 +87,14 @@ Additional intake gates worth enforcing:
   Most malicious publishes are pulled within hours to days; a delay absorbs them.
 - A private registry proxy (Artifactory, Verdaccio, Nexus) so the build does not depend
   on the public registry being intact at build time.
-- Scope-aware review of new packages: publish age, maintainer count, weekly download
-  history, whether the repository link resolves to real source, and whether the name is
-  one edit away from a popular package.
+- Review of new packages: publish age, maintainer count, download history, whether the
+  repository link resolves to real source, and whether the name is one edit away from a
+  popular package.
 
-Typosquat and confusion patterns to check by name before adding: single-character
-transposition, hyphen versus dot, an unscoped copy of a scoped package, and an internal
-package name that also exists publicly. Dependency confusion is defeated by scoping
-internal packages and configuring the registry so a private scope never falls back to
-the public index.
+Name patterns to check before adding: single-character transposition, hyphen versus dot,
+an unscoped copy of a scoped package, and an internal name that also exists publicly.
+Dependency confusion is defeated by scoping internal packages and configuring the
+registry so a private scope never falls back to the public index.
 
 ### 3. Generate an SBOM as build output
 
@@ -113,17 +103,16 @@ the public index.
 npx @cyclonedx/cyclonedx-npm --output-format json --output-file sbom.cdx.json
 
 # Language-agnostic, works on a built container image
-syft packages dir:. -o cyclonedx-json=sbom.cdx.json
-syft packages ghcr.io/example/api:1.4.2 -o spdx-json=sbom.spdx.json
+syft packages ghcr.io/example/api:1.4.2 -o cyclonedx-json=sbom.cdx.json
 
 # Scan the SBOM rather than re-resolving
 grype sbom:sbom.cdx.json --fail-on high
 ```
 
 Generate it from the artifact that ships. An SBOM produced from a manifest omits
-transitive resolution and platform-specific packages, which is exactly where the
-findings live. Store each SBOM alongside the release so an advisory published next
-year can be checked against what actually shipped.
+transitive resolution and platform-specific packages, which is where the findings live.
+Store each SBOM with the release so an advisory published next year can be checked
+against what actually shipped.
 
 ### 4. Sign artifacts and attach provenance
 
@@ -144,15 +133,13 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # pin by SHA
       - run: npm ci && npm run build
       - uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: dist/*.tgz
+        with: { subject-path: "dist/*.tgz" }
       - run: npm publish --provenance --access public
 ```
 
 Pin third-party actions and container base images by digest, not by tag. A mutable tag
-means the build inputs can change without any commit in your repository.
-
-Verify on the consuming side, or signing was ceremony:
+means build inputs can change without any commit in your repository. Verify on the
+consuming side, or signing was ceremony:
 
 ```bash
 cosign verify-attestation \
@@ -169,23 +156,19 @@ three filters, in order.
 
 1. **Is it in the production dependency graph?** Build tooling and test fixtures are a
    different risk class than code that serves requests.
+2. **Is the vulnerable symbol reachable from your code?** This filter removes most of
+   the noise. Use a tool that does call-graph analysis where one exists.
 
 ```bash
 npm audit --omit=dev --audit-level=high
-npm ls semver          # show the path that pulls the vulnerable version in
-```
-
-2. **Is the vulnerable symbol reachable from your code?** This is the filter that
-   removes most noise. Use a tool that does call-graph analysis where one exists.
-
-```bash
+npm ls semver                  # show the path that pulls the vulnerable version in
 govulncheck ./...              # Go: reports only reachable vulnerable functions
 osv-scanner --call-analysis --recursive .
 ```
 
-3. **Does the exploit precondition hold in your deployment?** A parser DoS in a code
-   path that only ever receives internally generated input is a different priority
-   than one on an unauthenticated endpoint.
+3. **Does the exploit precondition hold in your deployment?** A parser denial-of-service
+   reachable only from internally generated input is a different priority than the same
+   bug on an unauthenticated endpoint.
 
 Record the outcome so the same finding is not re-triaged next week:
 
@@ -218,8 +201,8 @@ be reviewed.
 }
 ```
 
-Automerge is only safe behind a test suite you trust. If the suite is weak, fix that
-first — otherwise the bot is an unreviewed write path into production.
+Automerge is only safe behind a test suite you trust. If the suite is weak, the bot is
+an unreviewed write path into production; fix the suite first.
 
 ### 7. Have a response path for a compromised package
 
@@ -229,12 +212,12 @@ When a package you depend on is reported malicious:
 2. Determine whether the malicious version was ever installed: check CI logs, lockfile
    history, and developer machines.
 3. Treat every credential reachable from an affected environment as disclosed. Rotate
-   npm and registry tokens, cloud keys, SSH keys, and CI secrets.
+   registry tokens, cloud keys, SSH keys, and CI secrets.
 4. Inspect for persistence: modified shell profiles, added SSH authorized keys, new
    scheduled tasks, unexpected outbound connections in the build window.
 5. Add the malicious version to a registry deny policy so it cannot be reinstalled.
 6. Record the timeline. See [secrets-management](../secrets-management/SKILL.md) for
-   the credential side of the response.
+   the credential side.
 
 ## Checklist
 

@@ -86,15 +86,11 @@ what is the maximum input length, what dimensionality can the index afford, is i
 self-hostable if the data cannot leave, and only then benchmark quality on your own
 labeled set. Published leaderboard scores rarely transfer to a specific corpus.
 
-Practical constraints that decide it more often than quality:
-
-- Dimension drives index memory. Some models support truncation to a smaller dimension
-  with modest loss; use it when the index will hold tens of millions of vectors.
-- Asymmetric models want a query prefix and a document prefix. Using the wrong one
-  silently degrades recall.
-- Changing the model means re-embedding everything. Store the model identifier and
-  version on each row so a partially migrated index is detectable rather than
-  mysterious.
+Practical constraints that decide it more often than quality: dimension drives index
+memory (some models truncate to a smaller dimension with modest loss); asymmetric models
+want distinct query and document prefixes, and using the wrong one silently degrades
+recall; and changing the model means re-embedding everything, so store the model
+identifier on each row to make a partial migration detectable rather than mysterious.
 
 ```sql
 CREATE TABLE chunk (
@@ -172,9 +168,8 @@ Rules that change answer quality more than the model choice:
 - Merge adjacent chunks from the same document back into a contiguous passage.
 - Place the most relevant material at the start and the end of the retrieved block.
   Middle positions are attended to least.
-- Number each block and require the answer to cite those numbers.
-- Include `updated_at` in the block when recency matters, so the model can prefer the
-  newer of two conflicting passages.
+- Number each block and require the answer to cite those numbers. Include `updated_at`
+  when recency matters, so the model can prefer the newer of two conflicting passages.
 
 ### 5. Make citations verifiable, then verify them
 
@@ -220,11 +215,9 @@ For harness structure, graders, and CI gating, see
 ### 7. Keep the index honest as the corpus changes
 
 - Re-embed on content change only, keyed by a content hash, not on every sync.
-- Delete chunks when the source document is deleted. Orphaned chunks produce citations
-  to pages that 404.
-- Version the embedding model on the row; migrate by writing a new column or a parallel
-  index, then cutting over, never by mutating in place.
-- Track index freshness lag as an operational metric alongside latency and error rate.
+- Delete chunks when the source document is deleted. Orphaned chunks cite pages that 404.
+- Migrate embedding models by building a parallel index and cutting over, never in place.
+- Track index freshness lag alongside latency and error rate.
 
 ## Checklist
 

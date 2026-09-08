@@ -28,14 +28,13 @@ names" is a preference and belongs in a skill. "Never log a bearer token" is a r
 
 Two tiers.
 
-**Always loaded.** `rules/common/` applies to every project regardless of stack. Ten files
+**Always loaded.** `rules/common/` applies to every project regardless of stack — ten files
 covering agent usage, code review, coding style, development workflow, git workflow, hooks,
-patterns, performance, security, and testing. These encode the operating principles from
+patterns, performance, security, and testing. They encode the operating principles from
 [SOUL.md](SOUL.md) as enforceable statements.
 
-**Selected.** Everything under a stack directory loads only when that stack is in play. A
-Python service loads `rules/python/` and `rules/common/`. It has no reason to carry Swift
-rules, and paying for them on every turn is waste.
+**Selected.** A stack directory loads only when that stack is in play. A Python service loads
+`rules/python/` and `rules/common/`; carrying Swift rules on every turn is waste.
 
 Selection happens two ways:
 
@@ -111,12 +110,9 @@ project shapes:
 | HarmonyOS app | `common`, `arkts` |
 | Polyglot monorepo | `common` plus one set per language actually edited |
 
-Two mistakes to avoid:
-
-- **Loading a framework set without its language set.** `rules/react/` assumes
-  `rules/typescript/` is present; it does not restate type-safety constraints.
-- **Loading every set in a monorepo.** Load the sets for the packages you are touching this
-  session, not the sets for every package that exists.
+Two mistakes to avoid: loading a framework set without its language set (`rules/react/` assumes
+`rules/typescript/` is present and does not restate type-safety constraints), and loading every
+set in a monorepo instead of only the packages you are touching this session.
 
 ## The context cost of rules
 
@@ -133,12 +129,12 @@ Rough shape of the cost:
 
 Three consequences follow:
 
-1. **Length is a feature of the rule, not an accident.** A rule file that grows past a screen
-   is either doing a skill's job or has accumulated cases that belong in one line.
+1. **Length is a feature of the rule, not an accident.** A rule file past a screen is either
+   doing a skill's job or has accumulated cases that belong in one line.
 2. **Redundancy is expensive twice.** A constraint repeated in `common/security.md` and
-   `python/security.md` costs tokens in both and creates a divergence risk when one is edited.
-3. **Removal is a legitimate optimization.** If a rule has never changed a decision, delete
-   it. An unenforced rule is worse than no rule: it trains the model to skim.
+   `python/security.md` costs tokens in both and diverges when one is edited.
+3. **Removal is a legitimate optimization.** A rule that has never changed a decision should
+   be deleted. An unenforced rule trains the model to skim.
 
 Measure before tuning. [docs/CONTEXT-ENGINEERING.md](docs/CONTEXT-ENGINEERING.md) covers how to
 see what your rule selection actually costs.
@@ -159,21 +155,20 @@ correctly to a case the rule did not anticipate.
 Rules to follow when writing rules:
 
 - **Imperative mood.** "Validate input at the boundary", not "input should be validated".
-- **Testable.** A reviewer must be able to point at a line and say whether it complies.
-- **Reasoned.** One clause of rationale per constraint. No more.
-- **Non-overlapping.** Search `rules/` before adding. Extend the existing file.
-- **Stack-appropriate.** Anything true for all languages belongs in `rules/common/`.
-- **No examples longer than three lines.** Long examples are skill material.
+- **Testable and reasoned.** A reviewer must be able to point at a line and say whether it
+  complies, and each constraint carries exactly one clause of rationale.
+- **Non-overlapping.** Search `rules/` before adding; extend the existing file instead.
+- **Stack-appropriate.** Anything true for all languages belongs in `rules/common/`, and no
+  example runs longer than three lines — long examples are skill material.
 
-Do not put procedures in rules. "Run the tests, then review, then commit" is a workflow and
+Do not put procedures in rules. "Run the tests, then review, then commit" is a workflow, and
 belongs in a skill or a command.
 
 ## Adding a rule
 
 1. Decide the scope. Universal goes in `rules/common/<topic>.md`; stack-specific goes in
    `rules/<stack>/<topic>.md`.
-2. Reuse an existing filename where one fits. New topics fragment the layout and make
-   selection harder to reason about.
+2. Reuse an existing filename where one fits; new topics fragment the layout.
 3. For a new stack directory, create at minimum `coding-style.md`, `patterns.md`,
    `security.md`, `testing.md`, and `hooks.md` so the shape stays predictable.
 4. Register the stack in `manifests/install-profiles.json` if it should be installable.
@@ -181,6 +176,5 @@ belongs in a skill or a command.
    fail until you run `npm run catalog:sync`.
 6. Update the directory map on this page with the new count.
 
-Before you finish, do the subtraction: if the new rule is going to be loaded on every turn for
-every session on that stack, name the class of defect it prevents. If you cannot, it is a
-skill.
+Before you finish, do the subtraction. The rule will load on every turn of every session on
+that stack: name the class of defect it prevents. If you cannot, it is a skill.

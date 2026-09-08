@@ -1,6 +1,6 @@
 ---
 name: ci-pipeline-design
-description: Design a CI pipeline around a feedback-time budget: stage ordering that fails fast, caching and sharding that hold up under change, required versus advisory checks, build-once artifact promotion, and least-privilege CI credentials. Use when CI is slow or untrusted, when adding or reordering pipeline stages, when setting up caching or test sharding, or when deciding which checks may block a merge.
+description: "Design a CI pipeline around a feedback-time budget: stage ordering that fails fast, caching and sharding that hold up under change, required versus advisory checks, build-once artifact promotion, and least-privilege CI credentials. Use when CI is slow or untrusted, when adding or reordering pipeline stages, when setting up caching or test sharding, or when deciding which checks may block a merge."
 metadata:
   origin: FORGE
 ---

@@ -49,7 +49,7 @@ without breaking the application, with violation reports going somewhere a human
 
 These four rarely break anything and should go in before any CSP work.
 
-```
+```http
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
@@ -57,51 +57,40 @@ Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
 ```
 
 `includeSubDomains` is the part that bites: every subdomain, including internal tools
-and legacy hosts, must serve valid TLS from that moment. Confirm that inventory before
-adding it. Add `preload` only after `includeSubDomains` has run in production for
-months without incident — preload is baked into browser binaries and removal takes
-release cycles.
-
-`X-XSS-Protection` is obsolete and its filter introduced its own bugs. Omit it, or send
-`0`.
+and legacy hosts, must serve valid TLS from that moment. Confirm that inventory first.
+Add `preload` only after `includeSubDomains` has run in production for months without
+incident — preload is baked into browser binaries and removal takes release cycles.
+`X-XSS-Protection` is obsolete and its filter introduced its own bugs; omit it or send `0`.
 
 ### 2. Author a CSP that restricts something real
 
 An allowlist policy is defeated by any host on it that serves user content or a JSONP
-endpoint. Prefer nonces or hashes for scripts, with `'strict-dynamic'` so loaders can
-still bring in their own chunks.
+endpoint. Prefer nonces or hashes, with `'strict-dynamic'` so loaders can still bring
+in their own chunks.
 
-```
+```http
 Content-Security-Policy:
-  default-src 'self';
-  base-uri 'none';
-  object-src 'none';
-  frame-ancestors 'none';
-  form-action 'self';
+  default-src 'self'; base-uri 'none'; object-src 'none';
+  frame-ancestors 'none'; form-action 'self';
   script-src 'nonce-{RANDOM}' 'strict-dynamic' https: 'unsafe-inline';
   style-src 'self' 'nonce-{RANDOM}';
-  img-src 'self' data: https:;
+  img-src 'self' data: https:; font-src 'self';
   connect-src 'self' https://api.example.com;
-  font-src 'self';
-  upgrade-insecure-requests;
-  report-uri /csp-report;
-  report-to csp-endpoint
+  upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint
 ```
 
 Reading that `script-src`: modern browsers honor the nonce and ignore both `https:` and
 `'unsafe-inline'`, which are present only as fallbacks for browsers that do not support
 nonces. This is the standard strict-CSP shape, not a mistake.
 
-Directives that matter and are commonly forgotten:
+`default-src` covers none of the following, so each must be stated:
 
 - `base-uri 'none'` — without it, an injected `<base>` tag redirects every relative
   script URL to an attacker host, defeating the rest of the policy.
 - `object-src 'none'` — legacy plugin content is a script-execution path.
 - `frame-ancestors` — the modern replacement for `X-Frame-Options`. Keep the older
-  header too for very old user agents; where they conflict, `frame-ancestors` wins.
+  header for very old user agents; where they conflict, `frame-ancestors` wins.
 - `form-action 'self'` — stops an injected form from posting credentials elsewhere.
-- `default-src` does not cover `base-uri`, `form-action`, or `frame-ancestors`. State
-  each one.
 
 Generate a fresh nonce per response and thread it into the template:
 
@@ -145,24 +134,21 @@ Never ship a first CSP in enforcing mode. The sequence:
    inline handler to refactor, or a browser extension to ignore.
 4. Tighten the policy, redeploy report-only, confirm the report volume drops.
 5. Switch the header name to enforcing. Keep the report-only header alongside it,
-   carrying the *next*, stricter policy you are working toward.
+   carrying the next, stricter policy you are working toward.
 
 The report endpoint must be cheap, unauthenticated, rate-limited, and size-capped. It
-receives whatever any browser or extension sends, including from hosts you do not
-control.
+receives whatever any browser or extension sends.
 
 ```ts
 export async function POST(req: Request) {
   if (Number(req.headers.get("content-length") ?? 0) > 8192) {
     return new Response(null, { status: 413 });
   }
-  const body = await req.json().catch(() => null);
-  const r = body?.["csp-report"];
+  const r = (await req.json().catch(() => null))?.["csp-report"];
   if (r) {
     logger.warn("csp_violation", {
       directive: String(r["violated-directive"] ?? "").slice(0, 120),
       blocked: String(r["blocked-uri"] ?? "").slice(0, 200),
-      docUri: String(r["document-uri"] ?? "").slice(0, 200),
     });
   }
   return new Response(null, { status: 204 });
@@ -183,13 +169,13 @@ extension schemes before alerting, or the signal drowns.
 | `SameSite=None; Secure` | Genuine cross-site embedding only | Reintroduces CSRF exposure; pair with tokens |
 | `__Host-` prefix | Session cookies | Forces `Secure`, `Path=/`, and no `Domain`; blocks a subdomain from overwriting it |
 
-```
+```http
 Set-Cookie: __Host-sid=<value>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200
 ```
 
-`SameSite=Lax` reduces CSRF but does not eliminate it: state-changing GET endpoints
-remain reachable, and `Lax` still permits top-level navigations. Keep anti-CSRF tokens
-on state-changing routes, and never make a GET request mutate state.
+`SameSite=Lax` reduces CSRF but does not eliminate it: `Lax` still permits top-level
+navigations, so a state-changing GET endpoint remains reachable. Keep anti-CSRF tokens
+on state-changing routes, and never let a GET mutate state.
 
 ### 5. Configure CORS without reflecting arbitrary origins
 
@@ -209,30 +195,27 @@ export function cors(req: Request, res: Headers) {
 }
 ```
 
-Three failure patterns to reject in review:
-
-- `Access-Control-Allow-Origin: *` together with `Allow-Credentials: true`. Browsers
-  refuse this combination, and the fix is usually an allowlist, not a workaround.
-- Matching with `origin.endsWith("example.com")`. `https://evil-example.com` passes.
-  Compare full origins against a set.
-- Omitting `Vary: Origin` behind a shared cache. One requester's allowed origin gets
-  served to everyone.
+Three failure patterns to reject in review: `Allow-Origin: *` together with
+`Allow-Credentials: true` (browsers refuse it, and the fix is an allowlist rather than a
+workaround); matching with `origin.endsWith("example.com")`, which admits
+`https://evil-example.com`; and omitting `Vary: Origin` behind a shared cache, which
+serves one requester's allowed origin to everyone.
 
 CORS relaxes the browser's same-origin restriction. It never grants permission — the
 server must still authenticate and authorize the request.
 
 ### 6. Add isolation headers where the app supports them
 
-```
+```http
 Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Resource-Policy: same-origin
 Cross-Origin-Embedder-Policy: require-corp
 ```
 
-COOP severs the `window.opener` relationship and is safe for most applications. CORP
-limits who may embed your resources. COEP is the disruptive one: it requires every
-cross-origin subresource to opt in via CORP or CORS, so stage it behind report-only
-(`Cross-Origin-Embedder-Policy-Report-Only`) and expect to fix third-party assets.
+COOP severs the `window.opener` relationship and is safe for most applications; CORP
+limits who may embed your resources. COEP is the disruptive one — it requires every
+cross-origin subresource to opt in via CORP or CORS, so stage it behind
+`Cross-Origin-Embedder-Policy-Report-Only` and expect to fix third-party assets.
 
 ### 7. Verify from outside the application
 
@@ -246,9 +229,8 @@ curl -si -X OPTIONS https://api.example.com/v1/orders \
   -H 'Access-Control-Request-Method: POST' | head -20
 ```
 
-Check the headers on error responses and on static assets too. Frameworks commonly
-apply middleware to matched routes only, leaving 404 pages, health checks, and CDN-served
-files unprotected.
+Check error responses and static assets too. Frameworks commonly apply middleware to
+matched routes only, leaving 404 pages, health checks, and CDN-served files unprotected.
 
 ## Checklist
 

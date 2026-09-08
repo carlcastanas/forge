@@ -1,128 +1,81 @@
-# Contributor Covenant Code of Conduct
+# Code of conduct
 
-## Our Pledge
+This page sets the behavioral standard for everyone participating in this project — issues,
+pull requests, discussions, reviews, and any other project space. It applies equally to
+contributors, reviewers, and anyone acting on the project's behalf in public.
 
-We as members, contributors, and leaders pledge to make participation in our
-community a harassment-free experience for everyone, regardless of age, body
-size, visible or invisible disability, ethnicity, sex characteristics, gender
-identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, religion, or sexual identity
-and orientation.
+## Standard
 
-We pledge to act and interact in ways that contribute to an open, welcoming,
-diverse, inclusive, and healthy community.
+Participation in this project is about the work. Keep it that way.
 
-## Our Standards
+Expected:
 
-Examples of behavior that contributes to a positive environment for our
-community include:
+- Discuss technical merit. Critique code, designs, and claims, not people.
+- Assume competence and good faith until evidence says otherwise.
+- Give specific, actionable feedback. "This leaks the token on line 42" beats "this is bad".
+- Accept feedback the same way. Disagreement about an approach is not an attack.
+- Respect a decision once it is made and recorded, even if you argued the other side.
+- Say when you do not know something.
 
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
-  and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the
-  overall community
+Not acceptable:
 
-Examples of unacceptable behavior include:
-
-* The use of sexualized language or imagery, and sexual attention or
-  advances of any kind
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email
-  address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
-  professional setting
-
-## Enforcement Responsibilities
-
-Community leaders are responsible for clarifying and enforcing our standards of
-acceptable behavior and will take appropriate and fair corrective action in
-response to any behavior that they deem inappropriate, threatening, offensive,
-or harmful.
-
-Community leaders have the right and responsibility to remove, edit, or reject
-comments, commits, code, wiki edits, issues, and other contributions that are
-not aligned to this Code of Conduct, and will communicate reasons for moderation
-decisions when appropriate.
+- Harassment, intimidation, or sustained hostility, in public or in private.
+- Discriminatory language or conduct, including anything targeting age, disability,
+  appearance, ethnicity, gender identity or expression, experience level, nationality, race,
+  religion, sex characteristics, sexual orientation, or socioeconomic status.
+- Sexualized language, imagery, or attention in any project space.
+- Personal attacks, insults, or demeaning comments about someone's ability.
+- Publishing another person's private information without their explicit permission.
+- Deliberate disruption: derailing threads, repeatedly reopening settled decisions, brigading,
+  or bad-faith argumentation.
+- Submitting malicious code, undisclosed backdoors, or deliberately misleading commits.
 
 ## Scope
 
-This Code of Conduct applies within all community spaces, and also applies when
-an individual is officially representing the community in public spaces.
-Examples of representing our community include using an official e-mail address,
-posting via an official social media account, or acting as an appointed
-representative at an online or offline event.
+This applies in every project space — the repository, its issues and pull requests, code
+review, discussion threads, and any communication channel the project operates. It also
+applies when someone represents the project in public: acting as a maintainer, speaking on the
+project's behalf, or using an official project account.
+
+It does not extend to unrelated conduct elsewhere, except where that conduct creates a
+credible safety risk to people in this project's spaces.
+
+## Reporting
+
+> **The contact address below is a placeholder.** `conduct@example.com` is not a monitored
+> mailbox. Whoever deploys or forks this repository must replace it with a real, monitored
+> address before publishing. A placeholder reporting channel means reports go nowhere.
+
+Report violations to `conduct@example.com`.
+
+Include what happened, where, when, and any links or screenshots. If you are unsure whether
+something qualifies, report it anyway and let the review decide.
+
+Reports are handled confidentially. The identity of a reporter is not disclosed to the person
+reported, or to anyone else, without the reporter's consent. Reporting in good faith carries no
+penalty, even if the report is not upheld. Retaliation against a reporter is itself a
+violation, treated at the most serious tier.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-.
-All complaints will be reviewed and investigated promptly and fairly.
+Reports are reviewed by whoever holds project moderation responsibility at the time. Every
+report gets an acknowledgment and an outcome. Enforcement is proportionate and escalates on
+repetition.
 
-All community leaders are obligated to respect the privacy and security of the
-reporter of any incident.
+| Tier | Behavior | Consequence |
+| --- | --- | --- |
+| 1 | A single instance of unprofessional or unwelcome conduct | A private written warning naming the behavior and the expected change |
+| 2 | A repeat, or a single serious incident | A formal warning plus a defined period of no interaction with the people involved |
+| 3 | Sustained violation, or ignoring a tier 2 restriction | Temporary ban from all project spaces for a stated period |
+| 4 | A pattern of violation, harassment, or aggression toward a group | Permanent ban from all project spaces |
 
-## Enforcement Guidelines
+Contributions may be edited, rejected, or removed at any tier when they do not meet this
+standard, with the reason given.
 
-Community leaders will follow these Community Impact Guidelines in determining
-the consequences for any action they deem in violation of this Code of Conduct:
-
-### 1. Correction
-
-**Community Impact**: Use of inappropriate language or other behavior deemed
-unprofessional or unwelcome in the community.
-
-**Consequence**: A private, written warning from community leaders, providing
-clarity around the nature of the violation and an explanation of why the
-behavior was inappropriate. A public apology may be requested.
-
-### 2. Warning
-
-**Community Impact**: A violation through a single incident or series
-of actions.
-
-**Consequence**: A warning with consequences for continued behavior. No
-interaction with the people involved, including unsolicited interaction with
-those enforcing the Code of Conduct, for a specified period of time. This
-includes avoiding interactions in community spaces as well as external channels
-like social media. Violating these terms may lead to a temporary or
-permanent ban.
-
-### 3. Temporary Ban
-
-**Community Impact**: A serious violation of community standards, including
-sustained inappropriate behavior.
-
-**Consequence**: A temporary ban from any sort of interaction or public
-communication with the community for a specified period of time. No public or
-private interaction with the people involved, including unsolicited interaction
-with those enforcing the Code of Conduct, is allowed during this period.
-Violating these terms may lead to a permanent ban.
-
-### 4. Permanent Ban
-
-**Community Impact**: Demonstrating a pattern of violation of community
-standards, including sustained inappropriate behavior,  harassment of an
-individual, or aggression toward or disparagement of classes of individuals.
-
-**Consequence**: A permanent ban from any sort of public interaction within
-the community.
+Anyone subject to enforcement may request one review of the decision by replying to the
+notice. The review is conducted by someone not involved in the original decision where that is
+possible.
 
 ## Attribution
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage],
-version 2.0, available at
-<https://www.contributor-covenant.org/version/2/0/code_of_conduct.html>.
-
-Community Impact Guidelines were inspired by [Mozilla's code of conduct
-enforcement ladder](https://github.com/mozilla/diversity).
-
-[homepage]: https://www.contributor-covenant.org
-
-For answers to common questions about this code of conduct, see the FAQ at
-<https://www.contributor-covenant.org/faq>. Translations are available at
-<https://www.contributor-covenant.org/translations>.
+Adapted from the Contributor Covenant, version 2.1.

@@ -42,7 +42,6 @@ syntax = "proto3";
 package acme.billing.v1;
 
 option go_package = "example.internal/billing/gen/billing/v1;billingv1";
-option java_multiple_files = true;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/field_mask.proto";
@@ -56,7 +55,6 @@ message Invoice {
   google.protobuf.Timestamp issued_at = 5;
   optional google.protobuf.Timestamp voided_at = 6; // explicit presence
   repeated LineItem line_items = 7;
-  map<string, string> metadata = 8;
 }
 
 // zero value is always UNSPECIFIED; values prefixed with the enum name
@@ -91,8 +89,7 @@ message Invoice {
 ```
 
 ```bash
-buf lint
-buf breaking --against '.git#branch=main'   # fails on any wire-incompatible change
+buf lint && buf breaking --against '.git#branch=main'   # fails on any wire-incompatible change
 ```
 
 ### 3. Pick the streaming mode from the data shape
@@ -126,9 +123,11 @@ func (s *server) WatchInvoices(req *billingv1.WatchInvoicesRequest,
 }
 ```
 
+A stream is not a message bus: if the consumer must survive a disconnect without losing data, put a queue behind it (`../event-driven-architecture/SKILL.md`).
+
 ### 4. Set deadlines and propagate them
 
-A stream is not a message bus: if the consumer must survive a disconnect without losing data, put a queue behind it (`../event-driven-architecture/SKILL.md`). A gRPC deadline is absolute and travels on the wire as `grpc-timeout`. A server that ignores the incoming context and starts a fresh one converts a bounded request into an unbounded one.
+A gRPC deadline is absolute and travels on the wire as `grpc-timeout`. A server that ignores the incoming context and starts a fresh one converts a bounded request into an unbounded one.
 
 ```go
 // caller: every outbound RPC gets a deadline, no exceptions
@@ -158,8 +157,7 @@ Four interceptor slots exist: unary and stream, client and server. Register all 
 
 ```go
 func AuthUnary(verify TokenVerifier) grpc.UnaryServerInterceptor {
-	return func(ctx context.Context, req any, _ *grpc.UnaryServerInfo,
-		handler grpc.UnaryHandler) (any, error) {
+	return func(ctx context.Context, req any, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		md, _ := metadata.FromIncomingContext(ctx)
 		vals := md.Get("authorization")
 		if len(vals) == 0 {
@@ -232,8 +230,7 @@ Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISS
 
 ## Checklist
 
-- [ ] Package carries a version suffix; `go_package` and language options set
-- [ ] Every enum has an `_UNSPECIFIED = 0`; every RPC has dedicated request and response messages
+- [ ] Package carries a version suffix, language options set, every enum has an `_UNSPECIFIED = 0`, and every RPC has dedicated request and response messages
 - [ ] Deleted field numbers and names are `reserved`; `buf lint` and `buf breaking` run in CI
 - [ ] Presence handled explicitly (`optional`, wrappers, `FieldMask`) wherever empty differs from unset
 - [ ] Streaming mode matches the data shape; disconnect-durable consumers sit behind a queue
@@ -253,14 +250,10 @@ Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISS
 | Cascading `DEADLINE_EXCEEDED` under load | Deadlines not budgeted; every hop uses the full timeout | Shrink the budget at each hop; fail fast when headroom is gone |
 | Auth passes on streaming RPCs but not unary (or vice versa) | Only one interceptor slot registered | Register both unary and stream chains |
 | Client retries a non-idempotent write and double-charges | Blanket retry policy | Restrict `retryPolicy` per method; add an idempotency key |
-| `UNIMPLEMENTED` in production | Client generated from a newer proto than the deployed server | Deploy server first; gate new RPCs behind a rollout |
 | Browser client fails with a transport error | gRPC-Web proxy missing, or an unsupported streaming mode | Add the proxy; switch to server streaming or unary |
 
 ## References
 
-- Protocol Buffers language guide (proto3); Protocol Buffers style guide
-- gRPC Core concepts, architecture and lifecycle; gRPC status codes and their use in gRPC
-- `google.rpc.Status`, `google/rpc/error_details.proto`, `google/api/http.proto`
-- Google API Improvement Proposals (AIP) for resource-oriented gRPC design
-- `../api-design/SKILL.md`, `../api-versioning-deprecation/SKILL.md`, `../idempotency-patterns/SKILL.md`
-- `../event-driven-architecture/SKILL.md`, `../golang-patterns/SKILL.md`, `../latency-critical-systems/SKILL.md`
+- Protocol Buffers language guide (proto3); Protocol Buffers style guide; gRPC Core concepts, architecture and lifecycle; gRPC status codes and their use in gRPC
+- `google.rpc.Status`, `google/rpc/error_details.proto`, `google/api/http.proto`; Google API Improvement Proposals (AIP) for resource-oriented gRPC design
+- `../api-design/SKILL.md`, `../api-versioning-deprecation/SKILL.md`, `../idempotency-patterns/SKILL.md`, `../event-driven-architecture/SKILL.md`, `../golang-patterns/SKILL.md`, `../latency-critical-systems/SKILL.md`

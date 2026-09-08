@@ -90,7 +90,7 @@ export function issueSession(userId: string) {
 
 Set it with every attribute that matters:
 
-```
+```http
 Set-Cookie: sid=<value>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200
 ```
 

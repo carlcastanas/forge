@@ -77,15 +77,13 @@ const tool = {
 
 Schema design rules that matter more than the library:
 
-- Enums over free strings for anything that will be branched on.
+- Enums over free strings for anything that will be branched on, and an explicit
+  `unknown` member in every enum so the model has a legal way to express uncertainty
+  instead of inventing a value.
 - Bounds on every number and length limits on every string and array. An unbounded
   array is a denial-of-service on your own serializer.
-- No free-form `object` or `any`. A field you cannot describe is a field you cannot
-  validate.
-- An explicit `unknown` or `not_found` member in every enum, so the model has a legal
-  way to express uncertainty instead of inventing a value.
-- Optional fields need a stated default. `undefined` and `null` reaching a writer are
-  bugs waiting for a slow day.
+- No free-form `object` or `any`. A field you cannot describe you cannot validate.
+- Optional fields need a stated default; `undefined` reaching a writer is a bug.
 
 ### 2. Detect refusal, truncation, and empty completion before parsing
 
@@ -190,13 +188,11 @@ def check_http_get(args: dict) -> str:
 ```
 
 Checks worth writing for every tool surface: path containment after resolution, URL
-scheme and host allowlist (which also covers link-metadata and SSRF paths), SQL
-restricted to parameterized statements against an allowlisted set of tables, amount and
-quantity ceilings on anything financial, and a hard cap on tool calls per turn.
-
-Confirmation gates belong on irreversible actions — delete, transfer, send, publish —
-regardless of how confident the model sounded. Argument validation runs server-side; a
-check inside the prompt is a suggestion.
+scheme and host allowlist (which also covers SSRF paths), SQL restricted to
+parameterized statements against allowlisted tables, amount ceilings on anything
+financial, and a hard cap on tool calls per turn. Confirmation gates belong on
+irreversible actions regardless of how confident the model sounded. Argument validation
+runs server-side; a check written into the prompt is a suggestion.
 
 ### 5. Sanitize at the sink, matched to that sink
 
@@ -220,11 +216,9 @@ images turns generated text into a data channel.
 
 Emit a counter for each: valid on first attempt, valid after repair, schema-invalid
 final, no tool call, truncated, refused, policy-rejected. Sample and store the raw
-response for every failure — the fix almost always requires reading the actual text,
-and by the time someone looks the request is long gone.
-
-Alert on rate changes rather than absolute counts. A schema-invalid rate that triples
-after a model version change is the signal; the raw number is noise.
+response for every failure — the fix almost always requires reading the actual text.
+Alert on rate changes rather than absolute counts: a schema-invalid rate that triples
+after a model version change is the signal, the raw number is noise.
 
 ## Checklist
 

@@ -257,5 +257,4 @@ Each field has exactly one owning subgraph. Run composition in CI: a subgraph ch
 - Relay GraphQL Server specification (Global Object Identification, mutation input/payload)
 - Apollo Federation specification; Automatic Persisted Queries protocol (Apollo)
 - `../api-design/SKILL.md`, `../api-versioning-deprecation/SKILL.md`
-- `../rate-limiting/SKILL.md`, `../caching-strategy/SKILL.md`
-- `../postgres-patterns/SKILL.md`, `../error-handling/SKILL.md`
+- `../rate-limiting/SKILL.md`, `../caching-strategy/SKILL.md`, `../postgres-patterns/SKILL.md`, `../error-handling/SKILL.md`

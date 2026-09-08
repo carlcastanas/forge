@@ -14,22 +14,19 @@ A feature flag separates deploy from release: the code ships dark, then a runtim
 - A change is risky, hard to reverse, or touches a hot path, and deploy-time rollback is too slow.
 - Rolling out to a subset of users, tenants, or regions before general availability.
 - Adding an operational switch to shed load or disable a dependency during an incident.
-- Coordinating a code change with a schema change that cannot land atomically.
-- The flag count is growing and nobody knows which flags are live.
+- Coordinating a code change with a schema change that cannot land atomically, or the flag count is growing and nobody knows which flags are live.
 - User says "feature flag", "gradual rollout", "percentage rollout", "canary this to 5%", "kill switch", "dark launch", "clean up our flags".
 
 ## When NOT to use
 
 - The change is small, reversible by redeploy inside the incident response window, and has no cohort dimension. A flag adds a permanent branch for a temporary concern.
-- The goal is versioned behavior for external consumers: `../api-design/SKILL.md`.
-- The goal is release sequencing, changelog, and version numbering: `../release-management/SKILL.md`.
+- The goal is versioned behavior for external consumers (`../api-design/SKILL.md`), or release sequencing, changelog, and version numbering (`../release-management/SKILL.md`).
 - The change is purely a schema migration with no behavioral branch: `../database-migrations/SKILL.md`.
 - Long-lived per-customer capability differences belong in entitlements, not the release flag system.
 
 ## Prerequisites
 
-- A flag evaluation SDK or service with documented offline/default behavior.
-- Metrics and traces sliceable by flag variant: `../observability-instrumentation/SKILL.md`.
+- A flag evaluation SDK or service with documented offline/default behavior, and metrics and traces sliceable by flag variant: `../observability-instrumentation/SKILL.md`.
 - SLOs, or at least agreed guard metrics, for the affected journey: `../sre-slo-error-budgets/SKILL.md`.
 - A stable subject identifier (user, tenant, or device id) available at evaluation time, and a record of flag ownership that CI can check.
 
@@ -48,7 +45,7 @@ Most flag debt comes from treating all four as one thing. A release toggle left 
 
 ### 2. Create the flag with its removal already scheduled
 
-Register the flag in a manifest that lives in the repository next to the code, so review and CI can see it:
+Register the flag in a manifest that lives in the repository beside the code, so review and CI can see it:
 
 ```yaml
 # flags/checkout-v2.yaml
@@ -59,9 +56,7 @@ created: 2026-03-02
 expires: 2026-04-13      # release toggles get a hard date at creation
 removal_ticket: PAY-4821
 default: false           # value when the flag service is unreachable
-description: >
-  Routes checkout pricing through the v2 tax engine. OFF serves v1.
-  Both paths write to the same order records.
+description: Routes checkout pricing through the v2 tax engine; OFF serves v1.
 guard_metrics: [checkout_success_rate, checkout_p99_latency_ms, payment_decline_rate]
 ```
 
@@ -69,19 +64,18 @@ Open the removal ticket at creation, not at 100%. A ticket created "later" is cr
 
 ### 3. Evaluate deterministically and server-side
 
-Evaluate on the server wherever the decision affects data, pricing, or security. Client-side evaluation is observable and editable by the user, and it makes the exposed cohort a function of cache state. Bucketing must be a pure function of flag key and subject key, so a user stays in the same bucket across requests, processes, and restarts, and so different flags do not correlate their cohorts:
+Evaluate on the server wherever the decision affects data, pricing, or security — client-side evaluation is observable and editable by the user, and it makes the exposed cohort a function of cache state. Bucketing must be a pure function of flag key and subject key, so a user stays in the same bucket across requests, processes, and restarts, and different flags do not correlate their cohorts:
 
 ```typescript
 import { createHash } from "node:crypto";
 
 const BUCKETS = 10_000;
 
-/** Stable bucket in [0, 10000). Same subject + flag always lands identically. */
+/** Stable bucket in [0, BUCKETS). Same subject + flag always lands identically. */
 export function bucketOf(flagKey: string, subjectKey: string): number {
   const digest = createHash("sha256").update(`${flagKey}:${subjectKey}`).digest();
   return digest.readUInt32BE(0) % BUCKETS;   // top 32 bits, no BigInt needed
 }
-
 /** rolloutPercent is 0..100. */
 export function isEnabled(flagKey: string, subjectKey: string, rolloutPercent: number) {
   if (rolloutPercent <= 0) return false;
@@ -90,9 +84,7 @@ export function isEnabled(flagKey: string, subjectKey: string, rolloutPercent: n
 }
 ```
 
-Two properties this buys: raising the percentage only ever *adds* users to the treatment (nobody flips back out), and two flags at 10% do not hit the same 10% of users.
-
-Always pass an explicit default, and make the default the safe path:
+Two properties this buys: raising the percentage only ever *adds* users to the treatment (nobody flips back out), and two flags at 10% do not hit the same 10% of users. Always pass an explicit default, and make the default the safe path:
 
 ```typescript
 import { OpenFeature } from "@openfeature/server-sdk";
@@ -108,7 +100,7 @@ Cache evaluations locally with streaming updates, so a flag-service outage degra
 
 ### 4. Order targeting rules explicitly
 
-Rules are evaluated top to bottom, first match wins. Put overrides above cohorts and cohorts above the percentage:
+Rules evaluate top to bottom, first match wins. Overrides above cohorts, cohorts above the percentage:
 
 ```yaml
 targeting:
@@ -121,30 +113,28 @@ targeting:
 fallthrough: false               # no rule matched, serve the safe default
 ```
 
-Bucket by the identifier that matches the blast radius. Bucketing a tenant-visible feature by user id shows one seat the new behavior and another seat the old one inside the same account.
+Bucket by the identifier matching the blast radius: bucketing a tenant-visible feature by user id shows one seat the new behavior and another seat the old one inside the same account.
 
 ### 5. Advance the rollout ladder on evidence
 
 | Step | Audience | Bake time | Advance when |
 | --- | --- | --- | --- |
 | 0 | Off in production, on in CI and staging | Until tests pass | Both paths tested, defaults verified |
-| 1 | Internal users and dogfood accounts | 1-2 days | No functional reports; guard metrics flat |
-| 2 | Allowlist of consenting design partners | 1-3 days | No support escalations |
-| 3 | 1% | At least one full traffic cycle | Guard metrics within noise; no new error signatures |
-| 4 | 5% | One full traffic cycle | Same, plus error-budget burn acceptable |
-| 5 | 25%, then 50% | One full traffic cycle each | Same, plus resource usage scales as predicted |
-| 6 | 100% | 1-2 weeks | Ready to delete the flag and the old path |
+| 1 | Internal and dogfood accounts, then an allowlist of consenting design partners | 1-3 days each | No functional reports or support escalations; guard metrics flat |
+| 2 | 1% | At least one full traffic cycle | Guard metrics within noise; no new error signatures |
+| 3 | 5% | One full traffic cycle | Same, plus error-budget burn acceptable |
+| 4 | 25%, then 50% | One full traffic cycle each | Same, plus resource usage scales as predicted |
+| 5 | 100% | 1-2 weeks | Ready to delete the flag and the old path |
 
 "One full traffic cycle" means at least one weekday peak and one off-peak trough. A rollout advanced through four steps in an afternoon has observed nothing. At each step, compare treatment against control on the same dashboard rather than watching a global aggregate: at 1%, a total outage of the new path moves the global error rate by roughly 1% and hides inside normal variance.
 
 ```promql
 # Error rate split by variant, comparable at any rollout percentage
 sum by (flag_variant) (rate(http_requests_total{route="/checkout", status=~"5.."}[5m]))
-/
-sum by (flag_variant) (rate(http_requests_total{route="/checkout"}[5m]))
+  / sum by (flag_variant) (rate(http_requests_total{route="/checkout"}[5m]))
 ```
 
-Write down the rollback trigger before each step, in the same numeric form used for SLO burn-rate alerts. If the trigger fires, set the flag to 0% first and diagnose afterward — mitigation precedes diagnosis (`../incident-response/SKILL.md`).
+Write down the rollback trigger before each step, in the same numeric form used for SLO burn-rate alerts. If it fires, set the flag to 0% first and diagnose afterward — mitigation precedes diagnosis (`../incident-response/SKILL.md`).
 
 ### 6. Build kill switches that work during a disaster
 
@@ -152,27 +142,21 @@ An operational switch is only useful if it is reachable when everything else is 
 
 - **No self-dependency.** A switch disabling the recommendation service must not be fetched through it; a switch shedding database load must not require a database read to evaluate.
 - **Cached and default-safe.** Evaluate from a local cache with a compiled-in default; a flag-service outage must not un-shed load.
-- **Fast and documented.** Propagation time is part of mitigation time — measure it, and record the switch key, expected effect, propagation delay, and confirmation check in the runbook.
-- **Exercised.** Flip every kill switch on a schedule in a game day or low-traffic window (`../chaos-engineering/SKILL.md`). An untested kill switch is a comment.
+- **Fast, documented, and exercised.** Propagation time is part of mitigation time — measure it, record the switch key, expected effect, propagation delay, and confirmation check in the runbook, and flip every switch on a schedule (`../chaos-engineering/SKILL.md`). An untested kill switch is a comment.
 
-### 7. Pair flags with schema change carefully
+### 7. Pair flags with schema change, and slice every metric by variant
 
-Expand-contract and the flag ladder interlock: the schema must tolerate both code paths for the entire rollout, including any period at partial percentage and any rollback.
+Expand-contract and the flag ladder interlock: the schema must tolerate both code paths for the whole rollout, including partial percentages and any rollback.
 
 ```text
-1. Expand    Add nullable column / new table. Deploy. Flag still 0%.
-2. Backfill  Separate migration. Both paths still work with flag OFF.
-3. Dual-write Code writes old and new representations regardless of the flag.
-4. Roll out  Advance the flag ladder; reads follow the flag, writes stay dual.
-5. Bake      100% for the full bake window with rollback still possible.
-6. Contract  Remove the flag and the old read path, then drop the old column.
+1 Expand      Add nullable column or new table, deploy, flag still 0%
+2 Backfill    Separate migration; both paths still work with the flag OFF
+3 Dual-write  Write old and new representations regardless of the flag
+4 Roll out    Advance the ladder; reads follow the flag, writes stay dual
+5 Contract    After the full bake at 100%, remove flag and old read path, drop column
 ```
 
-Never drop the old column while the flag can still be turned off. See `../database-migrations/SKILL.md`.
-
-### 8. Make every metric sliceable by variant
-
-Emit the variant as a span attribute and a structured log field at the point of evaluation, so latency, errors, and business metrics can all be split without a new deploy:
+Never drop the old column while the flag can still be turned off (`../database-migrations/SKILL.md`). Then emit the variant as a span attribute and a structured log field at the point of evaluation, so latency, errors, and business metrics can be split without a new deploy:
 
 ```typescript
 import { trace } from "@opentelemetry/api";
@@ -189,27 +173,22 @@ logger.info("checkout.pricing.evaluated", {
 
 Keep variant cardinality bounded — a handful of named variants, never a user id. See `../observability-instrumentation/SKILL.md`.
 
-### 9. Test both paths, not every combination
+### 8. Test both paths, then enforce cleanup in CI
 
-N flags produce 2^N configurations. Testing all of them is neither possible nor necessary.
+N flags produce 2^N configurations; testing all of them is neither possible nor necessary.
 
 - Unit and integration tests cover **ON and OFF for the flags currently in flight**, parameterized rather than duplicated.
 - CI's main run uses the **production default configuration**; a **nightly all-on run** exercises the state the system converges toward and catches flags that only work in isolation.
-- **Contract-test the defaults**: every flag in the manifest has one, and it is the pre-change behavior.
-- End-to-end tests pin flag state explicitly instead of inheriting ambient configuration, or they turn flaky (`../flaky-test-triage/SKILL.md`).
+- **Contract-test the defaults**: every flag in the manifest has one, and it is the pre-change behavior. End-to-end tests pin flag state explicitly instead of inheriting ambient configuration, or they turn flaky (`../flaky-test-triage/SKILL.md`).
 
 ```typescript
 describe.each([true, false])("checkout pricing (v2=%s)", (useV2) => {
   beforeEach(() => setFlag("checkout_v2_pricing", useV2));
-
   it("charges tax on a taxable order", async () => {
-    const order = await checkout(taxableCart());
-    expect(order.taxCents).toBeGreaterThan(0);
+    expect((await checkout(taxableCart())).taxCents).toBeGreaterThan(0);
   });
 });
 ```
-
-### 10. Enforce cleanup in CI
 
 Flag debt is not solved by intention. Make expiry a build failure:
 
@@ -220,41 +199,33 @@ set -euo pipefail
 today=$(date -u +%Y-%m-%d); status=0
 
 for manifest in flags/*.yaml; do
-  key=$(yq -r '.key' "$manifest")
-  type=$(yq -r '.type' "$manifest")
+  key=$(yq -r '.key' "$manifest"); type=$(yq -r '.type' "$manifest")
   expires=$(yq -r '.expires // ""' "$manifest")
 
-  # Operational and entitlement flags are permanent by design.
+  # Operational and entitlement flags are permanent by design; the others expire.
   if [[ "$type" == "release" || "$type" == "experiment" ]]; then
-    if [[ -z "$expires" ]]; then
-      echo "FAIL $key: $type flags require an 'expires' date"; status=1
-    elif [[ "$expires" < "$today" ]]; then
-      echo "FAIL $key: expired $expires (owner $(yq -r '.owner' "$manifest"))"; status=1
-    fi
+    [[ -n "$expires" ]] || { echo "FAIL $key: $type flags need 'expires'"; status=1; }
+    [[ "$expires" < "$today" ]] && { echo "FAIL $key: expired $expires"; status=1; }
   fi
-
-  # Manifest entry with no remaining references means the flag is dead code.
-  if ! grep -rqF "$key" src/; then
-    echo "FAIL $key: no references in src/ — delete the manifest entry"; status=1
-  fi
+  # A manifest entry with no remaining references means the flag is dead code.
+  grep -rqF "$key" src/ || { echo "FAIL $key: unreferenced in src/"; status=1; }
 done
 exit "$status"
 ```
 
-Removing a flag means deleting the flag check, deleting the losing branch and its tests, deleting the manifest entry, and archiving the flag in the provider. A flag removed from code but left enabled in the provider is a trap for the next person who reads the dashboard.
+Removing a flag means deleting the check, the losing branch and its tests, the manifest entry, and the provider entry. A flag deleted from code but left enabled in the provider is a trap for whoever reads the dashboard next.
 
 ## Checklist
 
 - [ ] Flag has a type, a team owner, a description, and a safe default recorded in the manifest
 - [ ] Release and experiment flags carry an expiry date and a removal ticket created with the flag
-- [ ] Evaluation is server-side for anything affecting data, pricing, or authorization
+- [ ] Evaluation is server-side for anything affecting data, pricing, or authorization, and cached locally with a compiled-in default
 - [ ] Bucketing is a deterministic hash of flag key plus subject key, bucketed by the right subject
 - [ ] Default value is the pre-change behavior and is exercised by CI's main run
 - [ ] Targeting rules are ordered with overrides and exclusions above the percentage rule
 - [ ] Guard metrics and a numeric rollback trigger are defined before each ladder step, and dashboards compare treatment against control rather than a global aggregate
 - [ ] Flag variant is emitted as a span attribute and a log field, with bounded cardinality
-- [ ] Kill switches do not depend on what they disable and were flipped in the last test window
-- [ ] Schema changes follow expand-contract and remain compatible with the flag off
+- [ ] Kill switches do not depend on what they disable and were flipped in the last test window; schema changes follow expand-contract and stay compatible with the flag off
 - [ ] CI fails on expired flags and on manifest entries with no code references
 - [ ] After 100% and bake, flag check, losing branch, tests, manifest entry, and provider entry are all deleted
 
@@ -265,23 +236,20 @@ Removing a flag means deleting the flag check, deleting the losing branch and it
 | Users flip between old and new behavior across requests | Random or time-seeded bucketing instead of a stable hash | Bucket on `hash(flagKey + subjectKey)`; never seed with a timestamp or request id |
 | Raising the percentage moved users out of the treatment | Bucketing recomputed from a changing salt or a rehashed range | Use a fixed bucket space so higher percentages are strict supersets |
 | Everything broke when the flag service went down | No local cache, or a default that enabled the new path | Cache with streaming updates; make the default the pre-change behavior |
-| The same 10% of users are in every experiment | Hash omits the flag key | Include the flag key in the hash input |
+| The same 10% of users land in every experiment | Hash omits the flag key | Include the flag key in the hash input |
 | Rollout looked clean at 1%, broke at 50% | Global aggregates hid a treatment-only failure | Slice all guard metrics by variant from step one |
 | Cannot disable the failing feature during an incident | Kill switch evaluated through the failing dependency | Move the switch to a local default-safe path independent of the subsystem it disables |
 | Hundreds of live flags, unknown state | No expiry enforcement and no ownership | Add the manifest and the CI stale-flag gate; sweep by owner, oldest first |
-| Removing a flag changed behavior unexpectedly | The deleted branch was the one actually serving traffic | Confirm the live variant in the provider first; delete the losing branch, not the winning one |
+| Removing a flag changed behavior unexpectedly | The deleted branch was the one serving traffic | Confirm the live variant in the provider first; delete the losing branch |
 | Tests pass in CI, feature fails in production | CI ran an all-off configuration production never uses | Run CI on production defaults plus a nightly all-on job |
 | Rollback to flag-off failed | Schema already contracted, or new-path writes unreadable by the old path | Keep expand state and dual-write until after the bake window completes |
 
 ## References
 
-- `../release-management/SKILL.md` — versioning, staged rollout, and rollback readiness around the flag
-- `../sre-slo-error-budgets/SKILL.md` — guard metrics, burn-rate triggers, budget spend during rollout
+- `../release-management/SKILL.md` — versioning, staged rollout, rollback readiness around the flag; `../sre-slo-error-budgets/SKILL.md` — guard metrics, burn-rate triggers, budget spend
 - `../incident-response/SKILL.md` — flipping the switch first, diagnosing second
 - `../database-migrations/SKILL.md` — expand-contract sequencing under a flag
-- `../observability-instrumentation/SKILL.md` — variant attributes, cardinality limits, log-trace correlation
-- `../chaos-engineering/SKILL.md` — exercising kill switches on a schedule
-- `../flaky-test-triage/SKILL.md` — ambient flag state as a source of nondeterministic tests
-- `../ci-pipeline-design/SKILL.md` — where the default-config and nightly all-on runs belong
-- `../api-design/SKILL.md` — versioning as the alternative to flags for external contracts
+- `../observability-instrumentation/SKILL.md` — variant attributes, cardinality, log-trace correlation
+- `../chaos-engineering/SKILL.md` — exercising kill switches on a schedule; `../flaky-test-triage/SKILL.md` — ambient flag state as a source of nondeterministic tests
+- `../ci-pipeline-design/SKILL.md` — where the default-config and nightly all-on runs belong; `../api-design/SKILL.md` — versioning as the alternative for external contracts
 - OpenFeature specification (evaluation API, evaluation context, providers); OpenTelemetry semantic conventions for feature flags (`feature_flag.*`)

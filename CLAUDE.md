@@ -109,8 +109,21 @@ link stops the chain. Fix the first failure before re-running.
 ### Skills
 
 - One directory per skill at `skills/<name>/`, containing `SKILL.md`.
-- Frontmatter requires `name`, `description`, and `origin`. Use `origin: FORGE` for
-  first-party skills and `origin: community` for imported ones.
+- Frontmatter requires `name` and `description` (both enforced by
+  `scripts/ci/validate-skills.js`). Provenance goes in a nested `metadata` block, not at
+  the top level:
+
+  ```yaml
+  ---
+  name: my-skill
+  description: What it does. Use when ...
+  metadata:
+    origin: FORGE
+  ---
+  ```
+
+  Use `origin: FORGE` for first-party skills and `origin: community` for imported ones.
+  A `description` containing `: ` must be quoted, or the YAML parse fails.
 - The body needs a "when to use" section, concrete mechanics, and examples that were run.
 - Curated skills live in `skills/`. Generated or user-imported skills belong in the user's own
   skills directory, not here — see [docs/SKILL-PLACEMENT-POLICY.md](docs/SKILL-PLACEMENT-POLICY.md).

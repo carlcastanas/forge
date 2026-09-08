@@ -7,15 +7,14 @@ metadata:
 
 # Internationalization
 
-Internationalization is the engineering work that makes localization possible: no user-visible string baked into a component, no sentence assembled by concatenation, no date formatted by hand, no layout that assumes text flows left to right. Done means a build that can ship a new locale by adding a catalog file, with no code change, and a UI that survives a locale whose translations are 40 percent longer and written right to left.
+Internationalization is the engineering work that makes localization possible: no user-visible string baked into a component, no sentence assembled by concatenation, no date formatted by hand, no layout that assumes text flows left to right. Done means a build that can ship a new locale by adding a catalog file, with no code change, and a UI that survives a locale whose translations run substantially longer and are written right to left.
 
 ## When to activate
 
-- Adding a second locale, or a region variant of an existing one
-- Plurals read wrong ("1 items"), or dates render in the wrong order or time zone
+- Adding a second locale or a region variant, or plurals read wrong ("1 items")
+- Dates render in the wrong order or the wrong time zone
 - Strings are concatenated from fragments, or interpolated into sentence templates
-- Preparing a codebase for a translation vendor or a translation management system
-- Layout breaks in German, Japanese, or Arabic
+- Preparing a codebase for a translation vendor, or layout breaks in German, Japanese, or Arabic
 - User says "i18n", "l10n", "translation", "RTL", "pluralization", "locale"
 
 ## When NOT to use
@@ -29,8 +28,7 @@ Internationalization is the engineering work that makes localization possible: n
 
 - A runtime with full ICU data. Node built with `small-icu` silently falls back to English formatting; verify with `node -e "console.log(new Intl.NumberFormat('de-DE').format(1234.5))"` and expect `1.234,5`
 - An i18n library that speaks ICU MessageFormat and supports message extraction
-- A place to store catalogs that translators can round-trip
-- Agreement on a default locale and a source locale (usually the same)
+- A catalog store translators can round-trip, and an agreed default and source locale (usually the same)
 
 ## Process
 
@@ -111,9 +109,11 @@ export function negotiate(header: string | undefined, userPref?: string): string
   const requested = [userPref, ...parseAcceptLanguage(header)].filter(Boolean) as string[];
   // Intl.getCanonicalLocales normalizes case and subtag order before matching.
   for (const tag of Intl.getCanonicalLocales(requested)) {
-    for (let c = tag; c; c = c.slice(0, c.lastIndexOf("-"))) {   // truncate one subtag per step
-      const hit = SUPPORTED.find((s) => s.toLowerCase() === c.toLowerCase());
+    const parts = tag.split("-");
+    while (parts.length) {                                   // truncate one subtag per step
+      const hit = SUPPORTED.find((s) => s.toLowerCase() === parts.join("-").toLowerCase());
       if (hit) return hit;
+      parts.pop();
     }
   }
   return DEFAULT;

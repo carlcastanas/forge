@@ -107,3 +107,8 @@ forge2/target/
 assets/images/security/badrudi-exploit.mp4
 
 .aider*
+
+# Site build output
+site/node_modules/
+site/.next/
+site/out/

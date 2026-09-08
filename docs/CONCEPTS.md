@@ -190,6 +190,53 @@ Three consequences follow from that ordering.
 
 **Memory closes the loop.** Observations feed instincts; instincts can evolve into skills, commands, or agents; those become part of the next session's resident or on-demand layer. The `/evolve` and `/promote` commands are the manual gates on that path — nothing is promoted without a decision.
 
+## Resident cost versus on-demand cost
+
+The single number that should drive most authoring decisions is whether a component is in context before it is needed.
+
+| Layer | In context when | Grows with | How to shrink it |
+| --- | --- | --- | --- |
+| Rules | Always, per installed pack and matching path | Number of installed packs and file length | Install fewer packs; keep `rules/common/` short |
+| MCP tool schemas | Always, per enabled server | Number of tools, not number of calls | Enable fewer servers; prefer CLI-wrapping skills |
+| Agent and skill descriptions | Always, one line each | Catalog size | Selective install by module |
+| Skill bodies | After the description routes | Nothing, until it fires | Progressive disclosure into reference files |
+| Agent prompts | Inside the subagent's own window | Nothing in the caller | Delegate more, inline less |
+| Conversation history | Every turn | Session length | Compact deliberately; write state to memory |
+
+[`skills/context-budget/`](../skills/context-budget/) measures the first four rows against a real install and produces prioritized savings. Two of its heuristics are worth knowing without running it: MCP tool schemas cost roughly 500 tokens per tool, and a rule file over 100 lines is a candidate for splitting or deletion.
+
+The asymmetry has a design consequence. Moving guidance from a rule into a skill does not make the guidance cheaper to use — it makes it free when it is irrelevant, which is most of the time. That trade is only correct when the model can be relied on to route to it, which is why the description matters more than the body.
+
+## One requirement, six surfaces
+
+The same underlying requirement can be expressed at any layer, and the layer changes what actually happens. Take "the team does not weaken lint configuration to make checks pass".
+
+| Surface | Expression | What it achieves | What it costs |
+| --- | --- | --- | --- |
+| Rule | A line in `rules/common/coding-style.md` saying not to weaken lint config | The model has read it | Resident tokens in every session forever |
+| Skill | A `lint-triage` skill describing how to fix the code instead | Good guidance when it routes | Nothing until it fires; nothing if it does not |
+| Command | `/lint-fix` that walks the failure | Reliable when typed | Requires the user to know it exists |
+| Agent | A reviewer that flags weakened configs in a diff | Catches it at review time | One delegation per review; after the fact |
+| Hook | [`config-protection.js`](../scripts/hooks/config-protection.js) blocking the write | Makes it impossible | Milliseconds per matching edit; false positives block real work |
+| Memory | A decision entry recording why the config is strict | Explains the constraint next time | Nothing, until someone recalls it |
+
+FORGE chose the hook, and the hook's own comments say why: agents frequently modify these files to make checks pass instead of fixing the code. That is a behavior that recurs, has a bright-line definition, and has a cheap test. Those three properties are what justify the strongest surface.
+
+The properties also tell you when not to reach for it. A constraint that is usually right but sometimes wrong belongs in a rule, because a rule can be reasoned past and a hook cannot. Config protection is careful about exactly this: it blocks a fixed set of filenames and deliberately excludes `pyproject.toml`, because that file carries project metadata alongside linter settings and blocking it would break legitimate dependency work.
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+| --- | --- | --- |
+| A skill whose body is also a command's body | Two copies drift; the second one is always the stale one | Keep the body in the skill, make the command a shim |
+| An agent whose whole prompt is a procedure | You pay a round trip for context isolation you did not need | Write a skill |
+| A rule that is really a tutorial | Resident cost on every session for guidance relevant on few | Write a skill and link it from a short rule |
+| A hook that warns on a judgment call | Warning noise trains the reader to ignore all warnings | Put the judgment in a rule or a reviewer agent |
+| An MCP server wrapping a CLI the model already knows | Permanent schema tax for a capability that was already free | Write a skill around the CLI |
+| A memory entry that duplicates a repo file | Goes stale silently and is trusted anyway | Let the agent read the file |
+| A description written in implementation vocabulary | Never routes, because users do not use those words | Write the trigger in the words a user would type |
+| Everything installed everywhere | The resident layer crowds out the working set | Selective install by module and profile |
+
 ## Decision table: I want to, therefore I author a
 
 | I want to | Author a | Why not the neighbor |
