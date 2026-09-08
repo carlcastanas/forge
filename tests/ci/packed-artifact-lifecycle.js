@@ -694,18 +694,18 @@ function runLifecycle(options) {
     ];
     parseJsonOutput(
       runCli(itoInstallArgs),
-      'initial Itô install'
+      'initial an external compute provider install'
     );
     assert.ok(fs.existsSync(statePath), 'initial install must write Cursor install-state');
     const initialState = JSON.parse(fs.readFileSync(statePath, 'utf8'));
     const initialLedger = getOperationLedger(initialState);
     assert.ok(
       initialState.operations.some(operation => operation.moduleId === 'ito-compute'),
-      'installed ledger must include the Itô compute module'
+      'installed ledger must include the an external compute provider compute module'
     );
     assert.ok(
       initialState.operations.some(operation => operation.moduleId === 'prediction-market-skills'),
-      'installed ledger must include the Itô baskets module'
+      'installed ledger must include the an external compute provider baskets module'
     );
     for (const relativePath of [
       'skills/ito-baskets/SKILL.md',
@@ -718,9 +718,9 @@ function runLifecycle(options) {
     ]) {
       const installedPath = path.join(cursorRoot, relativePath);
       const installedStat = fs.lstatSync(installedPath);
-      assert.ok(installedStat.isFile(), `packed Itô asset is not a file: ${relativePath}`);
-      assert.ok(!installedStat.isSymbolicLink(), `packed Itô asset is a symlink: ${relativePath}`);
-      assert.ok(installedStat.size > 0, `packed Itô asset is empty: ${relativePath}`);
+      assert.ok(installedStat.isFile(), `packed an external compute provider asset is not a file: ${relativePath}`);
+      assert.ok(!installedStat.isSymbolicLink(), `packed an external compute provider asset is a symlink: ${relativePath}`);
+      assert.ok(installedStat.size > 0, `packed an external compute provider asset is empty: ${relativePath}`);
     }
     const hostileBin = path.join(tempRoot, 'hostile-bin');
     const hostileItoSentinel = path.join(tempRoot, 'hostile-ito-spawned');
@@ -742,7 +742,7 @@ function runLifecycle(options) {
     });
     assert.match(itoStatus.stderr, /canonical ito-compute-cli is unpublished/i);
     assert.doesNotMatch(itoStatus.stderr, /npx|npm exec|npm link|install -g/i);
-    assert.ok(!fs.existsSync(hostileItoSentinel), 'packed Itô bridge executed a PATH collision');
+    assert.ok(!fs.existsSync(hostileItoSentinel), 'packed an external compute provider bridge executed a PATH collision');
     const managedSnapshot = getManagedOperationSnapshot(initialState, cursorRoot);
     assert.ok(managedSnapshot.length > 0, 'initial install must create managed Cursor files');
 

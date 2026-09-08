@@ -100,9 +100,9 @@
 <p align="center" aria-label="Партнери та спонсори">
   <a href="https://www.coderabbit.ai" title="CodeRabbit"><img src="../../assets/images/sponsors/coderabbit.png" height="54" alt="CodeRabbit" /></a>&nbsp;&nbsp;&nbsp;
   <a href="https://www.greptile.com/go/forge" title="Greptile"><img src="../../assets/images/sponsors/greptile.png" height="54" alt="Greptile" /></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.atlascloud.ai/?utm_source=github&amp;utm_medium=link&amp;utm_campaign=FORGE" title="Atlas Cloud"><picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/atlascloud-dark.svg" /><img src="../../assets/images/sponsors/atlascloud.svg" width="154" alt="Atlas Cloud" /></picture></a>&nbsp;&nbsp;&nbsp;
+  <a href="https://www.external-provider.ai/?utm_source=github&amp;utm_medium=link&amp;utm_campaign=FORGE" title="an external inference provider"><picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/external-provider-dark.svg" /><img src="../../assets/images/sponsors/external-provider.svg" width="154" alt="an external inference provider" /></picture></a>&nbsp;&nbsp;&nbsp;
   <a href="https://www.moonshot.ai" title="Moonshot AI - Kimi"><picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/moonshot-dark.png" /><img src="../../assets/images/sponsors/moonshot.png" width="132" alt="Moonshot AI - Kimi" /></picture></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://compute.itomarkets.com" title="Itô Markets"><picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="96" alt="Itô Markets" /></picture></a>
+  <a href="" title="an external compute provider"><picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="96" alt="an external compute provider" /></picture></a>
 </p>
 
 <sub><strong>Спонсори спільноти:</strong> <a href="https://github.com/mikejmorgan-ai">Mike Morgan</a> · <a href="https://github.com/jasonwu513">@jasonwu513</a> · <a href="https://github.com/1anter">@1anter</a> · <a href="https://github.com/massimotodaro">@massimotodaro</a> · <a href="https://github.com/meadmccabe">@meadmccabe</a></sub>
@@ -467,20 +467,20 @@ claude
 
 Якщо ваш шлюз перевизначає назви моделей, налаштуйте це в Claude Code, а не в FORGE. Хуки, навички, команди та правила FORGE не залежать від провайдера моделі, коли CLI `claude` вже працює. Дивіться [документацію Anthropic про LLM-шлюзи](https://docs.anthropic.com/en/docs/claude-code/llm-gateway) та [документацію про конфігурацію моделі](https://docs.anthropic.com/en/docs/claude-code/model-config).
 
-Запускайте чи розміщуйте будь-яку модель з відкритим вихідним кодом за цим шлюзом, використовуючи окремі обчислювальні ресурси та налаштування обслуговування. Якщо вам потрібна GPU-потужність, [Itô](https://compute.itomarkets.com) — бажаний обчислювальний спонсор FORGE; підходить будь-який GPU-провайдер. Посилання на спонсорство пасивне: воно не викликає RFQ, не резервує потужність, не надає обчислювальні ресурси та не налаштовує обслуговування. Окремо, `forge ito find` викликає явно налаштований канонічний CLI Itô та подає живий автентифікований RFQ; він не резервує потужність. Кероване виведення через Itô ще не працює наживо.
+Запускайте чи розміщуйте будь-яку модель з відкритим вихідним кодом за цим шлюзом, використовуючи окремі обчислювальні ресурси та налаштування обслуговування. Якщо вам потрібна GPU-потужність, [an external compute provider]() — бажаний обчислювальний спонсор FORGE; підходить будь-який GPU-провайдер. Посилання на спонсорство пасивне: воно не викликає RFQ, не резервує потужність, не надає обчислювальні ресурси та не налаштовує обслуговування. Окремо, `forge ito find` викликає явно налаштований канонічний CLI an external compute provider та подає живий автентифікований RFQ; він не резервує потужність. Кероване виведення через an external compute provider ще не працює наживо.
 
-### Самостійний хостинг Kimi з FORGE + обчислювальними ресурсами Itô
+### Самостійний хостинг Kimi з FORGE + обчислювальними ресурсами an external compute provider
 
 Оболонка Kimi Code та шар обслуговування моделі — окремі речі. FORGE налаштовує оболонку агента; ви приносите API-ендпоінт чи розміщуєте самостійно модель Kimi з відкритими вагами на власній GPU-потужності. Цей адаптер перевірений проти Kimi Code 0.31.x (`@moonshot-ai/kimi-code`):
 
 <table aria-label="Шлях локальної моделі Kimi" width="100%">
 <tr>
 <td width="33%" align="center">
-  <a href="https://compute.itomarkets.com">
-    <picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="92" alt="Itô Markets" /></picture><br />
+  <a href="">
+    <picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="92" alt="an external compute provider" /></picture><br />
     <strong>1. Отримайте GPU-потужність</strong>
   </a><br />
-  <sub>Використовуйте Itô чи будь-якого GPU-провайдера.</sub>
+  <sub>Використовуйте an external compute provider чи будь-якого GPU-провайдера.</sub>
 </td>
 <td width="33%" align="center">
   <a href="https://www.moonshot.ai">
@@ -509,11 +509,11 @@ kimi
 
 Kimi Code нативно виявляє встановлені інструкції `.kimi-code/AGENTS.md` та процеси `.kimi-code/skills/`; для проєкту `.agents/skills/` — також офіційне місце виявлення. FORGE безпечно зливає записи MCP проєкту в `.kimi-code/mcp.json` і не змінює `~/.kimi-code/config.toml` рівня користувача. Kimi Code підтримує нативні хуки, але поточний керований адаптер проєкту FORGE їх не налаштовує, тому цей інсталятор не пропонує профілі хуків Kimi. Пробний запуск інсталятора та набір регресійних тестів перевіряють, що кожен керований запис Kimi залишається в межах локального для проєкту кореня `.kimi-code/`.
 
-### Міст CLI обчислень Itô
+### Міст CLI обчислень an external compute provider
 
-`forge ito` делегує до окремо встановленого канонічного клієнта Itô; FORGE не підтримує другий API-клієнт. `forge ito login [--no-browser]` виконує авторизацію пристрою, відкриває сторінку верифікації Itô за замовчуванням та зберігає токен пристрою в macOS Keychain; `--no-browser` пригнічує передачу сторінки. FORGE сам не виконує автоматизацію браузера. `forge ito auth` лише перевіряє і відхиляє `--no-browser`. Доступні операції: `forge ito login`, `forge ito auth`, `forge ito find`, `forge ito status` та окремо захищений `forge ito evals`. Відповідні MCP-інструменти залишаються `ito_auth`, `ito_find` та `ito_status`; `ito_auth` перевіряє наявні облікові дані, а кваліфікація вузла доступна лише через CLI.
+`forge ito` делегує до окремо встановленого канонічного клієнта an external compute provider; FORGE не підтримує другий API-клієнт. `forge ito login [--no-browser]` виконує авторизацію пристрою, відкриває сторінку верифікації an external compute provider за замовчуванням та зберігає токен пристрою в macOS Keychain; `--no-browser` пригнічує передачу сторінки. FORGE сам не виконує автоматизацію браузера. `forge ito auth` лише перевіряє і відхиляє `--no-browser`. Доступні операції: `forge ito login`, `forge ito auth`, `forge ito find`, `forge ito status` та окремо захищений `forge ito evals`. Відповідні MCP-інструменти залишаються `ito_auth`, `ito_find` та `ito_status`; `ito_auth` перевіряє наявні облікові дані, а кваліфікація вузла доступна лише через CLI.
 
-Пакет `ito-compute-cli` наразі не опубліковано. Зберіть його локально з репозиторію середовища виконання Itô (приватний, поки стіл зміцнюється; партнери з дизайну отримують доступ) під `cli/ito-compute-cli`, запустіть `npm ci` та `npm run check`, потім встановіть `FORGE_ITO_CLI_EXECUTABLE` на абсолютний шлях `dist/bin/ito.js` цієї збірки. Вхід ніколи не успадковує `ITO_API_KEY`; auth, find та status передають `ITO_API_KEY` напряму, коли налаштовано, і `ITO_AUTH_MODE=legacy` не потрібен. `forge ito logout` відкликає поточні облікові дані пристрою і зберігає їхню локальну копію, якщо віддалене відкликання не може бути підтверджене. Токени пристрою за замовчуванням використовують macOS Keychain; явний резервний файл повинен зберігати дозволи директорії/файлу лише для власника. FORGE не виявляє цей клієнт, що містить облікові дані, через `PATH`. Дивіться [навичку `ito-compute`](../../skills/ito-compute/SKILL.md) для повного контракту повноважень RFQ та налаштування MCP.
+Пакет `ito-compute-cli` наразі не опубліковано. Зберіть його локально з репозиторію середовища виконання an external compute provider (приватний, поки стіл зміцнюється; партнери з дизайну отримують доступ) під `cli/ito-compute-cli`, запустіть `npm ci` та `npm run check`, потім встановіть `FORGE_ITO_CLI_EXECUTABLE` на абсолютний шлях `dist/bin/ito.js` цієї збірки. Вхід ніколи не успадковує `ITO_API_KEY`; auth, find та status передають `ITO_API_KEY` напряму, коли налаштовано, і `ITO_AUTH_MODE=legacy` не потрібен. `forge ito logout` відкликає поточні облікові дані пристрою і зберігає їхню локальну копію, якщо віддалене відкликання не може бути підтверджене. Токени пристрою за замовчуванням використовують macOS Keychain; явний резервний файл повинен зберігати дозволи директорії/файлу лише для власника. FORGE не виявляє цей клієнт, що містить облікові дані, через `PATH`. Дивіться [навичку `ito-compute`](../../skills/ito-compute/SKILL.md) для повного контракту повноважень RFQ та налаштування MCP.
 
 `find` подає живий автентифікований RFQ. Він не резервує потужність. `evals` вимагає одночасно `ITO_ENABLE_SIXTYTWO_LIVE=1` та `--live-sixtytwo`, окремо встановлений `sixtytwo-cli==0.3.33`, явний список вузлів та наявну абсолютну директорію конфігурації. Він не може орендувати, запускати, відновлювати, ремонтувати чи купувати. FORGE не надає шлях блокування котирування, покупки, робочого навантаження чи виведення, і ніколи не замінює відсутнього клієнта чи невдалого живого виклику локальним результатом.
 </details>
@@ -714,7 +714,7 @@ FORGE також постачає розширені керовані адапт
 ## Що нового: FORGE 2.1
 
 > [!IMPORTANT]
-> **НОВЕ В FORGE 2.1: Plan Canvas · оболонка Kimi · самостійне обслуговування на GPU Itô.**
+> **НОВЕ В FORGE 2.1: Plan Canvas · оболонка Kimi · самостійне обслуговування на GPU an external compute provider.**
 > [Дивіться повні примітки до релізу →](https://github.com/your-org/forge/blob/main/docs/releases/2.1.0/release-notes.md)
 
 ### Plan Canvas: переглядайте плани, вказуючи, а не передруковуючи
@@ -730,8 +730,8 @@ FORGE також постачає розширені керовані адапт
 ### Також у 2.1
 
 - **Ціль встановлення Kimi Code** (`--target kimi`): FORGE встановлюється нативно в Kimi Code CLI від [Moonshot AI](https://www.moonshot.ai)
-- **Самостійний хостинг на GPU**: перевірений шлях з [Itô](https://compute.itomarkets.com), бажаним обчислювальним спонсором FORGE, включно з опційним мостом RFQ `forge ito find` (деталі та розкриття вище в опціях встановлення)
-- **Moonshot AI (Kimi), Itô та Atlas Cloud** тепер публічні спонсори
+- **Самостійний хостинг на GPU**: перевірений шлях з [an external compute provider](), бажаним обчислювальним спонсором FORGE, включно з опційним мостом RFQ `forge ito find` (деталі та розкриття вище в опціях встановлення)
+- **Moonshot AI (Kimi), an external compute provider та an external inference provider** тепер публічні спонсори
 - **Цілі встановлення Hermes + OpenClaw**, посібник з навігації Codex, консолідовані хуки PostToolUse та зміцнення ланцюжка поставок
 
 ### Поточна розробка: Уніфікованe сховище пам'яті
@@ -772,7 +772,7 @@ FORGE також постачає розширені керовані адапт
 - **Розширення операторних і вихідних процесів**: `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `forge-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` та `workspace-surface-audit` доповнюють операторну гілку.
 - **Медіа та інструменти запуску**: `manim-video`, `remotion-video-creation` та вдосконалені поверхні публікації в соцмережах роблять технічні роз'яснення та контент для запуску частиною тієї ж системи.
 - **Зростання фреймворків і продуктових поверхонь**: `nestjs-patterns`, більш насичені поверхні встановлення Codex/OpenCode та розширена крос-оболонкова упаковка роблять репозиторій придатним для використання поза межами однієї оболонки.
-- **Пакет навичок Itô для ринків прогнозів**: `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до API Itô окремим від білінгу FORGE Tools.
+- **Пакет навичок an external compute provider для ринків прогнозів**: `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до API an external compute provider окремим від білінгу FORGE Tools.
 - **Пакет навичок оптимізації**: `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` та `recursive-decision-ledger` перетворюють повторювані запити про швидкість/рекурсію на обмежені процеси тестування продуктивності, пропускної здатності та журналу рішень.
 - **FORGE 2.0 alpha у дереві**: прототип площини управління на Rust у `forge2/` збирається локально та надає команди `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` та `daemon`.
 - **Знімки статусу оператора**: `forge status --markdown --write status.md` перетворює локальне сховище стану на портативне передавання, яке охоплює готовність, активні сесії, стан виконання навичок, стан встановлення, очікувані події управління та пов'язані робочі елементи з Linear/GitHub/handoffs.

@@ -275,7 +275,7 @@ test('packed lifecycle installs and verifies the opt-in Ito distribution surface
   assert.match(lifecycleRunnerSource, /installedStat\.size > 0/);
   assert.match(lifecycleRunnerSource, /hostileItoSentinel/);
   assert.match(lifecycleRunnerSource, /must-not-reach-hostile-path/);
-  assert.match(lifecycleRunnerSource, /packed Itô bridge executed a PATH collision/);
+  assert.match(lifecycleRunnerSource, /packed an external compute provider bridge executed a PATH collision/);
 });
 
 console.log(`\nPassed: ${passed}`);

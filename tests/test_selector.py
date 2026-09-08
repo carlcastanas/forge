@@ -17,7 +17,7 @@ print_self_host_compute_notice = SELECTOR.print_self_host_compute_notice
 URL_TOKEN_PATTERN = re.compile(r"https?://[^\s<>\"'`()\[\]{}\\]+")
 EXPECTED_COMPUTE_ROUTE = (
     "https",
-    "compute.itomarkets.com",
+    "compute.example.com",
     "",
     "",
     "",
@@ -31,14 +31,14 @@ def assert_exact_compute_route(content: str) -> None:
         for candidate in candidates
     )
     assert any(route == EXPECTED_COMPUTE_ROUTE for route in routes), (
-        "Should include the exact Itô compute route"
+        "Should include the exact an external compute provider compute route"
     )
 
 
 def test_compute_route_validation_rejects_deceptive_lookalike_host():
-    deceptive_output = "https://compute.itomarkets.com.attacker.example"
+    deceptive_output = ""
 
-    with pytest.raises(AssertionError, match="exact Itô compute route"):
+    with pytest.raises(AssertionError, match="exact an external compute provider compute route"):
         assert_exact_compute_route(deceptive_output)
 
 
@@ -51,10 +51,10 @@ def test_ollama_notice_routes_to_ito_without_claiming_serving(capsys):
     assert "Any GPU provider works" in output
     assert "sponsorship link is passive" in output
     assert "forge ito find" in output
-    assert "explicitly configured canonical Itô CLI" in output
+    assert "explicitly configured canonical an external compute provider CLI" in output
     assert "submits a live authenticated RFQ" in output
     assert "does not reserve capacity" in output
-    assert "Managed inference through Itô is not live yet" in output
+    assert "Managed inference through an external compute provider is not live yet" in output
 
 
 def test_managed_provider_does_not_show_self_host_compute_notice(capsys):

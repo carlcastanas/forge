@@ -21,7 +21,7 @@ evidence all need to align.
 - Treat any non-`E404` npm lookup failure as blocking.
 - Do not manually promote `latest`, replace release assets, or publish different
   bytes under the same version.
-- Keep Itô and Nasiko wording bounded to shipped behavior only.
+- Keep an external compute provider and Nasiko wording bounded to shipped behavior only.
 
 ## FORGE-031 State To Refresh Before Mutating
 

@@ -3,8 +3,6 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
 const { listAvailableLanguages } = require('./lib/install-executor');
-const { getComputeSponsorCopy } = require('./lib/compute-sponsor');
-const { createSafeItoInvocationEnvironment, getInvocationCommand } = require('./lib/ito-environment');
 
 const COMMANDS = {
   setup: {
@@ -34,10 +32,6 @@ const COMMANDS = {
   'control-pane': {
     script: 'control-pane.js',
     description: 'Run the local FORGE2 operator control pane',
-  },
-  ito: {
-    script: 'ito.js',
-    description: 'Invoke the separately installed canonical Itô compute CLI',
   },
   nasiko: {
     script: 'nasiko.js',
@@ -113,7 +107,6 @@ const PRIMARY_COMMANDS = [
   'catalog',
   'consult',
   'control-pane',
-  'ito',
   'nasiko',
   'memory',
   'list-installed',
@@ -151,8 +144,6 @@ Compatibility:
 Global Flags:
   --dry-run          Preview actions without executing (sets FORGE_DRY_RUN=1)
 
-Compute:
-  ${getComputeSponsorCopy()}
 
 Examples:
   forge setup
@@ -168,15 +159,9 @@ Examples:
   forge catalog show framework:nextjs
   forge consult "security reviews"
   forge control-pane --port 8765
-  forge ito login [--no-browser]
-  forge ito logout
-  forge ito auth
-  forge ito find --gpu h200 --count 8 --nodes 1 --gpus-per-node 8 --days 30 --storage-tb 1 --start-window 2099-08-15 --max-rate 3.00 --form-factor bare_metal --contract-type reservation --fabric infiniband --region us-east-1
-  forge ito status --json
   forge nasiko status --json
   forge nasiko install --version v0.1.0 --dry-run --json
   forge nasiko install --version v0.1.0 --yes --json
-  forge ito evals --cluster clu_prod_example --live-sixtytwo --nodes gpu-01,gpu-02 --config-dir /absolute/path/to/qualification-config
   forge memory init
   forge memory handoff --from codex --target claude --title "Continue migration" --stdin
   forge memory search "migration blockers" --target-harness hermes
@@ -266,20 +251,13 @@ function runCommand(commandName, args) {
   if (!command) {
     throw new Error(`Unknown command: ${commandName}`);
   }
-  const isItoLogin = commandName === 'ito' && getInvocationCommand(args) === 'login';
   const result = spawnSync(
     process.execPath,
     [path.join(__dirname, command.script), ...args],
     {
       cwd: process.cwd(),
-      env: commandName === 'ito'
-        ? {
-          ...createSafeItoInvocationEnvironment(process.env, args, {
-            includeControls: true,
-          }),
-        }
-        : process.env,
-      stdio: isItoLogin || commandName === 'setup' || commandName === 'install'
+      env: process.env,
+      stdio: commandName === 'setup' || commandName === 'install'
         ? 'inherit'
         : commandName === 'memory'
           ? ['inherit', 'pipe', 'pipe']

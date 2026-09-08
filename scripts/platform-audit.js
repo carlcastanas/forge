@@ -451,7 +451,7 @@ function buildLocalEvidenceChecks(rootDir) {
     ),
     buildCheck(
       'roadmap-linear-mirror',
-      includesAll(roadmap, ['linear.app/itomarkets/project/forge-platform-roadmap', 'ITO-44', 'ITO-59']) ? 'pass' : 'fail',
+      includesAll(roadmap, ['linear.app/your-org/project/forge-platform-roadmap', 'ROADMAP-1', 'ROADMAP-2']) ? 'pass' : 'fail',
       'repo roadmap mirrors the Linear roadmap and security/operator lanes',
       { path: 'docs/FORGE-2.0-GA-ROADMAP.md' }
     ),

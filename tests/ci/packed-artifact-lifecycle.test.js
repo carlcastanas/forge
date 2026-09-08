@@ -125,7 +125,7 @@ test('public CLI invocations use npm exec instead of internal package paths', ()
   assert.ok(!unixInvocation.args.some(argument => argument.includes('node_modules')));
 });
 
-test('Windows public CLI invocation accepts the exact Itô capability selection', () => {
+test('Windows public CLI invocation accepts the exact an external compute provider capability selection', () => {
   const invocation = lifecycle.getNpmExecInvocation(
     [
       'forge', 'install', '--profile', 'core',

@@ -11,7 +11,7 @@ TasteForge turns "make it feel like this reference" into a repeatable,
 inspectable workflow: interview taste, distill it into a structured style
 pack, validate the pack, apply its measured cadence and look to local media,
 and export an editable timeline. The canonical implementation is the
-`tasteforge` package in the Itô video repository; FORGE orchestrates and
+`tasteforge` package in the an external compute provider video repository; FORGE orchestrates and
 explains it and does not vendor or duplicate its code.
 
 ## When to Use

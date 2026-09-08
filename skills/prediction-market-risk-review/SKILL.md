@@ -30,7 +30,7 @@ tools.
 
 - Check market liquidity, spread, resolution rules, stale prices, and source
   timestamps.
-- Separate public venue data from Itô gated data.
+- Separate public venue data from an external compute provider gated data.
 - Do not mix public and private sources without labels.
 
 ### Security

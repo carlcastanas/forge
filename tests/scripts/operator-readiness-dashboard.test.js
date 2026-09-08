@@ -60,7 +60,7 @@ function seedRepo(rootDir, overrides = {}) {
       'video-release-artifacts-present'
     ].join('\n'),
     'docs/FORGE-2.0-GA-ROADMAP.md': [
-      'https://linear.app/itomarkets/project/forge-platform-roadmap-52b328ee03e1',
+      'https://linear.app/your-org/project/forge-platform-roadmap',
       'Linear ITO-44 ITO-59',
       'Forge Shield PR #92 #78-#92 checksum-backed policy export policy promote checksum-verified policy promotion',
       'Forge Shield Enterprise Iteration',
@@ -506,7 +506,7 @@ function runTests() {
     try {
       seedRepo(rootDir, {
         'docs/FORGE-2.0-GA-ROADMAP.md': [
-          'https://linear.app/itomarkets/project/forge-platform-roadmap-52b328ee03e1',
+          'https://linear.app/your-org/project/forge-platform-roadmap',
           'Linear ITO-44 ITO-59',
           'Forge Shield Enterprise Iteration',
           'FORGE-Tools PR #78',
@@ -642,7 +642,7 @@ function runTests() {
       try {
         seedRepo(rootDir, {
           'docs/FORGE-2.0-GA-ROADMAP.md': [
-            'https://linear.app/itomarkets/project/forge-platform-roadmap-52b328ee03e1',
+            'https://linear.app/your-org/project/forge-platform-roadmap',
             'Linear ITO-44 ITO-59',
             'Forge Shield Enterprise Iteration',
             marker,
@@ -669,7 +669,7 @@ function runTests() {
     try {
       seedRepo(rootDir, {
         'docs/FORGE-2.0-GA-ROADMAP.md': [
-          'https://linear.app/itomarkets/project/forge-platform-roadmap-52b328ee03e1',
+          'https://linear.app/your-org/project/forge-platform-roadmap',
           'Linear ITO-44 ITO-59',
           'Forge Shield PR #92 #78-#92 checksum-backed policy export policy promote checksum-verified policy promotion',
           'Forge Shield Enterprise Iteration',

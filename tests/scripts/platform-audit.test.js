@@ -44,7 +44,7 @@ function seedRepo(rootDir, overrides = {}) {
     }, null, 2),
     'docs/FORGE-2.0-GA-ROADMAP.md': [
       'FORGE Platform Roadmap',
-      'https://linear.app/itomarkets/project/forge-platform-roadmap-52b328ee03e1',
+      'https://linear.app/your-org/project/forge-platform-roadmap',
       'ITO-44',
       'ITO-59'
     ].join('\n'),

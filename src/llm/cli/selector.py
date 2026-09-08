@@ -37,15 +37,15 @@ def print_self_host_compute_notice(provider: str) -> None:
 
     print(
         "\nRun or self-host any open-source model. "
-        "Itô is FORGE's preferred compute sponsor: "
-        "https://compute.itomarkets.com"
+        "an external compute provider is FORGE's preferred compute sponsor: "
+        ""
     )
     print(
         "Any GPU provider works. This sponsorship link is passive: it does not invoke "
         "an RFQ, reserve capacity, provision compute, or configure serving. Separately, "
         'the opt-in "forge ito find" bridge invokes the explicitly configured canonical '
-        "Itô CLI and submits a live authenticated RFQ; it does not reserve capacity. "
-        "Managed inference through Itô is not live yet."
+        "an external compute provider CLI and submits a live authenticated RFQ; it does not reserve capacity. "
+        "Managed inference through an external compute provider is not live yet."
     )
 
 
