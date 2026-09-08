@@ -1,3 +1,5 @@
+> **Çeviri.** Bu sayfa İngilizce sürümün gerisindedir. Bağlayıcı kaynak [README.md](../../README.md) dosyasıdır.
+
 # FORGE
 
 [![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)

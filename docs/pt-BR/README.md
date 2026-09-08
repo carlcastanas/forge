@@ -1,3 +1,5 @@
+> **Tradução.** Esta página está atrás da versão em inglês. A fonte autoritativa é [README.md](../../README.md).
+
 **Idioma:** [English](../../README.md) | [简体中文](../../README.zh-CN.md) | [繁體中文](../zh-TW/README.md) | [日本語](../ja-JP/README.md) | [한국어](../ko-KR/README.md) | Português (Brasil) | [Türkçe](../tr/README.md) | [Русский](../ru/README.md) | [Tiếng Việt](../vi-VN/README.md) | [ไทย](../th/README.md) | [Deutsch](../de-DE/README.md) | [Українська](../uk-UA/README.md)
 
 # FORGE

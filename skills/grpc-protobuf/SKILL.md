@@ -14,8 +14,7 @@ Protobuf contracts outlive the code that reads them. A field number reused after
 - Writing or reviewing a `.proto` file, especially a change to an existing message
 - Choosing between unary, server-streaming, client-streaming, and bidirectional streaming
 - Requests hang or pile up; no deadline is set, or a deadline is not propagated downstream
-- Adding auth, logging, tracing, or retries across all RPCs
-- A client cannot tell a retryable failure from a permanent one
+- Adding auth, logging, tracing, or retries across all RPCs; a client cannot tell a retryable failure from a permanent one
 - Exposing an internal gRPC service to a browser or to REST/JSON consumers
 - User says "proto field numbers", "breaking change in proto", "DEADLINE_EXCEEDED", "grpc-gateway"
 
@@ -23,22 +22,20 @@ Protobuf contracts outlive the code that reads them. A field number reused after
 
 - Public HTTP/JSON API shape, URL and status-code design — `../api-design/SKILL.md`
 - Client-shaped query graphs and per-field batching — `../graphql-patterns/SKILL.md`
-- Versioning strategy and deprecation windows for a public contract — `../api-versioning-deprecation/SKILL.md`
+- Versioning strategy and deprecation windows — `../api-versioning-deprecation/SKILL.md`
 - Async fan-out where the caller does not wait for a reply — `../event-driven-architecture/SKILL.md`
-- Go-specific idiom beyond RPC plumbing — `../golang-patterns/SKILL.md`
 
 ## Prerequisites
 
 - `protoc` or `buf` plus the language plugins for the target stacks
 - Generated code committed or produced reproducibly in CI
-- A breaking-change checker in CI (`buf breaking`) with a stable baseline branch
-- `grpcurl` for out-of-band probing
+- A breaking-change checker in CI (`buf breaking`) with a stable baseline branch, and `grpcurl` for probing
 
 ## Process
 
 ### 1. Write proto3 to the style guide
 
-Consistency here is load-bearing: generated identifiers in every language derive mechanically from these names.
+Consistency is load-bearing here: generated identifiers in every language derive mechanically from these names.
 
 ```protobuf
 syntax = "proto3";
@@ -122,18 +119,16 @@ func (s *server) WatchInvoices(req *billingv1.WatchInvoicesRequest,
 				return nil // clean end of stream
 			}
 			if err := stream.Send(ev); err != nil {
-				return err // client went away; return as-is, do not wrap
+				return err // client went away; return as-is
 			}
 		}
 	}
 }
 ```
 
-A stream is not a message bus. If the consumer must survive a disconnect without losing data, put a queue behind it — see `../event-driven-architecture/SKILL.md`.
-
 ### 4. Set deadlines and propagate them
 
-A gRPC deadline is absolute and travels on the wire as `grpc-timeout`. A server that ignores the incoming context and starts a fresh one converts a bounded request into an unbounded one.
+A stream is not a message bus: if the consumer must survive a disconnect without losing data, put a queue behind it (`../event-driven-architecture/SKILL.md`). A gRPC deadline is absolute and travels on the wire as `grpc-timeout`. A server that ignores the incoming context and starts a fresh one converts a bounded request into an unbounded one.
 
 ```go
 // caller: every outbound RPC gets a deadline, no exceptions
@@ -172,7 +167,7 @@ func AuthUnary(verify TokenVerifier) grpc.UnaryServerInterceptor {
 		}
 		principal, err := verify(ctx, strings.TrimPrefix(vals[0], "Bearer "))
 		if err != nil {
-			return nil, status.Error(codes.Unauthenticated, "invalid token")
+			return nil, status.Error(codes.Unauthenticated, "invalid token") // never echo why
 		}
 		return handler(WithPrincipal(ctx, principal), req)
 	}
@@ -188,7 +183,7 @@ Stream interceptors receive a `grpc.ServerStream`; to inspect or mutate messages
 
 ### 6. Use the canonical status codes and typed details
 
-Callers branch on the code, log the message, and program against the details. Pick the code by what the caller should do next.
+Callers branch on the code, log the message, and program against the details. Pick by what the caller should do next.
 
 | Code | Meaning | Caller action |
 | --- | --- | --- |
@@ -233,7 +228,7 @@ grpcurl -plaintext -d '{"id":"inv_01H9"}' localhost:9090 acme.billing.v1.Invoice
 curl -s localhost:8080/v1/invoices/inv_01H9   # same call through the gateway
 ```
 
-Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISSION_DENIED` to 403, `RESOURCE_EXHAUSTED` to 429). Verify that mapping against the contract published to REST clients rather than assuming it.
+Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISSION_DENIED` to 403, `RESOURCE_EXHAUSTED` to 429). Verify that mapping against the contract published to REST clients rather than assuming it — see `../api-design/SKILL.md`.
 
 ## Checklist
 
@@ -242,12 +237,11 @@ Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISS
 - [ ] Deleted field numbers and names are `reserved`; `buf lint` and `buf breaking` run in CI
 - [ ] Presence handled explicitly (`optional`, wrappers, `FieldMask`) wherever empty differs from unset
 - [ ] Streaming mode matches the data shape; disconnect-durable consumers sit behind a queue
-- [ ] Every outbound RPC sets a deadline; servers derive child contexts from the inbound context
-- [ ] Background work uses a process-lifetime context, not the request context
+- [ ] Every outbound RPC sets a deadline; servers derive child contexts from the inbound context, and background work uses a process-lifetime context
 - [ ] Unary and stream interceptors registered on client and server for auth, tracing, logging, recovery
 - [ ] Errors return a canonical code plus `google.rpc` details; messages leak no internals
 - [ ] Retries restricted to idempotent methods, driven by service config
-- [ ] gRPC-Web or transcoding path documented, with the code-to-HTTP-status mapping verified
+- [ ] gRPC-Web or transcoding path documented, code-to-HTTP-status mapping verified
 
 ## Failure modes
 
@@ -259,7 +253,6 @@ Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISS
 | Cascading `DEADLINE_EXCEEDED` under load | Deadlines not budgeted; every hop uses the full timeout | Shrink the budget at each hop; fail fast when headroom is gone |
 | Auth passes on streaming RPCs but not unary (or vice versa) | Only one interceptor slot registered | Register both unary and stream chains |
 | Client retries a non-idempotent write and double-charges | Blanket retry policy | Restrict `retryPolicy` per method; add an idempotency key |
-| Enum default silently means a real value | Zero value assigned business meaning | Reserve `0` for `_UNSPECIFIED` |
 | `UNIMPLEMENTED` in production | Client generated from a newer proto than the deployed server | Deploy server first; gate new RPCs behind a rollout |
 | Browser client fails with a transport error | gRPC-Web proxy missing, or an unsupported streaming mode | Add the proxy; switch to server streaming or unary |
 
@@ -269,6 +262,5 @@ Transcoding maps gRPC codes onto HTTP status codes (`NOT_FOUND` to 404, `PERMISS
 - gRPC Core concepts, architecture and lifecycle; gRPC status codes and their use in gRPC
 - `google.rpc.Status`, `google/rpc/error_details.proto`, `google/api/http.proto`
 - Google API Improvement Proposals (AIP) for resource-oriented gRPC design
-- `../api-design/SKILL.md`, `../api-versioning-deprecation/SKILL.md`
-- `../idempotency-patterns/SKILL.md`, `../event-driven-architecture/SKILL.md`
-- `../golang-patterns/SKILL.md`, `../latency-critical-systems/SKILL.md`
+- `../api-design/SKILL.md`, `../api-versioning-deprecation/SKILL.md`, `../idempotency-patterns/SKILL.md`
+- `../event-driven-architecture/SKILL.md`, `../golang-patterns/SKILL.md`, `../latency-critical-systems/SKILL.md`

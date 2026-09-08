@@ -1,3 +1,5 @@
+> **번역본.** 이 문서는 영문판보다 뒤처져 있을 수 있습니다. 기준은 [README.md](../../README.md) 입니다.
+
 **언어:** [English](../../README.md) | [Português (Brasil)](../pt-BR/README.md) | [简体中文](../../README.zh-CN.md) | [繁體中文](../zh-TW/README.md) | [日本語](../ja-JP/README.md) | 한국어 | [Türkçe](../tr/README.md) | [Русский](../ru/README.md) | [Tiếng Việt](../vi-VN/README.md) | [ไทย](../th/README.md) | [Deutsch](../de-DE/README.md) | [Українська](../uk-UA/README.md)
 
 # FORGE

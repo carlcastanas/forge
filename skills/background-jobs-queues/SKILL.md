@@ -11,7 +11,7 @@ Moving work off the request path is easy; keeping it correct under retries, rede
 
 ## When to activate
 
-- Moving slow work (email, PDF render, export, third-party sync, webhook delivery) out of a request handler.
+- Moving slow work (email, PDF render, export, third-party sync) out of a request handler.
 - A job runs twice, or runs while a previous attempt is still running.
 - Retries are hammering a dependency, or a permanent failure is retrying forever.
 - Queue depth or oldest-message age is climbing, or one tenant's bulk import is starving the rest.
@@ -27,7 +27,7 @@ Moving work off the request path is easy; keeping it correct under retries, rede
 ## Prerequisites
 
 - A broker with per-message visibility timeout or lease semantics (SQS, Redis Streams, PGMQ, RabbitMQ, Sidekiq, Celery).
-- A durable store for job state and checkpoints, and metrics that read broker-side gauges rather than only in-process counters.
+- A durable store for job state and checkpoints; metrics that read broker-side gauges, not only in-process counters.
 
 ## Process
 
@@ -82,8 +82,6 @@ def lease(queue_url, receipt_handle, seconds=60, interval=20, max_total=1800):
 Heartbeat any job whose duration varies by more than about 2x. On a lost lease, abort: another worker owns the job, and continuing means two writers.
 
 ### 3. Define the retry policy
-
-Bounded attempts, exponential backoff, full jitter, and a hard split between retriable and terminal.
 
 ```typescript
 const BASE_MS = 1_000, CAP_MS = 15 * 60 * 1_000, MAX_ATTEMPTS = 8;
@@ -232,37 +230,31 @@ Oldest message age is the primary health signal, not depth: a deep queue drainin
 
 ## Checklist
 
-- [ ] Payloads carry IDs and a version, never serialized entities; each job is one bounded unit of work.
-- [ ] Re-running any job with the same arguments produces the same end state.
-- [ ] Visibility timeout exceeds p99 duration; longer jobs heartbeat with a total cap; a lost lease aborts writes.
-- [ ] Retries bounded with exponential backoff plus full jitter; terminal errors skip retries.
-- [ ] Every queue has a DLQ, an owner, an alert on depth greater than zero, and a rate-limited redrive tool.
-- [ ] Cron dispatch is singleton across replicas, and catch-up behavior is written into the job definition.
+- [ ] Payloads carry IDs and a version, never serialized entities; each job is one bounded unit of work, safe to re-run.
+- [ ] Visibility timeout exceeds p99 duration; longer jobs heartbeat with a total cap; a lost lease aborts writes. Retries bounded with exponential backoff plus full jitter; terminal errors skip retries.
+- [ ] Every queue has a DLQ, an owner, an alert on depth above zero, and a rate-limited redrive tool.
+- [ ] Cron dispatch is singleton across replicas; catch-up behavior is written into the job definition.
 - [ ] Priority classes have separate pools; per-tenant dequeue and concurrency are capped.
 - [ ] Long jobs checkpoint and re-enqueue inside the lease budget.
-- [ ] `SIGTERM` stops polling and drains; grace period exceeds p99 duration.
-- [ ] `workers x concurrency` fits inside the database pool and downstream quotas.
+- [ ] `SIGTERM` stops polling and drains; grace period and `workers x concurrency` both sized (p99 duration, pool minus headroom).
 - [ ] Dashboards show depth, oldest message age, latency percentiles, failure rate, and DLQ depth per job type.
 
 ## Failure modes
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| Job runs twice concurrently | Visibility timeout shorter than runtime | Raise the timeout, add heartbeating, abort on lost lease |
-| Duplicate side effects after a deploy | Non-idempotent handler plus at-least-once delivery | Dedup key or conditional write inside the effect transaction |
-| Retries never stop | No max attempts, or terminal errors classified as retriable | Bound attempts; classify by error type and DLQ terminal failures |
+| Job runs twice concurrently, or duplicates its side effects | Timeout shorter than runtime; non-idempotent handler | Raise the timeout, heartbeat, abort on lost lease; dedup inside the effect transaction |
+| Retries never stop | No max attempts, or terminal errors marked retriable | Bound attempts; classify by error type and DLQ terminal failures |
 | Recovery causes a second outage | Backoff without jitter, or unthrottled redrive | Full jitter; redrive with a rate limit |
-| Backlog takes down the database | Concurrency exceeds the connection pool | Cap `workers x concurrency` below pool size minus headroom |
-| One tenant starves the rest | FIFO across a shared queue | Per-tenant fair dequeue and per-tenant concurrency cap |
 | Jobs lost on every deploy | No `SIGTERM` handling or grace period too short | Drain on signal; raise `terminationGracePeriodSeconds` |
-| Cron fires N times | Scheduler runs on every replica | Leader lock or broker-side single dispatch |
+| Backlog takes down the database | Concurrency exceeds the connection pool | Cap `workers x concurrency` below pool size minus headroom |
 | Depth flat, oldest age climbing | Head-of-line block, or no workers polling | Check worker heartbeats and the head message's error |
+| One tenant starves the rest | FIFO across a shared queue | Per-tenant fair dequeue and per-tenant concurrency cap |
+| Cron fires N times | Scheduler runs on every replica | Leader lock or broker-side single dispatch |
 
 ## References
 
 - Enterprise Integration Patterns: Competing Consumers, Dead Letter Channel, Idempotent Receiver, Message Expiration. Exponential backoff with full jitter; token bucket rate limiting; leader election via lock.
 - Amazon SQS documentation: visibility timeout, dead-letter queues, redrive policy.
-- PostgreSQL documentation: SELECT ... FOR UPDATE SKIP LOCKED, window functions, advisory locks.
-- Kubernetes documentation: pod termination lifecycle, readiness probes.
-- [../event-driven-architecture/SKILL.md](../event-driven-architecture/SKILL.md), [../idempotency-patterns/SKILL.md](../idempotency-patterns/SKILL.md), [../rate-limiting/SKILL.md](../rate-limiting/SKILL.md)
-- [../error-handling/SKILL.md](../error-handling/SKILL.md), [../deployment-patterns/SKILL.md](../deployment-patterns/SKILL.md), [../django-celery/SKILL.md](../django-celery/SKILL.md)
+- PostgreSQL documentation: SELECT ... FOR UPDATE SKIP LOCKED, window functions, advisory locks. Kubernetes documentation: pod termination lifecycle, readiness probes.
+- [../event-driven-architecture/SKILL.md](../event-driven-architecture/SKILL.md), [../idempotency-patterns/SKILL.md](../idempotency-patterns/SKILL.md), [../rate-limiting/SKILL.md](../rate-limiting/SKILL.md), [../error-handling/SKILL.md](../error-handling/SKILL.md), [../deployment-patterns/SKILL.md](../deployment-patterns/SKILL.md), [../django-celery/SKILL.md](../django-celery/SKILL.md)

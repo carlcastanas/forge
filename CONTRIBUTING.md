@@ -1,519 +1,312 @@
-# Contributing to FORGE
+# Contributing
 
-Thanks for wanting to contribute! This repo is a community resource for Claude Code users.
+How to make a change to FORGE that will pass CI and be easy to review. This page covers the
+repository layout, local setup, the validation gate, the authoring contracts for each catalog
+type, commit conventions, and what a reviewer will check.
 
-## Table of Contents
+Prerequisites: Node 20.19.0 and Python 3.12.8 as pinned in `.tool-versions`, Git, and a working
+install of the coding agent you intend to test against.
 
-- [What We're Looking For](#what-were-looking-for)
-- [Quick Start](#quick-start)
-- [Contributing Skills](#contributing-skills)
-- [Skill Adaptation Policy](#skill-adaptation-policy)
-- [Contributing Agents](#contributing-agents)
-- [Contributing Hooks](#contributing-hooks)
-- [Contributing Commands](#contributing-commands)
-- [MCP and documentation (e.g. Context7)](#mcp-and-documentation-eg-context7)
-- [Cross-Harness and Translations](#cross-harness-and-translations)
-- [Pull Request Process](#pull-request-process)
+## What a contribution looks like here
 
----
+FORGE ships a catalog, not an application. The overwhelming majority of changes are one of:
 
-## What We're Looking For
+- A new or improved skill in `skills/`.
+- A new or improved agent in `agents/`.
+- A rule refinement in `rules/`.
+- A hook in `scripts/hooks/` plus its registration in `hooks/hooks.json`.
+- A validator, script, or test under `scripts/` and `tests/`.
+- Documentation in `docs/` or `guides/`.
 
-### Agents
-New agents that handle specific tasks well:
-- Language-specific reviewers (Python, Go, Rust)
-- Framework experts (Django, Rails, Laravel, Spring)
-- DevOps specialists (Kubernetes, Terraform, CI/CD)
-- Domain experts (ML pipelines, data engineering, mobile)
+Every one of those is governed by a machine-checked contract. `npm test` runs the validators;
+if they pass, the shape is right. Review then focuses on whether the content is correct and
+whether it duplicates something that already exists.
 
-### Skills
-Workflow definitions and domain knowledge:
-- Language best practices
-- Framework patterns
-- Testing strategies
-- Architecture guides
+## Repository layout
 
-### Hooks
-Useful automations:
-- Linting/formatting hooks
-- Security checks
-- Validation hooks
-- Notification hooks
+| Path | Contents |
+| --- | --- |
+| `agents/` | 68 subagent definitions, one Markdown file each |
+| `skills/` | 287 skills, each a directory containing `SKILL.md` |
+| `commands/` | 94 slash-command shims |
+| `rules/` | 121 rule files across 22 stack directories, plus an index README |
+| `hooks/` | Hook registration JSON |
+| `scripts/hooks/` | Hook entrypoints |
+| `scripts/ci/` | Validators executed by `npm test` |
+| `scripts/lib/` | Shared helpers |
+| `manifests/` | Selective-install profiles, modules, components |
+| `mcp-configs/` | MCP server configuration templates |
+| `schemas/` | JSON Schemas enforced by the validators |
+| `workflows/` | Native workflow scripts |
+| `contexts/` | Context presets: `dev`, `review`, `research` |
+| `tests/` | Node and Python test suites |
+| `docs/` | Reference documentation |
+| `guides/` | Long-form narrative guides |
+| `examples/` | Worked examples |
 
-### Commands
-Slash commands that invoke useful workflows:
-- Deployment commands
-- Testing commands
-- Code generation commands
+Harness adapters live in root dotfile directories — `.claude-plugin/`, `.codex/`, `.cursor/`,
+`.gemini/`, `.opencode/`, `.zed/`, `.qwen/`, `.agents/`, and siblings. They are projections of
+the canonical catalog. Do not add behavior to an adapter that the catalog does not have; add it
+to the catalog and let the adapter carry it.
 
----
-
-## Quick Start
+## Local setup
 
 ```bash
-# 1. Fork and clone
-gh repo fork your-org/FORGE --clone
-cd FORGE
-
-# 2. Create a branch
-git checkout -b feat/my-contribution
-
-# 3. Add your contribution (see sections below)
-
-# 4. Test locally
-cp -r skills/my-skill ~/.claude/skills/  # for skills
-# Then test with Claude Code
-
-# 5. Submit PR
-git add . && git commit -m "feat: add my-skill" && git push -u origin feat/my-contribution
+git clone <your fork> forge
+cd forge
+corepack enable
+yarn install
 ```
 
+The repository declares `yarn@4.9.2` in `packageManager`. Use Corepack rather than a globally
+installed Yarn so the version matches CI. Scripts are invoked with `npm run` throughout this
+page because that is how `package.json` names them; `yarn <script>` works identically.
+
+Verify the checkout before changing anything:
+
+```bash
+npm test
+```
+
+A clean checkout must pass. If it does not, fix that before layering your change on top —
+otherwise you cannot tell which failure is yours.
+
+## The validation gate
+
+```bash
+npm test
+```
+
+runs, in order:
+
+1. `check-unicode-safety.js` — rejects homoglyphs, zero-width characters, and other
+   invisible-payload vectors anywhere in the tree.
+2. `validate-agents.js` — frontmatter completeness, name/filename agreement, model tier.
+3. `validate-commands.js` — required `description`, filename conventions.
+4. `validate-rules.js` — rule file structure and placement.
+5. `validate-skills.js` — `SKILL.md` presence, frontmatter, required sections.
+6. `validate-hooks.js` — registration schema, matcher validity, entrypoint existence.
+7. `validate-install-manifests.js` — profile, module, and component consistency.
+8. `validate-no-personal-paths.js` — no absolute home-directory paths in tracked files.
+9. `catalog:check` — the generated catalog matches the directories.
+10. `command-registry:check` — the command registry matches `commands/`.
+11. `tests/run-all.js` — the Node test suite.
+
+The chain stops at the first failure. Fix that one and re-run rather than reading past it.
+
+Other commands you will need:
+
+```bash
+npm run lint                     # eslint . && markdownlint over all Markdown
+npm run coverage                 # thresholds: 80 lines / 80 functions / 79 branches / 80 statements
+node tests/run-all.js            # suite only, skipping validators
+npm run catalog:sync             # regenerate the catalog after adding entries
+npm run command-registry:write   # regenerate the command registry
+npm run harness:adapters         # adapter compliance across harnesses
+npm run harness:audit            # repository harness audit
+npm run platform:audit           # platform support audit
+npm run security:ioc-scan        # supply-chain indicator scan
+```
+
+Run `npm run catalog:sync` and `npm run command-registry:write` after any addition, rename, or
+deletion in `agents/`, `skills/`, or `commands/`. The corresponding `:check` scripts will fail
+CI otherwise.
+
+## Adding a skill
+
+Skills are the durable unit of the system. Prefer adding a skill over adding a command.
+
+```text
+skills/<name>/
+  SKILL.md          required
+  references/       optional supporting material
+  examples/         optional worked examples
+```
+
+`SKILL.md` frontmatter requires `name`, `description`, and `origin`. Use `origin: FORGE` for
+first-party skills and `origin: community` for imported ones. The body needs a clear "when to
+use" section, the mechanics, and examples that were actually run.
+
+Before writing one, search `skills/` for overlap. With 287 skills present, a near-duplicate is
+more likely than a genuine gap. Extending an existing skill is almost always the better change.
+
+Curated skills belong in `skills/`. Generated or personally imported skills belong in the
+user's own skills directory, not in this repository — see
+[docs/SKILL-PLACEMENT-POLICY.md](docs/SKILL-PLACEMENT-POLICY.md).
+
+Full contract: [docs/SKILL-AUTHORING.md](docs/SKILL-AUTHORING.md).
+
+## Adding an agent
+
+One file at `agents/<name>.md`, lowercase with hyphens, with frontmatter:
+
+```yaml
 ---
-
-## Contributing Skills
-
-Skills are knowledge modules that Claude Code loads based on context.
-
-> **Comprehensive Guide:** For detailed guidance on creating effective skills, see [Skill Development Guide](docs/SKILL-DEVELOPMENT-GUIDE.md). It covers:
-> - Skill architecture and categories
-> - Writing effective content with examples
-> - Best practices and common patterns
-> - Testing and validation
-> - Complete examples gallery
-
-### Directory Structure
-
-```
-skills/
-└── your-skill-name/
-    └── SKILL.md
-```
-
-### SKILL.md Template
-
-```markdown
----
-name: your-skill-name
-description: Brief description shown in skill list and used for auto-activation
-origin: FORGE
----
-
-# Your Skill Title
-
-Brief overview of what this skill covers.
-
-## When to Activate
-
-Describe scenarios where Claude should use this skill. This is critical for auto-activation.
-
-## Core Concepts
-
-Explain key patterns and guidelines.
-
-## Code Examples
-
-\`\`\`typescript
-// Include practical, tested examples
-function example() {
-  // Well-commented code
-}
-\`\`\`
-
-## Anti-Patterns
-
-Show what NOT to do with examples.
-
-## Best Practices
-
-- Actionable guidelines
-- Do's and don'ts
-- Common pitfalls to avoid
-
-## Related Skills
-
-Link to complementary skills (e.g., `related-skill-1`, `related-skill-2`).
-```
-
-### Skill Categories
-
-| Category | Purpose | Examples |
-|----------|---------|----------|
-| **Language Standards** | Idioms, conventions, best practices | `python-patterns`, `golang-patterns` |
-| **Framework Patterns** | Framework-specific guidance | `django-patterns`, `nextjs-patterns` |
-| **Workflow** | Step-by-step processes | `tdd-workflow`, `refactoring-workflow` |
-| **Domain Knowledge** | Specialized domains | `security-review`, `api-design` |
-| **Tool Integration** | Tool/library usage | `docker-patterns`, `supabase-patterns` |
-| **Template** | Project-specific skill templates | `docs/examples/project-guidelines-template.md` |
-
-### Skill Adaptation Policy
-
-If you are porting an idea from another repo, plugin, harness, or personal prompt pack, read [Skill Adaptation Policy](docs/skill-adaptation-policy.md) before opening the PR.
-
-Short version:
-
-- copy the underlying idea, not the external product identity
-- rename the skill when FORGE materially changes or expands the surface
-- prefer FORGE-native rules, skills, scripts, and MCPs over new default third-party dependencies
-- do not ship a skill whose main value is telling users to install an unvetted package
-
-### Skill Checklist
-
-- [ ] Focused on one domain/technology (not too broad)
-- [ ] Includes "When to Activate" section for auto-activation
-- [ ] Includes practical, copy-pasteable code examples
-- [ ] Shows anti-patterns (what NOT to do)
-- [ ] Under 500 lines (800 max)
-- [ ] Uses clear section headers
-- [ ] Tested with Claude Code
-- [ ] Links to related skills
-- [ ] No sensitive data (API keys, tokens, paths)
-- [ ] Frontmatter declares `name:` matching the directory name
-- [ ] Frontmatter `description:` is an inline string or folded (`>`) scalar — not a literal block (`|`, `|-`, or `|+`), which preserves internal newlines and breaks flat-table renderers
-
-### Example Skills
-
-| Skill | Category | Purpose |
-|-------|----------|---------|
-| `coding-standards/` | Language Standards | TypeScript/JavaScript patterns |
-| `frontend-patterns/` | Framework Patterns | React and Next.js best practices |
-| `backend-patterns/` | Framework Patterns | API and database patterns |
-| `security-review/` | Domain Knowledge | Security checklist |
-| `tdd-workflow/` | Workflow | Test-driven development process |
-| `docs/examples/project-guidelines-template.md` | Template | Project-specific skill template |
-
----
-
-## Contributing Agents
-
-Agents are specialized assistants invoked via the Task tool.
-
-### File Location
-
-```
-agents/your-agent-name.md
-```
-
-### Agent Template
-
-```markdown
----
-name: your-agent-name
-description: What this agent does and when Claude should invoke it. Be specific!
-tools: Read, Write, Edit, Bash, Grep, Glob
+name: example-reviewer
+description: What this agent does and when to invoke it, in the third person.
+tools: Read, Grep, Glob
 model: sonnet
 ---
-
-You are a [role] specialist.
-
-## Your Role
-
-- Primary responsibility
-- Secondary responsibility
-- What you DO NOT do (boundaries)
-
-## Workflow
-
-### Step 1: Understand
-How you approach the task.
-
-### Step 2: Execute
-How you perform the work.
-
-### Step 3: Verify
-How you validate results.
-
-## Output Format
-
-What you return to the user.
-
-## Examples
-
-### Example: [Scenario]
-Input: [what user provides]
-Action: [what you do]
-Output: [what you return]
 ```
 
-### Agent Fields
+Rules:
 
-| Field | Description | Options |
-|-------|-------------|---------|
-| `name` | Lowercase, hyphenated | `code-reviewer` |
-| `description` | Used to decide when to invoke | Be specific! |
-| `tools` | Only what's needed | `Read, Write, Edit, Bash, Grep, Glob, WebFetch, Task`, or MCP tool names (e.g. `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) when the agent uses MCP |
-| `model` | Complexity level | `haiku` (simple), `sonnet` (coding), `opus` (complex) |
+- `name` must equal the filename without `.md`.
+- `tools` is the minimum viable allowlist. A reviewer never receives `Write` or `Edit`. An
+  agent that only reads receives no `Bash`. MCP tools are named individually.
+- `model` defaults to `sonnet`. Anything above it needs a justification in the pull request.
+- The body states scope, an explicit out-of-scope list, and the output format the caller
+  should expect.
 
-### Example Agents
+Full contract: [docs/AGENT-AUTHORING.md](docs/AGENT-AUTHORING.md). Routing conventions are in
+[AGENTS.md](AGENTS.md), which also needs a row for the new agent.
 
-| Agent | Purpose |
-|-------|---------|
-| `tdd-guide.md` | Test-driven development |
-| `code-reviewer.md` | Code review |
-| `security-reviewer.md` | Security scanning |
-| `build-error-resolver.md` | Fix build errors |
+## Adding a command
 
----
+One file at `commands/<name>.md`; the filename is the slash name. Only `description` is
+required. Optional keys in use: `argument-hint`, `name`, `command`, `allowed-tools`, `agent`,
+`subtask`, `disable-model-invocation`.
 
-## Contributing Hooks
+Keep the body short. A command is a shim that loads a skill or names an agent; if the body
+grows past a screen of orchestration, extract the procedure into a skill and shrink the command
+back down. Add the row to [COMMANDS-QUICK-REF.md](COMMANDS-QUICK-REF.md), then run
+`npm run command-registry:write`.
 
-Hooks are automatic behaviors triggered by Claude Code events.
+## Adding a rule
 
-### File Location
+Rules go at `rules/<stack>/<topic>.md`, or `rules/common/<topic>.md` when they apply to every
+stack. Reuse the standard topic filenames — `coding-style.md`, `patterns.md`, `security.md`,
+`testing.md`, `hooks.md` — so selection stays predictable.
 
-```
-hooks/hooks.json
-```
+Rules are injected on every turn, so length is a per-turn cost forever. Write one imperative
+plus one clause of rationale. If it needs an example longer than three lines, it is skill
+material. See [RULES.md](RULES.md) for the selection model and
+[docs/RULES-GUIDE.md](docs/RULES-GUIDE.md) for the mechanics.
 
-### Hook Types
+## Adding a hook
 
-| Type | Trigger | Use Case |
-|------|---------|----------|
-| `PreToolUse` | Before tool runs | Validate, warn, block |
-| `PostToolUse` | After tool runs | Format, check, notify |
-| `SessionStart` | Session begins | Load context |
-| `Stop` | Session ends | Cleanup, audit |
+1. Write the entrypoint in `scripts/hooks/<name>.js`. Cross-platform Node, no shell-only
+   assumptions.
+2. Register it in `hooks/hooks.json` with a specific `matcher`, a stable `id`, and a
+   `description` that says what it does and whether it blocks.
+3. Exit `1` only when blocking is intentional. Warnings exit `0` with an actionable message.
+4. Declare a `timeout`, or mark the hook `async`, if it can take more than a second.
+5. Add coverage in `tests/hooks/`.
 
-### Hook Format
+A blocking hook changes behavior for everyone who installs FORGE. Justify it in the pull
+request. See [docs/HOOKS-GUIDE.md](docs/HOOKS-GUIDE.md).
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "tool == \"Bash\" && tool_input.command matches \"rm -rf /\"",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '[Hook] BLOCKED: Dangerous command' && exit 1"
-          }
-        ],
-        "description": "Block dangerous rm commands"
-      }
-    ]
-  }
-}
+## Commit conventions
+
+Commits follow Conventional Commits, enforced by `commitlint.config.js`.
+
+```text
+<type>(<scope>): <subject>
 ```
 
-### Matcher Syntax
+Allowed types:
 
-```javascript
-// Match specific tools
-tool == "Bash"
-tool == "Edit"
-tool == "Write"
+`feat` · `fix` · `docs` · `style` · `refactor` · `perf` · `test` · `chore` · `ci` · `build` ·
+`revert`
 
-// Match input patterns
-tool_input.command matches "npm install"
-tool_input.file_path matches "\\.tsx?$"
+Constraints the linter enforces:
 
-// Combine conditions
-tool == "Bash" && tool_input.command matches "git push"
+- Header maximum 100 characters.
+- Subject must not be sentence-case, start-case, pascal-case, or upper-case. Write it in lower
+  case: `feat(agents): add fastapi reviewer`, not `feat(agents): Add FastAPI Reviewer`.
+
+Use the directory as the scope where one applies: `agents`, `skills`, `commands`, `rules`,
+`hooks`, `scripts`, `docs`, `tests`, or an adapter name.
+
+Examples:
+
+```text
+feat(skills): add postgres partition maintenance skill
+fix(hooks): stop suggest-compact firing on generated files
+docs(rules): document react-native rule set selection
+chore(ci): pin markdownlint to the tested minor
+refactor(scripts): extract shared frontmatter parser
 ```
 
-### Hook Examples
+Keep each commit to one logical change. A commit that adds an agent and rewrites a validator
+is two commits.
 
-```json
-// Block dev servers outside tmux
-{
-  "matcher": "tool == \"Bash\" && tool_input.command matches \"npm run dev\"",
-  "hooks": [{"type": "command", "command": "echo 'Use tmux for dev servers' && exit 1"}],
-  "description": "Ensure dev servers run in tmux"
-}
+## Pull requests
 
-// Auto-format after editing TypeScript
-{
-  "matcher": "tool == \"Edit\" && tool_input.file_path matches \"\\.tsx?$\"",
-  "hooks": [{"type": "command", "command": "npx prettier --write \"$file_path\""}],
-  "description": "Format TypeScript files after edit"
-}
+Fill in `.github/PULL_REQUEST_TEMPLATE.md`. A reviewable pull request has:
 
-// Warn before git push
-{
-  "matcher": "tool == \"Bash\" && tool_input.command matches \"git push\"",
-  "hooks": [{"type": "command", "command": "echo '[Hook] Review changes before pushing'"}],
-  "description": "Reminder to review before push"
-}
-```
+**A title that reads as a change.** "Add a Rust reviewer for unsafe-block auditing", not
+"updates".
 
-### Hook Checklist
+**A description that answers three questions.** What problem this solves. What approach was
+taken. What was verified, with the commands you ran and their result.
 
-- [ ] Matcher is specific (not overly broad)
-- [ ] Includes clear error/info messages
-- [ ] Uses correct exit codes (`exit 1` blocks, `exit 0` allows)
-- [ ] Tested thoroughly
-- [ ] Has description
+**A bounded diff.** One concern. A pull request that adds a skill, refactors a script, and
+reformats three documents is three pull requests, and will be reviewed as slowly as its
+slowest part.
 
----
+**Evidence.** Paste the relevant `npm test` output, not a claim that it passed. For a behavior
+change, show the before and after.
 
-## Contributing Commands
+**Documentation in the same change.** A new agent updates `AGENTS.md`. A new command updates
+`COMMANDS-QUICK-REF.md`. A new rule directory updates `RULES.md`. Documentation that lands in a
+follow-up does not land.
 
-Commands are user-invoked actions with `/command-name`.
+Branch from the default branch, keep the branch rebased, and do not force-push after review has
+started unless you say so in a comment.
 
-### File Location
+Do not use `--no-verify`. A pre-commit hook exists to block it.
 
-```
-commands/your-command.md
-```
+## Review checklist
 
-### Command Template
+Run this against your own change before requesting review, and against someone else's when
+reviewing.
 
-```markdown
----
-description: Brief description shown in /help
----
+**Correctness**
 
-# Command Name
+- [ ] `npm test` passes on a clean checkout with the change applied.
+- [ ] `npm run lint` passes.
+- [ ] New scripts have tests; changed scripts have their tests updated.
+- [ ] Coverage thresholds still hold if `scripts/` changed.
 
-## Purpose
+**Catalog hygiene**
 
-What this command does.
+- [ ] The addition does not duplicate an existing skill, agent, command, or rule.
+- [ ] `npm run catalog:sync` and `npm run command-registry:write` were run and their output
+      committed.
+- [ ] Names are lowercase with hyphens and agree with their frontmatter.
+- [ ] Counts quoted in documentation were verified against the directory, not copied.
 
-## Usage
+**Security**
 
-\`\`\`
-/your-command [args]
-\`\`\`
+- [ ] No secrets, tokens, or credentials in any file, including examples and tests.
+- [ ] No absolute home-directory paths.
+- [ ] Agent tool allowlists are the minimum needed; any widening is called out explicitly.
+- [ ] New hooks that block are justified and tested.
+- [ ] Anything that reads external content treats it as data, not instruction.
 
-## Workflow
+**Documentation**
 
-1. First step
-2. Second step
-3. Final step
+- [ ] Every claim is checkable against the repository.
+- [ ] Links are relative and resolve.
+- [ ] One H1, sentence-case headings, language tag on every fenced block.
+- [ ] No emoji, no marketing adjectives, no first person.
 
-## Output
+**Scope**
 
-What the user receives.
-```
+- [ ] One concern per pull request.
+- [ ] No unrelated formatting churn.
+- [ ] Adapter directories were not edited to hold behavior missing from the catalog.
 
-### Example Commands
+## Reporting problems
 
-| Command | Purpose |
-|---------|---------|
-| `commit.md` | Create git commits |
-| `code-review.md` | Review code changes |
-| `tdd.md` | TDD workflow |
-| `e2e.md` | E2E testing |
+Open an issue using the templates in `.github/ISSUE_TEMPLATE/`. Include the harness and its
+version, the FORGE version, the exact command, the full output, and what you expected instead.
+A reproduction from a clean checkout is worth more than a description.
 
----
+Security issues do not go in the issue tracker. Follow [SECURITY.md](SECURITY.md).
 
-## MCP and documentation (e.g. Context7)
+## License
 
-Skills and agents can use **MCP (Model Context Protocol)** tools to pull in up-to-date data instead of relying only on training data. This is especially useful for documentation.
-
-- **Context7** is an MCP server that exposes `resolve-library-id` and `query-docs`. Use it when the user asks about libraries, frameworks, or APIs so answers reflect current docs and code examples.
-- When contributing **skills** that depend on live docs (e.g. setup, API usage), describe how to use the relevant MCP tools (e.g. resolve the library ID, then query docs) and point to the `documentation-lookup` skill or Context7 as the pattern.
-- When contributing **agents** that answer docs/API questions, include the Context7 MCP tool names (e.g. `mcp__context7__resolve-library-id`, `mcp__context7__query-docs`) in the agent's tools and document the resolve → query workflow.
-- **mcp-configs/mcp-servers.json** includes a Context7 entry; users enable it in their harness (e.g. Claude Code, Cursor) to use the documentation-lookup skill (in `skills/documentation-lookup/`) and the `/docs` command.
-
----
-
-## Cross-Harness and Translations
-
-### Skill subsets (Codex and Cursor)
-
-FORGE ships skill subsets for other harnesses:
-
-- **Codex:** `.agents/skills/` — skills listed in `agents/openai.yaml` are loaded by Codex.
-- **Cursor:** `.cursor/skills/` — a subset of skills is bundled for Cursor.
-
-When you **add a new skill** that should be available on Codex or Cursor:
-
-1. Add the skill under `skills/your-skill-name/` as usual.
-2. If it should be available on **Codex**, add it to `.agents/skills/` (copy the skill directory or add a reference) and ensure it is referenced in `agents/openai.yaml` if required.
-3. If it should be available on **Cursor**, add it under `.cursor/skills/` per Cursor's layout.
-
-Check existing skills in those directories for the expected structure. Keeping these subsets in sync is manual; mention in your PR if you updated them.
-
-### Translations
-
-Translations live under `docs/` (e.g. `docs/zh-CN`, `docs/zh-TW`, `docs/ja-JP`). If you change agents, commands, or skills that are translated, consider updating the corresponding translation files or opening an issue so maintainers or translators can update them.
-
----
-
-## Pull Request Process
-
-### 1. PR Title Format
-
-```
-feat(skills): add rust-patterns skill
-feat(agents): add api-designer agent
-feat(hooks): add auto-format hook
-fix(skills): update React patterns
-docs: improve contributing guide
-```
-
-### 2. PR Description
-
-```markdown
-## Summary
-What you're adding and why.
-
-## Type
-- [ ] Skill
-- [ ] Agent
-- [ ] Hook
-- [ ] Command
-
-## Testing
-How you tested this.
-
-## Checklist
-- [ ] Follows format guidelines
-- [ ] Tested with Claude Code
-- [ ] No sensitive info (API keys, paths)
-- [ ] Clear descriptions
-```
-
-### 3. Before You Push (avoid red CI)
-
-Run `npm test` locally. It is the same gauntlet CI runs, and it catches almost everything below.
-
-- **Changed `package.json`?** If you touched `bin`, `files`, or dependencies, run `yarn install --mode=update-lockfile` and commit the `yarn.lock` change. CI runs Yarn in hardened mode on public PRs and fails if the lockfile would be modified, so a stale `yarn.lock` breaks the build on its own.
-- **Added a skill, command, agent, hook, or CLI tool?** Wire up every surface it belongs to:
-  - `package.json` (`bin` and `files`), `manifests/install-components.json`, `manifests/install-modules.json`, and `agent.yaml`
-  - Regenerate the catalog (`npm run catalog:sync`) and command registry (`npm run command-registry:write`)
-  - Update the docs tables (`README.md`, `COMMANDS-QUICK-REF.md`, `docs/COMMAND-AGENT-MAP.md`)
-  - New script path? Add it to the publish surface allowlist (`tests/scripts/npm-publish-surface.test.js`)
-  - Cross-harness: for Codex, add `.agents/skills/<name>/` plus `agents/openai.yaml`. The Codex frontmatter validator only allows `name`, `description`, `metadata`, `license`, and `allowed-tools`, so drop keys like `version` from that copy.
-
-### 4. Review Process
-
-1. Maintainers review within 48 hours
-2. Address feedback if requested
-3. Once approved, merged to main
-
----
-
-## Guidelines
-
-### Do
-- Keep contributions focused and modular
-- Include clear descriptions
-- Test before submitting
-- Follow existing patterns
-- Document dependencies
-
-### Don't
-- Include sensitive data (API keys, tokens, paths)
-- Add overly complex or niche configs
-- Submit untested contributions
-- Create duplicates of existing functionality
-
----
-
-## File Naming
-
-- Use lowercase with hyphens: `python-reviewer.md`
-- Be descriptive: `tdd-workflow.md` not `workflow.md`
-- Match name to filename
-
----
-
-## Questions?
-
-- **Issues:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
-- **X/Twitter:**
-
----
-
-Thanks for contributing! Let's build a great resource together.
+Contributions are made under the MIT license in [LICENSE](LICENSE). There is no separate
+contributor agreement to sign.

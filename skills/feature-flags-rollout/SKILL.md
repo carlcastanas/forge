@@ -11,7 +11,7 @@ A feature flag separates deploy from release: the code ships dark, then a runtim
 
 ## When to activate
 
-- A change is risky, hard to reverse quickly, or touches a hot path, and a deploy-time-only rollback is too slow.
+- A change is risky, hard to reverse, or touches a hot path, and deploy-time rollback is too slow.
 - Rolling out to a subset of users, tenants, or regions before general availability.
 - Adding an operational switch to shed load or disable a dependency during an incident.
 - Coordinating a code change with a schema change that cannot land atomically.
@@ -20,19 +20,18 @@ A feature flag separates deploy from release: the code ships dark, then a runtim
 
 ## When NOT to use
 
-- The change is small, reversible by redeploy within the incident response window, and has no cohort dimension. A flag adds a permanent branch for a temporary concern.
-- The goal is versioned API behavior for external consumers. Use API versioning: `../api-design/SKILL.md`.
+- The change is small, reversible by redeploy inside the incident response window, and has no cohort dimension. A flag adds a permanent branch for a temporary concern.
+- The goal is versioned behavior for external consumers: `../api-design/SKILL.md`.
 - The goal is release sequencing, changelog, and version numbering: `../release-management/SKILL.md`.
 - The change is purely a schema migration with no behavioral branch: `../database-migrations/SKILL.md`.
-- Long-lived per-customer capability differences belong in entitlements or plan configuration, not in the release flag system.
+- Long-lived per-customer capability differences belong in entitlements, not the release flag system.
 
 ## Prerequisites
 
-- A flag evaluation SDK or service with a documented offline/default behavior.
-- Metrics and traces that can be sliced by flag variant: `../observability-instrumentation/SKILL.md`.
-- SLOs or at least agreed guard metrics for the affected journey: `../sre-slo-error-budgets/SKILL.md`.
-- A stable subject identifier (user id, tenant id, device id) available at evaluation time.
-- A place to record flag ownership that is checked by CI, not by goodwill.
+- A flag evaluation SDK or service with documented offline/default behavior.
+- Metrics and traces sliceable by flag variant: `../observability-instrumentation/SKILL.md`.
+- SLOs, or at least agreed guard metrics, for the affected journey: `../sre-slo-error-budgets/SKILL.md`.
+- A stable subject identifier (user, tenant, or device id) available at evaluation time, and a record of flag ownership that CI can check.
 
 ## Process
 
@@ -61,12 +60,9 @@ expires: 2026-04-13      # release toggles get a hard date at creation
 removal_ticket: PAY-4821
 default: false           # value when the flag service is unreachable
 description: >
-  Routes checkout pricing through the v2 tax engine. OFF serves the v1 engine.
+  Routes checkout pricing through the v2 tax engine. OFF serves v1.
   Both paths write to the same order records.
-guard_metrics:
-  - checkout_success_rate
-  - checkout_p99_latency_ms
-  - payment_decline_rate
+guard_metrics: [checkout_success_rate, checkout_p99_latency_ms, payment_decline_rate]
 ```
 
 Open the removal ticket at creation, not at 100%. A ticket created "later" is created never.
@@ -116,18 +112,13 @@ Rules are evaluated top to bottom, first match wins. Put overrides above cohorts
 
 ```yaml
 targeting:
-  - name: kill-switch-off        # explicit disable beats everything
-    if: { flag_disabled: true }
-    serve: false
-  - name: internal-users
-    if: { email_domain: "acme.internal" }
-    serve: true
-  - name: excluded-tenants       # contractual opt-outs before any rollout
-    if: { tenant_id: ["t_1042", "t_2891"] }
-    serve: false
-  - name: percentage
-    rollout: { percent: 5, bucket_by: user_id }
-fallthrough: false
+  # Explicit disable beats everything.
+  - { name: kill-switch-off, if: { flag_disabled: true }, serve: false }
+  - { name: internal-users,  if: { email_domain: "acme.internal" }, serve: true }
+  # Contractual opt-outs, evaluated before any percentage rollout.
+  - { name: excluded-tenants, if: { tenant_id: ["t_1042", "t_2891"] }, serve: false }
+  - { name: percentage, rollout: { percent: 5, bucket_by: user_id } }
+fallthrough: false               # no rule matched, serve the safe default
 ```
 
 Bucket by the identifier that matches the blast radius. Bucketing a tenant-visible feature by user id shows one seat the new behavior and another seat the old one inside the same account.
@@ -141,36 +132,28 @@ Bucket by the identifier that matches the blast radius. Bucketing a tenant-visib
 | 2 | Allowlist of consenting design partners | 1-3 days | No support escalations |
 | 3 | 1% | At least one full traffic cycle | Guard metrics within noise; no new error signatures |
 | 4 | 5% | One full traffic cycle | Same, plus error-budget burn acceptable |
-| 5 | 25% | One full traffic cycle | Same, plus resource usage scales as predicted |
-| 6 | 50% | One full traffic cycle | Same |
-| 7 | 100% | 1-2 weeks | Ready to delete the flag and the old path |
+| 5 | 25%, then 50% | One full traffic cycle each | Same, plus resource usage scales as predicted |
+| 6 | 100% | 1-2 weeks | Ready to delete the flag and the old path |
 
-"One full traffic cycle" means at least one weekday peak and one off-peak trough. A rollout advanced through four steps in an afternoon has observed nothing.
-
-At each step, compare treatment against control on the same dashboard rather than watching a global aggregate. At 1%, a total outage of the new path moves a global error rate by roughly 1% and hides inside normal variance.
+"One full traffic cycle" means at least one weekday peak and one off-peak trough. A rollout advanced through four steps in an afternoon has observed nothing. At each step, compare treatment against control on the same dashboard rather than watching a global aggregate: at 1%, a total outage of the new path moves the global error rate by roughly 1% and hides inside normal variance.
 
 ```promql
 # Error rate split by variant, comparable at any rollout percentage
-sum by (flag_variant) (
-  rate(http_requests_total{route="/checkout", status=~"5.."}[5m])
-)
+sum by (flag_variant) (rate(http_requests_total{route="/checkout", status=~"5.."}[5m]))
 /
-sum by (flag_variant) (
-  rate(http_requests_total{route="/checkout"}[5m])
-)
+sum by (flag_variant) (rate(http_requests_total{route="/checkout"}[5m]))
 ```
 
 Write down the rollback trigger before each step, in the same numeric form used for SLO burn-rate alerts. If the trigger fires, set the flag to 0% first and diagnose afterward — mitigation precedes diagnosis (`../incident-response/SKILL.md`).
 
 ### 6. Build kill switches that work during a disaster
 
-An operational switch is only useful if it is reachable when everything else is broken:
+An operational switch is only useful if it is reachable when everything else is broken.
 
-- **No self-dependency.** A switch that disables the recommendation service must not be fetched through the recommendation service. A switch that sheds database load must not require a database read to evaluate.
+- **No self-dependency.** A switch disabling the recommendation service must not be fetched through it; a switch shedding database load must not require a database read to evaluate.
 - **Cached and default-safe.** Evaluate from a local cache with a compiled-in default; a flag-service outage must not un-shed load.
-- **Fast.** Propagation time is part of the mitigation time. Measure it, publish it, and cite it in runbooks.
-- **Documented in the runbook.** The switch key, the expected effect, the expected propagation delay, and how to confirm it took effect.
-- **Exercised.** Flip every kill switch in a game day or low-traffic window on a schedule (`../chaos-engineering/SKILL.md`). An untested kill switch is a comment.
+- **Fast and documented.** Propagation time is part of mitigation time — measure it, and record the switch key, expected effect, propagation delay, and confirmation check in the runbook.
+- **Exercised.** Flip every kill switch on a schedule in a game day or low-traffic window (`../chaos-engineering/SKILL.md`). An untested kill switch is a comment.
 
 ### 7. Pair flags with schema change carefully
 
@@ -194,14 +177,13 @@ Emit the variant as a span attribute and a structured log field at the point of 
 ```typescript
 import { trace } from "@opentelemetry/api";
 
-const span = trace.getActiveSpan();
-span?.setAttribute("feature_flag.key", "checkout_v2_pricing");
-span?.setAttribute("feature_flag.variant", useV2 ? "v2" : "v1");
-
+const variant = useV2 ? "v2" : "v1";
+trace.getActiveSpan()?.setAttributes({
+  "feature_flag.key": "checkout_v2_pricing",
+  "feature_flag.variant": variant,
+});
 logger.info("checkout.pricing.evaluated", {
-  flag_key: "checkout_v2_pricing",
-  flag_variant: useV2 ? "v2" : "v1",
-  order_id: orderId,
+  flag_key: "checkout_v2_pricing", flag_variant: variant, order_id: orderId,
 });
 ```
 
@@ -209,13 +191,12 @@ Keep variant cardinality bounded — a handful of named variants, never a user i
 
 ### 9. Test both paths, not every combination
 
-N flags produce 2^N configurations. Testing all of them is not possible and not necessary.
+N flags produce 2^N configurations. Testing all of them is neither possible nor necessary.
 
 - Unit and integration tests cover **ON and OFF for the flags currently in flight**, parameterized rather than duplicated.
-- CI's main run uses the **production default configuration**, so the default path is the one under constant test.
-- A **nightly all-on run** exercises the state the system converges toward and catches flags that only work in isolation.
-- **Contract-test the defaults**: assert that every flag in the manifest has a default, and that the default is the pre-change behavior.
-- End-to-end tests pin flag state explicitly rather than inheriting ambient configuration, or they become flaky (`../flaky-test-triage/SKILL.md`).
+- CI's main run uses the **production default configuration**; a **nightly all-on run** exercises the state the system converges toward and catches flags that only work in isolation.
+- **Contract-test the defaults**: every flag in the manifest has one, and it is the pre-change behavior.
+- End-to-end tests pin flag state explicitly instead of inheriting ambient configuration, or they turn flaky (`../flaky-test-triage/SKILL.md`).
 
 ```typescript
 describe.each([true, false])("checkout pricing (v2=%s)", (useV2) => {
@@ -265,13 +246,12 @@ Removing a flag means deleting the flag check, deleting the losing branch and it
 ## Checklist
 
 - [ ] Flag has a type, a team owner, a description, and a safe default recorded in the manifest
-- [ ] Release and experiment flags have an expiry date and a removal ticket created at the same time as the flag
+- [ ] Release and experiment flags carry an expiry date and a removal ticket created with the flag
 - [ ] Evaluation is server-side for anything affecting data, pricing, or authorization
 - [ ] Bucketing is a deterministic hash of flag key plus subject key, bucketed by the right subject
 - [ ] Default value is the pre-change behavior and is exercised by CI's main run
 - [ ] Targeting rules are ordered with overrides and exclusions above the percentage rule
-- [ ] Guard metrics and a numeric rollback trigger are defined before each ladder step
-- [ ] Dashboards compare treatment against control, not a global aggregate
+- [ ] Guard metrics and a numeric rollback trigger are defined before each ladder step, and dashboards compare treatment against control rather than a global aggregate
 - [ ] Flag variant is emitted as a span attribute and a log field, with bounded cardinality
 - [ ] Kill switches do not depend on what they disable and were flipped in the last test window
 - [ ] Schema changes follow expand-contract and remain compatible with the flag off
@@ -287,22 +267,21 @@ Removing a flag means deleting the flag check, deleting the losing branch and it
 | Everything broke when the flag service went down | No local cache, or a default that enabled the new path | Cache with streaming updates; make the default the pre-change behavior |
 | The same 10% of users are in every experiment | Hash omits the flag key | Include the flag key in the hash input |
 | Rollout looked clean at 1%, broke at 50% | Global aggregates hid a treatment-only failure | Slice all guard metrics by variant from step one |
-| Cannot disable the failing feature during an incident | Kill switch evaluated through the failing dependency | Move the switch to a local default-safe path with no dependency on the subsystem it disables |
+| Cannot disable the failing feature during an incident | Kill switch evaluated through the failing dependency | Move the switch to a local default-safe path independent of the subsystem it disables |
 | Hundreds of live flags, unknown state | No expiry enforcement and no ownership | Add the manifest and the CI stale-flag gate; sweep by owner, oldest first |
-| Removing a flag changed behavior unexpectedly | The removed branch was the one actually serving traffic | Confirm the live variant in the provider before deleting; delete the losing branch, not the winning one |
-| Tests pass in CI, feature fails in production | CI ran an all-off configuration the production system never uses | Run CI on production defaults plus a nightly all-on job |
-| Rollback to flag-off failed | Schema already contracted, or new-path writes are unreadable by the old path | Keep expand state and dual-write until after the bake window completes |
+| Removing a flag changed behavior unexpectedly | The deleted branch was the one actually serving traffic | Confirm the live variant in the provider first; delete the losing branch, not the winning one |
+| Tests pass in CI, feature fails in production | CI ran an all-off configuration production never uses | Run CI on production defaults plus a nightly all-on job |
+| Rollback to flag-off failed | Schema already contracted, or new-path writes unreadable by the old path | Keep expand state and dual-write until after the bake window completes |
 
 ## References
 
 - `../release-management/SKILL.md` — versioning, staged rollout, and rollback readiness around the flag
-- `../sre-slo-error-budgets/SKILL.md` — guard metrics, burn-rate triggers, and budget spend during rollout
+- `../sre-slo-error-budgets/SKILL.md` — guard metrics, burn-rate triggers, budget spend during rollout
 - `../incident-response/SKILL.md` — flipping the switch first, diagnosing second
 - `../database-migrations/SKILL.md` — expand-contract sequencing under a flag
 - `../observability-instrumentation/SKILL.md` — variant attributes, cardinality limits, log-trace correlation
 - `../chaos-engineering/SKILL.md` — exercising kill switches on a schedule
 - `../flaky-test-triage/SKILL.md` — ambient flag state as a source of nondeterministic tests
-- `../ci-pipeline-design/SKILL.md` — where the default-config run and the nightly all-on run belong
+- `../ci-pipeline-design/SKILL.md` — where the default-config and nightly all-on runs belong
 - `../api-design/SKILL.md` — versioning as the alternative to flags for external contracts
-- OpenFeature specification: evaluation API, evaluation context, providers
-- OpenTelemetry semantic conventions for feature flags (`feature_flag.*` attributes)
+- OpenFeature specification (evaluation API, evaluation context, providers); OpenTelemetry semantic conventions for feature flags (`feature_flag.*`)

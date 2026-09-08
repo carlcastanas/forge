@@ -1,3 +1,5 @@
+> **翻譯版本。** 本頁落後於英文版。以 [README.md](../../README.md) 為準。
+
 # FORGE
 
 [![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)

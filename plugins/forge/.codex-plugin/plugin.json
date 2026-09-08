@@ -1,13 +1,10 @@
 {
   "name": "forge",
-  "version": "2.2.1",
+  "version": "1.0.0",
   "description": "Harness-native FORGE workflows for Codex: shared skills, production-ready MCP configs, and selective-install-aligned conventions for TDD, security scanning, code review, and autonomous development.",
   "author": {
-    "name": "the FORGE maintainers",
-    "email": "me.com",
-    "url": ""
+    "name": "FORGE contributors"
   },
-  "homepage": "",
   "repository": "https://github.com/your-org/forge",
   "license": "MIT",
   "keywords": [
