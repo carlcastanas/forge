@@ -1,0 +1,7 @@
+interface:
+  display_name: "FORGE"
+  short_description: "Repo workflows and conventions for forge"
+  brand_color: "#0EA5E9"
+  default_prompt: "Use $forge to follow this repository's conventions and workflows."
+policy:
+  allow_implicit_invocation: true

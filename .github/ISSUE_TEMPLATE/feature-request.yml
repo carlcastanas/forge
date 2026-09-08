@@ -1,0 +1,66 @@
+name: Feature idea
+description: Describe the outcome you need and what you do today instead.
+title: "[Idea] "
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is a public GitHub issue. Do not include secrets, prompts, customer data, private
+        repository details, or unredacted paths.
+
+        Most additions to FORGE are a skill, an agent, a command, or a rule. If you already know
+        which one you want and intend to write it, [CONTRIBUTING.md](https://github.com/carlcastanas/forge/blob/main/CONTRIBUTING.md)
+        has the files, the validator, and the regeneration command for each.
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What outcome do you need?
+      description: Describe the job to be done. An implementation is welcome but not required.
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: What do you do today?
+      description: The current workaround, or "nothing". This is how urgency gets judged.
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which primitive would this be?
+      options:
+        - Not sure
+        - A skill
+        - An agent
+        - A command
+        - A rule
+        - A hook
+        - Installer or CLI behavior
+        - Documentation
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Which harness is affected?
+      options:
+        - All harnesses
+        - Claude Code
+        - Codex
+        - Cursor
+        - OpenCode
+        - GitHub Copilot
+        - Another harness
+  - type: textarea
+    id: success
+    attributes:
+      label: What would success look like?
+      description: Optional. Acceptance criteria, or a small example of the output you want.
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Optional
+      options:
+        - label: I am willing to open a pull request for this.

@@ -1,0 +1,29 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# assets mirrored from ../assets at build time by scripts/sync-assets.mjs
+/public/assets/
+
+# misc
+.DS_Store
+*.pem
+.vercel
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env
+.env
+.env.*
+!.env.example

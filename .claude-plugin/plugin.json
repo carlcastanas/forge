@@ -1,0 +1,45 @@
+{
+  "name": "forge",
+  "version": "1.0.0",
+  "description": "FORGE agent engineering system - 68 agents, 318 skills, 94 legacy command shims, lifecycle hooks, selectable rules, selective install profiles, and operator workflows for Claude Code, Codex, OpenCode, Cursor, and related harnesses",
+  "author": {
+    "name": "FORGE contributors"
+  },
+  "homepage": "https://github.com/carlcastanas/forge",
+  "repository": "https://github.com/carlcastanas/forge",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "skills",
+    "hooks",
+    "rules",
+    "tdd",
+    "code-review",
+    "security",
+    "workflow",
+    "automation",
+    "best-practices"
+  ],
+  "userConfig": {
+    "hooks_enabled": {
+      "type": "boolean",
+      "title": "Enable FORGE hooks",
+      "description": "Run FORGE's local lifecycle, quality, and safety automation. Disable this to keep skills and commands without local hook automation.",
+      "default": true
+    },
+    "hook_profile": {
+      "type": "string",
+      "title": "FORGE hook profile",
+      "description": "Choose minimal, standard, or strict. Invalid values safely fall back to standard.",
+      "default": "standard"
+    }
+  },
+  "mcpServers": {},
+  "skills": [
+    "./skills/"
+  ],
+  "commands": [
+    "./commands/"
+  ]
+}
