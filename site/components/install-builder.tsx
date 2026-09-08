@@ -28,9 +28,6 @@ const HOOKS_MODULE = 'hooks-runtime';
 const HOOKS_COMPONENT = 'baseline:hooks';
 
 /** Row heights are fixed so the windowed list can index by offset alone. */
-const GROUP_ROW_HEIGHT = 36;
-const ITEM_ROW_HEIGHT = 58;
-const OVERSCAN = 6;
 
 type HookChoice = string; // one of data.hookProfiles, or 'none'
 
@@ -423,8 +420,8 @@ export function InstallBuilder({ data }: { data: InstallData }) {
   }, [data.components, deferredQuery, familyFilter, selectedOnly, selectedIds]);
 
   type Row =
-    | { kind: 'group'; key: string; label: string; count: number; height: number }
-    | { kind: 'item'; key: string; component: InstallComponent; height: number };
+    | { kind: 'group'; key: string; label: string; count: number }
+    | { kind: 'item'; key: string; component: InstallComponent };
 
   const rows = useMemo<Row[]>(() => {
     const byFamily = new Map<string, InstallComponent[]>();
@@ -443,79 +440,45 @@ export function InstallBuilder({ data }: { data: InstallData }) {
         key: `group-${family.id}`,
         label: family.label,
         count: bucket.length,
-        height: GROUP_ROW_HEIGHT,
       });
       for (const component of bucket) {
-        out.push({ kind: 'item', key: component.id, component, height: ITEM_ROW_HEIGHT });
+        out.push({ kind: 'item', key: component.id, component });
       }
     }
     return out;
   }, [filtered, data.families]);
 
-  const offsets = useMemo(() => {
-    const values = new Array<number>(rows.length + 1);
-    values[0] = 0;
-    for (let index = 0; index < rows.length; index += 1) {
-      values[index + 1] = values[index] + rows[index].height;
+  /** True while a search term or family chip is narrowing the catalog. */
+  const filtering = query.trim().length > 0 || familyFilter !== null || selectedOnly;
+
+  // Cards render in page-sized batches rather than a virtualized inner scroller.
+  // A scroll region nested inside the page scroll is disorienting and traps the
+  // wheel; paging keeps the DOM bounded without stealing the scrollbar.
+  const PAGE_SIZE = 60;
+  const [shown, setShown] = useState(PAGE_SIZE);
+
+  // Any change to the filters starts the list over from the first page.
+  useEffect(() => {
+    setShown(PAGE_SIZE);
+  }, [query, familyFilter, selectedOnly]);
+
+  const visibleGroups = useMemo(() => {
+    const groups: { id: string; label: string; total: number; items: InstallComponent[] }[] = [];
+    let budget = shown;
+    for (const row of rows) {
+      if (row.kind !== 'group') continue;
+      const family = data.families.find((entry) => entry.label === row.label);
+      const all = filtered.filter((component) => component.family === (family?.id ?? ''));
+      if (all.length === 0) continue;
+      if (budget <= 0) break;
+      const items = all.slice(0, budget);
+      budget -= items.length;
+      groups.push({ id: family?.id ?? row.label, label: row.label, total: all.length, items });
     }
-    return values;
-  }, [rows]);
+    return groups;
+  }, [rows, filtered, data.families, shown]);
 
-  const totalHeight = offsets[offsets.length - 1] ?? 0;
-
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [viewport, setViewport] = useState({ top: 0, height: 520 });
-  const frame = useRef<number | null>(null);
-
-  const onScroll = useCallback(() => {
-    if (frame.current !== null) return;
-    frame.current = window.requestAnimationFrame(() => {
-      frame.current = null;
-      const element = scrollRef.current;
-      if (element) setViewport({ top: element.scrollTop, height: element.clientHeight });
-    });
-  }, []);
-
-  useEffect(() => {
-    const element = scrollRef.current;
-    if (!element) return;
-    const observer = new ResizeObserver(() => {
-      setViewport((current) => ({ ...current, height: element.clientHeight }));
-    });
-    observer.observe(element);
-    return () => {
-      observer.disconnect();
-      if (frame.current !== null) window.cancelAnimationFrame(frame.current);
-    };
-  }, []);
-
-  // Any change to the filter puts the window back at the top of the list.
-  useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = 0;
-    setViewport((current) => ({ ...current, top: 0 }));
-  }, [deferredQuery, familyFilter, selectedOnly]);
-
-  const [startIndex, endIndex] = useMemo(() => {
-    if (rows.length === 0) return [0, 0];
-    const find = (position: number) => {
-      let low = 0;
-      let high = rows.length;
-      while (low < high) {
-        const mid = (low + high) >> 1;
-        if (offsets[mid + 1] <= position) low = mid + 1;
-        else high = mid;
-      }
-      return Math.min(low, rows.length - 1);
-    };
-    const first = Math.max(0, find(viewport.top) - OVERSCAN);
-    const last = Math.min(rows.length, find(viewport.top + viewport.height) + 1 + OVERSCAN);
-    return [first, last];
-  }, [rows, offsets, viewport]);
-
-  const visibleRows = rows.slice(startIndex, endIndex);
-  const filtering = Boolean(deferredQuery.trim()) || familyFilter !== null || selectedOnly;
-
-  /* --- Copy --- */
+  const remaining = Math.max(0, filtered.length - shown);
 
   const [copied, setCopied] = useState(false);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -755,65 +718,75 @@ export function InstallBuilder({ data }: { data: InstallData }) {
             </p>
           </div>
         ) : (
-          <div
-            className="ib-list"
-            ref={scrollRef}
-            onScroll={onScroll}
-            tabIndex={0}
-            role="group"
-            aria-label={`Install components, ${filtered.length} shown`}
-          >
-            <div className="ib-list__sizer" style={{ height: totalHeight }}>
-              {visibleRows.map((row, index) => {
-                const top = offsets[startIndex + index];
-                if (row.kind === 'group') {
-                  return (
-                    <div
-                      key={row.key}
-                      className="ib-list__group"
-                      style={{ top, height: row.height }}
-                      aria-hidden="true"
-                    >
-                      {row.label}
-                      <span className="u-subtle"> {row.count}</span>
-                    </div>
-                  );
-                }
+          <>
+            {visibleGroups.map((group) => (
+              <section key={group.id} className="ib-group" aria-labelledby={`ib-g-${group.id}`}>
+                <h3 className="ib-group__head" id={`ib-g-${group.id}`}>
+                  {group.label}
+                  <span className="ib-group__count">
+                    {group.items.length === group.total
+                      ? group.total
+                      : `${group.items.length} of ${group.total}`}
+                  </span>
+                </h3>
 
-                const component = row.component;
-                const hooksBlocked = selection.hooks === 'none' && component.id === HOOKS_COMPONENT;
-                const checked = selectedIds.has(component.id) && !hooksBlocked;
-                const fromProfile = baseline.has(component.id);
+                <div className="ib-cards">
+                  {group.items.map((component) => {
+                    const hooksBlocked =
+                      selection.hooks === 'none' && component.id === HOOKS_COMPONENT;
+                    const checked = selectedIds.has(component.id) && !hooksBlocked;
+                    const fromProfile = baseline.has(component.id);
 
-                return (
-                  <label
-                    key={row.key}
-                    className="ib-row"
-                    style={{ top, height: row.height }}
-                    data-checked={checked ? 'true' : 'false'}
-                  >
-                    <input
-                      type="checkbox"
-                      className="ib-row__box"
-                      checked={checked}
-                      disabled={hooksBlocked}
-                      onChange={() => toggleComponent(component.id)}
-                    />
-                    <span className="ib-row__text">
-                      <span className="ib-row__id u-mono">
-                        {component.id}
-                        {fromProfile ? (
-                          <span className="ib-row__tag">profile</span>
-                        ) : null}
-                        {hooksBlocked ? <span className="ib-row__tag">--no-hooks</span> : null}
-                      </span>
-                      <span className="ib-row__desc">{component.description}</span>
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
+                    return (
+                      <label
+                        key={component.id}
+                        className="ib-card"
+                        data-checked={checked ? 'true' : 'false'}
+                        data-disabled={hooksBlocked ? 'true' : 'false'}
+                      >
+                        <input
+                          type="checkbox"
+                          className="ib-card__box"
+                          checked={checked}
+                          disabled={hooksBlocked}
+                          onChange={() => toggleComponent(component.id)}
+                        />
+                        <span className="ib-card__body">
+                          <span className="ib-card__id u-mono">{component.id}</span>
+                          <span className="ib-card__desc">{component.description}</span>
+                          {fromProfile || hooksBlocked ? (
+                            <span className="ib-card__tags">
+                              {fromProfile ? (
+                                <span className="ib-card__tag">in profile</span>
+                              ) : null}
+                              {hooksBlocked ? (
+                                <span className="ib-card__tag">blocked by --no-hooks</span>
+                              ) : null}
+                            </span>
+                          ) : null}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+
+            {remaining > 0 ? (
+              <div className="ib-more">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setShown((value) => value + PAGE_SIZE)}
+                >
+                  Show {Math.min(PAGE_SIZE, remaining)} more
+                </button>
+                <p className="t-small u-muted">
+                  {remaining} of {filtered.length} not shown. Search to narrow the list.
+                </p>
+              </div>
+            ) : null}
+          </>
         )}
       </section>
 

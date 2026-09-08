@@ -3688,113 +3688,17 @@ select.field__control {
 
 /* The windowed list. Fixed row heights keep the offset table exact, and the
    container owns its own scrollbar so the page never grows sideways. */
-.ib-list {
-  position: relative;
-  height: clamp(340px, 58vh, 620px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
-  background: var(--surface);
-  overscroll-behavior: contain;
-}
 
-.ib-list__sizer {
-  position: relative;
-  width: 100%;
-}
 
-.ib-list__group {
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0 0.85rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-2);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
 
-.ib-row {
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding: 0 0.85rem;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  min-width: 0;
-}
 
-.ib-row:hover {
-  background: var(--surface-2);
-}
 
-.ib-row[data-checked='true'] {
-  background: var(--accent-soft);
-}
 
-.ib-row__box {
-  flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
-  accent-color: var(--accent);
-  cursor: pointer;
-}
 
-.ib-row__box:disabled {
-  cursor: not-allowed;
-}
 
-.ib-row__text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 0;
-  flex: 1 1 auto;
-}
 
-.ib-row__id {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-width: 0;
-  font-size: 12.5px;
-  color: var(--fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
-.ib-row__tag {
-  flex: 0 0 auto;
-  padding: 0.05rem 0.3rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 4px;
-  background: var(--bg);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.02em;
-  color: var(--fg-muted);
-}
 
-.ib-row__desc {
-  font-size: 12px;
-  line-height: 1.35;
-  color: var(--fg-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 
 /* --- Step 4: hooks ------------------------------------------------------- */
 
@@ -4272,4 +4176,142 @@ select.field__control {
   text-transform: uppercase;
   color: var(--fg-muted);
   margin-bottom: 0.25rem;
+}
+
+/* ==========================================================================
+   Install builder — component cards
+   A grid of selectable cards that grows with the page. Deliberately NOT a
+   virtualized inner scroller: a scroll region nested in the page scroll traps
+   the wheel and hides how much is left. Batches of 60 keep the DOM bounded.
+   ========================================================================== */
+
+.ib-group {
+  margin-top: 1.5rem;
+}
+
+.ib-group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.ib-group__count {
+  font-size: 11px;
+  color: var(--fg-subtle);
+}
+
+.ib-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+@media (min-width: 700px) {
+  .ib-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .ib-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.ib-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  cursor: pointer;
+  min-width: 0;
+  transition:
+    border-color var(--duration-color) var(--ease-ui),
+    background-color var(--duration-color) var(--ease-ui);
+}
+
+.ib-card:hover {
+  border-color: var(--border-strong);
+}
+
+.ib-card:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ib-card[data-checked='true'] {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.ib-card[data-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ib-card__box {
+  margin: 0.15rem 0 0;
+  width: 15px;
+  height: 15px;
+  flex: none;
+  accent-color: var(--accent);
+  cursor: inherit;
+}
+
+.ib-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.ib-card__id {
+  font-size: 12.5px;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+}
+
+.ib-card__desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.ib-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.15rem;
+}
+
+.ib-card__tag {
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: var(--fg-muted);
+}
+
+.ib-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
 }
