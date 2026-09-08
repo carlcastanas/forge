@@ -1,0 +1,47 @@
+{
+  "name": "forge",
+  "owner": {
+    "name": "the FORGE maintainers",
+    "email": "me.com"
+  },
+  "metadata": {
+    "description": "Harness-native FORGE skills, hooks, rules, MCP conventions, and operator workflows"
+  },
+  "plugins": [
+    {
+      "name": "forge",
+      "source": "./",
+      "description": "Harness-native FORGE operator layer - 68 agents, 286 skills, 94 legacy command shims, reusable hooks, rules, selective install profiles, and production-ready workflows for Claude Code, Codex, OpenCode, Cursor, and related agent harnesses",
+      "version": "2.2.1",
+      "author": {
+        "name": "the FORGE maintainers",
+        "email": "me.com"
+      },
+      "homepage": "",
+      "repository": "https://github.com/your-org/forge",
+      "license": "MIT",
+      "keywords": [
+        "agents",
+        "skills",
+        "hooks",
+        "commands",
+        "tdd",
+        "code-review",
+        "security",
+        "best-practices"
+      ],
+      "category": "workflow",
+      "tags": [
+        "agents",
+        "skills",
+        "hooks",
+        "commands",
+        "tdd",
+        "code-review",
+        "security",
+        "best-practices"
+      ],
+      "strict": false
+    }
+  ]
+}

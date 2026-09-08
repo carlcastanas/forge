@@ -1,0 +1,16 @@
+---
+description: "FORGE Cursor memory boundary — keeps session data out of Claude Code's ~/.claude"
+alwaysApply: true
+---
+
+# FORGE agent data home (Cursor)
+
+This project uses FORGE with **isolated memory persistence** for Cursor:
+
+- Default data root: `~/.cursor/forge` (not `~/.claude`)
+- Env var: `FORGE_AGENT_DATA_HOME` (set automatically by FORGE's Cursor `sessionStart` hook when hooks are wired)
+- Project override: `.cursor/forge-agent-data.json` → `agentDataHome`
+
+If the user asks where FORGE stored session context or learned skills, point them at `$FORGE_AGENT_DATA_HOME/session-data/` and `$FORGE_AGENT_DATA_HOME/skills/learned/`.
+
+To **share** memory with Claude Code intentionally (not recommended for parallel use), set `FORGE_AGENT_DATA_HOME` to `~/.claude` in the shell or in `.cursor/forge-agent-data.json`.
