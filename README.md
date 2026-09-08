@@ -130,7 +130,7 @@ npm view forge-universal version
 Claude Code's own plugin commands are the other supported route. Inside Claude Code:
 
 ```text
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 /plugin install forge@forge
 ```
 
@@ -231,7 +231,7 @@ first install.
 Claude Code plugins cannot carry rule files, so copy the packs you want yourself:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 mkdir -p ~/.claude/rules/forge
 cp -R rules/common ~/.claude/rules/forge/
@@ -257,7 +257,7 @@ the skills, MCP configuration, hook runtime, and scripts it references.
 
 ```bash
 # Recommended current install: add FORGE's native plugin from the repo marketplace
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin add forge@forge
 codex plugin list --json
 node scripts/codex/check-plugin-cache.js
@@ -296,7 +296,7 @@ documented in [.codex-plugin/README.md](.codex-plugin/README.md).
 Clone once, then install the adapter that matches your tool:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 ./install.sh --profile minimal --target cursor
 ```

@@ -12,7 +12,7 @@ body:
         repository details, or unredacted paths.
 
         Most additions to FORGE are a skill, an agent, a command, or a rule. If you already know
-        which one you want and intend to write it, [CONTRIBUTING.md](https://github.com/your-org/forge/blob/main/CONTRIBUTING.md)
+        which one you want and intend to write it, [CONTRIBUTING.md](https://github.com/carlcastanas/forge/blob/main/CONTRIBUTING.md)
         has the files, the validator, and the regeneration command for each.
   - type: textarea
     id: outcome

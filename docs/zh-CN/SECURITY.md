@@ -43,7 +43,7 @@
 * 在您机器上执行的钩子脚本
 * 安装/卸载/修复生命周期脚本
 * 随 FORGE 分发的 MCP 配置
-* Forge Shield 安全扫描器 ([github.com/your-org/forge-shield](https://github.com/your-org/forge-shield))
+* Forge Shield 安全扫描器 ([github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield))
 
 ## 安全资源
 

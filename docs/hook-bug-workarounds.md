@@ -71,4 +71,4 @@ What helps:
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 - [token-optimization.md](./token-optimization.md)
 - [hooks/README.md](../hooks/README.md)
-- [issue #644](https://github.com/your-org/forge/issues/644)
+- [issue #644](https://github.com/carlcastanas/forge/issues/644)

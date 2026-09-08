@@ -59,7 +59,7 @@
 
 ```bash
 # 1. Fork and clone
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. Create a branch
@@ -457,7 +457,7 @@ docs: 完善贡献指南
 
 ## 有问题吗？
 
-* **问题：** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+* **问题：** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 * **X/Twitter：**
 
 ***

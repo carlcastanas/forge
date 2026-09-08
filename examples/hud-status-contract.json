@@ -4,7 +4,7 @@
   "context": {
     "harness": "codex",
     "model": "gpt-5",
-    "repo": "your-org/forge",
+    "repo": "carlcastanas/forge",
     "branch": "main",
     "worktree": "/repo/forge",
     "sessionId": "session-active",
@@ -52,7 +52,7 @@
       {
         "name": "CI",
         "status": "pass",
-        "url": "https://github.com/your-org/forge/actions"
+        "url": "https://github.com/carlcastanas/forge/actions"
       }
     ]
   },
@@ -106,7 +106,7 @@
       "latestStatusUpdateId": "status-update-id"
     },
     "GitHub": {
-      "repo": "your-org/forge",
+      "repo": "carlcastanas/forge",
       "latestPullRequest": 1820
     },
     "handoff": {

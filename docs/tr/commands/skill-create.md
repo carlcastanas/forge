@@ -171,4 +171,4 @@ Gelişmiş özellikler için (10k+ commit, ekip paylaşımı, otomatik PR'lar), 
 
 ---
 
-*[FORGE](https://github.com/your-org/forge)'un bir parçası*
+*[FORGE](https://github.com/carlcastanas/forge)'un bir parçası*

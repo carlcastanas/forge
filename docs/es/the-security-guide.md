@@ -412,7 +412,7 @@ Si quieres una regla: nunca dejes que la capa de conveniencia supere a la capa d
 
 Esa regla única te lleva sorprendentemente lejos.
 
-Escanea tu configuración: [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+Escanea tu configuración: [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 
 ---
 
@@ -450,5 +450,5 @@ Si no has leído las guías anteriores, empieza aquí:
 > [La Guía Extendida de FORGE](./the-longform-guide.md)
 
 también guarda estos repositorios:
-- [github.com/your-org/forge](https://github.com/your-org/forge)
-- [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+- [github.com/carlcastanas/forge](https://github.com/carlcastanas/forge)
+- [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)

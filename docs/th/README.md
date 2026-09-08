@@ -6,9 +6,9 @@
 
 ![FORGE — ระบบเพิ่มประสิทธิภาพสำหรับ AI agent harness](../../assets/hero.png)
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
 
@@ -52,7 +52,7 @@ FORGE ไม่ใช่แค่ชุดไฟล์คอนฟิก แต�
 
 ```bash
 # เพิ่ม marketplace
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # ติดตั้ง plugin
 /plugin install forge@forge
@@ -60,7 +60,7 @@ FORGE ไม่ใช่แค่ชุดไฟล์คอนฟิก แต�
 
 FORGE มีชื่อเรียกในระบบสาธารณะ 3 ชื่อที่ต่างกัน:
 
-- GitHub repo: `your-org/forge`
+- GitHub repo: `carlcastanas/forge`
 - Claude marketplace plugin: `forge@forge`
 - npm package: `forge-universal`
 
@@ -71,7 +71,7 @@ FORGE มีชื่อเรียกในระบบสาธารณะ 3
 Plugin ของ Claude Code จะไม่ติดตั้ง `rules/` ให้อัตโนมัติ หากคุณติดตั้งผ่าน plugin **อย่า** รัน full installer เพิ่ม ให้คัดลอกเฉพาะชุด rule ที่ต้องการแทน:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 mkdir -p ~/.claude/rules/forge
@@ -80,7 +80,7 @@ cp -R rules/typescript ~/.claude/rules/forge/
 ```
 
 ```powershell
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 New-Item -ItemType Directory -Force -Path "$HOME/.claude/rules/forge" | Out-Null
@@ -232,7 +232,7 @@ FORGE จะลบเฉพาะไฟล์ที่อยู่ใน install
 
 ```bash
 # 1. Fork และ clone
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. สร้าง branch
@@ -251,7 +251,7 @@ git add . && git commit -m "feat: add my-skill" && git push -u origin feat/my-co
 
 ## ชุมชน
 
-- [GitHub Discussions](https://github.com/your-org/forge/discussions) — ถาม-ตอบ, โชว์ผลงาน
+- [GitHub Discussions](https://github.com/carlcastanas/forge/discussions) — ถาม-ตอบ, โชว์ผลงาน
 - FORGE Pro — private repo + GitHub App ($19/seat/เดือน)
 - FORGE Tools GitHub App — ติดตั้ง, PR audit, มี free tier
 

@@ -1,4 +1,4 @@
-const REPOSITORY_ISSUES_URL = 'https://github.com/your-org/forge/issues/new';
+const REPOSITORY_ISSUES_URL = 'https://github.com/carlcastanas/forge/issues/new';
 
 const FEEDBACK_ROUTES = Object.freeze({
   problem: `${REPOSITORY_ISSUES_URL}?template=install-problem.yml`,

@@ -134,7 +134,7 @@ Codex はその明示的な信頼を求めます。Codex にその信頼判断�
 FORGE marketplace がない場合は追加し、既存ならスナップショットを更新します。
 
 ```bash
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin marketplace upgrade forge --json
 ```
 

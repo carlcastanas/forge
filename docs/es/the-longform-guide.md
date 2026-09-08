@@ -8,7 +8,7 @@ Esta guía extendida profundiza en las técnicas que separan las sesiones produc
 
 Los temas aquí: economía de tokens, persistencia de memoria, patrones de verificación, estrategias de paralelización y los efectos compuestos de construir flujos de trabajo reutilizables. Estos son los patrones que he refinado en más de 10 meses de uso diario, y que marcan la diferencia entre sufrir una degradación de contexto en la primera hora versus mantener sesiones productivas durante horas.
 
-Todo lo cubierto en las guías breve y extendida está disponible en GitHub: `github.com/your-org/forge`
+Todo lo cubierto en las guías breve y extendida está disponible en GitHub: `github.com/carlcastanas/forge`
 
 ---
 
@@ -33,7 +33,7 @@ Con la carga diferida (lazy loading), el problema de la ventana de contexto est�
 Para compartir memoria entre sesiones, la mejor opción es una skill o comando que resuma y verifique el progreso, luego lo guarde en un archivo `.tmp` en tu carpeta `.claude` y lo vaya añadiendo hasta el final de tu sesión. Al día siguiente puede usar eso como contexto y retomar donde lo dejaste; crea un nuevo archivo para cada sesión para no contaminar el contexto antiguo en el trabajo nuevo.
 
 ![Árbol de Archivos de Almacenamiento de Sesión](../../assets/images/longform/03-session-storage.png)
-*Ejemplo de almacenamiento de sesión -> <https://github.com/your-org/forge/tree/main/examples/sessions>*
+*Ejemplo de almacenamiento de sesión -> <https://github.com/carlcastanas/forge/tree/main/examples/sessions>*
 
 Claude crea un archivo resumiendo el estado actual. Revísalo, pide ediciones si es necesario, luego empieza de nuevo. Para la nueva conversación, solo proporciona la ruta del archivo. Particularmente útil cuando estás alcanzando los límites de contexto y necesitas continuar trabajo complejo. Estos archivos deben contener:
 - Qué enfoques funcionaron (verificablemente con evidencia)
@@ -75,7 +75,7 @@ Hay hooks que la mayoría de la gente no conoce y que ayudan con la memoria:
 - **Hook Stop (Fin de Sesión)**: Al finalizar la sesión, persiste los aprendizajes en un archivo
 - **Hook SessionStart**: Al iniciar una nueva sesión, carga el contexto previo automáticamente
 
-He construido estos hooks y están en el repositorio en `github.com/your-org/forge/tree/main/hooks/memory-persistence`
+He construido estos hooks y están en el repositorio en `github.com/carlcastanas/forge/tree/main/hooks/memory-persistence`
 
 ---
 
@@ -87,7 +87,7 @@ Si has tenido que repetir un prompt varias veces y Claude se encontró con el mi
 
 **La Solución:** Cuando Claude Code descubre algo que no es trivial — una técnica de depuración, una solución alternativa, algún patrón específico del proyecto — guarda ese conocimiento como una nueva skill. La próxima vez que aparezca un problema similar, la skill se carga automáticamente.
 
-He construido una skill de aprendizaje continuo que hace esto: `github.com/your-org/forge/tree/main/skills/continuous-learning`
+He construido una skill de aprendizaje continuo que hace esto: `github.com/carlcastanas/forge/tree/main/skills/continuous-learning`
 
 **Por Qué Hook Stop (No UserPromptSubmit):**
 
@@ -333,4 +333,4 @@ alias q='cd ~/Desktop/projects'
 
 ---
 
-*Todo lo cubierto en ambas guías está disponible en GitHub en [forge](https://github.com/your-org/forge)*
+*Todo lo cubierto en ambas guías está disponible en GitHub en [forge](https://github.com/carlcastanas/forge)*

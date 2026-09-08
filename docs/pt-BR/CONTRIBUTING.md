@@ -51,7 +51,7 @@ Comandos slash que invocam fluxos de trabalho úteis:
 
 ```bash
 # 1. Fork e clone
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. Criar uma branch
@@ -418,7 +418,7 @@ Como você testou isso.
 
 ## Dúvidas?
 
-- **Issues:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+- **Issues:** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 - **X/Twitter:**
 
 ---

@@ -9,7 +9,7 @@ description: >
   Use when forecasting demand, setting safety stock, planning replenishment,
   managing promotions, or optimizing inventory levels.
 license: Apache-2.0
-homepage: https://github.com/your-org/forge
+homepage: https://github.com/carlcastanas/forge
 metadata:
   version: 1.0.0
   origin: FORGE

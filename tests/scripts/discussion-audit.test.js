@@ -102,10 +102,10 @@ function runTests() {
 
     try {
       const shimPath = writeGhShim(rootDir, {
-        [discussionEnabledGhKey('your-org', 'FORGE')]: {
+        [discussionEnabledGhKey('carlcastanas', 'FORGE')]: {
           data: { repository: { hasDiscussionsEnabled: true } }
         },
-        [discussionGhKey('your-org', 'FORGE')]: {
+        [discussionGhKey('carlcastanas', 'FORGE')]: {
           data: {
             repository: {
               hasDiscussionsEnabled: true,
@@ -142,7 +142,7 @@ function runTests() {
       const parsed = JSON.parse(run([
         '--json',
         '--repo',
-        'your-org/FORGE'
+        'carlcastanas/FORGE'
       ], {
         cwd: rootDir,
         env: {
@@ -165,10 +165,10 @@ function runTests() {
 
     try {
       const shimPath = writeGhShim(rootDir, {
-        [discussionEnabledGhKey('your-org', 'FORGE')]: {
+        [discussionEnabledGhKey('carlcastanas', 'FORGE')]: {
           data: { repository: { hasDiscussionsEnabled: true } }
         },
-        [discussionGhKey('your-org', 'FORGE')]: {
+        [discussionGhKey('carlcastanas', 'FORGE')]: {
           data: {
             repository: {
               hasDiscussionsEnabled: true,
@@ -195,7 +195,7 @@ function runTests() {
       const result = runProcess([
         '--json',
         '--repo',
-        'your-org/FORGE',
+        'carlcastanas/FORGE',
         '--exit-code'
       ], {
         cwd: rootDir,
@@ -220,10 +220,10 @@ function runTests() {
 
     try {
       const shimPath = writeGhShim(rootDir, {
-        [discussionEnabledGhKey('your-org', 'FORGE')]: {
+        [discussionEnabledGhKey('carlcastanas', 'FORGE')]: {
           data: { repository: { hasDiscussionsEnabled: true } }
         },
-        [discussionGhKey('your-org', 'FORGE')]: {
+        [discussionGhKey('carlcastanas', 'FORGE')]: {
           data: {
             repository: {
               hasDiscussionsEnabled: true,
@@ -237,7 +237,7 @@ function runTests() {
         '--write',
         outputPath,
         '--repo',
-        'your-org/FORGE'
+        'carlcastanas/FORGE'
       ], {
         cwd: rootDir,
         env: { FORGE_GH_SHIM: shimPath }

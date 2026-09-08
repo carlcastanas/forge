@@ -6,7 +6,7 @@ const { normalizeGitHubGitOrigin } = require('./github-origin');
 
 const CODEX_PLUGIN_ID = 'forge@forge';
 const OFFICIAL_MARKETPLACE_NAME = 'forge';
-const OFFICIAL_MARKETPLACE_REPO = 'your-org/FORGE';
+const OFFICIAL_MARKETPLACE_REPO = 'carlcastanas/FORGE';
 const NORMALIZED_OFFICIAL_MARKETPLACE_REPO = OFFICIAL_MARKETPLACE_REPO.toLowerCase();
 const MAX_OUTPUT_BYTES = 10 * 1024 * 1024;
 const PROVIDER_COMMAND_TIMEOUT_MS = 120 * 1000;
@@ -267,7 +267,7 @@ async function assertOfficialMarketplace(
   if (repository !== NORMALIZED_OFFICIAL_MARKETPLACE_REPO) {
     fail(
       'MARKETPLACE_COLLISION',
-      'Refusing the existing `forge` marketplace because it is not the official your-org/FORGE source.',
+      'Refusing the existing `forge` marketplace because it is not the official carlcastanas/FORGE source.',
       { phase }
     );
   }

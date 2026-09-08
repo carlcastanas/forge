@@ -6,7 +6,7 @@
 
 ![FORGE - das Harness-native Operator-System für agentische Arbeit](../../assets/hero.png)
 
-[![Contributors](https://img.shields.io/github/contributors/your-org/FORGE?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/FORGE?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
@@ -50,7 +50,7 @@ FORGE v2.0.0-rc.1 ergänzt diese wiederverwendbare Schicht um die öffentliche H
   <sub>Private Repos · GitHub App · 19 $/Platz/Monat</sub>
 </td>
 <td width="33%" align="center">
-  <a href="https://github.com/your-org/forge/discussions">
+  <a href="https://github.com/carlcastanas/forge/discussions">
     <strong>Community</strong>
     <br />
     <sub>Discussions · Q&amp;A · Show &amp; Tell</sub>
@@ -144,7 +144,7 @@ Dieses Repo enthält ausschließlich den rohen Code. Die Leitfäden erklären al
 
 ### v1.4.1 — Bugfix (Februar 2026)
 
-- **Inhaltsverlust beim Instinct-Import behoben** — `parse_instinct_file()` verwarf während `/instinct-import` stillschweigend sämtlichen Inhalt nach dem Frontmatter (Abschnitte Action, Evidence, Examples). ([#148](https://github.com/your-org/forge/issues/148), [#161](https://github.com/your-org/forge/pull/161))
+- **Inhaltsverlust beim Instinct-Import behoben** — `parse_instinct_file()` verwarf während `/instinct-import` stillschweigend sämtlichen Inhalt nach dem Frontmatter (Abschnitte Action, Evidence, Examples). ([#148](https://github.com/carlcastanas/forge/issues/148), [#161](https://github.com/carlcastanas/forge/pull/161))
 
 ### v1.4.0 — Mehrsprachige Rules, Installationsassistent & PM2 (Februar 2026)
 
@@ -168,7 +168,7 @@ Dieses Repo enthält ausschließlich den rohen Code. Die Leitfäden erklären al
 - **Session-Verwaltung** — `/sessions`-Befehl für den Session-Verlauf
 - **Continuous Learning v2** — Instinct-basiertes Lernen mit Konfidenz-Scoring, Import/Export, Evolution
 
-Den vollständigen Changelog findest du unter [Releases](https://github.com/your-org/forge/releases).
+Den vollständigen Changelog findest du unter [Releases](https://github.com/carlcastanas/forge/releases).
 
 ---
 
@@ -237,7 +237,7 @@ npx forge-universal install --profile minimal --target claude --with capability:
 
 ```bash
 # Marketplace hinzufügen
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Plugin installieren
 /plugin install forge@forge
@@ -247,7 +247,7 @@ npx forge-universal install --profile minimal --target claude --with capability:
 
 FORGE hat jetzt drei öffentliche Bezeichner, und sie sind nicht austauschbar:
 
-- GitHub-Quell-Repo: `your-org/FORGE`
+- GitHub-Quell-Repo: `carlcastanas/FORGE`
 - Claude-Marketplace-/Plugin-Bezeichner: `forge@forge`
 - npm-Paket: `forge-universal`
 
@@ -267,7 +267,7 @@ Das ist beabsichtigt. Anthropic-Marketplace-/Plugin-Installationen werden über 
 
 ```bash
 # Zuerst das Repo klonen
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 
 # Abhängigkeiten installieren (wähle deinen Paketmanager)
@@ -741,9 +741,9 @@ npx forge-shield init
 
 **Ausgabeformate:** Terminal (farblich nach A-F abgestuft), JSON (CI-Pipelines), Markdown, HTML. Exit-Code 2 bei kritischen Befunden für Build-Gates.
 
-Verwende `/security-scan` in Claude Code, um es auszuführen, oder füge es per [GitHub Action](https://github.com/your-org/forge-shield) zur CI hinzu.
+Verwende `/security-scan` in Claude Code, um es auszuführen, oder füge es per [GitHub Action](https://github.com/carlcastanas/forge-shield) zur CI hinzu.
 
-[GitHub](https://github.com/your-org/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
+[GitHub](https://github.com/carlcastanas/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
 
 ### Continuous Learning v2
 
@@ -784,7 +784,7 @@ Claude Code v2.1+ **lädt automatisch** `hooks/hooks.json` aus jedem installiert
 Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded file
 ```
 
-**Historie:** Dies hat in diesem Repo wiederholte Fix-/Revert-Zyklen verursacht ([#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103)). Das Verhalten änderte sich zwischen Claude-Code-Versionen, was zu Verwirrung führte. Wir haben jetzt einen Regressionstest, der verhindert, dass dies erneut eingeführt wird.
+**Historie:** Dies hat in diesem Repo wiederholte Fix-/Revert-Zyklen verursacht ([#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103)). Das Verhalten änderte sich zwischen Claude-Code-Versionen, was zu Verwirrung führte. Wir haben jetzt einen Regressionstest, der verhindert, dass dies erneut eingeführt wird.
 
 ---
 
@@ -796,7 +796,7 @@ Der einfachste Weg, dieses Repo zu nutzen - als Claude-Code-Plugin installieren:
 
 ```bash
 # Dieses Repo als Marketplace hinzufügen
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Das Plugin installieren
 /plugin install forge@forge
@@ -810,7 +810,7 @@ Oder füge es direkt zu deiner `~/.claude/settings.json` hinzu:
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/FORGE"
+        "repo": "carlcastanas/FORGE"
       }
     }
   },
@@ -826,7 +826,7 @@ Dies gibt dir sofortigen Zugriff auf alle Commands, Agents, Skills und Hooks.
 >
 > ```bash
 > # Zuerst das Repo klonen
-> git clone https://github.com/your-org/forge.git
+> git clone https://github.com/carlcastanas/forge.git
 > cd FORGE
 >
 > # Option A: Rules auf Benutzerebene (gilt für alle Projekte)
@@ -851,7 +851,7 @@ Falls du manuelle Kontrolle darüber bevorzugst, was installiert wird:
 
 ```bash
 # Das Repo klonen
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 
 # Agents in deine Claude-Konfiguration kopieren
@@ -1059,7 +1059,7 @@ Dies zeigt alle verfügbaren Agents, Commands und Skills aus dem Plugin.
 <details>
 <summary><b>Meine Hooks funktionieren nicht / ich sehe den Fehler "Duplicate hooks file"</b></summary>
 
-Das ist das häufigste Problem. **Füge KEIN `"hooks"`-Feld zu `.claude-plugin/plugin.json` hinzu.** Claude Code v2.1+ lädt `hooks/hooks.json` aus installierten Plugins automatisch. Es explizit zu deklarieren, verursacht Fehler durch Duplikaterkennung. Siehe [#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103).
+Das ist das häufigste Problem. **Füge KEIN `"hooks"`-Feld zu `.claude-plugin/plugin.json` hinzu.** Claude Code v2.1+ lädt `hooks/hooks.json` aus installierten Plugins automatisch. Es explizit zu deklarieren, verursacht Fehler durch Duplikaterkennung. Siehe [#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103).
 </details>
 
 <details>
@@ -1121,7 +1121,7 @@ Ja. FORGE ist Cross-Platform:
 - **Cursor**: Vorübersetzte Konfigurationen in `.cursor/`. Siehe [Cursor-IDE-Unterstützung](#cursor-ide-unterstützung).
 - **Gemini CLI**: Experimentelle projektlokale Unterstützung über `.gemini/GEMINI.md` und gemeinsam genutzte Installer-Verdrahtung.
 - **OpenCode**: Vollständige Plugin-Unterstützung in `.opencode/`. Siehe [OpenCode-Unterstützung](#opencode-unterstützung).
-- **Codex**: Erstklassige Unterstützung sowohl für die macOS-App als auch die CLI, mit Adapter-Drift-Guards und SessionStart-Fallback. Siehe PR [#257](https://github.com/your-org/forge/pull/257).
+- **Codex**: Erstklassige Unterstützung sowohl für die macOS-App als auch die CLI, mit Adapter-Drift-Guards und SessionStart-Fallback. Siehe PR [#257](https://github.com/carlcastanas/forge/pull/257).
 - **GitHub Copilot (VS Code)**: Instruction- und Prompt-Schicht über `.github/copilot-instructions.md`, `.vscode/settings.json` und `.github/prompts/`. Siehe [GitHub-Copilot-Unterstützung](#github-copilot-unterstützung).
 - **Antigravity**: Eng integriertes Setup für Workflows, Skills und abgeflachte Rules in `.agents/`. Siehe [Antigravity-Leitfaden](../../docs/ANTIGRAVITY-GUIDE.md).
 - **JoyCode / CodeBuddy**: Projektlokale Adapter für selektive Installation von Commands, Agents, Skills und abgeflachten Rules. Siehe [JoyCode-Adapter-Leitfaden](../../docs/JOYCODE-GUIDE.md).
@@ -1697,7 +1697,7 @@ Etwas mit FORGE gebaut? Öffne einen PR, um es hier hinzuzufügen.
 
 ## Star-Verlauf
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=carlcastanas/forge&type=Date)](https://star-history.com/#carlcastanas/forge&Date)
 
 ---
 

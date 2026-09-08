@@ -31,7 +31,7 @@ directly from `skills/` and `commands/`, with no generated copies.
 
 ```bash
 # Install FORGE as a Pi package
-pi install git:github.com/your-org/forge
+pi install git:github.com/carlcastanas/forge
 
 # Or from a local checkout
 pi install /path/to/FORGE
@@ -48,7 +48,7 @@ Then inside Pi, run `/forge-doctor` to confirm skills, commands, and hooks are a
 To uninstall:
 
 ```bash
-pi remove git:github.com/your-org/forge
+pi remove git:github.com/carlcastanas/forge
 ```
 
 ### Option 2: Zero-Install (Existing Claude Code Users)

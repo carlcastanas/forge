@@ -46,8 +46,8 @@ test('forge welcome renders the install artwork for captured agent output', () =
   assert.strictEqual(result.status, 0, result.stderr);
   assert.match(result.stdout, /Welcome to FORGE!/);
   assert.ok(result.stdout.includes(`v${version}`));
-  assert.match(result.stdout, /GitHub:\s+https:\/\/github\.com\/your-org\/forge/);
-  assert.match(result.stdout, /Documentation:\s+https:\/\/github\.com\/your-org\/forge#readme/);
+  assert.match(result.stdout, /GitHub:\s+https:\/\/github\.com\/carlcastanas\/forge/);
+  assert.match(result.stdout, /Documentation:\s+https:\/\/github\.com\/carlcastanas\/forge#readme/);
   // No community or hosted-app rows: this project has neither.
   assert.ok(!/Discord:/.test(result.stdout));
   assert.ok(!/GitHub App:/.test(result.stdout));

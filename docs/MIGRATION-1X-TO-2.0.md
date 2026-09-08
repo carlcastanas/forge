@@ -1,12 +1,12 @@
 # Migrating From FORGE 1.x (forge) To 2.0
 
-FORGE 2.0 renamed the repo (`your-org/forge` → `your-org/FORGE`) and the plugin identifier (`forge@forge` → `forge@forge`). If you installed 1.x, follow this guide to upgrade cleanly. See also the [Naming + Migration Note](../README.md#naming--migration-note) in the README.
+FORGE 2.0 renamed the repo (`carlcastanas/forge` → `carlcastanas/FORGE`) and the plugin identifier (`forge@forge` → `forge@forge`). If you installed 1.x, follow this guide to upgrade cleanly. See also the [Naming + Migration Note](../README.md#naming--migration-note) in the README.
 
 ## TL;DR
 
 ```bash
 # 1. Install 2.0
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 /plugin install forge@forge
 
 # 2. Remove the old plugin

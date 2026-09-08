@@ -139,7 +139,7 @@ if (args[0] === 'plugin' && args[1] === 'marketplace' && args[2] === 'add') {
     {
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       url: source,
       scope,
     },

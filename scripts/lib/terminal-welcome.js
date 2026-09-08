@@ -3,8 +3,8 @@
 const { version: FORGE_VERSION } = require('../../package.json');
 
 const COMMUNITY_LINKS = Object.freeze({
-  github: 'https://github.com/your-org/forge',
-  documentation: 'https://github.com/your-org/forge#readme',
+  github: 'https://github.com/carlcastanas/forge',
+  documentation: 'https://github.com/carlcastanas/forge#readme',
 });
 
 const SUCCESS_ACTIONS = Object.freeze([

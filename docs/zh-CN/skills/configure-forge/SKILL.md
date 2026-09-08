@@ -131,7 +131,7 @@ Hook 四档模式。Codex 原生插件支持提供商专用 Hook，但 Codex 会
 如果缺少 FORGE marketplace，请添加；否则刷新快照：
 
 ```bash
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin marketplace upgrade forge --json
 ```
 

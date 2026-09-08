@@ -5,8 +5,8 @@
   "author": {
     "name": "FORGE contributors"
   },
-  "homepage": "https://github.com/your-org/forge",
-  "repository": "https://github.com/your-org/forge",
+  "homepage": "https://github.com/carlcastanas/forge",
+  "repository": "https://github.com/carlcastanas/forge",
   "license": "MIT",
   "keywords": [
     "claude-code",

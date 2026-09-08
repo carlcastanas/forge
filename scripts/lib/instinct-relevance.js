@@ -11,7 +11,7 @@
  * ranking degrades to confidence-only (unchanged behaviour).
  *
  * Resolves part (b) of:
- * https://github.com/your-org/forge/issues/2371
+ * https://github.com/carlcastanas/forge/issues/2371
  */
 
 const fs = require('fs');

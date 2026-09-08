@@ -1,5 +1,5 @@
 /**
- * Regression test for https://github.com/your-org/forge/issues/2822
+ * Regression test for https://github.com/carlcastanas/forge/issues/2822
  *
  * When FORGE is installed through the Claude Code plugin marketplace, the
  * marketplace directory is a plain git clone: `npm install` never runs, so

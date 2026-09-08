@@ -226,7 +226,7 @@ rg -n '<!--|<script|data:text/html|base64,'
 
 その1つのルールで驚くほど遠くまで行けます。
 
-セットアップをスキャン：[github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+セットアップをスキャン：[github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 
 ---
 
@@ -253,5 +253,5 @@ rg -n '<!--|<script|data:text/html|base64,'
 > [FORGE 長文ガイド](/status/2014040193557471352)
 
 以下のリポジトリも保存してください：
-- [github.com/your-org/forge](https://github.com/your-org/forge)
-- [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+- [github.com/carlcastanas/forge](https://github.com/carlcastanas/forge)
+- [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)

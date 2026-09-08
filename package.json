@@ -32,11 +32,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/forge.git"
+    "url": "git+https://github.com/carlcastanas/forge.git"
   },
-  "homepage": "https://github.com/your-org/forge#readme",
+  "homepage": "https://github.com/carlcastanas/forge#readme",
   "bugs": {
-    "url": "https://github.com/your-org/forge/issues"
+    "url": "https://github.com/carlcastanas/forge/issues"
   },
   "files": [
     "!**/*.pyc",
@@ -474,7 +474,7 @@
     "forge-universal": "scripts/forge.js"
   },
   "scripts": {
-    "welcome": "echo '\\n  forge-universal installed.\\n  Run: forge doctor\\n  Install a surface: forge install --profile core --target claude\\n  Docs: https://github.com/your-org/forge\\n'",
+    "welcome": "echo '\\n  forge-universal installed.\\n  Run: forge doctor\\n  Install a surface: forge install --profile core --target claude\\n  Docs: https://github.com/carlcastanas/forge\\n'",
     "catalog:check": "node scripts/ci/catalog.js --text",
     "catalog:sync": "node scripts/ci/catalog.js --write --text",
     "command-registry:generate": "node scripts/ci/generate-command-registry.js",

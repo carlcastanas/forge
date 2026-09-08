@@ -44,7 +44,7 @@ function seedRepo(rootDir, overrides = {}) {
     }, null, 2),
     'docs/FORGE-2.0-GA-ROADMAP.md': [
       'FORGE Platform Roadmap',
-      'https://linear.app/your-org/project/forge-platform-roadmap',
+      'https://linear.app/carlcastanas/project/forge-platform-roadmap',
       'ITO-44',
       'ITO-59'
     ].join('\n'),
@@ -180,7 +180,7 @@ function runTests() {
         `--root=${rootDir}`,
         '--json',
         '--repo',
-        'your-org/FORGE',
+        'carlcastanas/FORGE',
         '--max-open-prs',
         '5',
         '--max-open-issues',
@@ -191,7 +191,7 @@ function runTests() {
 
       assert.strictEqual(parsed.format, 'json');
       assert.strictEqual(parsed.root, path.resolve(rootDir));
-      assert.deepStrictEqual(parsed.repos, ['your-org/FORGE']);
+      assert.deepStrictEqual(parsed.repos, ['carlcastanas/FORGE']);
       assert.strictEqual(parsed.thresholds.maxOpenPrs, 5);
       assert.strictEqual(parsed.thresholds.maxOpenIssues, 6);
       assert.deepStrictEqual(parsed.allowUntracked, ['docs/drafts/']);
@@ -285,12 +285,12 @@ function runTests() {
     try {
       seedRepo(projectRoot);
       const shimPath = writeGhShim(projectRoot, {
-        'pr list --repo your-org/FORGE --state open --json number,title,isDraft,mergeStateStatus,updatedAt,url,author': [],
-        'issue list --repo your-org/FORGE --state open --json number,title,updatedAt,url,author,labels': [],
-        [discussionEnabledGhKey('your-org', 'FORGE')]: {
+        'pr list --repo carlcastanas/FORGE --state open --json number,title,isDraft,mergeStateStatus,updatedAt,url,author': [],
+        'issue list --repo carlcastanas/FORGE --state open --json number,title,updatedAt,url,author,labels': [],
+        [discussionEnabledGhKey('carlcastanas', 'FORGE')]: {
           data: { repository: { hasDiscussionsEnabled: true } }
         },
-        [discussionGhKey('your-org', 'FORGE')]: {
+        [discussionGhKey('carlcastanas', 'FORGE')]: {
           data: {
             repository: {
               hasDiscussionsEnabled: true,
@@ -318,7 +318,7 @@ function runTests() {
         '--format=json',
         `--root=${projectRoot}`,
         '--repo',
-        'your-org/FORGE'
+        'carlcastanas/FORGE'
       ], {
         cwd: projectRoot,
         env: {
@@ -354,12 +354,12 @@ function runTests() {
         author: { login: 'contributor' }
       }));
       const shimPath = writeGhShim(projectRoot, {
-        'pr list --repo your-org/FORGE --state open --json number,title,isDraft,mergeStateStatus,updatedAt,url,author': prs,
-        'issue list --repo your-org/FORGE --state open --json number,title,updatedAt,url,author,labels': [],
-        [discussionEnabledGhKey('your-org', 'FORGE')]: {
+        'pr list --repo carlcastanas/FORGE --state open --json number,title,isDraft,mergeStateStatus,updatedAt,url,author': prs,
+        'issue list --repo carlcastanas/FORGE --state open --json number,title,updatedAt,url,author,labels': [],
+        [discussionEnabledGhKey('carlcastanas', 'FORGE')]: {
           data: { repository: { hasDiscussionsEnabled: true } }
         },
-        [discussionGhKey('your-org', 'FORGE')]: {
+        [discussionGhKey('carlcastanas', 'FORGE')]: {
           data: {
             repository: {
               hasDiscussionsEnabled: true,
@@ -387,7 +387,7 @@ function runTests() {
         '--format=json',
         `--root=${projectRoot}`,
         '--repo',
-        'your-org/FORGE',
+        'carlcastanas/FORGE',
         '--max-open-prs',
         '2'
       ], {

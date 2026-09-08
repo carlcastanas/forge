@@ -149,7 +149,7 @@ claim those profiles map to Codex.
 If the FORGE marketplace is missing, add it. Otherwise refresh its snapshot:
 
 ```bash
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin marketplace upgrade forge --json
 ```
 

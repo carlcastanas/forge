@@ -187,7 +187,7 @@ function checkCache(options) {
     } else {
       log(`No installed cache entries found for ${options.marketplace}/${options.plugin}.`);
       if (options.marketplace === 'forge' && options.plugin === 'forge') {
-        log('Run: codex plugin marketplace add your-org/FORGE');
+        log('Run: codex plugin marketplace add carlcastanas/FORGE');
       } else {
         log('Install the requested plugin into the Codex plugin cache.');
       }

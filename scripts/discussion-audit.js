@@ -11,9 +11,9 @@ const {
 
 const SCHEMA_VERSION = 'forge.discussion-audit.v1';
 const DEFAULT_REPOS = Object.freeze([
-  'your-org/FORGE',
-  'your-org/forge-shield',
-  'your-org/JARVIS',
+  'carlcastanas/FORGE',
+  'carlcastanas/forge-shield',
+  'carlcastanas/JARVIS',
   'FORGE-Tools/FORGE-Tools',
   'FORGE-Tools/FORGE-website',
 ]);

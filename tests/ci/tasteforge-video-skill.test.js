@@ -220,7 +220,7 @@ test("never claims a Fal workflow is saved from a local reference", () => {
 test("links to the canonical tasteforge-video implementation instead of duplicating it", () => {
   const skill = read("skills/tasteforge-video/SKILL.md");
   assert.match(skill, /tasteforge-video/i);
-  assert.match(skill, /your-org\/tasteforge-video/i);
+  assert.match(skill, /carlcastanas\/tasteforge-video/i);
   assert.match(skill, /python3 -m tasteforge/);
   assert.match(skill, /does not (?:vendor|duplicate|copy)/i);
 });

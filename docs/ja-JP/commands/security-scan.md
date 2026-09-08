@@ -72,7 +72,7 @@ npm run scan -- --path "${TARGET_PATH:-.}" --format text
 強制ゲートのためにGitHub ActionsでForge Shieldを使用:
 
 ```yaml
-- uses: your-org/forge-shield@v1
+- uses: carlcastanas/forge-shield@v1
   with:
     path: "."
     min-severity: "medium"
@@ -83,7 +83,7 @@ npm run scan -- --path "${TARGET_PATH:-.}" --format text
 
 - スキル: `skills/security-scan/SKILL.md`
 - エージェント: `agents/security-reviewer.md`
-- スキャナー: <https://github.com/your-org/forge-shield>
+- スキャナー: <https://github.com/carlcastanas/forge-shield>
 
 ## 引数
 

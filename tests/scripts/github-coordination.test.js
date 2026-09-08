@@ -104,17 +104,17 @@ async function runTests() {
           number: 12,
           title: 'Ship GitHub-native coordination',
           body: epicBody,
-          url: 'https://github.com/your-org/forge/issues/12',
+          url: 'https://github.com/carlcastanas/forge/issues/12',
           state: 'OPEN',
           labels: [{ name: 'epic' }],
           author: { login: 'maintainer' },
           updatedAt: '2026-06-01T12:00:00Z'
         };
         const shim = writeGhShim(rootDir, {
-          'issue view 12 --repo your-org/FORGE --json number,title,body,url,state,labels,author,updatedAt,assignees': issueView
+          'issue view 12 --repo carlcastanas/FORGE --json number,title,body,url,state,labels,author,updatedAt,assignees': issueView
         });
 
-        const result = run(['claim', '12', '--repo', 'your-org/FORGE', '--actor', 'codex', '--db', dbPath, '--json'], {
+        const result = run(['claim', '12', '--repo', 'carlcastanas/FORGE', '--actor', 'codex', '--db', dbPath, '--json'], {
           cwd: rootDir,
           env: {
             FORGE_GH_SHIM: shim.shimPath,
@@ -190,7 +190,7 @@ async function runTests() {
           number: 1,
           title: 'Release readiness',
           body: blockedBody,
-          url: 'https://github.com/your-org/forge/issues/1',
+          url: 'https://github.com/carlcastanas/forge/issues/1',
           state: 'OPEN',
           labels: [{ name: 'epic' }, { name: 'coordination:blocked' }],
           author: { login: 'codex' },
@@ -200,18 +200,18 @@ async function runTests() {
           number: 2,
           title: 'Release prerequisite',
           body: '# Release prerequisite',
-          url: 'https://github.com/your-org/forge/issues/2',
+          url: 'https://github.com/carlcastanas/forge/issues/2',
           state: 'CLOSED',
           labels: [{ name: 'blocked-by-release' }],
           author: { login: 'maintainer' },
           updatedAt: '2026-06-01T10:00:00Z'
         };
         const shim = writeGhShim(rootDir, {
-          'issue list --repo your-org/FORGE --state all --limit 100 --json number,title,body,url,state,labels,author,updatedAt,assignees': [openIssue, closedDependency],
-          'issue view 1 --repo your-org/FORGE --json number,title,body,url,state,labels,author,updatedAt,assignees': openIssue
+          'issue list --repo carlcastanas/FORGE --state all --limit 100 --json number,title,body,url,state,labels,author,updatedAt,assignees': [openIssue, closedDependency],
+          'issue view 1 --repo carlcastanas/FORGE --json number,title,body,url,state,labels,author,updatedAt,assignees': openIssue
         });
 
-        const result = run(['unblock', '--repo', 'your-org/FORGE', '--db', dbPath, '--json'], {
+        const result = run(['unblock', '--repo', 'carlcastanas/FORGE', '--db', dbPath, '--json'], {
           cwd: rootDir,
           env: {
             FORGE_GH_SHIM: shim.shimPath,

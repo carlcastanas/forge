@@ -115,7 +115,7 @@ const GUARDRAILS = [
   'CONSTRAINTS: research/triage only. Do NOT modify any code, do NOT open/close/merge PRs, do NOT post comments,',
   'do NOT send any external message. Return findings as data only.',
   'Brand it "FORGE" (never "everything claude code"). Forge Shield was FEATURED at a hackathon, never say it "won".',
-  'Forge Shield npm package is "forge-shield". Local clone: ~/GitHub/FORGE/forge-shield. FORGE repo: your-org/FORGE. Forge Shield repo: your-org/forge-shield.',
+  'Forge Shield npm package is "forge-shield". Local clone: ~/GitHub/FORGE/forge-shield. FORGE repo: carlcastanas/FORGE. Forge Shield repo: carlcastanas/forge-shield.',
   'You have Bash (gh CLI), Read, Grep, Glob, and web tools (load via ToolSearch: WebSearch / firecrawl / exa).'
 ].join(' ');
 
@@ -134,12 +134,12 @@ const surveyThunks = [
     ),
   () =>
     agent(
-      `${GUARDRAILS}\n\nTRIAGE every OPEN PR and ISSUE on the FORGE repo (your-org/FORGE). Use gh: \`gh pr list --repo your-org/FORGE --state open --limit 80 --json number,title,author,isDraft\` and \`gh issue list --repo your-org/FORGE --state open --limit 80 --json number,title,labels\`. For the higher-signal ones, peek at the diff/body (\`gh pr view <n> --repo your-org/FORGE\`). Categorize each: merge / close / needs-work / triage-later / security-priority, with a one-line rationale and any Pro/MRR value. Prioritize identifying security-relevant and Pro-relevant items. repo="your-org/FORGE".`,
+      `${GUARDRAILS}\n\nTRIAGE every OPEN PR and ISSUE on the FORGE repo (carlcastanas/FORGE). Use gh: \`gh pr list --repo carlcastanas/FORGE --state open --limit 80 --json number,title,author,isDraft\` and \`gh issue list --repo carlcastanas/FORGE --state open --limit 80 --json number,title,labels\`. For the higher-signal ones, peek at the diff/body (\`gh pr view <n> --repo carlcastanas/FORGE\`). Categorize each: merge / close / needs-work / triage-later / security-priority, with a one-line rationale and any Pro/MRR value. Prioritize identifying security-relevant and Pro-relevant items. repo="carlcastanas/FORGE".`,
       { label: 'triage:forge', phase: 'Survey', agentType: 'general-purpose', schema: TRIAGE_SCHEMA }
     ),
   () =>
     agent(
-      `${GUARDRAILS}\n\nTRIAGE every OPEN PR and ISSUE on the Forge Shield repo (your-org/forge-shield). Use gh similarly. Pay special attention to the false-positive cluster (issues #100, #102, #99 "bm", PR #103) where the scanner penalizes its own recommended fix and flags benign strings — these hurt trust and conversion. Also assess #101 (external rule-pack loader --rule-pack) and #97 (FAQ docs). Categorize each: merge / close / needs-work / triage-later / security-priority, with rationale and Pro/MRR value. repo="your-org/forge-shield".`,
+      `${GUARDRAILS}\n\nTRIAGE every OPEN PR and ISSUE on the Forge Shield repo (carlcastanas/forge-shield). Use gh similarly. Pay special attention to the false-positive cluster (issues #100, #102, #99 "bm", PR #103) where the scanner penalizes its own recommended fix and flags benign strings — these hurt trust and conversion. Also assess #101 (external rule-pack loader --rule-pack) and #97 (FAQ docs). Categorize each: merge / close / needs-work / triage-later / security-priority, with rationale and Pro/MRR value. repo="carlcastanas/forge-shield".`,
       { label: 'triage:forge-shield', phase: 'Survey', agentType: 'general-purpose', schema: TRIAGE_SCHEMA }
     )
 ];

@@ -6,9 +6,9 @@
 
 ![FORGE - hệ thống hiệu năng cho AI agent harness](../../assets/hero.png)
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
 
@@ -30,7 +30,7 @@
 
 FORGE không chỉ là một bộ cấu hình. Repo này đóng gói agents, skills, hooks, rules, MCP config, selective install, kiểm tra bảo mật, và workflow vận hành cho Claude Code, Codex, Cursor, OpenCode, Gemini và các harness agent khác.
 
-Trang tiếng Việt này là bản onboarding gọn, được phục hồi từ đóng góp cộng đồng trong PR [#1322](https://github.com/your-org/forge/pull/1322) và cập nhật để khớp mặt cài đặt hiện tại. README tiếng Anh vẫn là nguồn chuẩn đầy đủ nhất.
+Trang tiếng Việt này là bản onboarding gọn, được phục hồi từ đóng góp cộng đồng trong PR [#1322](https://github.com/carlcastanas/forge/pull/1322) và cập nhật để khớp mặt cài đặt hiện tại. README tiếng Anh vẫn là nguồn chuẩn đầy đủ nhất.
 
 ---
 
@@ -50,7 +50,7 @@ Nếu bạn đã cài chồng nhiều lần và thấy skill/hook bị trùng, x
 
 ```bash
 # Thêm marketplace
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Cài plugin
 /plugin install forge@forge
@@ -58,7 +58,7 @@ Nếu bạn đã cài chồng nhiều lần và thấy skill/hook bị trùng, x
 
 FORGE có ba định danh công khai khác nhau:
 
-- Repo GitHub: `your-org/forge`
+- Repo GitHub: `carlcastanas/forge`
 - Plugin Claude marketplace: `forge@forge`
 - Gói npm: `forge-universal`
 
@@ -69,7 +69,7 @@ Các tên này cố ý khác nhau. Plugin Claude Code dùng `forge@forge`; npm v
 Plugin Claude Code không tự phân phối `rules/`. Nếu bạn đã cài bằng plugin, **đừng** chạy thêm full installer. Hãy copy riêng rule pack bạn muốn:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 mkdir -p ~/.claude/rules/forge
@@ -78,7 +78,7 @@ cp -R rules/typescript ~/.claude/rules/forge/
 ```
 
 ```powershell
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 New-Item -ItemType Directory -Force -Path "$HOME/.claude/rules/forge" | Out-Null

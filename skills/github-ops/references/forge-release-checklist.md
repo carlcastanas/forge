@@ -1,6 +1,6 @@
 # FORGE Signed Patch Release Checklist
 
-Use this when releasing `your-org/FORGE`, especially for `FORGE-031` or any follow-up
+Use this when releasing `carlcastanas/FORGE`, especially for `FORGE-031` or any follow-up
 where the Git tag identity, npm provenance, GitHub Release, and announcement
 evidence all need to align.
 
@@ -41,9 +41,9 @@ Refresh those facts before mutating:
 ```bash
 git fetch origin main --tags
 git rev-parse origin/main
-gh run view 33429642769 --repo your-org/FORGE --json status,conclusion,url
-gh run view 33429641766 --repo your-org/FORGE --json status,conclusion,url
-gh release view v2.2.0 --repo your-org/FORGE --json tagName,targetCommitish,publishedAt,url
+gh run view 33429642769 --repo carlcastanas/FORGE --json status,conclusion,url
+gh run view 33429641766 --repo carlcastanas/FORGE --json status,conclusion,url
+gh release view v2.2.0 --repo carlcastanas/FORGE --json tagName,targetCommitish,publishedAt,url
 git ls-remote --tags origin 'refs/tags/v2.2.0*'
 git tag -v v2.2.0
 npm view forge-universal dist-tags --json
@@ -59,8 +59,8 @@ npm view forge-universal dist-tags --json
 - Record the exact `main` SHA you are about to build from.
 
 ```bash
-gh pr list --repo your-org/FORGE --state open --limit 20
-gh run list --repo your-org/FORGE --branch main --limit 10
+gh pr list --repo carlcastanas/FORGE --state open --limit 20
+gh run list --repo carlcastanas/FORGE --branch main --limit 10
 git fetch origin main --tags
 git switch main
 git pull --ff-only origin main
@@ -82,7 +82,7 @@ Expected next version is `2.2.1` unless it already exists.
 ```bash
 VERSION=2.2.1
 git ls-remote --tags origin "refs/tags/v${VERSION}*"
-gh release view "v${VERSION}" --repo your-org/FORGE
+gh release view "v${VERSION}" --repo carlcastanas/FORGE
 npm view "forge-universal@${VERSION}" version
 ```
 
@@ -123,8 +123,8 @@ After the prep PR merges, the new `main` commit becomes the only commit you may
 tag.
 
 ```bash
-gh run list --repo your-org/FORGE --branch main --limit 10
-gh run view RUN_ID --repo your-org/FORGE --json status,conclusion,url
+gh run list --repo carlcastanas/FORGE --branch main --limit 10
+gh run view RUN_ID --repo carlcastanas/FORGE --json status,conclusion,url
 git fetch origin main --tags
 git switch main
 git pull --ff-only origin main
@@ -177,9 +177,9 @@ After the workflow succeeds:
 VERSION=2.2.1
 npm view forge-universal dist-tags --json
 npm view "forge-universal@${VERSION}" name version dist.integrity --json
-gh release view "v${VERSION}" --repo your-org/FORGE \
+gh release view "v${VERSION}" --repo carlcastanas/FORGE \
   --json tagName,name,isDraft,isPrerelease,publishedAt,url
-gh api repos/your-org/FORGE/releases/latest --jq .tag_name
+gh api repos/carlcastanas/FORGE/releases/latest --jq .tag_name
 npx --yes "forge-universal@${VERSION}" setup --help
 npx --yes forge-universal@latest setup --help
 ```
@@ -189,7 +189,7 @@ required by the checked-in runbook, and verify the native Claude marketplace
 path remains installable:
 
 ```text
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 /plugin install forge@forge
 ```
 

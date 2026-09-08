@@ -22,7 +22,7 @@
     },
     {
       "kind": "external_pr_evidence",
-      "repo": "your-org/forge-shield",
+      "repo": "carlcastanas/forge-shield",
       "prs": [
         55,
         56,

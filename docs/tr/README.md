@@ -2,9 +2,9 @@
 
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20haftalık%20indirme&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20haftalık%20indirme&logo=npm)](https://www.npmjs.com/package/forge-shield)
 ![GitHub App Install](https://img.shields.io/badge/GitHub%20App-150%20kurulum-2ea44f?logo=github)
@@ -103,7 +103,7 @@ Claude Code, Codex ve Kimi Code için incelenebilir çoklu harness kurulumu ve e
 - **Çapraz harness paritesi** — Claude Code, Cursor, OpenCode ve Codex app/CLI arasında davranış sıkılaştırıldı.
 - **997 internal test geçiyor** — Hook/runtime refactor ve uyumluluk güncellemelerinden sonra tam suite yeşil.
 
-[Tam değişiklik günlüğü için Releases bölümüne bakın](https://github.com/your-org/forge/releases).
+[Tam değişiklik günlüğü için Releases bölümüne bakın](https://github.com/carlcastanas/forge/releases).
 
 ---
 
@@ -115,7 +115,7 @@ Claude Code, Codex ve Kimi Code için incelenebilir çoklu harness kurulumu ve e
 
 ```bash
 # Marketplace ekle
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Plugin'i kur
 /plugin install forge@forge
@@ -127,7 +127,7 @@ Claude Code, Codex ve Kimi Code için incelenebilir çoklu harness kurulumu ve e
 
 ```bash
 # Önce repo'yu klonlayın
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 # Bağımlılıkları kurun (paket yöneticinizi seçin)
@@ -354,7 +354,7 @@ Bu, plugin'den mevcut tüm agent'ları, command'ları ve skill'leri gösterir.
 <details>
 <summary><b>Hook'larım çalışmıyor / "Duplicate hooks file" hatası alıyorum</b></summary>
 
-Bu en yaygın sorundur. `.claude-plugin/plugin.json`'a bir `"hooks"` alanı **EKLEMEYİN**. Claude Code v2.1+ kurulu plugin'lerden `hooks/hooks.json`'ı otomatik olarak yükler. Açıkça belirtmek duplicate algılama hatalarına neden olur. Bkz. [#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103).
+Bu en yaygın sorundur. `.claude-plugin/plugin.json`'a bir `"hooks"` alanı **EKLEMEYİN**. Claude Code v2.1+ kurulu plugin'lerden `hooks/hooks.json`'ı otomatik olarak yükler. Açıkça belirtmek duplicate algılama hatalarına neden olur. Bkz. [#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103).
 </details>
 
 <details>
@@ -395,7 +395,7 @@ Her component tamamen bağımsızdır.
 Evet. FORGE çapraz platformdur:
 - **Cursor**: `.cursor/` içinde önceden çevrilmiş config'ler. [Cursor IDE Desteği](../../README.md#cursor-ide-support) bölümüne bakın.
 - **OpenCode**: `.opencode/` içinde tam plugin desteği. [OpenCode Desteği](../../README.md#opencode-support) bölümüne bakın.
-- **Codex**: macOS app ve CLI için birinci sınıf destek. PR [#257](https://github.com/your-org/forge/pull/257)'ye bakın.
+- **Codex**: macOS app ve CLI için birinci sınıf destek. PR [#257](https://github.com/carlcastanas/forge/pull/257)'ye bakın.
 - **Antigravity**: İş akışları, skill'ler ve `.agents/` içinde düzleştirilmiş rule'lar için sıkı entegre kurulum.
 - **Claude Code**: Native — bu birincil hedeftir.
 </details>

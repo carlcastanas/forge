@@ -197,7 +197,7 @@ test('an existing install without --scope updates its detected scope', () => {
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'project',
     }],
   }, fixture => {
@@ -414,7 +414,7 @@ test('setup automatically migrates an existing install to the selected scope and
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'local',
     }],
   }, fixture => {
@@ -464,7 +464,7 @@ test('setup resumes a safe two-scope migration without requiring --move-scope', 
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'user',
     }],
   }, fixture => {
@@ -500,7 +500,7 @@ test('all interrupted migration and hook combinations resume without reinstallin
           marketplaces: [{
             name: 'forge',
             source: 'github',
-            repo: 'your-org/FORGE',
+            repo: 'carlcastanas/FORGE',
             scope: destinationScope,
           }],
         }, fixture => {
@@ -610,7 +610,7 @@ test('migration dry-run JSON exposes ordered actions without mutation', () => {
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'user',
     }],
   }, fixture => {
@@ -640,7 +640,7 @@ test('migration JSON failures retain phase, scopes, and exact recovery', () => {
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'user',
     }],
     failures: [{
@@ -731,7 +731,7 @@ test('confirmed interactive apply clears and stops the spinner when apply throws
     failures: [{
       argv: [
         'plugin', 'marketplace', 'add',
-        'https://github.com/your-org/forge',
+        'https://github.com/carlcastanas/forge',
         '--scope', 'user',
       ],
       status: 8,
@@ -800,7 +800,7 @@ test('all interactive choices from an existing install update or migrate to the 
           marketplaces: [{
             name: 'forge',
             source: 'github',
-            repo: 'your-org/FORGE',
+            repo: 'carlcastanas/FORGE',
             scope: sourceScope,
           }],
         }, fixture => {
@@ -948,7 +948,7 @@ test('interactive defaults preserve an existing install scope and hook preferenc
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'local',
     }],
   }, fixture => {
@@ -984,7 +984,7 @@ test('partial migration requires an explicit destination and preserves stored ho
     marketplaces: [{
       name: 'forge',
       source: 'github',
-      repo: 'your-org/FORGE',
+      repo: 'carlcastanas/FORGE',
       scope: 'user',
     }],
   }, fixture => {

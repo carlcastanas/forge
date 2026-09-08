@@ -28,7 +28,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/your-org/forge/graphs/contributors"><img src="https://img.shields.io/github/contributors/your-org/FORGE?style=flat" alt="Contributors" /></a>
+  <a href="https://github.com/carlcastanas/forge/graphs/contributors"><img src="https://img.shields.io/github/contributors/carlcastanas/FORGE?style=flat" alt="Contributors" /></a>
 </p>
 
 <p align="center">
@@ -47,14 +47,14 @@
 </p>
 
 > [!WARNING]
-> **Лише офіційні джерела.** Встановлюйте FORGE виключно з перевірених каналів: репозиторій GitHub [github.com/your-org/forge](https://github.com/your-org/forge), пакети npm [`forge-universal`](https://www.npmjs.com/package/forge-universal) та [`forge-shield`](https://www.npmjs.com/package/forge-shield), GitHub App, ідентифікатор плагіна `forge@forge`, та вебсайт проєкту forge.example.com. Сторонні перезавантаження та неофіційні дзеркала не підтримуються і не перевіряються проєктом та можуть містити шкідливе програмне забезпечення.
+> **Лише офіційні джерела.** Встановлюйте FORGE виключно з перевірених каналів: репозиторій GitHub [github.com/carlcastanas/forge](https://github.com/carlcastanas/forge), пакети npm [`forge-universal`](https://www.npmjs.com/package/forge-universal) та [`forge-shield`](https://www.npmjs.com/package/forge-shield), GitHub App, ідентифікатор плагіна `forge@forge`, та вебсайт проєкту forge.example.com. Сторонні перезавантаження та неофіційні дзеркала не підтримуються і не перевіряються проєктом та можуть містити шкідливе програмне забезпечення.
 
 ## Встановлення через Claude Code
 
 Виконайте ці команди всередині Claude Code:
 
 ```text
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 /plugin install forge@forge
 ```
 
@@ -129,7 +129,7 @@ FORGE — це MIT-ліцензований open source. Найкраще пра
 
 Якщо ви вже наклали кілька встановлень і щось виглядає продубльованим, перейдіть одразу до [Скидання / видалення FORGE](#скидання--видалення-forge).
 
-**Проблеми зі встановленням?** Відкрийте коротку [форму проблеми встановлення чи виконання](https://github.com/your-org/forge/issues/new?template=install-problem.yml) або запустіть `forge feedback`. FORGE ніколи автоматично не завантажує діагностику.
+**Проблеми зі встановленням?** Відкрийте коротку [форму проблеми встановлення чи виконання](https://github.com/carlcastanas/forge/issues/new?template=install-problem.yml) або запустіть `forge feedback`. FORGE ніколи автоматично не завантажує діагностику.
 
 ### Деталі для Claude Code
 
@@ -140,7 +140,7 @@ Claude Code володіє цими вбудованими командами, �
 Плагіни Claude Code не можуть розповсюджувати `rules`, тому додавайте лише ті пакети правил, які вам справді потрібні:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 mkdir -p ~/.claude/rules/forge
 cp -R rules/common ~/.claude/rules/forge/
@@ -160,7 +160,7 @@ cp -R rules/typescript ~/.claude/rules/forge/  # замініть на ваш с
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/FORGE"
+        "repo": "carlcastanas/FORGE"
       }
     }
   },
@@ -174,11 +174,11 @@ cp -R rules/typescript ~/.claude/rules/forge/  # замініть на ваш с
 </details>
 
 <details>
-<summary><strong>Примітка щодо іменування та міграції (forge@forge, your-org/FORGE, forge-universal)</strong></summary>
+<summary><strong>Примітка щодо іменування та міграції (forge@forge, carlcastanas/FORGE, forge-universal)</strong></summary>
 
 FORGE має три публічних ідентифікатори, і вони не є взаємозамінними:
 
-- Вихідний репозиторій GitHub: `your-org/FORGE`
+- Вихідний репозиторій GitHub: `carlcastanas/FORGE`
 - Ідентифікатор marketplace/плагіна Claude: `forge@forge`
 - Пакет npm: `forge-universal`
 
@@ -194,7 +194,7 @@ FORGE має три публічних ідентифікатори, і вони
 Поточні релізи Codex можуть встановлювати FORGE як нативний плагін репо-маркетплейсу. Запис маркетплейсу використовує корінь репозиторію, тому кеш Codex отримує маніфест разом з усіма навичками, конфігурацією MCP, середовищем виконання хуків, скриптами та ресурсами, на які є посилання:
 
 ```bash
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin add forge@forge
 codex plugin list --json
 node scripts/codex/check-plugin-cache.js
@@ -205,7 +205,7 @@ node scripts/codex/check-plugin-cache.js
 Старіший шлях `scripts/sync-forge-to-codex.sh` залишається окремим варіантом сумісності для користувачів, які навмисно хочуть скопійовану та злиту конфігурацію в `~/.codex`; він не потрібен для нативного плагіна. Спочатку запустіть Codex один раз, щоб `~/.codex/config.toml` існував, потім:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 npm install
 bash scripts/sync-forge-to-codex.sh
@@ -223,7 +223,7 @@ bash scripts/sync-forge-to-codex.sh
 Клонуйте FORGE один раз, потім оберіть ціль, що відповідає вашій оболонці:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 ```
 
@@ -354,7 +354,7 @@ cp -R /path/to/FORGE/rules/typescript .claude/rules/forge/
 Використовуйте це лише коли ви навмисно пропускаєте шлях плагіна:
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 ./install.sh --profile full
 ```
@@ -362,7 +362,7 @@ cd FORGE
 Windows:
 
 ```powershell
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 .\install.ps1 --profile full
 ```
@@ -498,7 +498,7 @@ node scripts/uninstall.js --dry-run
 node scripts/uninstall.js
 ```
 
-Якщо ви йдете, команда видалення друкує опційну [20-секундну форму зворотного зв'язку](https://github.com/your-org/forge/issues/new?template=quick-feedback.yml). Це публічний issue на GitHub, вона ніколи не блокує видалення, і FORGE не завантажує діагностику. Ви також можете в будь-який час запустити `forge feedback`, щоб побачити маршрути для проблем, зворотного зв'язку та пропозицій функцій.
+Якщо ви йдете, команда видалення друкує опційну [20-секундну форму зворотного зв'язку](https://github.com/carlcastanas/forge/issues/new?template=quick-feedback.yml). Це публічний issue на GitHub, вона ніколи не блокує видалення, і FORGE не завантажує діагностику. Ви також можете в будь-який час запустити `forge feedback`, щоб побачити маршрути для проблем, зворотного зв'язку та пропозицій функцій.
 
 Користувачі плагіна повинні видалити плагін з Claude Code, а потім видалити лише ті папки правил, які вони скопіювали вручну і більше не хочуть мати. FORGE видаляє лише файли, записані в його стані встановлення. Він не претендує на непов'язані файли у ваших директоріях оболонки.
 
@@ -674,17 +674,17 @@ FORGE також постачає розширені керовані адапт
 
 > [!IMPORTANT]
 > **НОВЕ В FORGE 2.1: Plan Canvas · оболонка Kimi · самостійне обслуговування на власній GPU-потужності.**
-> [Дивіться повні примітки до релізу →](https://github.com/your-org/forge/blob/main/docs/releases/2.1.0/release-notes.md)
+> [Дивіться повні примітки до релізу →](https://github.com/carlcastanas/forge/blob/main/docs/releases/2.1.0/release-notes.md)
 
 ### Plan Canvas: переглядайте плани, вказуючи, а не передруковуючи
 
 Ваш агент пише план, потім відкриває його в браузерному канвасі, доступному лише локально. Клацніть частину, яку маєте на увазі, додайте пронумеровані анотації, спілкуйтесь з бічної панелі та натисніть **Схвалити план** чи **Запросити зміни**. Вердикт відображається безпосередньо на воротах CONFIRM команди `/plan`. Діаграми Mermaid відображаються наживо, а зміни в файлі плану перезавантажують сторінку.
 
-![Plan Canvas demo: reviewing an FORGE plan in the browser, scrolling diagrams, attaching an anchored annotation, chatting with the agent, and approving the plan](https://raw.githubusercontent.com/your-org/FORGE/main/docs/releases/2.1.0/assets/forge-plan-canvas-demo.gif)
+![Plan Canvas demo: reviewing an FORGE plan in the browser, scrolling diagrams, attaching an anchored annotation, chatting with the agent, and approving the plan](https://raw.githubusercontent.com/carlcastanas/FORGE/main/docs/releases/2.1.0/assets/forge-plan-canvas-demo.gif)
 
 Це агностично до оболонки та моделі: простий CLI (`forge-plan-canvas`), що говорить JSON, тому будь-який агент може ним керувати. Спробуйте: попросіть вашого агента виконати `/forge:plan` щось, а потім переглядайте зі сторінки замість терміналу.
 
-[Відкрити план, використаний у цьому демо →](https://github.com/your-org/forge/blob/main/docs/releases/2.1.0/plan-canvas-demo.plan.md)
+[Відкрити план, використаний у цьому демо →](https://github.com/carlcastanas/forge/blob/main/docs/releases/2.1.0/plan-canvas-demo.plan.md)
 
 ### Також у 2.1
 
@@ -701,18 +701,18 @@ FORGE також постачає розширені керовані адапт
 
 | Версія | Основне |
 |---|---|
-| [v2.0.0](https://github.com/your-org/forge/releases/tag/v2.0.0) | Операційна система агентних оболонок: крос-оболонкова градація, субстрат площини управління, оркестратори `orch-*`, Discord + бот FORGE, політика єдиного конектора MCP |
-| [v1.10.0](https://github.com/your-org/forge/releases/tag/v1.10.0) | Оновлення поверхні, оператори процеси, альфа-версія FORGE 2.0 |
-| [v1.9.0](https://github.com/your-org/forge/releases/tag/v1.9.0) | Вибіркове встановлення, FORGE Tools Pro, 12 мовних екосистем |
-| [v1.8.0](https://github.com/your-org/forge/releases/tag/v1.8.0) | Продуктивність оболонок та крос-платформна надійність |
-| [v1.7.0](https://github.com/your-org/forge/releases/tag/v1.7.0) | Крос-платформне розширення та конструктор презентацій |
-| [v1.6.0](https://github.com/your-org/forge/releases/tag/v1.6.0) | Codex Edition та FORGE Tools GitHub App |
-| [v1.5.0](https://github.com/your-org/forge/releases/tag/v1.5.0) | Universal Edition |
-| [v1.4.0](https://github.com/your-org/forge/releases/tag/v1.4.0) | Мультимовні правила, майстер встановлення, оркестрація PM2 |
-| [v1.3.0](https://github.com/your-org/forge/releases/tag/v1.3.0) | Повна підтримка плагіна OpenCode |
-| [v1.2.0](https://github.com/your-org/forge/releases/tag/v1.2.0) | Уніфіковані команди та навички |
-| [v1.1.0](https://github.com/your-org/forge/releases/tag/v1.1.0) | Крос-платформна підтримка та виправлення від спільноти |
-| [v1.0.0](https://github.com/your-org/forge/releases/tag/v1.0.0) | Офіційний реліз плагіна |
+| [v2.0.0](https://github.com/carlcastanas/forge/releases/tag/v2.0.0) | Операційна система агентних оболонок: крос-оболонкова градація, субстрат площини управління, оркестратори `orch-*`, Discord + бот FORGE, політика єдиного конектора MCP |
+| [v1.10.0](https://github.com/carlcastanas/forge/releases/tag/v1.10.0) | Оновлення поверхні, оператори процеси, альфа-версія FORGE 2.0 |
+| [v1.9.0](https://github.com/carlcastanas/forge/releases/tag/v1.9.0) | Вибіркове встановлення, FORGE Tools Pro, 12 мовних екосистем |
+| [v1.8.0](https://github.com/carlcastanas/forge/releases/tag/v1.8.0) | Продуктивність оболонок та крос-платформна надійність |
+| [v1.7.0](https://github.com/carlcastanas/forge/releases/tag/v1.7.0) | Крос-платформне розширення та конструктор презентацій |
+| [v1.6.0](https://github.com/carlcastanas/forge/releases/tag/v1.6.0) | Codex Edition та FORGE Tools GitHub App |
+| [v1.5.0](https://github.com/carlcastanas/forge/releases/tag/v1.5.0) | Universal Edition |
+| [v1.4.0](https://github.com/carlcastanas/forge/releases/tag/v1.4.0) | Мультимовні правила, майстер встановлення, оркестрація PM2 |
+| [v1.3.0](https://github.com/carlcastanas/forge/releases/tag/v1.3.0) | Повна підтримка плагіна OpenCode |
+| [v1.2.0](https://github.com/carlcastanas/forge/releases/tag/v1.2.0) | Уніфіковані команди та навички |
+| [v1.1.0](https://github.com/carlcastanas/forge/releases/tag/v1.1.0) | Крос-платформна підтримка та виправлення від спільноти |
+| [v1.0.0](https://github.com/carlcastanas/forge/releases/tag/v1.0.0) | Офіційний реліз плагіна |
 
 </details>
 
@@ -777,7 +777,7 @@ FORGE також постачає розширені керовані адапт
 
 ### v1.4.1: Виправлення помилки (лют. 2026)
 
-- **Виправлено втрату вмісту при імпорті інстинктів**: `parse_instinct_file()` мовчки відкидав увесь вміст після frontmatter (розділи Action, Evidence, Examples) під час `/instinct-import`. ([#148](https://github.com/your-org/forge/issues/148), [#161](https://github.com/your-org/forge/pull/161))
+- **Виправлено втрату вмісту при імпорті інстинктів**: `parse_instinct_file()` мовчки відкидав увесь вміст після frontmatter (розділи Action, Evidence, Examples) під час `/instinct-import`. ([#148](https://github.com/carlcastanas/forge/issues/148), [#161](https://github.com/carlcastanas/forge/pull/161))
 
 ### v1.4.0: Мультимовні правила, майстер встановлення та PM2 (лют. 2026)
 
@@ -801,7 +801,7 @@ FORGE також постачає розширені керовані адапт
 - **Управління сесіями**: команда `/sessions` для історії сесій.
 - **Безперервне навчання v2**: навчання на основі інстинктів з оцінюванням довіри, імпортом/експортом, еволюцією.
 
-Повний журнал змін у [Releases](https://github.com/your-org/forge/releases).
+Повний журнал змін у [Releases](https://github.com/carlcastanas/forge/releases).
 </details>
 
 ## Чому обрати FORGE?
@@ -1034,9 +1034,9 @@ npx forge-shield init
 
 **Формати виводу:** термінал (кольорова градація A-F), JSON (CI-конвеєри), Markdown, HTML. Код виходу 2 при критичних знахідках для воріт збирання.
 
-Використовуйте `/security-scan` у Claude Code для запуску, або додайте до CI через [GitHub Action](https://github.com/your-org/forge-shield).
+Використовуйте `/security-scan` у Claude Code для запуску, або додайте до CI через [GitHub Action](https://github.com/carlcastanas/forge-shield).
 
-[GitHub](https://github.com/your-org/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
+[GitHub](https://github.com/carlcastanas/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
 </details>
 
 <details>
@@ -1127,9 +1127,9 @@ rules/
 | Платформа | Статус | Поточне обмеження |
 |---|---|---|
 | Linux | Підтримується основний | Опційні функції можуть вимагати Bash, Python чи інструменти конкретного провайдера. |
-| macOS | Підтримується основний | Автономний шлях GAN shell не сумісний із системним Bash 3.2 і наразі має дефект розбору оцінок ([#2674](https://github.com/your-org/forge/issues/2674)). |
+| macOS | Підтримується основний | Автономний шлях GAN shell не сумісний із системним Bash 3.2 і наразі має дефект розбору оцінок ([#2674](https://github.com/carlcastanas/forge/issues/2674)). |
 | Windows + WSL | Підтримується основний | WSL слідує шляхам Linux; інтеграції з хостом Windows все ще відрізняються залежно від оболонки. |
-| Windows нативний | Підтримується з обмеженнями | Демон спостерігача та записи сховища пам'яті continuous-learning v2 мають відкриті дефекти на нативному Windows ([#2489](https://github.com/your-org/forge/issues/2489), [#2626](https://github.com/your-org/forge/issues/2626)). Опційні функції на основі shell вимагають Git Bash/WSL чи недоступні. |
+| Windows нативний | Підтримується з обмеженнями | Демон спостерігача та записи сховища пам'яті continuous-learning v2 мають відкриті дефекти на нативному Windows ([#2489](https://github.com/carlcastanas/forge/issues/2489), [#2626](https://github.com/carlcastanas/forge/issues/2626)). Опційні функції на основі shell вимагають Git Bash/WSL чи недоступні. |
 
 Розглядайте `stable`, `beta`, `experimental` та `instruction-only` нижче як твердження про можливості, а не маркетингові рівні.
 
@@ -1225,7 +1225,7 @@ export FORGE_AGENT_DATA_HOME="$HOME/.cursor/forge"
 - `$FORGE_AGENT_DATA_HOME/session-aliases.json`: псевдоніми сесій
 - `$FORGE_AGENT_DATA_HOME/metrics/`: метрики витрат та активності
 
-Дивіться [your-org/FORGE#2065](https://github.com/your-org/forge/issues/2065).
+Дивіться [carlcastanas/FORGE#2065](https://github.com/carlcastanas/forge/issues/2065).
 </details>
 
 ## Підтримка платформ
@@ -1234,8 +1234,8 @@ export FORGE_AGENT_DATA_HOME="$HOME/.cursor/forge"
 |---|---|---|---|
 | Claude Code | Стабільна основна | Плагін чи вибірковий інсталятор | Плагін рекламує встановлений каталог моделі; використовуйте вибірковий/ручний профіль, коли важливий обсяг контексту. Опційні навички на основі shell не портативні на кожну ОС. |
 | Codex | Підтримувана синхронізація; маркетплейс експериментальний | Конфігурація репозиторію чи `sync-forge-to-codex.sh` | Немає середовища виконання хуків FORGE. Пакет маркетплейсу може пропускати спільний вміст репозиторію з кешу Codex; використовуйте синхронізацію для надійного шляху. |
-| Cursor | Бета-адаптер проєкту | Вибірковий інсталятор у `.cursor/` | Виявлення агентів залежить від збірки Cursor, а шляхи інсталятора FORGE ще не показують ідентичні набори хуків ([#2419](https://github.com/your-org/forge/issues/2419)). |
-| OpenCode | Бета зібраний плагін | Зберіть плагін, потім вибірковий інсталятор | FORGE постачає підмножину каталогу, а еталонна конфігурація прив'язує моделі Anthropic; оберіть моделі, доступні вашому провайдеру ([#2617](https://github.com/your-org/forge/issues/2617)). |
+| Cursor | Бета-адаптер проєкту | Вибірковий інсталятор у `.cursor/` | Виявлення агентів залежить від збірки Cursor, а шляхи інсталятора FORGE ще не показують ідентичні набори хуків ([#2419](https://github.com/carlcastanas/forge/issues/2419)). |
+| OpenCode | Бета зібраний плагін | Зберіть плагін, потім вибірковий інсталятор | FORGE постачає підмножину каталогу, а еталонна конфігурація прив'язує моделі Anthropic; оберіть моделі, доступні вашому провайдеру ([#2617](https://github.com/carlcastanas/forge/issues/2617)). |
 | GitHub Copilot | Лише інструкції | Закомічені інструкції та файли промптів | Немає хуків FORGE, агентів часу виконання, делегування чи нативного виявлення навичок. |
 | Gemini, Zed, Antigravity, Qwen, Hermes, OpenClaw, Kimi, CodeBuddy, JoyCode | Експериментальні/мінімальні адаптери | Ціль вибіркова для оболонки | Розміщення файлів та портативність інструкцій перевірені; повний паритет функцій Claude не заявляється. |
 
@@ -1636,14 +1636,14 @@ Claude Code v2.1+ **автоматично завантажує** `hooks/hooks.j
 Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded file
 ```
 
-**Передісторія:** Це спричинило повторювані цикли виправлення/відкату в цьому репозиторії ([#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103)). Поведінка змінювалася між версіями Claude Code, що призводило до плутанини. Тепер є регресійний тест для запобігання повторного введення цього.
+**Передісторія:** Це спричинило повторювані цикли виправлення/відкату в цьому репозиторії ([#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103)). Поведінка змінювалася між версіями Claude Code, що призводило до плутанини. Тепер є регресійний тест для запобігання повторного введення цього.
 </details>
 
 ## Безпека
 
 Встановлюйте FORGE лише з офіційних джерел:
 
-- Репозиторій GitHub: <https://github.com/your-org/forge>
+- Репозиторій GitHub: <https://github.com/carlcastanas/forge>
 - Плагін Claude Code: `forge@forge`
 - Пакети npm: [`forge-universal`](https://www.npmjs.com/package/forge-universal) та [`forge-shield`](https://www.npmjs.com/package/forge-shield)
 - GitHub App: <>
@@ -1697,7 +1697,7 @@ npx -y forge-shield scan --path .
 <details>
 <summary><strong>Мої хуки не працюють / помилки "Duplicate hooks file"</strong></summary>
 
-**НЕ додавайте поле `"hooks"` до `.claude-plugin/plugin.json`.** Claude Code v2.1+ автоматично завантажує `hooks/hooks.json` зі встановлених плагінів. Явне оголошення спричиняє помилки виявлення дублікатів. Дивіться [#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103).
+**НЕ додавайте поле `"hooks"` до `.claude-plugin/plugin.json`.** Claude Code v2.1+ автоматично завантажує `hooks/hooks.json` зі встановлених плагінів. Явне оголошення спричиняє помилки виявлення дублікатів. Дивіться [#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103).
 </details>
 
 <details>
@@ -1709,7 +1709,7 @@ npx -y forge-shield scan --path .
 node scripts/codex/check-plugin-cache.js
 ```
 
-Якщо повідомляється про невирішені батьківські посилання, використовуйте `bash scripts/sync-forge-to-codex.sh`. Реєстрація в `codex plugin list` підтверджує запис маркетплейсу, а не те, що кожен файл, на який є посилання, досягнув кешу плагіна. Завантаження навичок під час виконання з локальних/репо-маркетплейсів все ще ненадійне вище за течією ([openai/codex#26037](https://github.com/openai/codex/issues/26037)); дивіться [#2128](https://github.com/your-org/forge/issues/2128) для повного дослідження.
+Якщо повідомляється про невирішені батьківські посилання, використовуйте `bash scripts/sync-forge-to-codex.sh`. Реєстрація в `codex plugin list` підтверджує запис маркетплейсу, а не те, що кожен файл, на який є посилання, досягнув кешу плагіна. Завантаження навичок під час виконання з локальних/репо-маркетплейсів все ще ненадійне вище за течією ([openai/codex#26037](https://github.com/openai/codex/issues/26037)); дивіться [#2128](https://github.com/carlcastanas/forge/issues/2128) для повного дослідження.
 </details>
 
 <details>
@@ -1759,7 +1759,7 @@ cp -r rules/common ~/.claude/rules/forge/
 <details>
 <summary><strong>Моєї платформи немає в списку</strong></summary>
 
-Використовуйте [посібник з ручної адаптації](../../docs/MANUAL-ADAPTATION-GUIDE.md), чи відкрийте [обговорення GitHub](https://github.com/your-org/forge/discussions) з назвою оболонки та форматами файлів, навичок, команд і хуків, які вона підтримує.
+Використовуйте [посібник з ручної адаптації](../../docs/MANUAL-ADAPTATION-GUIDE.md), чи відкрийте [обговорення GitHub](https://github.com/carlcastanas/forge/discussions) з назвою оболонки та форматами файлів, навичок, команд і хуків, які вона підтримує.
 </details>
 
 ## Запуск тестів
@@ -1786,7 +1786,7 @@ FORGE Pro додає аналіз приватних репозиторіїв, �
 <table>
 <tr>
 <td width="33%" align="center"><strong>FORGE Pro</strong><br /><sub>Розміщений GitHub App для приватних репозиторіїв</sub></td>
-<td width="33%" align="center"><a href="https://github.com/your-org/forge/discussions"><strong>Спільнота</strong><br /><sub>Питання, ідеї та Show and Tell</sub></a></td>
+<td width="33%" align="center"><a href="https://github.com/carlcastanas/forge/discussions"><strong>Спільнота</strong><br /><sub>Питання, ідеї та Show and Tell</sub></a></td>
 <td width="33%" align="center"><strong>GitHub App</strong><br /><sub>Аудити PR та розміщені процеси</sub></td>
 </tr>
 </table>

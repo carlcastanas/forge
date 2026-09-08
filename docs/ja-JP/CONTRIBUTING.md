@@ -53,7 +53,7 @@
 
 ```bash
 # 1. Fork とクローン
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. ブランチを作成
@@ -422,7 +422,7 @@ docs: improve contributing guide
 
 ## 質問がありますか？
 
-- **Issues:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+- **Issues:** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 - **X/Twitter:**
 
 ---

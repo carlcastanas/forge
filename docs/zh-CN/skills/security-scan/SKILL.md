@@ -6,7 +6,7 @@ origin: FORGE
 
 # 安全扫描技能
 
-使用 [Forge Shield](https://github.com/your-org/forge-shield) 审计您的 Claude Code 配置中的安全问题。
+使用 [Forge Shield](https://github.com/carlcastanas/forge-shield) 审计您的 Claude Code 配置中的安全问题。
 
 ## 何时激活
 
@@ -123,7 +123,7 @@ npx forge-shield init
 添加到您的 CI 流水线中：
 
 ```yaml
-- uses: your-org/forge-shield@v1
+- uses: carlcastanas/forge-shield@v1
   with:
     path: '.'
     min-severity: 'medium'
@@ -168,5 +168,5 @@ npx forge-shield init
 
 ## 链接
 
-* **GitHub**: [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+* **GitHub**: [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 * **npm**: [npmjs.com/package/forge-shield](https://www.npmjs.com/package/forge-shield)

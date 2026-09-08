@@ -234,7 +234,7 @@ function fakeClaudeProviderMain() {
       ...state,
       marketplaces: [{
         name: 'forge',
-        repo: 'your-org/FORGE',
+        repo: 'carlcastanas/FORGE',
         scope: 'user',
         source: 'github',
       }],
@@ -557,7 +557,7 @@ function runLifecycle(options) {
       { enabled: true, id: 'forge@forge', scope: 'user', version: '2.2.0' },
     ]);
     assert.deepStrictEqual(fakeClaudeState.marketplaces, [
-      { name: 'forge', repo: 'your-org/FORGE', scope: 'user', source: 'github' },
+      { name: 'forge', repo: 'carlcastanas/FORGE', scope: 'user', source: 'github' },
     ]);
     const fakeClaudeCalls = readJsonLines(fakeClaudeCallsPath).map(args => args.join(' '));
     assert.ok(

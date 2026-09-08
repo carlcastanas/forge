@@ -264,7 +264,7 @@ claude --version
 # Claude Code 2.0+ gerektirir
 
 # Manuel kurulum (marketplace başarısız olursa)
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cp -r forge ~/.claude/plugins/forge
 ```
 
@@ -396,7 +396,7 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
 
 Hala sorunlar yaşıyorsanız:
 
-1. **GitHub Issues'ı Kontrol Edin**: [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+1. **GitHub Issues'ı Kontrol Edin**: [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 2. **Debug Logging'i Etkinleştirin**:
    ```bash
    export CLAUDE_DEBUG=1

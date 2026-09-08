@@ -70,7 +70,7 @@ dry-run/dry_run semantics — say "dry-run spec" or "deterministic plan", never
 
 ## Canonical Implementation
 
-- Repository: `your-org/tasteforge-video` — find it under the workspace's
+- Repository: `carlcastanas/tasteforge-video` — find it under the workspace's
   canonical local GitHub checkout root (never a hard-coded machine path);
   package directory `tasteforge/`.
 - CLI: `python3 -m tasteforge <command>` — `provenance`, `inspect`, `validate`,

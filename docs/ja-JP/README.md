@@ -4,9 +4,9 @@
 
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Shell](https://img.shields.io/badge/-Shell-4EAA25?logo=gnu-bash&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -72,7 +72,7 @@
 
 ### v1.4.1 — バグ修正（2026年2月）
 
-- **instinctインポート時のコンテンツ喪失を修正** — `/instinct-import`実行時に`parse_instinct_file()`がfrontmatter後のすべてのコンテンツ（Action、Evidence、Examplesセクション）を暗黙的に削除していた問題を修正。コミュニティ貢献者@ericcai0814により解決されました（[#148](https://github.com/your-org/forge/issues/148), [#161](https://github.com/your-org/forge/pull/161)）
+- **instinctインポート時のコンテンツ喪失を修正** — `/instinct-import`実行時に`parse_instinct_file()`がfrontmatter後のすべてのコンテンツ（Action、Evidence、Examplesセクション）を暗黙的に削除していた問題を修正。コミュニティ貢献者@ericcai0814により解決されました（[#148](https://github.com/carlcastanas/forge/issues/148), [#161](https://github.com/carlcastanas/forge/pull/161)）
 
 ### v1.4.0 — マルチ言語ルール、インストールウィザード & PM2（2026年2月）
 
@@ -96,7 +96,7 @@
 - **セッション管理** — セッション履歴用の`/sessions`コマンド
 - **継続的学習 v2** — 信頼度スコアリング、インポート/エクスポート、進化を伴うinstinctベースの学習
 
-完全なチェンジログは[Releases](https://github.com/your-org/forge/releases)を参照してください。
+完全なチェンジログは[Releases](https://github.com/carlcastanas/forge/releases)を参照してください。
 
 ---
 
@@ -108,7 +108,7 @@
 
 ```bash
 # マーケットプレイスを追加
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # プラグインをインストール
 /plugin install forge@forge
@@ -120,7 +120,7 @@
 
 ```bash
 # まずリポジトリをクローン
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # 共通ルールをインストール（必須）
 cp -r forge/rules/common ~/.claude/rules/common
@@ -375,9 +375,9 @@ npx forge-shield init
 
 CLAUDE.md、settings.json、MCP サーバー、フック、エージェント定義をチェックします。セキュリティグレード（A-F）と実行可能な結果を生成します。
 
-Claude Codeで`/security-scan`を実行、または[GitHub Action](https://github.com/your-org/forge-shield)でCIに追加できます。
+Claude Codeで`/security-scan`を実行、または[GitHub Action](https://github.com/carlcastanas/forge-shield)でCIに追加できます。
 
-[GitHub](https://github.com/your-org/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
+[GitHub](https://github.com/carlcastanas/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
 
 ### 継続的学習 v2
 
@@ -417,7 +417,7 @@ Claude Code v2.1+は、インストール済みプラグインの`hooks/hooks.js
 Duplicate hook file detected: ./hooks/hooks.json is already resolved to a loaded file
 ```
 
-**背景:** これは本リポジトリで複数の修正/リバート循環を引き起こしました（[#29](https://github.com/your-org/forge/issues/29), [#52](https://github.com/your-org/forge/issues/52), [#103](https://github.com/your-org/forge/issues/103)）。Claude Codeバージョン間で動作が変わったため混乱がありました。今後を防ぐため回帰テストがあります。
+**背景:** これは本リポジトリで複数の修正/リバート循環を引き起こしました（[#29](https://github.com/carlcastanas/forge/issues/29), [#52](https://github.com/carlcastanas/forge/issues/52), [#103](https://github.com/carlcastanas/forge/issues/103)）。Claude Codeバージョン間で動作が変わったため混乱がありました。今後を防ぐため回帰テストがあります。
 
 ---
 
@@ -429,7 +429,7 @@ Duplicate hook file detected: ./hooks/hooks.json is already resolved to a loaded
 
 ```bash
 # このリポジトリをマーケットプレイスとして追加
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # プラグインをインストール
 /plugin install forge@forge
@@ -443,7 +443,7 @@ Duplicate hook file detected: ./hooks/hooks.json is already resolved to a loaded
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/forge"
+        "repo": "carlcastanas/forge"
       }
     }
   },
@@ -459,7 +459,7 @@ Duplicate hook file detected: ./hooks/hooks.json is already resolved to a loaded
 >
 > ```bash
 > # まずリポジトリをクローン
-> git clone https://github.com/your-org/forge.git
+> git clone https://github.com/carlcastanas/forge.git
 >
 > # オプション A：ユーザーレベルルール（すべてのプロジェクトに適用）
 > mkdir -p ~/.claude/rules
@@ -482,7 +482,7 @@ Duplicate hook file detected: ./hooks/hooks.json is already resolved to a loaded
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # エージェントを Claude 設定にコピー
 cp forge/agents/*.md ~/.claude/agents/
@@ -769,7 +769,7 @@ npm install forge-universal
 
 ## Star 履歴
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=carlcastanas/forge&type=Date)](https://star-history.com/#carlcastanas/forge&Date)
 
 ---
 

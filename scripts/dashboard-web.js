@@ -6,7 +6,7 @@
  * Usage: node scripts/dashboard-web.js [port]
  * Open http://localhost:3456
  *
- * Contribution: https://github.com/your-org/forge
+ * Contribution: https://github.com/carlcastanas/forge
  */
 
 const fs = require('fs');
@@ -440,7 +440,7 @@ function renderHTML(data) {
 
 <div class="toast" id="toast"><span class="ck">✓</span> <span id="toast-msg"></span></div>
 <div class="footer">
-  <a href="https://github.com/your-org/forge" target="_blank">github.com/your-org/forge</a>
+  <a href="https://github.com/carlcastanas/forge" target="_blank">github.com/carlcastanas/forge</a>
   <span class="dt"></span>
   <span>FORGE v2.0.0-rc.1</span>
   <span class="dt"></span>

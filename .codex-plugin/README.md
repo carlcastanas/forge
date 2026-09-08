@@ -25,7 +25,7 @@ Codex 0.146.0 and newer use `plugin add`, not `plugin install`. Add FORGE's
 repository marketplace, install the native plugin, and verify the registration:
 
 ```bash
-codex plugin marketplace add your-org/FORGE
+codex plugin marketplace add carlcastanas/FORGE
 codex plugin add forge@forge
 codex plugin list --json
 ```

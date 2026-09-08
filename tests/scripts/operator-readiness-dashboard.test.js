@@ -60,7 +60,7 @@ function seedRepo(rootDir, overrides = {}) {
       'video-release-artifacts-present'
     ].join('\n'),
     'docs/FORGE-2.0-GA-ROADMAP.md': [
-      'https://linear.app/your-org/project/forge-platform-roadmap',
+      'https://linear.app/carlcastanas/project/forge-platform-roadmap',
       'Linear ITO-44 ITO-59',
       'Forge Shield PR #92 #78-#92 checksum-backed policy export policy promote checksum-verified policy promotion',
       'Forge Shield Enterprise Iteration',
@@ -105,7 +105,7 @@ function seedRepo(rootDir, overrides = {}) {
     'docs/releases/2.0.0-rc.1/naming-and-publication-matrix.md': 'Claude plugin Codex plugin npm package Publication Paths',
     'docs/releases/2.0.0-rc.1/release-name-plugin-publication-checklist-2026-05-18.md': [
       'Ship `v2.0.0-rc.1` as **FORGE**',
-      'your-org/FORGE',
+      'carlcastanas/FORGE',
       'forge-universal',
       'claude plugin tag .claude-plugin --dry-run',
       'codex plugin marketplace add',
@@ -318,7 +318,7 @@ function runTests() {
         '--allow-untracked',
         'docs/drafts/',
         '--repo',
-        'your-org/FORGE',
+        'carlcastanas/FORGE',
         '--generated-at',
         '2026-05-15T00:00:00.000Z'
       ]);
@@ -327,7 +327,7 @@ function runTests() {
       assert.strictEqual(parsed.root, path.resolve(rootDir));
       assert.strictEqual(parsed.skipGithub, true);
       assert.deepStrictEqual(parsed.allowUntracked, ['docs/drafts/']);
-      assert.deepStrictEqual(parsed.repos, ['your-org/FORGE']);
+      assert.deepStrictEqual(parsed.repos, ['carlcastanas/FORGE']);
       assert.strictEqual(parsed.generatedAt, '2026-05-15T00:00:00.000Z');
 
       assert.throws(() => parseArgs(['node', 'script', '--format', 'xml']), /Invalid format/);
@@ -506,7 +506,7 @@ function runTests() {
     try {
       seedRepo(rootDir, {
         'docs/FORGE-2.0-GA-ROADMAP.md': [
-          'https://linear.app/your-org/project/forge-platform-roadmap',
+          'https://linear.app/carlcastanas/project/forge-platform-roadmap',
           'Linear ITO-44 ITO-59',
           'Forge Shield Enterprise Iteration',
           'FORGE-Tools PR #78',
@@ -642,7 +642,7 @@ function runTests() {
       try {
         seedRepo(rootDir, {
           'docs/FORGE-2.0-GA-ROADMAP.md': [
-            'https://linear.app/your-org/project/forge-platform-roadmap',
+            'https://linear.app/carlcastanas/project/forge-platform-roadmap',
             'Linear ITO-44 ITO-59',
             'Forge Shield Enterprise Iteration',
             marker,
@@ -669,7 +669,7 @@ function runTests() {
     try {
       seedRepo(rootDir, {
         'docs/FORGE-2.0-GA-ROADMAP.md': [
-          'https://linear.app/your-org/project/forge-platform-roadmap',
+          'https://linear.app/carlcastanas/project/forge-platform-roadmap',
           'Linear ITO-44 ITO-59',
           'Forge Shield PR #92 #78-#92 checksum-backed policy export policy promote checksum-verified policy promotion',
           'Forge Shield Enterprise Iteration',

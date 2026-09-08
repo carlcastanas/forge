@@ -282,7 +282,7 @@ claude --version
 # Requires Claude Code 2.0+
 
 # Manual install (if marketplace fails)
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cp -r forge ~/.claude/plugins/forge
 ```
 
@@ -420,7 +420,7 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
 
 如果您仍然遇到问题：
 
-1. **检查 GitHub Issues**：[github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+1. **检查 GitHub Issues**：[github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 2. **启用调试日志记录**：
    ```bash
    export CLAUDE_DEBUG=1

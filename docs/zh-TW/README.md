@@ -2,7 +2,7 @@
 
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Shell](https://img.shields.io/badge/-Shell-4EAA25?logo=gnu-bash&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
@@ -69,7 +69,7 @@
 
 ```bash
 # 新增市集
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 安裝外掛程式
 /plugin install forge@forge
@@ -81,7 +81,7 @@
 
 ```bash
 # 首先複製儲存庫
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # 複製規則（應用於所有專案）
 cp -r forge/rules/* ~/.claude/rules/
@@ -269,7 +269,7 @@ forge/
 
 ```bash
 # 將此儲存庫新增為市集
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 安裝外掛程式
 /plugin install forge@forge
@@ -283,7 +283,7 @@ forge/
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/forge"
+        "repo": "carlcastanas/forge"
       }
     }
   },
@@ -303,7 +303,7 @@ forge/
 
 ```bash
 # 複製儲存庫
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # 將代理程式複製到您的 Claude 設定
 cp forge/agents/*.md ~/.claude/agents/
@@ -453,7 +453,7 @@ node tests/hooks/hooks.test.js
 
 ## Star 歷史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=carlcastanas/forge&type=Date)](https://star-history.com/#carlcastanas/forge&Date)
 
 ---
 

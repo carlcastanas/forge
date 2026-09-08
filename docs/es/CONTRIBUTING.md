@@ -52,7 +52,7 @@ Comandos slash que invocan flujos de trabajo útiles:
 
 ```bash
 # 1. Hacer fork y clonar
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. Crear una rama
@@ -465,7 +465,7 @@ Cómo lo probaste.
 
 ## ¿Preguntas?
 
-- **Issues:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+- **Issues:** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 - **X/Twitter:**
 
 ---

@@ -13,7 +13,7 @@ body:
         This is a public GitHub issue. Do not include secrets, prompts, customer data, or
         private repository details.
 
-        Report a vulnerability through [the private security advisory form](https://github.com/your-org/forge/security/advisories/new),
+        Report a vulnerability through [the private security advisory form](https://github.com/carlcastanas/forge/security/advisories/new),
         not here. Non-vulnerability security or trust concerns are welcome in this form.
   - type: dropdown
     id: reason

@@ -72,7 +72,7 @@ Return:
 Use Forge Shield in GitHub Actions for enforced gates:
 
 ```yaml
-- uses: your-org/forge-shield@v1
+- uses: carlcastanas/forge-shield@v1
   with:
     path: "."
     min-severity: "medium"
@@ -83,7 +83,7 @@ Use Forge Shield in GitHub Actions for enforced gates:
 
 - Skill: `skills/security-scan/SKILL.md`
 - Agent: `agents/security-reviewer.md`
-- Scanner: <https://github.com/your-org/forge-shield>
+- Scanner: <https://github.com/carlcastanas/forge-shield>
 
 ## Arguments
 

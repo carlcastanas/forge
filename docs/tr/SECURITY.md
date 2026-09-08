@@ -43,7 +43,7 @@ Bu politika aşağıdakileri kapsar:
 - Makinenizde çalışan hook script'leri
 - Install/uninstall/repair yaşam döngüsü script'leri
 - FORGE ile birlikte gelen MCP konfigürasyonları
-- Forge Shield güvenlik tarayıcısı ([github.com/your-org/forge-shield](https://github.com/your-org/forge-shield))
+- Forge Shield güvenlik tarayıcısı ([github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield))
 
 ## Güvenlik Kaynakları
 

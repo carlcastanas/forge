@@ -9,7 +9,7 @@
  * touched files must meet. Prefer clarity in code and tests over blanket JSDoc on
  * private helpers unless maintainers adopt a project-wide coverage rule.
  *
- * @see https://github.com/your-org/forge/issues/2065
+ * @see https://github.com/carlcastanas/forge/issues/2065
  */
 
 const fs = require('fs');

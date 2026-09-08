@@ -43,16 +43,16 @@
     "hooks",
     "automation"
   ],
-  "author": "your-org",
+  "author": "carlcastanas",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/forge.git"
+    "url": "git+https://github.com/carlcastanas/forge.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/forge/issues"
+    "url": "https://github.com/carlcastanas/forge/issues"
   },
-  "homepage": "https://github.com/your-org/forge#readme",
+  "homepage": "https://github.com/carlcastanas/forge#readme",
   "publishConfig": {
     "access": "public"
   },

@@ -6,7 +6,7 @@
 
 ![FORGE - ایجنٹک کام کے لیے ہارنس-نیٹو آپریٹر سسٹم](../../assets/hero.png)
 
-[![Contributors](https://img.shields.io/github/contributors/your-org/FORGE?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/FORGE?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
@@ -45,7 +45,7 @@ FORGE v2.0.0-rc.1 اس قابل استعمال پرت پر عوامی Hermes آ�
   <sub>نجی ریپوز · GitHub App · $19/نشست/ماہ</sub>
 </td>
 <td width="33%" align="center">
-  <a href="https://github.com/your-org/forge/discussions">
+  <a href="https://github.com/carlcastanas/forge/discussions">
     <strong>کمیونٹی</strong>
     <br />
     <sub>Discussions · Q&amp;A · Show &amp; Tell</sub>
@@ -93,7 +93,7 @@ FORGE v2.0.0-rc.1 اس قابل استعمال پرت پر عوامی Hermes آ�
 
 ```bash
 # مارکیٹ پلیس شامل کریں
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # پلگ ان انسٹال کریں
 /plugin install forge@forge
@@ -103,7 +103,7 @@ FORGE v2.0.0-rc.1 اس قابل استعمال پرت پر عوامی Hermes آ�
 
 ```bash
 # ریپو کلون کریں
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd FORGE
 
 # FORGE-owned نیم اسپیس میں rules کاپی کریں

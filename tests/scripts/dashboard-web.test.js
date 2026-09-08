@@ -838,7 +838,7 @@ test('renderHTML includes the dashboard title and footer', () => {
   const data = { agents: [], skills: [], commands: [], rules: [], mcps: [], hooks: [] };
   const html = renderHTML(data);
   assert.ok(html.includes('FORGE Capabilities'));
-  assert.ok(html.includes('github.com/your-org/forge'));
+  assert.ok(html.includes('github.com/carlcastanas/forge'));
 });
 
 // ===================== Server / HTTP =====================

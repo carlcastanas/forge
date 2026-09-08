@@ -171,4 +171,4 @@ src/
 
 ---
 
-*[FORGE](https://github.com/your-org/forge)の一部*
+*[FORGE](https://github.com/carlcastanas/forge)の一部*

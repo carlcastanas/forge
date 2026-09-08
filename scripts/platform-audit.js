@@ -11,9 +11,9 @@ const {
 
 const SCHEMA_VERSION = 'forge.platform-audit.v1';
 const DEFAULT_REPOS = Object.freeze([
-  'your-org/FORGE',
-  'your-org/forge-shield',
-  'your-org/JARVIS',
+  'carlcastanas/FORGE',
+  'carlcastanas/forge-shield',
+  'carlcastanas/JARVIS',
   'FORGE-Tools/FORGE-Tools',
   'FORGE-Tools/FORGE-website',
 ]);
@@ -451,7 +451,7 @@ function buildLocalEvidenceChecks(rootDir) {
     ),
     buildCheck(
       'roadmap-linear-mirror',
-      includesAll(roadmap, ['linear.app/your-org/project/forge-platform-roadmap', 'ITO-44', 'ITO-59']) ? 'pass' : 'fail',
+      includesAll(roadmap, ['linear.app/carlcastanas/project/forge-platform-roadmap', 'ITO-44', 'ITO-59']) ? 'pass' : 'fail',
       'repo roadmap mirrors the Linear roadmap and security/operator lanes',
       { path: 'docs/FORGE-2.0-GA-ROADMAP.md' }
     ),

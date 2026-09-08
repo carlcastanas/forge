@@ -431,7 +431,7 @@ test('codex plugin.json has interface.displayName', () => {
 });
 
 test('codex plugin.json uses canonical FORGE repo and display name', () => {
-  assert.strictEqual(codexPlugin.repository, 'https://github.com/your-org/forge');
+  assert.strictEqual(codexPlugin.repository, 'https://github.com/carlcastanas/forge');
   assert.strictEqual(codexPlugin.interface.displayName, 'FORGE');
 });
 
@@ -629,7 +629,7 @@ test('user-facing docs do not use the legacy non-URL marketplace add form', () =
   const offenders = [];
   for (const filePath of markdownFiles) {
     const source = fs.readFileSync(filePath, 'utf8');
-    if (source.includes('/plugin marketplace add your-org/forge')) {
+    if (source.includes('/plugin marketplace add carlcastanas/forge')) {
       offenders.push(path.relative(repoRoot, filePath));
     }
   }
@@ -640,7 +640,7 @@ test('user-facing docs do not use the legacy non-URL marketplace add form', () =
 test('.codex-plugin README uses current marketplace add flow', () => {
   const readme = fs.readFileSync(path.join(repoRoot, '.codex-plugin', 'README.md'), 'utf8');
   assert.ok(readme.includes('codex plugin marketplace add'), 'Expected .codex-plugin README to document codex plugin marketplace add');
-  assert.ok(readme.includes('codex plugin marketplace add your-org/FORGE'), 'Expected .codex-plugin README to document the canonical FORGE repo marketplace source');
+  assert.ok(readme.includes('codex plugin marketplace add carlcastanas/FORGE'), 'Expected .codex-plugin README to document the canonical FORGE repo marketplace source');
   assert.ok(readme.includes('codex plugin add forge@forge'), 'Expected .codex-plugin README to document the current Codex install command');
   assert.ok(readme.includes('codex plugin list --json'), 'Expected .codex-plugin README to document a machine-checkable verification command');
   assert.ok(readme.includes('safe to run again'), 'Expected .codex-plugin README to explain idempotent marketplace and plugin registration');

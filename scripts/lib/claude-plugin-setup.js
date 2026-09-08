@@ -20,8 +20,8 @@ const {
 } = require('./install/inventory');
 
 const OFFICIAL_MARKETPLACE_NAME = 'forge';
-const OFFICIAL_MARKETPLACE_REPO = 'your-org/forge';
-const OFFICIAL_MARKETPLACE_URL = 'https://github.com/your-org/forge';
+const OFFICIAL_MARKETPLACE_REPO = 'carlcastanas/forge';
+const OFFICIAL_MARKETPLACE_URL = 'https://github.com/carlcastanas/forge';
 const PROVIDER_COMMAND_TIMEOUT_MS = 120 * 1000;
 const VALID_SCOPES = new Set(['user', 'project', 'local']);
 const VALID_HOOK_MODES = new Set(['off', 'minimal', 'standard', 'strict']);
@@ -503,7 +503,7 @@ function ensureOfficialMarketplace(options) {
   if (existing && !isOfficialMarketplace(existing)) {
     fail(
       'MARKETPLACE_COLLISION',
-      'Refusing the `forge` marketplace collision because it is not the official your-org/FORGE source.'
+      'Refusing the `forge` marketplace collision because it is not the official carlcastanas/FORGE source.'
     );
   }
 
@@ -631,7 +631,7 @@ function setupClaudePlugin(options = {}, dependencies = {}) {
   if (namedMarketplace && !isOfficialMarketplace(namedMarketplace)) {
     fail(
       'MARKETPLACE_COLLISION',
-      'Refusing the `forge` marketplace collision because it is not the official your-org/FORGE source.'
+      'Refusing the `forge` marketplace collision because it is not the official carlcastanas/FORGE source.'
     );
   }
 

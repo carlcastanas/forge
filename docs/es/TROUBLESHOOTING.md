@@ -274,7 +274,7 @@ claude --version
 # Requiere Claude Code 2.0+
 
 # Instalación manual (si el marketplace falla)
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cp -r forge ~/.claude/plugins/forge
 ```
 
@@ -406,7 +406,7 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
 
 Si sigues experimentando problemas:
 
-1. **Revisa los Issues de GitHub**: [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+1. **Revisa los Issues de GitHub**: [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 2. **Habilita el Registro de Depuración**:
    ```bash
    export CLAUDE_DEBUG=1

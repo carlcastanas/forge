@@ -632,7 +632,7 @@ go build ./examples/...
 ### 1. Fork 并 Clone
 
 ```bash
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 ```
 

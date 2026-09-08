@@ -43,7 +43,7 @@ Esta política cubre:
 - Scripts de hooks que se ejecutan en tu máquina
 - Scripts del ciclo de vida de instalación/desinstalación/reparación
 - Configuraciones de MCP incluidas con FORGE
-- El escáner de seguridad Forge Shield ([github.com/your-org/forge-shield](https://github.com/your-org/forge-shield))
+- El escáner de seguridad Forge Shield ([github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield))
 
 ## Orientación Operacional
 

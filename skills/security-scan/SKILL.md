@@ -7,7 +7,7 @@ metadata:
 
 # Security Scan Skill
 
-Audit your Claude Code configuration for security issues using [Forge Shield](https://github.com/your-org/forge-shield).
+Audit your Claude Code configuration for security issues using [Forge Shield](https://github.com/carlcastanas/forge-shield).
 
 ## When to Activate
 
@@ -121,7 +121,7 @@ Creates:
 Add to your CI pipeline:
 
 ```yaml
-- uses: your-org/forge-shield@v1
+- uses: carlcastanas/forge-shield@v1
   with:
     path: '.'
     min-severity: 'medium'
@@ -162,5 +162,5 @@ Add to your CI pipeline:
 
 ## Links
 
-- **GitHub**: [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+- **GitHub**: [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 - **npm**: [npmjs.com/package/forge-shield](https://www.npmjs.com/package/forge-shield)

@@ -49,7 +49,7 @@
 
 ```bash
 # 1. 포크 및 클론
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. 브랜치 생성
@@ -445,7 +445,7 @@ docs: improve contributing guide
 
 ## 질문이 있으신가요?
 
-- **이슈:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+- **이슈:** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 - **X/Twitter:**
 
 ---

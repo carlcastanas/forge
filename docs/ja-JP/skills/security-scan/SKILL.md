@@ -5,7 +5,7 @@ description: Forge Shield を使用して、Claude Code の設定（.claude/ デ
 
 # Security Scan Skill
 
-[Forge Shield](https://github.com/your-org/forge-shield) を使用して、Claude Code の設定のセキュリティ問題を監査します。
+[Forge Shield](https://github.com/carlcastanas/forge-shield) を使用して、Claude Code の設定のセキュリティ問題を監査します。
 
 ## 起動タイミング
 
@@ -119,7 +119,7 @@ npx forge-shield init
 CI パイプラインに追加します：
 
 ```yaml
-- uses: your-org/forge-shield@v1
+- uses: carlcastanas/forge-shield@v1
   with:
     path: '.'
     min-severity: 'medium'
@@ -160,5 +160,5 @@ CI パイプラインに追加します：
 
 ## リンク
 
-- **GitHub**: [github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+- **GitHub**: [github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 - **npm**: [npmjs.com/package/forge-shield](https://www.npmjs.com/package/forge-shield)

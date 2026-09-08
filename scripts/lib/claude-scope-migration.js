@@ -286,7 +286,7 @@ function migrateClaudePluginScope(options = {}, dependencies = {}) {
   if (namedMarketplace && !isOfficialMarketplace(namedMarketplace)) {
     throw migrationError(
       'MARKETPLACE_COLLISION',
-      'Refusing the `forge` marketplace collision because it is not the official your-org/FORGE source.',
+      'Refusing the `forge` marketplace collision because it is not the official carlcastanas/FORGE source.',
       {
         phase: 'marketplace-inventory',
         observedScopes: migration.observedScopes,

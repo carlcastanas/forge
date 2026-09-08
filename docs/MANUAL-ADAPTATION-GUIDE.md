@@ -208,7 +208,7 @@ So the rule is simple:
 
 ## Related Work
 
-- [Issue #1186](https://github.com/your-org/forge/issues/1186)
-- [Discussion #1077](https://github.com/your-org/forge/discussions/1077)
+- [Issue #1186](https://github.com/carlcastanas/forge/issues/1186)
+- [Discussion #1077](https://github.com/carlcastanas/forge/discussions/1077)
 - [Antigravity Guide](./ANTIGRAVITY-GUIDE.md)
 - [Troubleshooting](./TROUBLESHOOTING.md)

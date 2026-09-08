@@ -175,4 +175,4 @@ For advanced features (10k+ commits, team sharing, auto-PRs), use the [Skill Cre
 
 ---
 
-*Part of [FORGE](https://github.com/your-org/forge)*
+*Part of [FORGE](https://github.com/carlcastanas/forge)*

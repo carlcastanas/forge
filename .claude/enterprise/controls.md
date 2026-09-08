@@ -4,7 +4,7 @@ This is a starter governance file for enterprise FORGE deployments.
 
 ## Baseline
 
-- Repository: https://github.com/your-org/forge
+- Repository: https://github.com/carlcastanas/forge
 - Recommended profile: full
 - Keep install manifests, audit allowlists, and Codex baselines under review.
 

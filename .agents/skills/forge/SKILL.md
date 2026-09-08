@@ -5,7 +5,7 @@ description: Development conventions and patterns for forge. JavaScript project 
 
 # FORGE Conventions
 
-> Generated from [your-org/forge](https://github.com/your-org/forge) on 2026-03-20
+> Generated from [carlcastanas/forge](https://github.com/carlcastanas/forge) on 2026-03-20
 
 ## Overview
 

@@ -74,7 +74,7 @@ function createExecFile(steps) {
 function dependenciesFor(fake, overrides = {}) {
   return {
     execFile: fake.execFile,
-    resolveMarketplaceRepository: async () => 'https://github.com/your-org/forge.git',
+    resolveMarketplaceRepository: async () => 'https://github.com/carlcastanas/forge.git',
     ...overrides,
   };
 }
@@ -116,15 +116,15 @@ async function runTests() {
         'forge@forge'
       );
       assert.strictEqual(
-        normalizeGitHubGitOrigin('git@github.com:your-org/FORGE.git'),
-        'your-org/forge'
+        normalizeGitHubGitOrigin('git@github.com:carlcastanas/FORGE.git'),
+        'carlcastanas/forge'
       );
     }],
     ['resolves marketplace provenance with execFile and exact Git argv', async () => {
       const fake = createExecFile([{
         command: 'git',
         args: ['-C', '/cache/forge', 'remote', 'get-url', 'origin'],
-        stdout: 'https://github.com/your-org/forge.git\n',
+        stdout: 'https://github.com/carlcastanas/forge.git\n',
       }]);
 
       const repository = await resolveMarketplaceRepository(
@@ -133,7 +133,7 @@ async function runTests() {
         { execFile: fake.execFile }
       );
 
-      assert.strictEqual(repository, 'https://github.com/your-org/forge.git');
+      assert.strictEqual(repository, 'https://github.com/carlcastanas/forge.git');
       assert.strictEqual(fake.calls[0].options.shell, false);
       assert.strictEqual(fake.calls[0].options.cwd, '/workspace with spaces');
       assert.ok(fake.calls[0].options.timeout > 0);
@@ -344,7 +344,7 @@ async function runTests() {
           resolveMarketplaceRepository: async () => {
             provenanceChecks += 1;
             return provenanceChecks === 1
-              ? 'https://github.com/your-org/forge.git'
+              ? 'https://github.com/carlcastanas/forge.git'
               : 'https://github.com/attacker/forge.git';
           },
         })),
@@ -484,8 +484,8 @@ async function runTests() {
     }],
     ['rejects relative and insecure Git origins before marketplace mutation', async () => {
       for (const origin of [
-        'your-org/forge',
-        'http://github.com/your-org/forge.git',
+        'carlcastanas/forge',
+        'http://github.com/carlcastanas/forge.git',
       ]) {
         const fake = createExecFile([
           { args: MARKETPLACE_LIST, stdout: marketplaceInventory(true) },
@@ -553,9 +553,9 @@ async function runTests() {
       );
       assert.strictEqual(normalizeGitHubGitOrigin(null), null);
       assert.strictEqual(normalizeGitHubGitOrigin('not a repository'), null);
-      assert.strictEqual(normalizeGitHubGitOrigin('your-org/FORGE'), null);
+      assert.strictEqual(normalizeGitHubGitOrigin('carlcastanas/FORGE'), null);
       assert.strictEqual(
-        normalizeGitHubGitOrigin('http://github.com/your-org/forge.git'),
+        normalizeGitHubGitOrigin('http://github.com/carlcastanas/forge.git'),
         null
       );
     }],

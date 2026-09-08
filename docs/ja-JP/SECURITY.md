@@ -43,7 +43,7 @@ FORGEでセキュリティ脆弱性を発見した場合は、責任ある方法
 - あなたのマシンで実行されるフックスクリプト
 - インストール/アンインストール/修復ライフサイクルスクリプト
 - FORGEに同梱されるMCP設定
-- Forge Shieldセキュリティスキャナー（[github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)）
+- Forge Shieldセキュリティスキャナー（[github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)）
 
 ## 運用ガイダンス
 

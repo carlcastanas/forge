@@ -48,7 +48,7 @@ const REQUIRED_URL_SURFACES = [
   {
     id: 'github-prerelease-url',
     label: 'GitHub prerelease URL',
-    exampleUrl: 'https://github.com/your-org/forge/releases/tag/v2.0.0-rc.1',
+    exampleUrl: 'https://github.com/carlcastanas/forge/releases/tag/v2.0.0-rc.1',
   },
   {
     id: 'npm-rc-package-url',
@@ -58,12 +58,12 @@ const REQUIRED_URL_SURFACES = [
   {
     id: 'claude-plugin-tag-url',
     label: 'Claude plugin tag URL',
-    exampleUrl: 'https://github.com/your-org/forge/releases/tag/forge--v2.0.0-rc.1',
+    exampleUrl: 'https://github.com/carlcastanas/forge/releases/tag/forge--v2.0.0-rc.1',
   },
   {
     id: 'codex-repo-marketplace-evidence',
     label: 'Codex repo-marketplace evidence',
-    exampleUrl: 'https://github.com/your-org/forge/tree/v2.0.0-rc.1/.codex-plugin',
+    exampleUrl: 'https://github.com/carlcastanas/forge/tree/v2.0.0-rc.1/.codex-plugin',
   },
   {
     id: 'primary-launch-video-url',

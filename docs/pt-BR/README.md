@@ -4,9 +4,9 @@
 
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
@@ -112,7 +112,7 @@ Comece em menos de 2 minutos:
 
 ```bash
 # Adicionar marketplace
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Instalar plugin
 /plugin install forge@forge
@@ -124,7 +124,7 @@ Comece em menos de 2 minutos:
 
 ```bash
 # Clone o repositório primeiro
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 # Instalar dependências (escolha seu gerenciador de pacotes)
@@ -301,7 +301,7 @@ claude --version
 
 ```bash
 # Adicionar este repositório como marketplace
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # Instalar o plugin
 /plugin install forge@forge
@@ -315,7 +315,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/forge"
+        "repo": "carlcastanas/forge"
       }
     }
   },
@@ -329,7 +329,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 >
 > ```bash
 > # Clone o repositório primeiro
-> git clone https://github.com/your-org/forge.git
+> git clone https://github.com/carlcastanas/forge.git
 >
 > # Opção A: Regras no nível do usuário (aplica a todos os projetos)
 > mkdir -p ~/.claude/rules
@@ -347,7 +347,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # Copiar agentes para sua config Claude
 cp forge/agents/*.md ~/.claude/agents/

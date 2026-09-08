@@ -10,7 +10,7 @@ description: 電気とガス調達、料金最適化、需要料金管理、再�
   demand charges, evaluating PPAs, or developing energy strategies.
 license: Apache-2.0
 version: 1.0.0
-homepage: https://github.com/your-org/forge
+homepage: https://github.com/carlcastanas/forge
 origin: FORGE
 metadata:
   author: evos

@@ -1,4 +1,4 @@
-# Curated instincts for your-org/forge
+# Curated instincts for carlcastanas/forge
 # Import with: /instinct-import .claude/homunculus/instincts/inherited/forge-instincts.yaml
 
 ---
@@ -7,7 +7,7 @@ trigger: "when making a commit in forge"
 confidence: 0.9
 domain: git
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Conventional Commits
@@ -27,7 +27,7 @@ trigger: "when writing a commit subject in forge"
 confidence: 0.8
 domain: git
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Commit Length
@@ -47,7 +47,7 @@ trigger: "when creating a new JavaScript or TypeScript module in forge"
 confidence: 0.85
 domain: code-style
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE JS File Naming
@@ -67,7 +67,7 @@ trigger: "when adding or updating tests in forge"
 confidence: 0.9
 domain: testing
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Test Runner
@@ -87,7 +87,7 @@ trigger: "when modifying hooks or hook-adjacent behavior in forge"
 confidence: 0.88
 domain: workflow
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Hooks Change Set
@@ -107,7 +107,7 @@ trigger: "when shipping a user-visible feature across FORGE surfaces"
 confidence: 0.9
 domain: workflow
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Cross Platform Sync
@@ -127,7 +127,7 @@ trigger: "when preparing a release for forge"
 confidence: 0.86
 domain: workflow
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Release Sync
@@ -147,7 +147,7 @@ trigger: "when importing or evolving instincts for forge"
 confidence: 0.84
 domain: workflow
 source: repo-curation
-source_repo: your-org/forge
+source_repo: carlcastanas/forge
 ---
 
 # FORGE Learning Curation

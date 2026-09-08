@@ -24,27 +24,27 @@ console.log('\nGitHub origin normalization');
 
 if (test('accepts only authenticated or TLS GitHub origins', () => {
   assert.strictEqual(
-    normalizeGitHubGitOrigin('https://github.com/your-org/forge.git'),
-    'your-org/forge'
+    normalizeGitHubGitOrigin('https://github.com/carlcastanas/forge.git'),
+    'carlcastanas/forge'
   );
   assert.strictEqual(
-    normalizeGitHubGitOrigin('ssh://git@github.com/your-org/forge/'),
-    'your-org/forge'
+    normalizeGitHubGitOrigin('ssh://git@github.com/carlcastanas/forge/'),
+    'carlcastanas/forge'
   );
   assert.strictEqual(
-    normalizeGitHubGitOrigin('git@github.com:your-org/FORGE.git'),
-    'your-org/forge'
+    normalizeGitHubGitOrigin('git@github.com:carlcastanas/FORGE.git'),
+    'carlcastanas/forge'
   );
 })) passed++; else failed++;
 
 if (test('rejects shorthand and insecure or unrelated origins', () => {
-  assert.strictEqual(normalizeGitHubGitOrigin('your-org/FORGE'), null);
+  assert.strictEqual(normalizeGitHubGitOrigin('carlcastanas/FORGE'), null);
   assert.strictEqual(
-    normalizeGitHubGitOrigin('http://github.com/your-org/forge.git'),
+    normalizeGitHubGitOrigin('http://github.com/carlcastanas/forge.git'),
     null
   );
   assert.strictEqual(
-    normalizeGitHubGitOrigin('https://example.com/your-org/FORGE.git'),
+    normalizeGitHubGitOrigin('https://example.com/carlcastanas/FORGE.git'),
     null
   );
   assert.strictEqual(normalizeGitHubGitOrigin(null), null);

@@ -52,7 +52,7 @@ npx forge-universal install typescript
 Clone and run OpenCode in the repository:
 
 ```bash
-git clone https://github.com/your-org/forge
+git clone https://github.com/carlcastanas/forge
 cd FORGE
 opencode
 ```

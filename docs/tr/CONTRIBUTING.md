@@ -51,7 +51,7 @@ Faydalı workflow'ları çağıran slash command'lar:
 
 ```bash
 # 1. Fork ve clone
-gh repo fork your-org/forge --clone
+gh repo fork carlcastanas/forge --clone
 cd forge
 
 # 2. Branch oluştur
@@ -453,7 +453,7 @@ Bunu nasıl test ettiniz.
 
 ## Sorularınız mı var?
 
-- **Issue'lar:** [github.com/your-org/forge/issues](https://github.com/your-org/forge/issues)
+- **Issue'lar:** [github.com/carlcastanas/forge/issues](https://github.com/carlcastanas/forge/issues)
 - **X/Twitter:**
 
 ---

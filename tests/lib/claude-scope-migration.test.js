@@ -43,7 +43,7 @@ function marketplace(scope = 'user') {
   return {
     name: 'forge',
     source: 'github',
-    repo: 'your-org/FORGE',
+    repo: 'carlcastanas/FORGE',
     scope,
   };
 }

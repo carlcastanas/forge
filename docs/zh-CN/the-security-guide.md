@@ -164,7 +164,7 @@ Unit42 发现，在具有长对话历史的智能体中，持久性提示注入�
 
 攻击面正在扩大。用于防御的工具未能跟上。如果你正在自主运行智能体，你需要将安全视为基础设施，而不是事后考虑。
 
-扫描你的设置：[github.com/your-org/forge-shield](https://github.com/your-org/forge-shield)
+扫描你的设置：[github.com/carlcastanas/forge-shield](https://github.com/carlcastanas/forge-shield)
 
 ***
 
@@ -179,7 +179,7 @@ Unit42 发现，在具有长对话历史的智能体中，持久性提示注入�
 | Pliny - L1B3RT4S                 | <https://github.com/elder-plinius/L1B3RT4S>                                                                             |
 | Pliny - CL4R1T4S                 | <https://github.com/elder-plinius/CL4R1T4S>                                                                             |
 | Pliny - OBLITERATUS              | <https://github.com/elder-plinius/OBLITERATUS>                                                                          |
-| Forge Shield | <https://github.com/your-org/forge-shield> |
+| Forge Shield | <https://github.com/carlcastanas/forge-shield> |
 | McKinsey 聊天机器人被黑 (2026年3月) | <https://www.theregister.com/2026/03/09/mckinsey_ai_chatbot_hacked/> |
 | AI 网络犯罪激增 1500% | <https://www.hstoday.us/subject-matter-areas/cybersecurity/2026-global-threat-intelligence-report-highlights-rise-in-agentic-ai-cybercrime/> |
 | ROME 事件 (阿里巴巴) | <https://www.scworld.com/perspective/the-rome-incident-when-the-ai-agent-becomes-the-insider-threat> |

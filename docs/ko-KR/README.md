@@ -4,9 +4,9 @@
 
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
@@ -101,7 +101,7 @@
 - **30명 이상의 커뮤니티 기여** — 6개 언어에 걸친 30명의 기여자
 - **978개 내부 테스트** — 에이전트, 스킬, 커맨드, 훅, 룰 전반에 걸친 검증
 
-전체 변경 내역은 [Releases](https://github.com/your-org/forge/releases)에서 확인하세요.
+전체 변경 내역은 [Releases](https://github.com/carlcastanas/forge/releases)에서 확인하세요.
 
 ---
 
@@ -113,7 +113,7 @@
 
 ```bash
 # 마켓플레이스 추가
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 플러그인 설치
 /plugin install forge@forge
@@ -125,7 +125,7 @@
 
 ```bash
 # 먼저 저장소 클론
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 # 권장: 설치 스크립트 사용 (common + 언어별 룰을 안전하게 처리)
@@ -311,9 +311,9 @@ npx forge-shield init
 
 **`--opus` 플래그**는 레드팀/블루팀/감사관 파이프라인으로 3개의 Claude Opus 4.6 에이전트를 실행합니다. 공격자가 익스플로잇 체인을 찾고, 방어자가 보호 조치를 평가하며, 감사관이 양쪽의 결과를 종합하여 우선순위가 매겨진 위험 평가를 작성합니다.
 
-Claude Code에서 `/security-scan`을 사용하거나, [GitHub Action](https://github.com/your-org/forge-shield)으로 CI에 추가하세요.
+Claude Code에서 `/security-scan`을 사용하거나, [GitHub Action](https://github.com/carlcastanas/forge-shield)으로 CI에 추가하세요.
 
-[GitHub](https://github.com/your-org/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
+[GitHub](https://github.com/carlcastanas/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
 
 ### 지속적 학습 v2
 
@@ -357,7 +357,7 @@ Claude Code v2.1+는 설치된 플러그인의 `hooks/hooks.json`을 **자동으
 
 ```bash
 # 마켓플레이스 추가
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 플러그인 설치
 /plugin install forge@forge
@@ -371,7 +371,7 @@ Claude Code v2.1+는 설치된 플러그인의 `hooks/hooks.json`을 **자동으
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/forge"
+        "repo": "carlcastanas/forge"
       }
     }
   },
@@ -384,7 +384,7 @@ Claude Code v2.1+는 설치된 플러그인의 `hooks/hooks.json`을 **자동으
 > **참고:** Claude Code 플러그인 시스템은 `rules`를 플러그인으로 배포하는 것을 지원하지 않습니다. 룰은 수동으로 설치해야 합니다:
 >
 > ```bash
-> git clone https://github.com/your-org/forge.git
+> git clone https://github.com/carlcastanas/forge.git
 >
 > # 옵션 A: 사용자 레벨 룰 (모든 프로젝트에 적용)
 > mkdir -p ~/.claude/rules
@@ -404,7 +404,7 @@ Claude Code v2.1+는 설치된 플러그인의 `hooks/hooks.json`을 **자동으
 
 ```bash
 # 저장소 클론
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # 에이전트 복사
 cp forge/agents/*.md ~/.claude/agents/
@@ -702,7 +702,7 @@ Claude Code 사용 비용이 부담된다면 토큰 소비를 관리해야 합�
 
 ## Star 히스토리
 
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=carlcastanas/forge&type=Date)](https://star-history.com/#carlcastanas/forge&Date)
 
 ---
 

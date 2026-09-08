@@ -365,4 +365,4 @@ If you need to switch back:
 
 For issues specific to:
 - **OpenCode CLI**: Report to OpenCode's issue tracker
-- **FORGE Configuration**: Report to [github.com/your-org/forge](https://github.com/your-org/forge)
+- **FORGE Configuration**: Report to [github.com/carlcastanas/forge](https://github.com/carlcastanas/forge)

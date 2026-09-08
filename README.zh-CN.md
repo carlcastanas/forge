@@ -1,8 +1,8 @@
 # FORGE
 
-[![Stars](https://img.shields.io/github/stars/your-org/forge?style=flat)](https://github.com/your-org/forge/stargazers)
-[![Forks](https://img.shields.io/github/forks/your-org/forge?style=flat)](https://github.com/your-org/forge/network/members)
-[![Contributors](https://img.shields.io/github/contributors/your-org/forge?style=flat)](https://github.com/your-org/forge/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/stargazers)
+[![Forks](https://img.shields.io/github/forks/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/network/members)
+[![Contributors](https://img.shields.io/github/contributors/carlcastanas/forge?style=flat)](https://github.com/carlcastanas/forge/graphs/contributors)
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![npm forge-shield](https://img.shields.io/npm/dw/forge-shield?label=forge-shield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-shield)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -134,7 +134,7 @@ command -v forge-memory-mcp
 
 ```bash
 # 添加市场
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 安装插件
 /plugin install forge@forge
@@ -152,7 +152,7 @@ command -v forge-memory-mcp
 
 ```bash
 # 首先克隆仓库
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 
 # 安装依赖（选择你常用的包管理器）
@@ -529,9 +529,9 @@ npx forge-shield init
 
 **输出格式：** 终端（彩色等级 A-F）、JSON（CI 流水线）、Markdown、HTML。发现严重问题时返回退出码 2，可用于构建门禁。
 
-在 Claude Code 中使用 `/security-scan` 运行，或通过 [GitHub Action](https://github.com/your-org/forge-shield) 集成到 CI。
+在 Claude Code 中使用 `/security-scan` 运行，或通过 [GitHub Action](https://github.com/carlcastanas/forge-shield) 集成到 CI。
 
-[GitHub](https://github.com/your-org/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
+[GitHub](https://github.com/carlcastanas/forge-shield) | [npm](https://www.npmjs.com/package/forge-shield)
 
 ### 持续学习 v2
 
@@ -570,7 +570,7 @@ Claude Code v2.1+ 会**按照约定自动加载**已安装插件中的 `hooks/ho
 检测到重复的钩子文件：./hooks/hooks.json 指向已加载的文件
 ```
 
-**历史说明**：该问题曾在本仓库中引发多次「修复-回滚」循环（[#29](https://github.com/your-org/forge/issues/29)、[#52](https://github.com/your-org/forge/issues/52)、[#103](https://github.com/your-org/forge/issues/103)）。因 Claude Code 版本间行为变更导致混淆，现已添加回归测试，防止该问题再次出现。
+**历史说明**：该问题曾在本仓库中引发多次「修复-回滚」循环（[#29](https://github.com/carlcastanas/forge/issues/29)、[#52](https://github.com/carlcastanas/forge/issues/52)、[#103](https://github.com/carlcastanas/forge/issues/103)）。因 Claude Code 版本间行为变更导致混淆，现已添加回归测试，防止该问题再次出现。
 
 ---
 
@@ -582,7 +582,7 @@ Claude Code v2.1+ 会**按照约定自动加载**已安装插件中的 `hooks/ho
 
 ```bash
 # 将此仓库添加为市场
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 
 # 安装插件
 /plugin install forge@forge
@@ -596,7 +596,7 @@ Claude Code v2.1+ 会**按照约定自动加载**已安装插件中的 `hooks/ho
     "forge": {
       "source": {
         "source": "github",
-        "repo": "your-org/forge"
+        "repo": "carlcastanas/forge"
       }
     }
   },
@@ -612,7 +612,7 @@ Claude Code v2.1+ 会**按照约定自动加载**已安装插件中的 `hooks/ho
 >
 > ```bash
 > # 首先克隆仓库
-> git clone https://github.com/your-org/forge.git
+> git clone https://github.com/carlcastanas/forge.git
 >
 > # 方案 A：用户级规则（对所有项目生效）
 > mkdir -p ~/.claude/rules
@@ -636,7 +636,7 @@ Claude Code v2.1+ 会**按照约定自动加载**已安装插件中的 `hooks/ho
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 
 # 将智能体文件复制到 Claude 配置目录
 cp forge/agents/*.md ~/.claude/agents/

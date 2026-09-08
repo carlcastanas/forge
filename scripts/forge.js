@@ -178,7 +178,7 @@ Examples:
   forge sessions
   forge sessions session-active --json
   forge work-items upsert linear-forge-20 --source linear --source-id FORGE-20 --title "Review control-plane contract" --status blocked
-  forge work-items sync-github --repo your-org/FORGE
+  forge work-items sync-github --repo carlcastanas/FORGE
   forge session-inspect claude:latest
   forge loop-status --json
   forge uninstall --target antigravity --dry-run

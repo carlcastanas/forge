@@ -64,7 +64,7 @@ npx forge-universal setup
 Inside a Claude Code session:
 
 ```text
-/plugin marketplace add https://github.com/your-org/forge
+/plugin marketplace add https://github.com/carlcastanas/forge
 /plugin install forge@forge
 ```
 
@@ -77,7 +77,7 @@ Inside a Claude Code session:
 Use this when you want to read the source before it touches your machine.
 
 ```bash
-git clone https://github.com/your-org/forge.git
+git clone https://github.com/carlcastanas/forge.git
 cd forge
 npm install
 node scripts/forge.js plan --profile minimal --target claude

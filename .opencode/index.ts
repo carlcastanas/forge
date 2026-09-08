@@ -26,7 +26,7 @@
  *
  * Option 2: Clone and use directly
  * ```bash
- * git clone https://github.com/your-org/forge
+ * git clone https://github.com/carlcastanas/forge
  * cd FORGE
  * opencode
  * ```

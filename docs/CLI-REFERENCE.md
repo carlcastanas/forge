@@ -432,7 +432,7 @@ forge work-items upsert linear-forge-20 --source linear --source-id FORGE-20 \
   --title "Review control-plane contract" --status blocked
 forge work-items claim linear-forge-20 --owner review-agent --as agent
 forge work-items close linear-forge-20 --status done
-forge work-items sync-github --repo your-org/forge
+forge work-items sync-github --repo carlcastanas/forge
 ```
 
 ---

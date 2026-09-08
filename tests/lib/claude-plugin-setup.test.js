@@ -141,7 +141,7 @@ function officialMarketplace(scope = 'user') {
   return {
     name: 'forge',
     source: 'github',
-    repo: 'your-org/FORGE',
+    repo: 'carlcastanas/FORGE',
     scope,
   };
 }
@@ -220,11 +220,11 @@ test('marketplace provenance is validated according to its source type', () => {
   assert.strictEqual(isOfficialMarketplace({
     name: 'forge',
     source: 'git',
-    url: 'https://github.com/your-org/forge.git',
+    url: 'https://github.com/carlcastanas/forge.git',
   }), true);
   for (const url of [
-    'your-org/FORGE',
-    'http://github.com/your-org/forge.git',
+    'carlcastanas/FORGE',
+    'http://github.com/carlcastanas/forge.git',
   ]) {
     assert.strictEqual(isOfficialMarketplace({
       name: 'forge',
@@ -654,7 +654,7 @@ test('dry-run snapshots local-scope inventory into isolated Claude and project r
     }, null, 2)}\n`);
     fs.writeFileSync(marketplacesPath, `${JSON.stringify({
       forge: {
-        source: { source: 'github', repo: 'your-org/FORGE' },
+        source: { source: 'github', repo: 'carlcastanas/FORGE' },
       },
     }, null, 2)}\n`);
 
