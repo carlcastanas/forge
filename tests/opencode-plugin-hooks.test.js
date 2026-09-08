@@ -120,7 +120,7 @@ async function main() {
           // Every hook that touches the store must remain callable and must not throw.
           await hooks["file.edited"]({ path: "src/example.ts" })
           await hooks["tool.execute.after"]({ tool: "edit", args: { path: "src/other.ts" } }, {})
-          await hooks"session.deleted"
+          await hooks["session.deleted"]()
         } finally {
           fs.renameSync(backupDir, libDir)
         }
@@ -166,7 +166,7 @@ async function main() {
           "Expected tool.execute.after to record a change for the edit tool"
         )
 
-        await hooks"session.deleted"
+        await hooks["session.deleted"]()
         assert.ok(!store.hasChanges(), "Expected session.deleted to clear tracked changes")
       }),
     ],
@@ -179,7 +179,7 @@ async function main() {
           const $ = createFailingShell()
           const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
-          const env = await hooks"shell.env"
+          const env = await hooks["shell.env"]()
 
           assert.deepStrictEqual($.calls, [], `Unexpected shell probes: ${$.calls.join(", ")}`)
           assert.strictEqual(env.PROJECT_ROOT, projectDir)
@@ -199,7 +199,7 @@ async function main() {
         const $ = createFailingShell()
         const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
-        await hooks"session.created"
+        await hooks["session.created"]()
 
         assert.deepStrictEqual($.calls, [], `Unexpected shell probes: ${$.calls.join(", ")}`)
         assert.ok(
@@ -219,7 +219,7 @@ async function main() {
           const $ = createFailingShell()
           const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
-          await hooks"session.created"
+          await hooks["session.created"]()
 
           assert.deepStrictEqual($.calls, [], `Unexpected shell probes: ${$.calls.join(", ")}`)
           assert.ok(
@@ -243,7 +243,7 @@ async function main() {
           const $ = createFailingShell()
           const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
-          const env = await hooks"shell.env"
+          const env = await hooks["shell.env"]()
 
           assert.deepStrictEqual($.calls, [], `Unexpected shell probes: ${$.calls.join(", ")}`)
           assert.ok(!("PACKAGE_MANAGER" in env), "Lockfile directory should not set PACKAGE_MANAGER")
@@ -288,17 +288,17 @@ async function main() {
           const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
           // Test formatter tools - note: args should be the command string, not object
-          const prettierResult = await hooks["permission.ask"]({
-            tool: "bash",
-            args: "npx prettier --write src/index.ts"
+          const prettierResult = await hooks["permission.ask"]({ 
+            tool: "bash", 
+            args: "npx prettier --write src/index.ts" 
           })
           console.log("prettierResult:", JSON.stringify(prettierResult))
           assert.strictEqual(prettierResult.approved, true)
           assert.strictEqual(prettierResult.reason, "Formatter execution")
 
-          const biomeResult = await hooks["permission.ask"]({
-            tool: "bash",
-            args: "npx @biomejs/biome format --write src/index.ts"
+          const biomeResult = await hooks["permission.ask"]({ 
+            tool: "bash", 
+            args: "npx @biomejs/biome format --write src/index.ts" 
           })
           console.log("biomeResult:", JSON.stringify(biomeResult))
           assert.strictEqual(biomeResult.approved, true)
@@ -316,16 +316,16 @@ async function main() {
           const hooks = await ForgeHooksPlugin({ client, $, directory: projectDir })
 
           // Test test execution tools
-          const npmTestResult = await hooks["permission.ask"]({
-            tool: "bash",
-            args: { command: "npm test" }
+          const npmTestResult = await hooks["permission.ask"]({ 
+            tool: "bash", 
+            args: { command: "npm test" } 
           })
           assert.strictEqual(npmTestResult.approved, true)
           assert.strictEqual(npmTestResult.reason, "Test execution")
 
-          const vitestResult = await hooks["permission.ask"]({
-            tool: "bash",
-            args: { command: "npx vitest run" }
+          const vitestResult = await hooks["permission.ask"]({ 
+            tool: "bash", 
+            args: { command: "npx vitest run" } 
           })
           assert.strictEqual(vitestResult.approved, true)
           assert.strictEqual(vitestResult.reason, "Test execution")
