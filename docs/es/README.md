@@ -48,32 +48,25 @@ FORGE v2.0.0-rc.1 añade la historia pública del operador Hermes sobre esa capa
 
 <table>
 <tr>
-<td width="25%" align="center">
-  <strong> FORGE Pro</strong><br />
-    <sub>Repos privados · GitHub App · $19/asiento/mes</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>FORGE Pro</strong><br />
+  <sub>Repos privados · GitHub App · $19/asiento/mes</sub>
 </td>
-<td width="25%" align="center">
-  <strong> Patrocinar</strong><br />
-    <sub>Financia el OSS · Desde $5/mes</sub>
-  </a>
-</td>
-<td width="25%" align="center">
+<td width="33%" align="center">
   <a href="https://github.com/your-org/forge/discussions">
     <strong>Comunidad</strong>
     <br />
     <sub>Discusiones · Preguntas · Showcase</sub>
   </a>
 </td>
-<td width="25%" align="center">
-  <strong> GitHub App</strong><br />
-    <sub>Instalar · Auditorías de PR · Tier gratuito</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>GitHub App</strong><br />
+  <sub>Instalar · Auditorías de PR · Tier gratuito</sub>
 </td>
 </tr>
 </table>
 
-<sub>**El OSS es gratis para siempre.** Este repositorio tiene licencia MIT permanente. FORGE Pro es la GitHub App alojada para repositorios privados. Los patrocinadores</a> y los suscriptores Pro</a> financian el trabajo — por eso un solo mantenedor publica semanalmente en 7 harnesses.</sub>
+<sub>**El OSS es gratis para siempre.** Este repositorio tiene licencia MIT permanente. FORGE Pro es la GitHub App alojada para repositorios privados.</sub>
 
 ---
 
@@ -126,7 +119,7 @@ Este repositorio contiene solo el código. Las guías explican todo.
 - **Expansión de flujos de trabajo de operador y salida** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `forge-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` y `workspace-surface-audit` completan el carril de operador.
 - **Herramientas de medios y lanzamiento** — `manim-video`, `remotion-video-creation` y superficies de publicación social actualizadas integran la creación de contenido técnico y de lanzamiento en el mismo sistema.
 - **Crecimiento de frameworks y productos** — `nestjs-patterns`, superficies de instalación más ricas para Codex/OpenCode y empaquetado cross-harness expandido mantienen el repo utilizable más allá de Claude Code.
-- **Pack de skills de mercados de predicción an external compute provider** — la skill consolidada `ito-baskets` (índice de cestas de solo lectura, comparación, briefs de mercado y hojas de planificación no ejecutables; reemplaza a las antiguas `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner` y `ito-data-atlas-agent`), junto con `prediction-market-oracle-research` y `prediction-market-risk-review`, añaden flujos de trabajo públicos de mercado/cesta no asesorados, manteniendo el acceso a la API de an external compute provider separado de la facturación de FORGE Tools.
+- **Pack de skills de mercados de predicción** — la skill consolidada `ito-baskets` (índice de cestas de solo lectura, comparación, briefs de mercado y hojas de planificación no ejecutables; reemplaza a las antiguas `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner` y `ito-data-atlas-agent`), junto con `prediction-market-oracle-research` y `prediction-market-risk-review`, añaden flujos de trabajo públicos de mercado/cesta no asesorados, manteniendo el acceso a la API externa separado de la facturación de FORGE Tools.
 - **Pack de skills de optimización** — `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` y `recursive-decision-ledger` convierten los prompts de velocidad/recursión repetidos en flujos de trabajo acotados de benchmark, rendimiento y decisiones.
 - **FORGE 2.0 alpha incluido en el árbol** — el prototipo del plano de control en Rust en `forge2/` ya compila localmente y expone los comandos `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` y `daemon`. Está disponible como alpha, aún no como versión general.
 - **Instantáneas de estado del operador** — `forge status --markdown --write status.md` convierte el almacén de estado local en un informe portátil de transferencia que cubre disponibilidad, sesiones activas, estado de ejecución de skills, estado de la instalación, eventos de gobernanza pendientes y elementos de trabajo vinculados de Linear/GitHub/transferencias. Usa `forge work-items upsert ...` para entradas manuales, `forge work-items sync-github --repo owner/repo` para el estado de la cola de PRs/issues, y `forge status --exit-code` para hacer fallar la automatización cuando la disponibilidad requiere atención.
@@ -607,7 +600,7 @@ Ambas opciones crean:
 
 ### Forge Shield — Auditor de Seguridad
 
-> Construido en el Claude Code Hackathon (Cerebral Valley x Anthropic, Feb 2026). 1282 pruebas, 98% de cobertura, 102 reglas de análisis estático.
+> 1282 pruebas, 98% de cobertura, 102 reglas de análisis estático.
 
 Analiza tu configuración de Claude Code en busca de vulnerabilidades, configuraciones incorrectas y riesgos de inyección.
 
@@ -1249,14 +1242,6 @@ FORGE es el **primer plugin que maximiza todas las principales herramientas de c
 
 ---
 
-## Antecedentes
-
-He estado usando Claude Code desde el lanzamiento experimental. Gané el hackathon de Anthropic x Forum Ventures en sep 2025 con  — construí a hackathon project completamente usando Claude Code.
-
-Estas configuraciones han sido probadas en múltiples aplicaciones de producción.
-
----
-
 ## Optimización de Tokens
 
 El uso de Claude Code puede ser costoso si no gestionas el consumo de tokens. Estas configuraciones reducen significativamente los costos sin sacrificar calidad.
@@ -1352,14 +1337,6 @@ Proyectos construidos sobre o inspirados en FORGE:
 | [trading-skills](https://github.com/VictorVVedtion/trading-skills) | 68 skills de Claude Code temáticas de trading con prompts de revisión pre-trade y puertas de riesgo inspiradas en operadores de mercado. |
 
 ¿Construiste algo con FORGE? Abre un PR para añadirlo aquí.
-
----
-
-## Patrocinadores
-
-Este proyecto es gratuito y de código abierto. Los patrocinadores ayudan a mantenerlo y hacerlo crecer.
-
-**Conviértete en Patrocinador** | [Niveles de Patrocinio](SPONSORS.md) | [Programa de Patrocinio](SPONSORING.md)
 
 ---
 

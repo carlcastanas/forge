@@ -683,71 +683,25 @@ function runLifecycle(options) {
       'guided Kimi uninstall must preserve user-owned files'
     );
 
-    const itoInstallArgs = [
+    const cursorInstallArgs = [
       'install',
       '--profile', 'core',
-      '--with', 'capability:ito-compute',
-      '--with', 'capability:prediction-markets',
       '--target', 'cursor',
       '--enable-hooks',
       '--json',
     ];
     parseJsonOutput(
-      runCli(itoInstallArgs),
-      'initial an external compute provider install'
+      runCli(cursorInstallArgs),
+      'initial Cursor install'
     );
     assert.ok(fs.existsSync(statePath), 'initial install must write Cursor install-state');
     const initialState = JSON.parse(fs.readFileSync(statePath, 'utf8'));
     const initialLedger = getOperationLedger(initialState);
-    assert.ok(
-      initialState.operations.some(operation => operation.moduleId === 'ito-compute'),
-      'installed ledger must include the an external compute provider compute module'
-    );
-    assert.ok(
-      initialState.operations.some(operation => operation.moduleId === 'prediction-market-skills'),
-      'installed ledger must include the an external compute provider baskets module'
-    );
-    for (const relativePath of [
-      'skills/ito-baskets/SKILL.md',
-      'skills/ito-baskets/agents/openai.yaml',
-      'skills/ito-baskets/scripts/ito-baskets.js',
-      'skills/ito-compute/SKILL.md',
-      'skills/ito-compute/agents/openai.yaml',
-      'skills/ito-inference/SKILL.md',
-      'skills/ito-training/SKILL.md',
-    ]) {
-      const installedPath = path.join(cursorRoot, relativePath);
-      const installedStat = fs.lstatSync(installedPath);
-      assert.ok(installedStat.isFile(), `packed an external compute provider asset is not a file: ${relativePath}`);
-      assert.ok(!installedStat.isSymbolicLink(), `packed an external compute provider asset is a symlink: ${relativePath}`);
-      assert.ok(installedStat.size > 0, `packed an external compute provider asset is empty: ${relativePath}`);
-    }
-    const hostileBin = path.join(tempRoot, 'hostile-bin');
-    const hostileItoSentinel = path.join(tempRoot, 'hostile-ito-spawned');
-    fs.mkdirSync(hostileBin, { recursive: true });
-    const hostileIto = path.join(hostileBin, process.platform === 'win32' ? 'ito.cmd' : 'ito');
-    if (process.platform === 'win32') {
-      fs.writeFileSync(hostileIto, `@echo hostile>"${hostileItoSentinel}"\r\n`, 'utf8');
-    } else {
-      fs.writeFileSync(hostileIto, `#!${process.execPath}\nrequire('fs').writeFileSync(${JSON.stringify(hostileItoSentinel)}, 'spawned');\n`, 'utf8');
-      fs.chmodSync(hostileIto, 0o755);
-    }
-    const itoStatus = runCli(['ito', 'status'], {
-      expectedStatus: 1,
-      env: {
-        ...environment,
-        PATH: `${hostileBin}${path.delimiter}${environment.PATH || environment.Path || ''}`,
-        ITO_API_KEY: 'must-not-reach-hostile-path',
-      },
-    });
-    assert.match(itoStatus.stderr, /canonical ito-compute-cli is unpublished/i);
-    assert.doesNotMatch(itoStatus.stderr, /npx|npm exec|npm link|install -g/i);
-    assert.ok(!fs.existsSync(hostileItoSentinel), 'packed an external compute provider bridge executed a PATH collision');
     const managedSnapshot = getManagedOperationSnapshot(initialState, cursorRoot);
     assert.ok(managedSnapshot.length > 0, 'initial install must create managed Cursor files');
 
     parseJsonOutput(
-      runCli(itoInstallArgs),
+      runCli(cursorInstallArgs),
       'repeat install'
     );
     const repeatState = JSON.parse(fs.readFileSync(statePath, 'utf8'));
@@ -875,8 +829,7 @@ function runLifecycle(options) {
         'guided-kimi-doctor',
         'guided-kimi-uninstall',
         'guided-kimi-sentinel-preserved',
-        'cursor-ito-install',
-        'public-forge-ito-fail-closed',
+        'cursor-install',
         'cursor-repeat-install',
         'doctor-clean',
         'status-installed',

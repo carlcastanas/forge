@@ -21,7 +21,7 @@
 ![Perl](https://img.shields.io/badge/-Perl-39457E?logo=perl&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
-> **182K+ Stars** | **28K+ Forks** | **170+ Contributors** | **12+ Sprach-Ökosysteme** | **Gewinner eines Anthropic-Hackathons**
+> **182K+ Stars** | **28K+ Forks** | **170+ Contributors** | **12+ Sprach-Ökosysteme**
 
 ---
 
@@ -36,7 +36,7 @@
 
 ---
 
-**Das Harness-native Operator-System für agentische Arbeit. Von einem Gewinner eines Anthropic-Hackathons.**
+**Das Harness-native Operator-System für agentische Arbeit.**
 
 Nicht nur Konfigurationen. Ein vollständiges System: Skills, Instincts, Speicheroptimierung, Continuous Learning, Security-Scanning und research-first-Entwicklung. Produktionsreife Agents, Skills, Hooks, Rules, MCP-Konfigurationen und Legacy-Command-Shims, die über mehr als 10 Monate intensiver täglicher Nutzung beim Bau echter Produkte entstanden sind.
 
@@ -48,32 +48,25 @@ FORGE v2.0.0-rc.1 ergänzt diese wiederverwendbare Schicht um die öffentliche H
 
 <table>
 <tr>
-<td width="25%" align="center">
-  <strong> FORGE Pro</strong><br />
-    <sub>Private Repos · GitHub App · 19 $/Platz/Monat</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>FORGE Pro</strong><br />
+  <sub>Private Repos · GitHub App · 19 $/Platz/Monat</sub>
 </td>
-<td width="25%" align="center">
-  <strong> Sponsor</strong><br />
-    <sub>Finanziere das OSS · Ab 5 $/Monat</sub>
-  </a>
-</td>
-<td width="25%" align="center">
+<td width="33%" align="center">
   <a href="https://github.com/your-org/forge/discussions">
     <strong>Community</strong>
     <br />
-    <sub>Discussions · Q&amp;A · Show & Tell</sub>
+    <sub>Discussions · Q&amp;A · Show &amp; Tell</sub>
   </a>
 </td>
-<td width="25%" align="center">
-  <strong> GitHub App</strong><br />
-    <sub>Installieren · PR-Audits · Free-Tier</sub>
-  </a>
+<td width="33%" align="center">
+  <strong>GitHub App</strong><br />
+  <sub>Installieren · PR-Audits · Free-Tier</sub>
 </td>
 </tr>
 </table>
 
-<sub>**OSS bleibt kostenlos.** Dieses Repo ist für immer MIT-lizenziert. FORGE Pro ist die gehostete GitHub App für private Repos. Sponsoren</a> und Pro-Abonnenten</a> finanzieren die Arbeit — deshalb liefert ein einzelner Maintainer wöchentlich über 7 Harnesses hinweg aus.</sub>
+<sub>**OSS bleibt kostenlos.** Dieses Repo ist für immer MIT-lizenziert. FORGE Pro ist die gehostete GitHub App für private Repos.</sub>
 
 ---
 
@@ -744,7 +737,7 @@ Beide Optionen erzeugen:
 
 ### Forge Shield — Security-Auditor
 
-> Gebaut beim Claude Code Hackathon (Cerebral Valley x Anthropic, Februar 2026). 1282 Tests, 98 % Coverage, 102 statische Analyse-Rules.
+> 1282 Tests, 98 % Coverage, 102 statische Analyse-Rules.
 
 Scanne deine Claude-Code-Konfiguration auf Schwachstellen, Fehlkonfigurationen und Injection-Risiken.
 
@@ -1607,14 +1600,6 @@ FORGE ist das **erste Plugin, das jedes große KI-Coding-Tool ausreizt**. So ver
 
 ---
 
-## Hintergrund
-
-Ich nutze Claude Code seit dem experimentellen Rollout. Habe im September 2025 den Anthropic-x-Forum-Ventures-Hackathon mit  gewonnen — a hackathon project wurde vollständig mit Claude Code gebaut.
-
-Diese Konfigurationen sind über mehrere produktive Anwendungen hinweg im Praxiseinsatz erprobt.
-
----
-
 ## Token-Optimierung
 
 Die Nutzung von Claude Code kann teuer werden, wenn du den Token-Verbrauch nicht steuerst. Diese Einstellungen senken die Kosten erheblich, ohne die Qualität zu opfern.
@@ -1727,14 +1712,6 @@ Projekte, die auf FORGE aufbauen oder davon inspiriert sind:
 | [trading-skills](https://github.com/VictorVVedtion/trading-skills) | 68 trading-thematische Claude-Code-Skills mit Pre-Trade-Review-Prompts und Risiko-Gates, inspiriert von Marktteilnehmern. |
 
 Etwas mit FORGE gebaut? Öffne einen PR, um es hier hinzuzufügen.
-
----
-
-## Sponsoren
-
-Dieses Projekt ist kostenlos und Open Source. Sponsoren helfen, es gepflegt und wachsend zu halten.
-
-**Sponsor werden** | [Sponsor-Stufen](../../SPONSORS.md) | [Sponsoring-Programm](../../SPONSORING.md)
 
 ---
 

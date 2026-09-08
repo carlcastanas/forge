@@ -125,12 +125,10 @@ test('public CLI invocations use npm exec instead of internal package paths', ()
   assert.ok(!unixInvocation.args.some(argument => argument.includes('node_modules')));
 });
 
-test('Windows public CLI invocation accepts the exact an external compute provider capability selection', () => {
+test('Windows public CLI invocation preserves the exact argument vector', () => {
   const invocation = lifecycle.getNpmExecInvocation(
     [
       'forge', 'install', '--profile', 'core',
-      '--with', 'capability:ito-compute',
-      '--with', 'capability:prediction-markets',
       '--target', 'cursor', '--enable-hooks', '--json',
     ],
     { ComSpec: 'C:\\Windows\\System32\\cmd.exe' },
@@ -140,7 +138,7 @@ test('Windows public CLI invocation accepts the exact an external compute provid
   assert.strictEqual(invocation.command, 'C:\\Windows\\System32\\cmd.exe');
   assert.strictEqual(
     invocation.args[3],
-    'npm exec --offline --yes=false -- forge install --profile core --with capability:ito-compute --with capability:prediction-markets --target cursor --enable-hooks --json'
+    'npm exec --offline --yes=false -- forge install --profile core --target cursor --enable-hooks --json'
   );
 });
 

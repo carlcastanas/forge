@@ -249,33 +249,15 @@ test('packed lifecycle validates canonical Antigravity and OpenCode installs', (
   assert.match(lifecycleRunnerSource, /!fs\.existsSync\(installedSkillPath\)/);
 });
 
-test('packed lifecycle installs and verifies the opt-in Ito distribution surface', () => {
+test('packed lifecycle installs the core profile into a Cursor project', () => {
   assert.match(
     lifecycleRunnerSource,
-    /'--profile', 'core'[\s\S]*'--with', 'capability:ito-compute'[\s\S]*'--with', 'capability:prediction-markets'/
+    /'--profile', 'core',\s*'--target', 'cursor',\s*'--enable-hooks'/
   );
-  for (const moduleId of ['ito-compute', 'prediction-market-skills']) {
-    assert.match(lifecycleRunnerSource, new RegExp(`moduleId === '${moduleId}'`));
-  }
-  for (const installedPath of [
-    'skills/ito-baskets/SKILL.md',
-    'skills/ito-baskets/agents/openai.yaml',
-    'skills/ito-baskets/scripts/ito-baskets.js',
-    'skills/ito-compute/SKILL.md',
-    'skills/ito-compute/agents/openai.yaml',
-    'skills/ito-inference/SKILL.md',
-    'skills/ito-training/SKILL.md',
-  ]) {
-    assert.match(lifecycleRunnerSource, new RegExp(installedPath.replaceAll('.', '\\.')));
-  }
-  assert.match(lifecycleRunnerSource, /\['ito', 'status'\]/);
-  assert.match(lifecycleRunnerSource, /canonical ito-compute-cli is unpublished/i);
-  assert.match(lifecycleRunnerSource, /npx\|npm exec\|npm link\|install -g/i);
-  assert.match(lifecycleRunnerSource, /installedStat\.isFile\(\)/);
-  assert.match(lifecycleRunnerSource, /installedStat\.size > 0/);
-  assert.match(lifecycleRunnerSource, /hostileItoSentinel/);
-  assert.match(lifecycleRunnerSource, /must-not-reach-hostile-path/);
-  assert.match(lifecycleRunnerSource, /packed an external compute provider bridge executed a PATH collision/);
+  assert.match(lifecycleRunnerSource, /const cursorInstallArgs = \[/);
+  assert.match(lifecycleRunnerSource, /initial install must write Cursor install-state/);
+  assert.match(lifecycleRunnerSource, /initial install must create managed Cursor files/);
+  assert.match(lifecycleRunnerSource, /repeat install must preserve the complete ownership ledger/);
 });
 
 console.log(`\nPassed: ${passed}`);

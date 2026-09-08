@@ -63,11 +63,11 @@ Every integration needs:
 - tests or documented commands proving the integration surface;
 - a support route that does not require public secrets or private account data.
 
-## Ito Example
+## Worked Example: A Prediction-Market Data Product
 
-Ito is a separate prediction-market basket product. FORGE can still distribute
-Ito-shaped skills because the skill workflows are useful without making FORGE
-Tools an Ito product.
+Take a separate prediction-market basket product with its own API and billing.
+FORGE can still distribute skills shaped around it, because the skill workflows
+are useful without making FORGE Tools a reseller of that product.
 
 The safe public surface is:
 
@@ -80,12 +80,12 @@ The safe public surface is:
 
 The gated surface is:
 
-- live Ito basket data;
+- live basket data from the product's own API;
 - account-specific state;
 - API-backed backtesting or visualization;
-- any workflow requiring `ITO_API_KEY`.
+- any workflow requiring the product's API key.
 
-The boundary is strict: public FORGE skills do not place trades, do not provide investment advice, do not expose private strategy, and do not merge FORGE Tools billing with Ito billing.
+The boundary is strict: public FORGE skills do not place trades, do not provide investment advice, do not expose private strategy, and do not merge FORGE Tools billing with the data product's billing.
 
 ## Value Loop
 

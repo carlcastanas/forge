@@ -137,11 +137,12 @@ skills/<name>/
   examples/         optional worked examples
 ```
 
-`SKILL.md` needs YAML frontmatter with `name` and `description`. Both are enforced by
+`SKILL.md` needs YAML frontmatter with `name` and `description`, checked by
 `scripts/ci/validate-skills.js`. A `description` containing a colon followed by a space must be
 quoted or the YAML parse fails, and a literal block scalar (`|`, `|-`, `|+`) is rejected because
-it breaks the flat renderers keyed off `description`. Provenance goes in a nested `metadata`
-block:
+it breaks the flat renderers keyed off `description`. Those frontmatter findings are warnings
+unless you pass `--strict`; a missing or empty `SKILL.md` always fails. Provenance goes in a
+nested `metadata` block:
 
 ```yaml
 ---
@@ -261,8 +262,7 @@ CI, so skipping the write step fails the build rather than shipping a stale coun
 
 ## Commit convention
 
-Commits follow Conventional Commits as configured in
-[`commitlint.config.js`](commitlint.config.js):
+Conventional Commits, configured in [`commitlint.config.js`](commitlint.config.js):
 
 ```text
 <type>(<scope>): <subject>

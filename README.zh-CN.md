@@ -15,7 +15,7 @@
 ![Perl](https://img.shields.io/badge/-Perl-39457E?logo=perl&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
-> **140K+ stars** | **21K+ forks** | **170+ 贡献者** | **12+ 语言系统** | **Anthropic黑客松获胜者**
+> **140K+ stars** | **21K+ forks** | **170+ 贡献者** | **12+ 语言系统**
 
 ---
 
@@ -29,7 +29,7 @@
 
 ---
 
-**来自 Anthropic 黑客马拉松获胜者的完整 Claude Code 配置集合。**
+**完整的 Claude Code 配置集合。**
 
 不止是配置文件，而是一整套完整系统：技能体系、本能行为、记忆优化、持续学习、安全扫描，以及研究优先的开发模式。
 包含可直接用于生产环境的智能体、技能模块、钩子、规则、MCP 配置，以及兼容传统命令的适配层——所有内容均经过 10 个多月高强度日常使用与真实产品开发迭代打磨而成。
@@ -506,7 +506,7 @@ forge/
 
 ### Forge Shield — 安全审计工具
 
-> 于 Claude Code 黑客松（Cerebral Valley x Anthropic，2026 年 2 月）开发完成。包含 1282 项测试、98% 覆盖率、102 条静态分析规则。
+> 包含 1282 项测试、98% 覆盖率、102 条静态分析规则。
 
 扫描你的 Claude Code 配置，检测漏洞、错误配置与注入风险。
 
@@ -782,14 +782,6 @@ node tests/hooks/hooks.test.js
 - DevOps 智能体（Kubernetes、Terraform、AWS、Docker）
 - 测试策略（多种测试框架、视觉回归测试）
 - 领域专属知识库（机器学习、数据工程、移动端开发）
-
----
-
-## 背景
-
-自实验性推出以来，我一直在使用 Claude Code。2025 年 9 月，与  一起使用 Claude Code 构建 a hackathon project，赢得了 Anthropic x Forum Ventures 黑客马拉松。
-
-这些配置在多个生产应用中经过了实战测试。
 
 ---
 

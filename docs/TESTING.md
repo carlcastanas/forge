@@ -78,6 +78,20 @@ Results: Passed: 9, Failed: 0
 
 There is no `--grep`. To narrow inside a file, comment cases out locally.
 
+### Do not run the suite twice at once
+
+A few tests exercise code that reads a tracked repository file by absolute path, so they write
+the file, run the subject, and restore it. `tests/hooks/evaluate-session.test.js` does this to
+`skills/continuous-learning/config.json`, because `scripts/hooks/evaluate-session.js` resolves
+that config relative to its own `__dirname`.
+
+Two concurrent runs therefore interleave: one clobbers the file while the other is asserting
+against it, producing a failure that does not reproduce when the file is run on its own. Worse,
+if a run is interrupted mid-case the file is left in the fixture state and stays that way. If
+you see an isolated failure in a test that passes alone, check `git status` first and restore
+with `git checkout -- <path>` before debugging anything else.
+
+
 ## Coverage
 
 ```bash
