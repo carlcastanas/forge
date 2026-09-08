@@ -27,9 +27,7 @@ somewhere inspectable rather than discarded, and the alerts still get read after
 
 ## When NOT to use
 
-- Validating user input at an API boundary — use
-  [api-design](../api-design/SKILL.md) and
-  [security-review](../security-review/SKILL.md)
+- Validating user input at an API boundary — use [api-design](../api-design/SKILL.md)
 - Schema evolution and rollout mechanics for a relational database — use
   [database-migrations](../database-migrations/SKILL.md)
 - Query performance and index design — use
@@ -161,7 +159,7 @@ ALTER TABLE analytics.fct_orders_staging RENAME TO fct_orders;
 COMMIT;
 ```
 
-Atomic swap gives a rollback that is a rename rather than a restore.
+An atomic swap makes rollback a rename rather than a restore.
 
 ### 4. Quarantine rather than drop
 
@@ -185,19 +183,17 @@ WHERE s.order_id is null OR s.total_cents < 0
 
 Then treat quarantine as a queue with an owner, not an archive:
 
-- Alert when the rejection rate crosses a threshold, and when the quarantine table is
-  non-empty for more than a stated period.
-- Report rejected counts alongside accepted counts in the run summary, so partial
-  ingestion is visible.
-- Give quarantine rows a retention policy. An unbounded reject table becomes its own
+- Alert when the rejection rate crosses a threshold, and when the quarantine table stays
+  non-empty beyond a stated period.
+- Report rejected counts beside accepted counts in the run summary, so partial ingestion
+  is visible.
+- Give quarantine rows a retention policy; an unbounded reject table becomes its own
   storage and privacy problem.
-- Support replay: once the source is fixed, reprocessing a quarantine batch should be
-  one command.
+- Support replay: reprocessing a quarantine batch should be one command.
 
 ### 5. Set alert thresholds that survive a month
 
-Alert fatigue kills data quality programs faster than missing checks. Rules that keep
-the signal:
+Alert fatigue kills data quality programs faster than missing checks.
 
 - Alert on the aggregate rejection rate crossing a threshold, not on each rejected row.
 - Use trailing baselines with seasonality, not fixed constants. "Below 60% of the
@@ -208,8 +204,8 @@ the signal:
   dataset already failed. One broken source should produce one page, not forty.
 - Delete any check that has never caught a real problem and has fired more than twice.
 
-Track a small set of operational metrics per dataset: freshness lag, rejection rate,
-row-count deviation, and check pass rate. Those four explain most incidents.
+Track four operational metrics per dataset — freshness lag, rejection rate, row-count
+deviation, check pass rate. They explain most incidents.
 
 ### 6. Backfill deliberately after a bad load
 
@@ -217,23 +213,20 @@ row-count deviation, and check pass rate. Those four explain most incidents.
 ## Backfill BF-2026-06-11 fct_orders
 
 1. Stop the schedule. Pause downstream consumers that read incrementally.
-2. Scope the damage:
-     select min(placed_at), max(placed_at), count(*)
-     from fct_orders where _loaded_at between '2026-06-09' and '2026-06-11';
+2. Scope the damage: min/max/count over `_loaded_at` for the suspect window.
 3. Snapshot the affected partitions before touching them.
-4. Fix the transformation. Add the check that would have caught this. Prove it fails
-   against the bad input and passes against the good input.
-5. Reprocess into a staging table; reconcile totals against the source of record
-   before swapping.
+4. Fix the transformation. Add the check that would have caught this, and prove it
+   fails against the bad input and passes against the good input.
+5. Reprocess into a staging table; reconcile totals against the source of record.
 6. Swap partitions atomically. Do not update in place.
 7. Notify consumers with the affected window and which metrics moved.
 8. Replay the quarantine batch for that window.
-9. Backfill is complete only when the reconciliation query returns zero variance.
+9. Complete only when the reconciliation query returns zero variance.
 ```
 
 Idempotency is what makes this survivable. A pipeline whose reruns duplicate rows turns
 one incident into two. Key on a natural or deterministic surrogate key and use
-merge/upsert semantics, or partition-replace, but never blind append.
+merge/upsert or partition-replace semantics, never blind append.
 
 ### 7. Push checks upstream over time
 

@@ -77,14 +77,14 @@ The valuable material is usually not in `.claude/`.
 
 Write each finding into one table. This is the migration plan.
 
-| Asset | Kind | Frequency | Destination | Action |
-|---|---|---|---|---|
-| "Review this PR for N+1 queries" | Pasted prompt | Weekly | Skill or `database-reviewer` | Convert |
-| `alias tt='npm test -- --watch'` | Alias | Daily | Leave as an alias | Keep |
-| "Always use our error wrapper" | Convention in `CLAUDE.md` | Always | Rule | Move |
-| `scripts/release.sh` | Script | Monthly | Command wrapping the script | Wrap |
-| "Explain this module" | Pasted prompt | Rare | Nothing | Drop |
-| 400-line `CLAUDE.md` | Instructions | Always | Split: rules + skills + short file | Split |
+| Asset | Kind | Destination | Action |
+|---|---|---|---|
+| "Review this PR for N+1 queries" | Pasted prompt, weekly | Skill or `database-reviewer` | Convert |
+| `alias tt='npm test -- --watch'` | Alias, daily | Leave as an alias | Keep |
+| "Always use our error wrapper" | Convention in `CLAUDE.md` | Rule | Move |
+| `scripts/release.sh` | Script, monthly | Command wrapping the script | Wrap |
+| "Explain this module" | Pasted prompt, rare | Nothing | Drop |
+| 400-line `CLAUDE.md` | Instructions, always | Rules + skills + short file | Split |
 
 ### Score the current setup
 
@@ -202,14 +202,7 @@ If you already stacked, uninstall and reinstall one path rather than reconciling
 
 ### Verify
 
-```bash
-node scripts/forge.js list-installed
-node scripts/forge.js doctor
-```
-
-`list-installed` reports install-state records — target, profile, file count. `doctor` reports every managed file as `ok`, `missing`, or `drifted`; `repair` restores the last two. Anything not in install-state is not FORGE-managed and will not be touched by uninstall.
-
-Per-target details and the platform support matrix are in [`../docs/INSTALLATION.md`](../docs/INSTALLATION.md) and [`../docs/HARNESS-MATRIX.md`](../docs/HARNESS-MATRIX.md).
+`node scripts/forge.js list-installed` reports install-state records — target, profile, file count. `node scripts/forge.js doctor` reports every managed file as `ok`, `missing`, or `drifted`; `repair` restores the last two. Anything not in install-state is not FORGE-managed and will not be touched by uninstall. Per-target details and the platform support matrix: [`../docs/INSTALLATION.md`](../docs/INSTALLATION.md), [`../docs/HARNESS-MATRIX.md`](../docs/HARNESS-MATRIX.md).
 
 ---
 
@@ -305,11 +298,10 @@ The prompts your team pastes repeatedly are the most valuable thing you own and 
 
 | Signal | Convert? |
 |---|---|
-| Pasted more than three times by more than one person | Yes |
+| Pasted more than three times by more than one person | Yes, at project scope |
 | Pasted often by one person | Yes, at user scope |
 | Needs editing every time before use | Not yet — it is not stable |
-| Just a task description | No — it is a prompt, not a skill |
-| Duplicates a shipped FORGE skill | No — use the shipped one |
+| Just a task description, or a duplicate of a shipped skill | No |
 
 Before writing anything, check for an existing skill — `ls skills | grep -i <topic>` and `grep -rl "<topic>" skills/*/SKILL.md`. 300+ ship, and a duplicate is worse than nothing: two skills with overlapping descriptions compete for the trigger and both cost context.
 
@@ -411,12 +403,11 @@ With no argument, `/hookify` uses the `conversation-analyzer` agent to find expl
 Rolling out to everyone at once produces a support burden and a rollback. Sequence it.
 
 ```text
-  Week 1        Week 2-3        Week 4-5         Week 6+
-  ───────       ─────────       ─────────        ────────
-  1 person      2-3 people      whole team       steady state
-  minimal       core, hooks     + team skills    maintenance
-  no hooks      on minimal      configuration    cadence
-  measure       compare         committed        re-audit
+  Week 1         Week 2-3        Week 4-5        Week 6+
+  1 person       2-3 people      whole team      steady state
+  minimal        core + hooks    team skills     maintenance
+  no hooks       on minimal      config commit   cadence
+  measure        compare         document        re-audit
 ```
 
 **Week 1 — one person, minimal, no hooks.** One engineer installs `minimal` without hooks and works normally. Goal: confirm nothing breaks and collect the first complaints. Record the harness audit score and the eval baseline.
@@ -461,8 +452,8 @@ One documented install command in `CONTRIBUTING.md`. Everything else arrives wit
 | "Nobody uses the skills" | Descriptions do not match how people actually ask | Rewrite descriptions; check `/skill-health` run counts |
 | "Everyone configured it differently" | Configuration not committed | Commit `.claude/`; one documented install command |
 | "Two skills fight over the same task" | Overlapping descriptions | `skill-stocktake`; delete one |
-| "Context fills immediately" | Too many rule packs installed | One `common` plus one language pack |
-| "Duplicate commands appear" | Two install paths stacked | Uninstall, reinstall one path |
+| "Context fills immediately" | Too many rule packs | One `common` plus one language pack |
+| "Duplicate commands appear" | Two install paths stacked | Uninstall, reinstall one |
 
 More on the organizational side: [`../docs/TEAM-ADOPTION.md`](../docs/TEAM-ADOPTION.md).
 
@@ -575,13 +566,11 @@ Phase 4 — CLAUDE.md
 [ ] Added the file-pattern to skill routing table
 [ ] Kept the old file as CLAUDE.md.pre-forge for two weeks
 
-Phase 5 — Skills
+Phase 5-6 — Skills and commands
 [ ] Checked for an existing FORGE skill before writing each new one
 [ ] Converted recurring prompts (git history, /learn, or by hand)
 [ ] Descriptions written as trigger conditions, not topics
 [ ] Project skills committed under .claude/skills/; trigger and compliance verified
-
-Phase 6 — Commands
 [ ] Converted only multi-step judgment workflows; commands wrap scripts, not reimplement them
 [ ] Recurring corrections converted to hooks via /hookify
 
@@ -604,11 +593,9 @@ Cleanup and rollback
 | First twenty minutes | [Getting started](getting-started.md) |
 | Why install size matters | [The context guide](the-context-guide.md) |
 | Measuring before and after | [The evaluation guide](the-evaluation-guide.md) |
-| Install mechanics and targets | [`../docs/INSTALLATION.md`](../docs/INSTALLATION.md) |
-| Settings and environment | [`../docs/CONFIGURATION.md`](../docs/CONFIGURATION.md) |
-| CLI reference | [`../docs/CLI-REFERENCE.md`](../docs/CLI-REFERENCE.md) |
+| Security posture before rollout | [The security guide](the-security-guide.md) |
+| Install mechanics, targets, platform support | [`../docs/INSTALLATION.md`](../docs/INSTALLATION.md), [`../docs/HARNESS-MATRIX.md`](../docs/HARNESS-MATRIX.md) |
+| Settings, environment, CLI | [`../docs/CONFIGURATION.md`](../docs/CONFIGURATION.md), [`../docs/CLI-REFERENCE.md`](../docs/CLI-REFERENCE.md) |
 | Surface routing | [`../docs/CONCEPTS.md`](../docs/CONCEPTS.md), [`../docs/capability-surface-selection.md`](../docs/capability-surface-selection.md) |
 | Organizational rollout | [`../docs/TEAM-ADOPTION.md`](../docs/TEAM-ADOPTION.md) |
 | Version migration | [`../docs/MIGRATION-1X-TO-2.0.md`](../docs/MIGRATION-1X-TO-2.0.md), [`../docs/SELECTIVE-INSTALL-ARCHITECTURE.md`](../docs/SELECTIVE-INSTALL-ARCHITECTURE.md) |
-| Platform support | [`../docs/HARNESS-MATRIX.md`](../docs/HARNESS-MATRIX.md) |
-| Security posture before rollout | [The security guide](the-security-guide.md) |
