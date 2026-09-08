@@ -12,7 +12,7 @@
 [![npm forge-universal](https://img.shields.io/npm/dw/forge-universal?label=forge-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/forge-universal)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../LICENSE)
 
-> **182K+ ดาว** | **28K+ fork** | **170+ คอนทริบิวเตอร์** | **12+ ระบบนิเวศภาษาโปรแกรม** | **ผู้ชนะ Anthropic Hackathon**
+> **182K+ ดาว** | **28K+ fork** | **170+ คอนทริบิวเตอร์** | **12+ ระบบนิเวศภาษาโปรแกรม**
 
 ---
 
@@ -26,7 +26,7 @@
 
 ---
 
-**FORGE คือระบบเพิ่มประสิทธิภาพสำหรับ AI agent harness จากผู้ชนะ Anthropic Hackathon**
+**FORGE คือระบบเพิ่มประสิทธิภาพสำหรับ AI agent harness**
 
 FORGE ไม่ใช่แค่ชุดไฟล์คอนฟิก แต่เป็นระบบครบวงจร: skills, สัญชาตญาณ (instincts), การจัดการหน่วยความจำ (memory optimization), การเรียนรู้ต่อเนื่อง (continuous learning), การสแกนความปลอดภัย (security scanning) และการพัฒนาที่ตรวจสอบจากแหล่งข้อมูลจริง (research-first development) ทั้งหมดนี้ผ่านการใช้งานจริงมากกว่า 10 เดือนในการสร้างผลิตภัณฑ์จริง
 
@@ -249,14 +249,13 @@ git add . && git commit -m "feat: add my-skill" && git push -u origin feat/my-co
 
 ---
 
-## ชุมชน & สนับสนุน
+## ชุมชน
 
 - [GitHub Discussions](https://github.com/your-org/forge/discussions) — ถาม-ตอบ, โชว์ผลงาน
-- GitHub Sponsors — สนับสนุน OSS เริ่มที่ $5/เดือน
 - FORGE Pro — private repo + GitHub App ($19/seat/เดือน)
 - FORGE Tools GitHub App — ติดตั้ง, PR audit, มี free tier
 
-**OSS ยังคงฟรีตลอดไป** Repo นี้ใช้สัญญาอนุญาต MIT ตลอดกาล FORGE Pro คือ GitHub App ที่ host ไว้สำหรับ private repo ส่วน Sponsors และ Pro subscribers ช่วยสนับสนุนให้ maintainer คนเดียวสามารถส่งงานข้าม 7 harness ได้ทุกสัปดาห์
+**OSS ยังคงฟรีตลอดไป** Repo นี้ใช้สัญญาอนุญาต MIT ตลอดกาล FORGE Pro คือ GitHub App ที่ host ไว้สำหรับ private repo
 
 ---
 

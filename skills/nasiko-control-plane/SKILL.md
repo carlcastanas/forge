@@ -25,7 +25,7 @@ the qualified Nasiko CLI. This skill does not operate a Nasiko control plane.
   bootstrap script.
 - Never put secrets or credentials in command arguments, logs, skill output,
   install metadata, or FORGE state.
-- Nasiko telemetry and any sharing with Nasiko or Ito must be opt-in and
+- Nasiko telemetry and any upstream sharing must be opt-in and
   separately disclosed. Installation is not telemetry consent.
 
 ## Lifecycle boundary
@@ -37,7 +37,7 @@ contracts. Do not guess CLI verbs.
 
 Installing the CLI does not prove that a control-plane server is running, an
 agent is governed, routing or ACLs work, observability is complete, telemetry
-was enabled, or Ito compute is connected. Report each state separately.
+was enabled, or external compute is connected. Report each state separately.
 
 ## Failure behavior
 

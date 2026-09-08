@@ -1,13 +1,6 @@
 # FORGE 長文ガイド
 
-![Header: The Longform Guide to FORGE](./assets/images/longform/01-header.png)
-
----
-
 > **前提条件**: このガイドは[FORGE 簡潔ガイド](./the-shortform-guide.md)を基に構成されています。スキル、フック、サブエージェント、MCP、プラグインのセットアップがまだの場合は、先にそちらをお読みください。
-
-![Reference to Shorthand Guide](./assets/images/longform/02-shortform-reference.png)
-*簡潔ガイド - まずこちらを読んでください*
 
 簡潔ガイドでは、基礎的なセットアップをカバーしました：スキルとコマンド、フック、サブエージェント、MCP、プラグイン、そして効果的なClaude Codeワークフローのバックボーンとなる設定パターン。それはセットアップガイドであり、基盤インフラでした。
 
@@ -181,10 +174,7 @@ pass^k: k回の試行すべてが成功する必要がある
 
 **任意のターミナル数について：**
 
-![Boris on Parallel Terminals](./assets/images/longform/07-boris-parallel.png)
-*Boris（Anthropic）が複数のClaudeインスタンスの実行について*
-
-Borisは並列化のヒントを持っています。ローカルで5つ、上流で5つのClaudeインスタンスを実行するようなことを提案しています。任意のターミナル数の設定は推奨しません。ターミナルの追加は本当の必要性から生まれるべきです。
+並列化については、ローカルで5つ、上流で5つのClaudeインスタンスを実行するといった固定数の助言をよく見かけます。しかし、任意のターミナル数の設定は推奨しません。ターミナルの追加は本当の必要性から生まれるべきです。
 
 目標は：**最小限の並列化で最大限の成果を得ること。**
 
@@ -202,8 +192,7 @@ cd ../project-feature-a && claude
 
 インスタンスのスケーリングを開始し、複数のClaudeインスタンスが互いに重複するコードで作業する場合、gitワークツリーを使用し、各インスタンスに非常に明確な計画を持つことが不可欠です。`/rename <名前>`を使用してすべてのチャットに名前を付けてください。
 
-![Two Terminal Setup](./assets/images/longform/08-two-terminals.png)
-*初期セットアップ：左ターミナルでコーディング、右ターミナルで質問 - /renameと/forkを使用*
+推奨する初期セットアップ：左ターミナルでコーディング、右ターミナルで質問。`/rename`と`/fork`を使用します。
 
 **カスケード方式：**
 
@@ -309,13 +298,6 @@ alias gb='github'
 alias co='code'
 alias q='cd ~/Desktop/projects'
 ```
-
----
-
-## マイルストーン
-
-![25k+ GitHub Stars](./assets/images/longform/09-25k-stars.png)
-*1週間足らずでGitHub 25,000+スター*
 
 ---
 

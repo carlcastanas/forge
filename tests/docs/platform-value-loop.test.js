@@ -74,18 +74,18 @@ test('product integration contract keeps external products useful but separate',
   }
 });
 
-test('Ito example preserves non-advisory and gated-access boundaries', () => {
+test('the worked example preserves non-advisory and gated-access boundaries', () => {
   const source = read('docs/architecture/platform-value-loop.md');
 
   for (const marker of [
-    'Ito is a separate prediction-market basket product',
+    'a separate prediction-market basket product with its own API and billing',
     'visualize market/concept relationships and backtesting outputs',
-    'ITO_API_KEY',
+    "any workflow requiring the product's API key",
     'do not place trades',
     'do not provide investment advice',
-    'do not merge FORGE Tools billing with Ito billing',
+    "do not merge FORGE Tools billing with the data product's billing",
   ]) {
-    assert.ok(source.includes(marker), `platform value loop doc missing Ito boundary ${marker}`);
+    assert.ok(source.includes(marker), `platform value loop doc missing gated-access boundary ${marker}`);
   }
 });
 

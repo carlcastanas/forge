@@ -76,23 +76,6 @@ Dieses Repo enthält ausschließlich den rohen Code. Die Leitfäden erklären al
 
 <table>
 <tr>
-<td width="33%">
-<a href="/status/2012378465664745795">
-<img src="../../assets/images/guides/shorthand-guide.png" alt="The Shorthand Guide to FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2014040193557471352">
-<img src="../../assets/images/guides/longform-guide.png" alt="The Longform Guide to FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2033263813387223421">
-<img src="../../assets/images/security/security-guide-header.png" alt="The Shorthand Guide to Everything Agentic Security" />
-</a>
-</td>
-</tr>
-<tr>
 <td align="center"><b>Kurzleitfaden</b><br/>Setup, Grundlagen, Philosophie. <b>Lies das zuerst.</b></td>
 <td align="center"><b>Langleitfaden</b><br/>Token-Optimierung, Memory-Persistenz, Evals, Parallelisierung.</td>
 <td align="center"><b>Security-Leitfaden</b><br/>Angriffsvektoren, Sandboxing, Sanitisierung, CVEs, Forge Shield.</td>

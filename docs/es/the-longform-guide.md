@@ -1,13 +1,6 @@
 # La Guía Extendida de FORGE
 
-![Encabezado: La Guía Extendida de FORGE](../../assets/images/longform/01-header.png)
-
----
-
 > **Prerequisito**: Esta guía se basa en [La Guía Breve de FORGE](./the-shortform-guide.md). Lee esa primero si aún no has configurado skills, hooks, subagentes, MCPs y plugins.
-
-![Referencia a la Guía Breve](../../assets/images/longform/02-shortform-reference.png)
-*La Guía Breve — léela primero*
 
 En la guía breve cubrí la configuración fundamental: skills y comandos, hooks, subagentes, MCPs, plugins y los patrones de configuración que forman la columna vertebral de un flujo de trabajo efectivo en Claude Code. Eso era la guía de configuración y la infraestructura base.
 
@@ -181,10 +174,7 @@ Chat principal para cambios de código, forks para preguntas sobre la base de c�
 
 **Sobre Cantidades Arbitrarias de Terminales:**
 
-![Boris sobre Terminales en Paralelo](../../assets/images/longform/07-boris-parallel.png)
-*Boris (Anthropic) sobre ejecutar múltiples instancias de Claude*
-
-Boris tiene consejos sobre paralelización. Ha sugerido cosas como ejecutar 5 instancias de Claude localmente y 5 en upstream. Desaconsejo establecer cantidades arbitrarias de terminales. La adición de un terminal debe surgir de una verdadera necesidad.
+Circulan consejos de paralelización que sugieren cifras fijas — por ejemplo, cinco instancias de Claude en local y cinco en upstream. Desaconsejo establecer cantidades arbitrarias de terminales. La adición de un terminal debe surgir de una verdadera necesidad.
 
 Tu objetivo debe ser: **cuánto puedes lograr con la cantidad mínima viable de paralelización.**
 
@@ -202,8 +192,7 @@ cd ../project-feature-a && claude
 
 SI vas a escalar tus instancias Y tienes múltiples instancias de Claude trabajando en código que se superpone entre sí, es imprescindible que uses git worktrees y tengas un plan muy bien definido para cada uno. Usa `/rename <nombre>` para nombrar todos tus chats.
 
-![Configuración de Dos Terminales](../../assets/images/longform/08-two-terminals.png)
-*Configuración Inicial: Terminal Izquierda para Codificar, Terminal Derecha para Preguntas — usa /rename y /fork*
+Configuración inicial recomendada: terminal izquierda para codificar, terminal derecha para preguntas — usa `/rename` y `/fork`.
 
 **El Método Cascada:**
 
@@ -309,13 +298,6 @@ alias gb='github'
 alias co='code'
 alias q='cd ~/Desktop/projects'
 ```
-
----
-
-## Hito
-
-![25k+ Estrellas en GitHub](../../assets/images/longform/09-25k-stars.png)
-*25,000+ estrellas en GitHub en menos de una semana*
 
 ---
 

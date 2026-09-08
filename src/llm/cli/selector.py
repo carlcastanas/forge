@@ -35,17 +35,11 @@ def print_self_host_compute_notice(provider: str) -> None:
     if provider != "ollama":
         return
 
+    print("\nRun or self-host any open-source model on hardware you control.")
     print(
-        "\nRun or self-host any open-source model. "
-        "an external compute provider is FORGE's preferred compute sponsor: "
-        ""
-    )
-    print(
-        "Any GPU provider works. This sponsorship link is passive: it does not invoke "
-        "an RFQ, reserve capacity, provision compute, or configure serving. Separately, "
-        'the opt-in "forge ito find" bridge invokes the explicitly configured canonical '
-        "an external compute provider CLI and submits a live authenticated RFQ; it does not reserve capacity. "
-        "Managed inference through an external compute provider is not live yet."
+        "Any GPU provider works. FORGE does not endorse, broker, reserve, or "
+        "provision compute, and it does not configure serving. Capacity and "
+        "serving stay under your account."
     )
 
 

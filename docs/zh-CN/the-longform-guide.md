@@ -1,13 +1,6 @@
 # 关于 Claude Code 的完整长篇指南
 
-![Header: The Longform Guide to FORGE](../../assets/images/longform/01-header.png)
-
-***
-
 > **前提**：本指南建立在 [关于 Claude Code 的简明指南](the-shortform-guide.md) 之上。如果你还没有设置技能、钩子、子代理、MCP 和插件，请先阅读该指南。
-
-![Reference to Shorthand Guide](../../assets/images/longform/02-shortform-reference.png)
-*速记指南 - 请先阅读此指南*
 
 在简明指南中，我介绍了基础设置：技能和命令、钩子、子代理、MCP、插件，以及构成有效 Claude Code 工作流骨干的配置模式。那是设置指南和基础架构。
 
@@ -182,10 +175,7 @@ pass^k: 所有 k 次尝试都必须成功
 
 **关于任意终端数量：**
 
-![Boris on Parallel Terminals](../../assets/images/longform/07-boris-parallel.png)
-*Boris (Anthropic) 关于运行多个 Claude 实例的说明*
-
-Boris 有关于并行化的建议。他曾建议在本地运行 5 个 Claude 实例，在上游运行 5 个。我建议不要设置任意的终端数量。增加终端应该是出于真正的必要性。
+关于并行化，常见的建议会给出固定数字，例如在本地运行 5 个 Claude 实例、在上游运行 5 个。我建议不要设置任意的终端数量。增加终端应该是出于真正的必要性。
 
 你的目标应该是：**用最小可行的并行化程度，你能完成多少工作。**
 
@@ -203,8 +193,7 @@ cd ../project-feature-a && claude
 
 **如果** 你要开始扩展实例数量 **并且** 你有多个 Claude 实例在处理相互重叠的代码，那么你必须使用 git worktrees，并为每个实例制定非常明确的计划。使用 `/rename <name here>` 来命名你所有的聊天。
 
-![Two Terminal Setup](../../assets/images/longform/08-two-terminals.png)
-*初始设置：左侧终端用于编码，右侧终端用于提问 - 使用 /rename 和 /fork 命令*
+推荐的初始设置：左侧终端用于编码，右侧终端用于提问，并使用 `/rename` 和 `/fork` 命令。
 
 **级联方法：**
 
@@ -315,11 +304,6 @@ alias q='cd ~/Desktop/projects'
 ```
 
 ***
-
-## 里程碑
-
-![25k+ GitHub Stars](../../assets/images/longform/09-25k-stars.png)
-*一周内获得 25,000+ GitHub stars*
 
 ***
 

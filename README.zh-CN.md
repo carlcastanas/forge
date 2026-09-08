@@ -56,7 +56,7 @@
 </td>
 <td width="33%">
 <a href="/status/2033263813387223421">
-<img src="./assets/images/security/security-guide-header.png" alt="The Shorthand Guide to Everything Agentic Security" />
+<b>The Shorthand Guide to Everything Agentic Security</b>
 </a>
 </td>
 </tr>

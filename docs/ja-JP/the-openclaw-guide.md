@@ -465,7 +465,3 @@ Andrej Karpathy が何かを「惨事」と呼び、コンピューターでそ�
 > * 第 2 部：[Claude Code についてのすべて 詳細ガイド](the-longform-guide.md) — 高度なパターンとワークフロー
 > * 第 3 部：OpenClaw の隠れた危険（本文） — エージェント最前線からのセキュリティ教訓
 > * 第 4 部：[エージェント保護の簡明ガイド](the-security-guide.md) — 実践的なエージェントセキュリティ
-
-***
-
-*the FORGE maintainers () は AI コーディングツールを構築し、AI インフラセキュリティについて執筆している。彼の forge リポジトリは GitHub で 5 万以上のスターを持つ。Forge Shield を作成し、Anthropic x Forum Ventures ハッカソンで a hackathon project を構築して優勝した。*

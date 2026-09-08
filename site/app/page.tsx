@@ -8,6 +8,7 @@ import {
   AgentIcon,
   ArrowRightIcon,
   CommandIcon,
+  EyeOffIcon,
   HookIcon,
   LoopIcon,
   MemoryIcon,
@@ -626,26 +627,3 @@ export default function HomePage() {
   );
 }
 
-/** Local to this page: a struck-through eye, for review that did not happen. */
-function EyeOffIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={20}
-      height={20}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M4 6.5A15.6 15.6 0 0 0 2.5 12S6 18.5 12 18.5a9.7 9.7 0 0 0 4.4-1" />
-      <path d="M9.8 6a10.6 10.6 0 0 1 2.2-.2c6 0 9.5 6.2 9.5 6.2a16.7 16.7 0 0 1-2.8 3.6" />
-      <path d="M10 10a2.8 2.8 0 0 0 4 4" />
-      <path d="m4 4 16 16" />
-    </svg>
-  );
-}

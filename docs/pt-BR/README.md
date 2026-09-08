@@ -18,7 +18,7 @@
 ![Java](https://img.shields.io/badge/-Java-ED8B00?logo=openjdk&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
-> **140K+ estrelas** | **21K+ forks** | **170+ contribuidores** | **12+ ecossistemas de linguagem** | **Vencedor do Hackathon Anthropic**
+> **140K+ estrelas** | **21K+ forks** | **170+ contribuidores** | **12+ ecossistemas de linguagem**
 
 ---
 
@@ -31,7 +31,7 @@
 
 ---
 
-**O sistema de otimização de desempenho para harnesses de agentes de IA. De um vencedor do hackathon da Anthropic.**
+**O sistema de otimização de desempenho para harnesses de agentes de IA.**
 
 Não são apenas configurações. Um sistema completo: skills, instincts, otimização de memória, aprendizado contínuo, varredura de segurança e desenvolvimento com pesquisa em primeiro lugar. Agentes, hooks, comandos, regras e configurações MCP prontos para produção, desenvolvidos ao longo de 10+ meses de uso intensivo diário construindo produtos reais.
 
@@ -44,23 +44,6 @@ Funciona com **Claude Code**, **Codex**, **Cursor**, **OpenCode**, **Gemini** e 
 Este repositório contém apenas o código. Os guias explicam tudo.
 
 <table>
-<tr>
-<td width="33%">
-<a href="/status/2012378465664745795">
-<img src="../../assets/images/guides/shorthand-guide.png" alt="The Shorthand Guide to FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2014040193557471352">
-<img src="../../assets/images/guides/longform-guide.png" alt="The Longform Guide to FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2033263813387223421">
-<img src="../../assets/images/security/security-guide-header.png" alt="The Shorthand Guide to Everything Agentic Security" />
-</a>
-</td>
-</tr>
 <tr>
 <td align="center"><b>Guia Resumido</b><br/>Configuração, fundamentos, filosofia. <b>Leia este primeiro.</b></td>
 <td align="center"><b>Guia Completo</b><br/>Otimização de tokens, persistência de memória, evals, paralelização.</td>
@@ -271,7 +254,7 @@ Para recursos avançados (10k+ commits, PRs automáticos, compartilhamento em eq
 
 ### Forge Shield — Auditor de Segurança
 
-> Construído no Claude Code Hackathon (Cerebral Valley x Anthropic, Fev 2026). 1282 testes, 98% de cobertura, 102 regras de análise estática.
+> 1282 testes, 98% de cobertura, 102 regras de análise estática.
 
 ```bash
 # Verificação rápida (sem instalação necessária)

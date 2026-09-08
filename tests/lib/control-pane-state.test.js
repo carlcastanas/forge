@@ -819,7 +819,7 @@ async function runTests() {
           entityId: 3,
           priority: 1,
           pinned: false,
-          summary: 'Ito should expose market backtesting through FORGE tools.'
+          summary: 'The venue should expose market backtesting through FORGE tools.'
         }
       ];
 

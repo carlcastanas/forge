@@ -1,10 +1,6 @@
 # Claude Code'un Her Şeyine Dair Kısa Kılavuz
 
-![Header: Anthropic Hackathon Winner - Tips & Tricks for Claude Code](../assets/images/shortform/00-header.png)
-
----
-
-**Şubat ayında deneysel kullanıma sunulduğundan beri hevesli bir Claude Code kullanıcısıyım ve  ile birlikte tamamen Claude Code kullanarak a hackathon project projesiyle Anthropic x Forum Ventures hackathon'unu kazandım.**
+**Şubat ayındaki deneysel kullanıma sunumdan beri Claude Code her gün kullanılıyor ve bu kılavuzdaki her şey tamamen Claude Code ile oluşturuldu.**
 
 İşte 10 aylık günlük kullanım sonrası eksiksiz kurulumum: skill'ler, hook'lar, subagent'lar, MCP'ler, plugin'ler ve gerçekten işe yarayanlar.
 
@@ -15,9 +11,6 @@
 Skill'ler, belirli kapsamlar ve iş akışlarıyla sınırlandırılmış kurallar gibi çalışır. Belirli bir iş akışını yürütmeniz gerektiğinde prompt'lara kısayol görevi görürler.
 
 Opus 4.5 ile uzun bir kodlama oturumundan sonra ölü kodu ve gevşek .md dosyalarını temizlemek mi istiyorsunuz? `/refactor-clean` çalıştırın. Test mi gerekli? `/tdd`, `/e2e`, `/test-coverage`. Skill'ler ayrıca codemap'leri de içerebilir - Claude'un keşfe context harcamadan kod tabanınızda hızlıca gezinmesi için bir yöntem.
-
-![Terminal showing chained commands](../assets/images/shortform/02-chaining-commands.jpeg)
-*Command'ları zincirleme*
 
 Command'lar, slash command'lar aracılığıyla yürütülen skill'lerdir. Örtüşürler ancak farklı şekilde saklanırlar:
 
@@ -363,9 +356,6 @@ Bu anahtar - 14 MCP yapılandırılmış ancak proje başına sadece ~5-6'sı et
 
 Kullanıcı, dizin, kirli göstergeli git branch, kalan context %, model, zaman ve todo sayısını gösterir:
 
-![Custom status line](../assets/images/shortform/11-statusline.jpeg)
-*Mac root dizinimde örnek statusline*
-
 ```
 affoon:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
@@ -425,7 +415,3 @@ affoon:~ ctx:65% Opus 4.5 19:52
 ---
 
 **Not:** Bu bir detay alt kümesidir. Gelişmiş desenler için [Longform Kılavuzu](./the-longform-guide.md)'na bakın.
-
----
-
-*NYC'de  ile a hackathon project oluşturarak Anthropic x Forum Ventures hackathon'unu kazandım*

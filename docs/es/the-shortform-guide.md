@@ -1,10 +1,6 @@
 # La Guía Resumida de FORGE
 
-![Encabezado: Ganador del Hackathon de Anthropic - Tips y Trucos para Claude Code](../../assets/images/shortform/00-header.png)
-
----
-
-**Soy usuario activo de Claude Code desde el lanzamiento experimental en febrero, y gané el hackathon de Anthropic x Forum Ventures con a hackathon project junto a  — usando Claude Code por completo.**
+**Claude Code se usa aquí a diario desde el lanzamiento experimental en febrero, y todo lo que aparece en esta guía se construyó con Claude Code.**
 
 Aquí está mi configuración completa tras 10 meses de uso diario: skills, hooks, subagentes, MCPs, plugins y lo que realmente funciona.
 
@@ -15,9 +11,6 @@ Aquí está mi configuración completa tras 10 meses de uso diario: skills, hook
 Las skills son la superficie principal de flujo de trabajo. Actúan como paquetes de flujo de trabajo con alcance definido: prompts reutilizables, estructura, archivos de soporte y codemaps cuando necesitas un patrón de ejecución específico.
 
 Después de una sesión larga de codificación con Opus 4.5, ¿quieres limpiar código muerto y archivos .md sueltos? Ejecuta `/refactor-clean`. ¿Necesitas pruebas? `/tdd`, `/e2e`, `/test-coverage`. Esas entradas slash son convenientes, pero la unidad duradera real es la skill subyacente. Las skills también pueden incluir codemaps — una forma para que Claude navegue rápidamente tu código base sin quemar contexto en exploración.
-
-![Terminal mostrando comandos encadenados](../../assets/images/shortform/02-chaining-commands.jpeg)
-*Encadenando comandos juntos*
 
 FORGE sigue enviando una capa `commands/`, pero es mejor pensarla como compatibilidad de entradas slash heredadas durante la migración. La lógica duradera debe vivir en las skills.
 
@@ -361,9 +354,6 @@ Esta es la clave — tengo 14 MCPs configurados pero solo ~5-6 habilitados por p
 
 Muestra usuario, directorio, rama de git con indicador de modificaciones, % de contexto restante, modelo, hora y conteo de todos:
 
-![Línea de estado personalizada](../../assets/images/shortform/11-statusline.jpeg)
-*Ejemplo de statusline en mi directorio raíz de Mac*
-
 ```
 affoon:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
@@ -423,7 +413,3 @@ affoon:~ ctx:65% Opus 4.5 19:52
 ---
 
 **Nota:** Este es un subconjunto de los detalles. Consulta la [Guía Extensa](./the-longform-guide.md) para patrones avanzados.
-
----
-
-*Gané el hackathon de Anthropic x Forum Ventures en Nueva York construyendo a hackathon project con *

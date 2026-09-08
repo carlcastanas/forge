@@ -18,7 +18,7 @@
 ![Java](https://img.shields.io/badge/-Java-ED8B00?logo=openjdk&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
-> **140K+ stars** | **21K+ forks** | **170+ contributors** | **12+ language ecosystems** | **Anthropic 해커톤 우승**
+> **140K+ stars** | **21K+ forks** | **170+ contributors** | **12+ language ecosystems**
 
 ---
 
@@ -32,7 +32,7 @@
 
 ---
 
-**AI 에이전트 하네스를 위한 성능 최적화 시스템. Anthropic 해커톤 우승자가 만들었습니다.**
+**AI 에이전트 하네스를 위한 성능 최적화 시스템.**
 
 단순한 설정 파일 모음이 아닙니다. 스킬, 직관(Instinct), 메모리 최적화, 지속적 학습, 보안 스캐닝, 리서치 우선 개발을 아우르는 완전한 시스템입니다. 10개월 이상 실제 프로덕트를 만들며 매일 집중적으로 사용해 발전시킨 프로덕션 레벨의 에이전트, 훅, 커맨드, 룰, MCP 설정이 포함되어 있습니다.
 
@@ -290,7 +290,7 @@ git 히스토리를 로컬에서 분석하여 SKILL.md 파일을 생성합니다
 
 ### Forge Shield — 보안 감사 도구
 
-> Claude Code 해커톤(Cerebral Valley x Anthropic, 2026년 2월)에서 개발. 1282개 테스트, 98% 커버리지, 102개 정적 분석 규칙.
+> 1282개 테스트, 98% 커버리지, 102개 정적 분석 규칙.
 
 Claude Code 설정에서 취약점, 잘못된 구성, 인젝션 위험을 스캔합니다.
 
@@ -701,14 +701,6 @@ Claude Code 사용 비용이 부담된다면 토큰 소비를 관리해야 합�
 
 ---
 
-## 스폰서
-
-이 프로젝트는 무료 오픈소스입니다. 스폰서의 지원으로 유지보수와 성장이 이루어집니다.
-
-**스폰서 되기** | [스폰서 티어](../../SPONSORS.md) | [스폰서십 프로그램](../../SPONSORING.md)
-
----
-
 ## Star 히스토리
 
 [![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
@@ -719,8 +711,6 @@ Claude Code 사용 비용이 부담된다면 토큰 소비를 관리해야 합�
 
 - **요약 가이드 (여기서 시작):** [The Shorthand Guide to FORGE](/status/2012378465664745795)
 - **상세 가이드 (고급):** [The Longform Guide to FORGE](/status/2014040193557471352)
-- **팔로우:**
-- **a hackathon project:** a hackathon project
 
 ---
 

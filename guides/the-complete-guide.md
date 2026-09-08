@@ -704,8 +704,6 @@ independent; `team-agent-orchestration` handles squad-shaped work with ownership
 merge gates, and control-pane handoffs. `plan-orchestrate` reads a plan document and emits a
 per-step agent chain from the catalog.
 
-![Two terminals with separated responsibilities](../assets/images/longform/08-two-terminals.png)
-
 ### Adversarial verification
 
 A single reviewer that is wrong produces a confident approval. The counter is to require

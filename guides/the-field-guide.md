@@ -170,8 +170,6 @@ Language-specific families follow a consistent naming shape: `/<lang>-test`, `/<
 `/<lang>-build` for Go, Rust, Kotlin, C++, React, Flutter, Python, Vue, FastAPI. If you work in
 one stack, three commands cover most of your loop.
 
-![Chained commands in a terminal session](../assets/images/shortform/02-chaining-commands.jpeg)
-
 Chaining is normal and usually better than one large prompt. `/plan`, then TDD work through
 the `tdd-workflow` skill, then `/code-review`, then `/quality-gate` gives each phase a clean
 brief and a checkable output.
@@ -451,8 +449,6 @@ git worktree add ../project-refactor refactor-branch
 
 Then run a session in each. Name them so you can tell them apart in a tab strip.
 
-![Two terminals: one driving changes, one answering questions](../assets/images/longform/08-two-terminals.png)
-
 ### The default two-terminal layout
 
 One terminal owns code changes. One terminal answers questions and does research. That split
@@ -494,8 +490,6 @@ The bar changes color as context fills: green below 50 percent, yellow below 65,
 80, and a blinking red past 80. The metrics come from `forge-metrics-bridge.js`, a `PostToolUse`
 hook that writes the bridge file the status line reads. Both need to be installed for the full
 display.
-
-![A configured status line](../assets/images/shortform/11-statusline.jpeg)
 
 Why it matters: context exhaustion is the failure that produces the worst output and the least
 obvious symptom. The model does not announce degradation; it just starts forgetting decisions it

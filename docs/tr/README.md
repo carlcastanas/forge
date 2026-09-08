@@ -17,7 +17,7 @@
 ![Perl](https://img.shields.io/badge/-Perl-39457E?logo=perl&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
 
-> **140K+ yıldız** | **21K+ fork** | **170+ katkıda bulunan** | **12+ dil ekosistemi** | **Anthropic Hackathon Kazananı**
+> **140K+ yıldız** | **21K+ fork** | **170+ katkıda bulunan** | **12+ dil ekosistemi**
 
 ---
 
@@ -31,7 +31,7 @@
 
 ---
 
-**AI agent harness'ları için performans optimizasyon sistemi. Anthropic hackathon kazananından.**
+**AI agent harness'ları için performans optimizasyon sistemi.**
 
 Sadece konfigürasyon dosyaları değil. Tam bir sistem: skill'ler, instinct'ler, memory optimizasyonu, sürekli öğrenme, güvenlik taraması ve araştırma odaklı geliştirme. 10+ ay boyunca gerçek ürünler inşa ederken yoğun günlük kullanımla evrimleşmiş production-ready agent'lar, hook'lar, command'lar, rule'lar ve MCP konfigürasyonları.
 
@@ -44,23 +44,6 @@ Sadece konfigürasyon dosyaları değil. Tam bir sistem: skill'ler, instinct'ler
 Bu repository yalnızca ham kodu içerir. Rehberler her şeyi açıklıyor.
 
 <table>
-<tr>
-<td width="33%">
-<a href="/status/2012378465664745795">
-<img src="../../assets/images/guides/shorthand-guide.png" alt="FORGE Kısa Rehberi" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2014040193557471352">
-<img src="../../assets/images/guides/longform-guide.png" alt="FORGE Uzun Rehberi" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2033263813387223421">
-<img src="../../assets/images/security/security-guide-header.png" alt="Agentic Güvenlik Kısa Rehberi" />
-</a>
-</td>
-</tr>
 <tr>
 <td align="center"><b>Kısa Rehber</b><br/>Kurulum, temeller, felsefe. <b>İlk önce bunu okuyun.</b></td>
 <td align="center"><b>Uzun Rehber</b><br/>Token optimizasyonu, memory kalıcılığı, eval'ler, paralelleştirme.</td>

@@ -28,7 +28,7 @@
 
 ---
 
-**Anthropicハッカソン優勝者による完全なClaude Code設定集。**
+**完全なClaude Code設定集。**
 
 10ヶ月以上の集中的な日常使用により、実際のプロダクト構築の過程で進化した、本番環境対応のエージェント、スキル、フック、コマンド、ルール、MCP設定。
 
@@ -744,14 +744,6 @@ npm install forge-universal
 
 ---
 
-## 背景
-
-実験的なリリース以来、Claude Codeを使用してきました。2025年9月、と一緒にClaude Codeでa hackathon projectを構築し、Anthropic x Forum Venturesハッカソンで優勝しました。
-
-これらの設定は複数の本番環境アプリケーションで実戦テストされています。
-
----
-
 ## WARNING: 重要な注記
 
 ### コンテキストウィンドウ管理
@@ -785,7 +777,6 @@ npm install forge-universal
 
 - **簡潔ガイド（まずはこれ）:** [FORGE 簡潔ガイド](/status/2012378465664745795)
 - **詳細ガイド（高度）:** [FORGE 詳細ガイド](/status/2014040193557471352)
-- **a hackathon project:** a hackathon project
 - **スキル ディレクトリ:** awesome-agent-skills（コミュニティ管理のエージェントスキル ディレクトリ）
 
 ---

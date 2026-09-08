@@ -1,10 +1,6 @@
 # FORGE 簡潔ガイド
 
-![Header: Anthropic Hackathon Winner - Tips & Tricks for Claude Code](./assets/images/shortform/00-header.png)
-
----
-
-**2月の実験的ロールアウト以来、熱心なClaude Codeユーザーとして活動し、と共にa hackathon projectでAnthropic x Forum Venturesハッカソンで優勝しました — すべてClaude Codeを使用して。**
+**2月の実験的ロールアウト以来、Claude Codeを日常的に使い続けています。本ガイドで紹介する内容はすべてClaude Codeで構築したものです。**
 
 10ヶ月の日常使用後の完全なセットアップをご紹介：スキル、フック、サブエージェント、MCP、プラグイン、そして実際に機能するもの。
 
@@ -15,9 +11,6 @@
 スキルは主要なワークフローサーフェスです。スコープされたワークフローバンドルとして機能します：再利用可能なプロンプト、構造、サポートファイル、特定の実行パターンが必要な際のコードマップ。
 
 Opus 4.5での長いコーディングセッション後にデッドコードや散らかった.mdファイルを整理したい？`/refactor-clean`を実行。テストが必要？`/tdd`、`/e2e`、`/test-coverage`。これらのスラッシュエントリーは便利ですが、真に持続的な単位は基盤となるスキルです。スキルにはコードマップも含められます — コンテキストを探索に消費せずにClaude がコードベースを素早くナビゲートする方法です。
-
-![Terminal showing chained commands](./assets/images/shortform/02-chaining-commands.jpeg)
-*コマンドの連鎖実行*
 
 FORGEは依然として`commands/`レイヤーを提供していますが、マイグレーション中のレガシースラッシュエントリー互換性と考えるのが最適です。持続的なロジックはスキルに置くべきです。
 
@@ -361,9 +354,6 @@ mgrep@Mixedbread-Grep                  # より良い検索
 
 ユーザー、ディレクトリ、ダーティインジケーター付きgitブランチ、残りコンテキスト%、モデル、時間、Todoカウントを表示：
 
-![Custom status line](./assets/images/shortform/11-statusline.jpeg)
-*Macルートディレクトリでのステータスライン例*
-
 ```
 affoon:~ ctx:65% Opus 4.5 19:52
 ▌▌ plan mode on (shift+tab to cycle)
@@ -423,7 +413,3 @@ affoon:~ ctx:65% Opus 4.5 19:52
 ---
 
 **注意：** これは詳細の一部です。高度なパターンについては[長文ガイド](./the-longform-guide.md)を参照してください。
-
----
-
-*NYCでのAnthropic x Forum Venturesハッカソンでと共にa hackathon projectを構築して優勝*

@@ -21,7 +21,7 @@
 
 ---
 
-**來自 Anthropic 黑客松冠軍的完整 Claude Code 設定集合。**
+**完整的 Claude Code 設定集合。**
 
 經過 10 個月以上密集日常使用、打造真實產品所淬煉出的生產就緒代理程式、技能、鉤子、指令、規則和 MCP 設定。
 
@@ -428,14 +428,6 @@ node tests/hooks/hooks.test.js
 
 ---
 
-## 背景
-
-我從實驗性推出就開始使用 Claude Code。2025 年 9 月與  一起使用 Claude Code 打造 a hackathon project，贏得了 Anthropic x Forum Ventures 黑客松。
-
-這些設定已在多個生產應用程式中經過實戰測試。
-
----
-
 ## WARNING: 重要注意事項
 
 ### 上下文視窗管理
@@ -469,8 +461,6 @@ node tests/hooks/hooks.test.js
 
 - **簡明指南（從這裡開始）：** [FORGE 簡明指南](/status/2012378465664745795)
 - **完整指南（進階）：** [FORGE 完整指南](/status/2014040193557471352)
-- **追蹤：**
-- **a hackathon project：** a hackathon project
 - **技能目錄：** awesome-agent-skills（社區維護的智能體技能目錄）
 
 ---

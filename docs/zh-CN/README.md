@@ -19,7 +19,7 @@
 ![Perl](https://img.shields.io/badge/-Perl-39457E?logo=perl\&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown\&logoColor=white)
 
-> **140K+ stars** | **21K+ forks** | **170+ contributors** | **12+ language ecosystems** | **Anthropic Hackathon Winner**
+> **140K+ stars** | **21K+ forks** | **170+ contributors** | **12+ language ecosystems**
 
 ***
 
@@ -33,7 +33,7 @@
 
 ***
 
-**适用于 AI 智能体平台的性能优化系统。来自 Anthropic 黑客马拉松的获奖作品。**
+**适用于 AI 智能体平台的性能优化系统。**
 
 不仅仅是配置。一个完整的系统：技能、本能、内存优化、持续学习、安全扫描以及研究优先的开发。经过 10 多个月的密集日常使用和构建真实产品的经验，演进出生产就绪的智能体、钩子、命令、规则和 MCP 配置。
 
@@ -46,23 +46,6 @@
 此仓库仅包含原始代码。指南解释了一切。
 
 <table>
-<tr>
-<td width="33%">
-<a href="/status/2012378465664745795">
-<img src="../../assets/images/guides/shorthand-guide.png" alt="Claude代码简明指南/>
-</a>
-</td>
-<td width="33%">
-<a href="/status/2014040193557471352">
-<img src="../../assets/images/guides/longform-guide.png" alt="Claude代码详细指南" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2033263813387223421">
-<img src="../../assets/images/security/security-guide-header.png" alt="Agentic安全简明指南" />
-</a>
-</td>
-</tr>
 <tr>
 <td align="center"><b>Shorthand Guide</b><br/>设置、基础、理念。 <b>首先阅读此内容。</b></td>
 <td align="center"><b>详细指南</b><br/>令牌优化、内存持久化、评估、并行化。</td>
@@ -558,7 +541,7 @@ forge/
 
 ### Forge Shield — 安全审计器
 
-> 在 Claude Code 黑客马拉松（Cerebral Valley x Anthropic，2026年2月）上构建。1282 项测试，98% 覆盖率，102 条静态分析规则。
+> 1282 项测试，98% 覆盖率，102 条静态分析规则。
 
 扫描您的 Claude Code 配置，查找漏洞、错误配置和注入风险。
 
@@ -1305,12 +1288,6 @@ FORGE 是**第一个最大化利用每个主要 AI 编码工具的插件**。以
 
 ***
 
-## 背景
-
-我从实验性推出以来就一直在使用 Claude Code。在 2025 年 9 月，与  一起使用 Claude Code 构建 a hackathon project，赢得了 Anthropic x Forum Ventures 黑客马拉松。
-
-这些配置已在多个生产应用程序中经过实战测试。
-
 ## 灵感致谢
 
 * 灵感来自 [zarazhangrui](https://github.com/zarazhangrui)
@@ -1420,14 +1397,6 @@ FORGE 是**第一个最大化利用每个主要 AI 编码工具的插件**。以
 
 ***
 
-## 赞助商
-
-这个项目是免费和开源的。赞助商帮助保持其维护和发展。
-
-**成为赞助商** | [赞助层级](SPONSORS.md) | [赞助计划](SPONSORING.md)
-
-***
-
 ## Star 历史
 
 [![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge\&type=Date)](https://star-history.com/#your-org/forge\&Date)
@@ -1438,8 +1407,6 @@ FORGE 是**第一个最大化利用每个主要 AI 编码工具的插件**。以
 
 * **速查指南（从这里开始）：** [Claude Code 速查指南](/status/2012378465664745795)
 * **详细指南（进阶）：** [Claude Code 详细指南](/status/2014040193557471352)
-* **关注：**
-* **a hackathon project：** a hackathon project
 * **技能目录：** awesome-agent-skills（社区维护的智能体技能目录）
 
 ***

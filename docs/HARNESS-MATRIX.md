@@ -49,6 +49,7 @@ Rows are ordered by how completely FORGE reaches them.
 | Trae | Full | Full | Full | None | Full | unverified | None |
 | Pi | Full | unverified | Full | Partial | Partial | unverified | N-A |
 | Copilot | None | None | Partial | None | Partial | None | None |
+| Terminal-only | Full | Full | Full | N-A | Full | Full | N-A |
 | dmux | N-A | N-A | N-A | N-A | N-A | unverified | unverified |
 | Orca | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
 | Superset | unverified | unverified | unverified | unverified | unverified | unverified | unverified |
@@ -85,6 +86,39 @@ Two columns deserve a caveat before the per-harness notes.
 
 Only Claude Code, Codex, and Kimi Code are guided-ready. Everything else needs an explicit `forge install --target <id>`.
 
+## Committed adapter directories
+
+What a harness receives at install time and what this repository commits for it are two different things. This table is the second one: every harness-shaped directory that exists in the checkout, and what is actually inside it. A directory holding only a README projects nothing on its own — it documents where the installer writes.
+
+| Directory | What it holds | Projects |
+|---|---|---|
+| `.claude-plugin/` | `plugin.json`, `marketplace.json`, schema notes, README | Skills and commands by reference (`./skills/`, `./commands/`); `mcpServers` is declared empty |
+| `.claude/` | 3 commands, 2 rules, repository-local state and workflow files | Commands, rules. No committed skills, agents, or hooks — those install from the repository root |
+| `.codex/` | `AGENTS.md`, `config.toml`, 3 agent TOML files | Agents, MCP (6 servers in `config.toml`), instructions |
+| `.codex-plugin/` | `plugin.json`, README | Skills, MCP, and hooks by reference to `./skills/`, `./.mcp.json`, `./hooks/codex-hooks.json` |
+| `.cursor/` | 11 skills, 39 rules, 17 hook scripts (16 registered), shared scripts | Skills, rules, hooks. Agents and `mcp.json` are written at install time, not committed |
+| `.gemini/` | `GEMINI.md` | Instructions only |
+| `.opencode/` | `opencode.json`, 35 commands, 25 agent prompts, 9 tools, `forge-hooks.ts`, `dist/` | Commands, agents, hooks, tools; skills by reference to `../skills` |
+| `.zed/` | `settings.json` | Tool-permission posture only, no content |
+| `.qwen/` | `QWEN.md` | Documentation only |
+| `.kiro/` | 43 skills, 33 agents, 13 hooks, 22 steering docs, own installer | Skills, agents, hooks, rules-as-steering, MCP example |
+| `.trae/` | `install.sh`, `uninstall.sh`, READMEs | Nothing itself; its installer copies `commands`, `agents`, `skills`, `rules` from the repository root |
+| `.hermes/` | README | Nothing |
+| `.kimi/` | README | Nothing; the real install root is `./.kimi-code/` |
+| `.pi/` | `extensions/index.ts`, `extensions/hook-runtime.js`, README | Session-lifecycle hooks; skills, commands, and rules by reference through the `pi` key in `package.json` |
+| `.adal/` | README | Nothing |
+| `.openclaw/` | README | Nothing |
+| `.agents/` | 39 skills each with `SKILL.md` and `agents/openai.yaml`, `plugins/marketplace.json` | Skills, plugin marketplace metadata. Codex-facing packaging, and also the Antigravity install destination — see the Antigravity note below |
+| `.vscode/` | `settings.json` | Copilot instruction wiring only |
+| `.codebuddy/` | `install.sh`, `install.js`, `uninstall.sh`, `uninstall.js`, READMEs | Nothing itself; its installer copies `commands`, `agents`, `skills`, `rules` from the repository root |
+
+Two more directories are adapter-adjacent rather than adapters:
+
+- `scaffolds/` holds Cursor scaffolding only: `scaffolds/cursor/forge-agent-data.json`, `scaffolds/cursor/hooks.json`, and `scaffolds/cursor/rules/forge-agent-data-home.mdc`. Note that `scaffolds/cursor/hooks.json` is a one-hook file that points at `.cursor/scripts/hooks/cursor-session-env.js`, which is not in the checkout, and it is not the same file as the 16-hook `.cursor/hooks.json`. Treat it as a scaffold template, not as the live registration.
+- `plugins/` holds `plugins/README.md` and `plugins/forge/`, a legacy Codex thin-plugin artifact whose `plugin.json` points at `../../skills/` and `../../.mcp.json`.
+
+Neither is a harness in its own right, and neither appears in any of the three harness lists.
+
 ## Hook posture
 
 `hooks-runtime` resolves for five targets only: `claude`, `claude-project`, `cursor`, `opencode`, and `codebuddy`. The capability catalog records a hook mode per harness independently of that.
@@ -106,11 +140,13 @@ One inconsistency worth knowing: `hooks-runtime` does not resolve for the `codex
 
 The reference implementation. Everything installs, and the plugin path is managed by the harness itself. Hooks register through `hooks/hooks.json` across `PreToolUse`, `PreCompact`, `SessionStart`, `PostToolUse`, `PostToolUseFailure`, `Stop`, and `SessionEnd`. Rules land under `<root>/rules/forge`, skills land flat under `<root>/skills/`.
 
+The row above describes what the installer delivers, not what is committed here. The committed `.claude/` directory in this repository is small on purpose — three commands, two rules, and repository-local state files. It holds no `skills/`, `agents/`, or `hooks/` tree; those arrive at install time from the canonical `skills/`, `agents/`, and `hooks/` directories at the repository root.
+
 Missing: nothing structural. The MCP column is Partial only because `plugin.json` declares no servers — you supply your own.
 
 ### Cursor
 
-The most complete non-Claude adapter, and the only one besides Codex and Kimi with live MCP wiring. Ships 17 hook scripts under `.cursor/hooks/` registered in `.cursor/hooks.json`, spanning session start and end, shell execution before and after, file edits, MCP execution, prompt submission, subagent start and stop, tab reads and edits, pre-compact, and stop. Rules are flattened into `.cursor/rules/` and renamed `.md` to `.mdc`. Agents are flattened into `.cursor/agents/` with Cursor-safe filenames. The root `.mcp.json` is merged into `.cursor/mcp.json`.
+The most complete non-Claude adapter, and the only one besides Codex and Kimi with live MCP wiring. `.cursor/hooks/` holds 17 JavaScript files, 16 of which `.cursor/hooks.json` registers as commands across 15 events: session start and end, shell execution before and after, file edits, MCP execution before and after, file reads, prompt submission, subagent start and stop, tab reads and edits, pre-compact, and stop (`beforeShellExecution` registers two commands, which is why 16 commands cover 15 events). The seventeenth file, `.cursor/hooks/adapter.js`, is a shared library the others require and is not registered as a hook. Rules are flattened into `.cursor/rules/` (39 committed files) and renamed `.md` to `.mdc`. `.cursor/skills/` carries 11 project-local skill directories. Agents are flattened into `.cursor/agents/` with Cursor-safe filenames at install time. The root `.mcp.json` is merged into `.cursor/mcp.json`.
 
 Missing: `AGENTS.md` is deliberately skipped, because Cursor treats a nested `AGENTS.md` as directory context. If you run FORGE in Cursor alongside Claude Code, set `FORGE_AGENT_DATA_HOME` to a separate root.
 
@@ -154,7 +190,9 @@ Missing: `rules-core` and `commands-core` do not resolve for the `codex` target.
 
 ### OpenCode
 
-A full adapter package rather than a file copy. `.opencode/` contains `opencode.json`, 33 command files, 26 agent prompt files, 9 TypeScript tools, and a `forge-hooks.ts` plugin. Skills are read from the canonical `skills/` directory through `opencode.json` rather than copied. Instructions come from `.opencode/instructions/INSTRUCTIONS.md`.
+A full adapter package rather than a file copy. `.opencode/` contains `opencode.json`, 35 command files, 25 agent prompt files under `.opencode/prompts/agents/`, 9 TypeScript tools, and a `forge-hooks.ts` plugin. Skills are read from the canonical `skills/` directory through `opencode.json` rather than copied. Instructions come from `.opencode/instructions/INSTRUCTIONS.md`.
+
+Agents reach OpenCode through that adapter package, not through the install manifest: `agents-core` does not resolve for the `opencode` target. The Agents column is Full because the harness does receive them, but they come from `.opencode/`, so a partial or hand-rolled install will not have them.
 
 The install refuses to run until the plugin payload is built. You will see this exact error otherwise:
 
@@ -177,7 +215,11 @@ Missing: the language, framework, and capability skill modules do not resolve fo
 
 ### Hermes, OpenClaw, AdaL CLI
 
-The three home- and project-scoped instruction harnesses behave identically at install time: rules, agents, commands, platform configs, the workflow-quality skill set, and `skills/unified-memory`. Hermes and OpenClaw write to `~/.hermes` and `~/.openclaw`; AdaL writes to `./.adal`. The Hermes installer explicitly does not touch `config.yaml` or `.env`.
+The three home- and project-scoped instruction harnesses receive nearly the same set at install time: rules, agents, commands, platform configs, the workflow-quality skill set, and `skills/unified-memory`. Hermes and OpenClaw write to `~/.hermes` and `~/.openclaw`; AdaL writes to `./.adal`. The Hermes installer explicitly does not touch `config.yaml` or `.env`.
+
+One difference: resolving the `full` profile gives Hermes and OpenClaw seven modules and AdaL six. AdaL is the only one of the three that does not resolve `nasiko-control-plane`. Kimi Code resolves the same seven as Hermes and OpenClaw.
+
+The committed `.hermes/`, `.openclaw/`, and `.adal/` directories each contain a README and nothing else. They document where the installer writes; they are not adapter payloads.
 
 Missing for all three: hooks, the language and framework skill modules, live MCP merge.
 
@@ -191,7 +233,7 @@ Missing: rules, agents, commands, hooks, and the entire skill catalog beyond uni
 
 ### Kiro
 
-Outside the install system entirely. `kiro` is not in `SUPPORTED_INSTALL_TARGETS` and has no adapter, but `.kiro/` is the second-richest committed surface in the repository: 43 skill directories, 37 agents in paired `.md` and `.json` form, 13 `*.kiro.hook` files, and 22 steering documents that play the role rules play elsewhere. Install with `.kiro/install.sh [dir|~]`, which copies `.kiro/` into a project or into `~/.kiro/`.
+Outside the install system entirely. `kiro` is not in `SUPPORTED_INSTALL_TARGETS` and has no adapter, but `.kiro/` is the second-richest committed surface in the repository: 43 skill directories, 33 agents in paired `.md` and `.json` form, 13 `*.kiro.hook` files, and 22 steering documents that play the role rules play elsewhere. Install with `.kiro/install.sh [dir|~]`, which copies `.kiro/` into a project or into `~/.kiro/`.
 
 Missing: no commands. MCP exists only as `.kiro/settings/mcp.json.example`. No FORGE memory surface. No uninstaller — remove the copied directories by hand. Because it is outside install-state, `forge doctor`, `forge repair`, and `forge uninstall` do not see it.
 

@@ -76,23 +76,6 @@ Este repositorio contiene solo el código. Las guías explican todo.
 
 <table>
 <tr>
-<td width="33%">
-<a href="/status/2012378465664745795">
-<img src="../../assets/images/guides/shorthand-guide.png" alt="La Guía Resumida de FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2014040193557471352">
-<img src="../../assets/images/guides/longform-guide.png" alt="La Guía Extensa de FORGE" />
-</a>
-</td>
-<td width="33%">
-<a href="/status/2033263813387223421">
-<img src="../../assets/images/security/security-guide-header.png" alt="La Guía de Seguridad Agentiva" />
-</a>
-</td>
-</tr>
-<tr>
 <td align="center"><b>Guía Resumida</b><br/>Configuración, fundamentos, filosofía. <b>Empieza aquí.</b></td>
 <td align="center"><b>Guía Extensa</b><br/>Optimización de tokens, persistencia de memoria, evaluaciones, paralelización.</td>
 <td align="center"><b>Guía de Seguridad</b><br/>Vectores de ataque, sandboxing, sanitización, CVEs, Forge Shield.</td>

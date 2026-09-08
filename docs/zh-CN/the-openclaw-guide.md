@@ -465,7 +465,3 @@ OpenClaw 可以演变成这样。基础已经存在。社区积极参与。团�
 > * 第 2 部分：[关于 Claude Code 的一切长篇指南](the-longform-guide.md) — 高级模式与工作流程
 > * 第 3 部分：OpenClaw 的隐藏危险（本文） — 来自智能体前沿的安全教训
 > * 第 4 部分：[保护你的智能体简明指南](the-security-guide.md) — 实用的智能体安全
-
-***
-
-*the FORGE maintainers () 构建 AI 编程工具并撰写关于 AI 基础设施安全的文章。他的 forge 仓库在 GitHub 上拥有 5 万多个星标。他创建了 Forge Shield 并凭借构建 a hackathon project 赢得了 Anthropic x Forum Ventures 黑客松。*

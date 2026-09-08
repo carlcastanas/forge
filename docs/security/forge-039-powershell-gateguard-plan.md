@@ -245,7 +245,7 @@ enforcement, canonical evidence, and workflow outcomes.
 Out of scope are a general PowerShell parser, exact interpretation of arbitrary
 runtime-generated payloads or reflection, broader Bash classifier refactoring,
 public API changes, issue #2921 glob semantics, issue #2886 heredoc redesign,
-ExecutionCapsule, sandbox tiers, Feature Fleet, an external compute provider, and Nasiko. Unresolved
+ExecutionCapsule, sandbox tiers, Feature Fleet, external compute, and Nasiko. Unresolved
 execution primitives fail closed instead of being interpreted. Current-main
 behavior for #2886 remains covered and unchanged.
 

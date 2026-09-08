@@ -1,13 +1,6 @@
 # Claude Code'un Her Şeyine Dair Uzun Kılavuz
 
-![Header: The Longform Guide to FORGE](../assets/images/longform/01-header.png)
-
----
-
 > **Ön Koşul**: Bu kılavuz [Claude Code'un Her Şeyine Dair Kısa Kılavuz](./the-shortform-guide.md) üzerine kuruludur. Skill'leri, hook'ları, subagent'ları, MCP'leri ve plugin'leri henüz kurmadıysanız önce onu okuyun.
-
-![Reference to Shorthand Guide](../assets/images/longform/02-shortform-reference.png)
-*Kısa Kılavuz - önce onu okuyun*
 
 Kısa kılavuzda, temel kurulumu ele aldım: etkili bir Claude Code iş akışının omurgasını oluşturan skill'ler ve command'lar, hook'lar, subagent'lar, MCP'ler, plugin'ler ve yapılandırma desenleri. Bu kurulum kılavuzu ve temel altyapıydı.
 
@@ -181,10 +174,7 @@ Kod değişiklikleri için ana sohbet, kod tabanı ve mevcut durumu hakkında so
 
 **Keyfi Terminal Sayıları Üzerine:**
 
-![Boris on Parallel Terminals](../assets/images/longform/07-boris-parallel.png)
-*Boris (Anthropic) birden fazla Claude instance'ı çalıştırma üzerine*
-
-Boris'in paralelleştirme hakkında ipuçları var. 5 Claude instance'ını yerel olarak ve 5'ini upstream çalıştırmak gibi şeyler önerdi. Keyfi terminal miktarları belirlemeye karşı tavsiyede bulunurum. Bir terminalin eklenmesi gerçek bir zorunluluktan olmalıdır.
+Paralelleştirme konusunda sabit sayılar öneren tavsiyeler dolaşıyor; örneğin 5 Claude instance'ını yerel, 5'ini upstream çalıştırmak gibi. Keyfi terminal miktarları belirlemeye karşı tavsiyede bulunurum. Bir terminalin eklenmesi gerçek bir zorunluluktan olmalıdır.
 
 Hedefiniz şu olmalı: **minimum uygulanabilir paralelleştirme miktarıyla ne kadar iş yapabilirsiniz.**
 
@@ -202,8 +192,7 @@ cd ../project-feature-a && claude
 
 Instance'larınızı ölçeklendirmeye başlıyorsanız VE birbirleriyle örtüşen kod üzerinde çalışan birden fazla Claude instance'ınız varsa, git worktree'leri kullanmanız ve her biri için çok iyi tanımlanmış bir plana sahip olmanız zorunludur. Tüm sohbetlerinizi adlandırmak için `/rename <name here>` kullanın.
 
-![Two Terminal Setup](../assets/images/longform/08-two-terminals.png)
-*Başlangıç Kurulumu: Kodlama için Sol Terminal, Sorular için Sağ Terminal - /rename ve /fork kullanın*
+Önerilen başlangıç kurulumu: kodlama için sol terminal, sorular için sağ terminal — `/rename` ve `/fork` kullanın.
 
 **Cascade Yöntemi:**
 
@@ -309,13 +298,6 @@ alias gb='github'
 alias co='code'
 alias q='cd ~/Desktop/projects'
 ```
-
----
-
-## Kilometre Taşı
-
-![25k+ GitHub Stars](../assets/images/longform/09-25k-stars.png)
-*Bir haftadan kısa sürede 25.000+ GitHub yıldızı*
 
 ---
 

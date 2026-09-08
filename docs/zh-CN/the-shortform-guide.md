@@ -1,10 +1,6 @@
 # Claude Code 简明指南
 
-![标题：Anthropic 黑客马拉松获胜者 - Claude Code 技巧与窍门](../../assets/images/shortform/00-header.png)
-
-***
-
-**自 2 月实验性推出以来，我一直是 Claude Code 的忠实用户，并凭借 a hackathon project 与  一起赢得了 Anthropic x Forum Ventures 的黑客马拉松——完全使用 Claude Code。**
+**自 2 月实验性推出以来，Claude Code 一直被日常使用；本指南中的一切都完全基于 Claude Code 构建。**
 
 经过 10 个月的日常使用，以下是我的完整设置：技能、钩子、子代理、MCP、插件以及实际有效的方法。
 
@@ -15,9 +11,6 @@
 技能就像规则，受限于特定的范围和流程。当你需要执行特定工作流时，它们是提示词的简写。
 
 在使用 Opus 4.5 长时间编码后，你想清理死代码和松散的 .md 文件吗？运行 `/refactor-clean`。需要测试吗？`/tdd`、`/e2e`、`/test-coverage`。技能也可以包含代码地图——一种让 Claude 快速浏览你的代码库而无需消耗上下文进行探索的方式。
-
-![显示链式命令的终端](../../assets/images/shortform/02-chaining-commands.jpeg)
-*将命令链接在一起*
 
 命令是通过斜杠命令执行的技能。它们有重叠但存储方式不同：
 
@@ -364,9 +357,6 @@ mgrep@Mixedbread-Grep                  # 更好的搜索
 
 显示用户、目录、带脏标记的 git 分支、剩余上下文百分比、模型、时间和待办事项计数：
 
-![自定义状态行](../../assets/images/shortform/11-statusline.jpeg)
-*我的 Mac 根目录下的状态行示例*
-
 ```
 affoon:~ ctx:65% Opus 4.5 19:52
 ▌▌ 计划模式开启（按 shift+tab 循环切换）
@@ -426,7 +416,3 @@ affoon:~ ctx:65% Opus 4.5 19:52
 ***
 
 **注意：** 这是细节的一个子集。关于高级模式，请参阅 [长篇指南](the-longform-guide.md)。
-
-***
-
-*在纽约与  一起构建 a hackathon project 赢得了 Anthropic x Forum Ventures 黑客马拉松*

@@ -30,7 +30,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-000000.svg" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-000000.svg" alt="Node 18 or newer" />
-  <img src="https://img.shields.io/badge/harnesses-13-000000.svg" alt="13 harnesses" />
+  <img src="https://img.shields.io/badge/install%20targets-15-000000.svg" alt="15 install targets" />
 </p>
 
 ---
@@ -51,9 +51,10 @@ plan -> test -> implement -> review -> verify -> remember -> improve
 > Optimize the context window. Persist everything else.
 
 FORGE is MIT-licensed. It targets Claude Code first, has a supported Codex path, and
-ships capability-limited adapters for Cursor, OpenCode, Gemini, Zed, Copilot,
-Antigravity, Qwen, and others. Read the [harness matrix](docs/HARNESS-MATRIX.md) before
-assuming parity.
+ships capability-limited adapters for Cursor, OpenCode, Zed, Qwen Code, CodeBuddy, JoyCode,
+Antigravity, Kimi Code, Hermes, OpenClaw, AdaL, Gemini CLI, and Copilot. Read the
+[harness matrix](docs/HARNESS-MATRIX.md) before assuming parity — Cursor is close to Claude
+Code, Gemini CLI and Copilot are close to nothing.
 
 Installing it gives you access to 68 agents, 318 skills, and 94 legacy command shims, plus hooks,
 rules, memory, continuous learning, and Forge Shield security scanning.
@@ -301,7 +302,8 @@ cd forge
 ```
 
 Supported targets are `cursor`, `gemini`, `opencode`, `zed`, `antigravity`, `qwen`,
-`kimi`, `codebuddy`, `joycode`, `hermes`, and `openclaw`. OpenCode needs its plugin payload
+`kimi`, `codebuddy`, `joycode`, `hermes`, `openclaw`, and `adal`, alongside `claude` and
+`claude-project` — fifteen in all. OpenCode needs its plugin payload
 built first: `npm install && npm run build:opencode`, then
 `./install.sh --profile full --target opencode`.
 
@@ -787,19 +789,33 @@ Depth: [guides/the-security-guide.md](guides/the-security-guide.md),
 Support is uneven and the differences are load-bearing, not cosmetic. Full matrix with
 per-harness notes in [docs/HARNESS-MATRIX.md](docs/HARNESS-MATRIX.md).
 
-| Harness      | Skills | Agents | Commands | Hooks | Rules | Memory |
-| ------------ | :----: | :----: | :------: | :---: | :---: | :----: |
-| Claude Code  | Full   | Full   | Full     | Full  | Full  | Full   |
-| Codex        | Full   | Full   | Partial  | Partial | Full | Partial |
-| OpenCode     | Full   | Partial | Partial | Partial | Full | Partial |
-| Cursor       | Partial | Partial | None    | None  | Full  | None   |
-| Gemini       | Partial | Partial | None    | None  | Full  | None   |
-| Zed          | Partial | None   | None     | None  | Full  | None   |
-| Copilot      | Partial | None   | None     | None  | Full  | None   |
-| Others       | Varies | Varies | Varies   | Varies | Full | Varies |
+| Harness      | Skills  | Agents  | Commands | Hooks   | Rules   | Memory  | MCP     |
+| ------------ | :-----: | :-----: | :------: | :-----: | :-----: | :-----: | :-----: |
+| Claude Code  | Full    | Full    | Full     | Full    | Full    | Full    | Partial |
+| Cursor       | Full    | Full    | Full     | Full    | Full    | Full    | Full    |
+| CodeBuddy    | Full    | Full    | Full     | Full    | Full    | Full    | Partial |
+| JoyCode      | Full    | Full    | Full     | None    | Full    | Full    | Partial |
+| Zed          | Full    | Full    | Full     | None    | Full    | Full    | Partial |
+| Qwen Code    | Full    | Full    | Full     | None    | Full    | Full    | Partial |
+| Antigravity  | Full    | Full    | Full     | None    | Full    | Full    | Partial |
+| Codex        | Full    | Full    | None     | Partial | None    | Full    | Full    |
+| OpenCode     | Full    | Full    | Full     | Partial | None    | Full    | Partial |
+| Kimi Code    | Partial | Full    | Full     | None    | Full    | Full    | Full    |
+| Hermes       | Partial | Full    | Full     | None    | Full    | Full    | Partial |
+| OpenClaw     | Partial | Full    | Full     | None    | Full    | Full    | Partial |
+| AdaL CLI     | Partial | Full    | Full     | None    | Full    | Full    | Partial |
+| Gemini CLI   | Partial | None    | None     | None    | None    | Full    | Partial |
+| Kiro         | Partial | Full    | None     | Partial | Full    | None    | Partial |
+| Trae         | Full    | Full    | Full     | None    | Full    | unverified | None |
+| Pi           | Full    | unverified | Full  | Partial | Partial | unverified | N-A  |
+| Copilot      | None    | None    | Partial  | None    | Partial | None    | None    |
 
 Claude Code is the reference implementation. Anywhere else, verify a behaviour before you
-depend on it.
+depend on it. Kiro, Trae, Pi, and Copilot sit outside the install system: Kiro and Trae ship
+their own shell installers, Pi loads this checkout in place, and Copilot is committed files
+only. The four session and reference harnesses recorded in the adapter compliance
+scorecard — dmux, Orca, Superset, and Ghast — have no content adapter at all; see
+[docs/HARNESS-MATRIX.md](docs/HARNESS-MATRIX.md) for those rows and for what each mark means.
 
 ## Documentation
 

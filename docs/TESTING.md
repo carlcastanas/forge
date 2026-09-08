@@ -91,7 +91,6 @@ if a run is interrupted mid-case the file is left in the fixture state and stays
 you see an isolated failure in a test that passes alone, check `git status` first and restore
 with `git checkout -- <path>` before debugging anything else.
 
-
 ## Coverage
 
 ```bash

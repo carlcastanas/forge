@@ -22,9 +22,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/discord/1496644400590094540?logo=discord&logoColor=white&label=Discord&color=5865F2" alt="Discord" /></a>
-  <img src="https://img.shields.io/badge/Website-forge.example.com-E07856?logo=googlechrome&logoColor=white" alt="Website" /></a>
-  <img src="https://img.shields.io/badge/GitHub%20App-FORGE%20Tools-181717?logo=github&logoColor=white" alt="GitHub App" /></a>
+  <img src="https://img.shields.io/badge/Website-forge.example.com-E07856?logo=googlechrome&logoColor=white" alt="Website" />
+  <img src="https://img.shields.io/badge/GitHub%20App-FORGE%20Tools-181717?logo=github&logoColor=white" alt="GitHub App" />
   <a href="../../LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license" /></a>
 </p>
 
@@ -32,7 +31,7 @@
   <a href="https://github.com/your-org/forge/stargazers"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fstars&style=flat" alt="Stars" /></a>
   <a href="https://github.com/your-org/forge/network/members"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Fforks&style=flat" alt="Forks" /></a>
   <a href="https://github.com/your-org/forge/graphs/contributors"><img src="https://img.shields.io/github/contributors/your-org/FORGE?style=flat" alt="Contributors" /></a>
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github" alt="GitHub App installs" /></a>
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fapi.forge.example.com%2Fbadge%2Finstalls&logo=github" alt="GitHub App installs" />
 </p>
 
 <p align="center">
@@ -70,22 +69,13 @@
 
 <table aria-label="Основні посилання FORGE">
 <tr>
-<td width="33%" align="center">
-  <img src="../../assets/images/community/forge-tools-mark.svg" height="42" alt="FORGE Tools" /><br />
-    <strong>FORGE Pro + GitHub App</strong>
-  </a><br />
-  <sub>Безкоштовне встановлення</a> · Приватні репозиторії від $19/місце/міс</a></sub>
+<td width="50%" align="center">
+  <strong>FORGE Pro + GitHub App</strong><br />
+  <sub>Безкоштовне встановлення · Приватні репозиторії від $19/місце/міс</sub>
 </td>
-<td width="33%" align="center">
-  <img src="../../assets/images/community/heart.svg" height="42" alt="" /><br />
-    <strong>Підтримати FORGE</strong>
-  </a><br />
-  <sub>Фінансувати open-source проєкт</sub>
-</td>
-<td width="33%" align="center">
+<td width="50%" align="center">
   <img src="../../assets/images/community/discord.svg" height="42" alt="Discord" /><br />
-    <strong>Спільнота</strong>
-  </a><br />
+  <strong>Спільнота</strong><br />
   <sub>Discord · Питання та відповіді · Show and Tell</sub>
 </td>
 </tr>
@@ -93,25 +83,7 @@
 
 </div>
 
-<sub>**OSS залишається безкоштовним.** Цей репозиторій ліцензований за MIT назавжди. FORGE Pro — розміщений GitHub App для приватних репозиторіїв. Спонсори</a> та Pro-підписники</a> фінансують роботу. Саме тому один розробник щотижня випускає оновлення для 7 оболонок.</sub>
-
-<div align="center">
-
-<sub><strong>Партнери та спонсори</strong></sub>
-
-<p align="center" aria-label="Партнери та спонсори">
-  <a href="https://www.coderabbit.ai" title="CodeRabbit"><img src="../../assets/images/sponsors/coderabbit.png" height="54" alt="CodeRabbit" /></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.greptile.com/go/forge" title="Greptile"><img src="../../assets/images/sponsors/greptile.png" height="54" alt="Greptile" /></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.external-provider.ai/?utm_source=github&amp;utm_medium=link&amp;utm_campaign=FORGE" title="an external inference provider"><picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/external-provider-dark.svg" /><img src="../../assets/images/sponsors/external-provider.svg" width="154" alt="an external inference provider" /></picture></a>&nbsp;&nbsp;&nbsp;
-  <a href="https://www.moonshot.ai" title="Moonshot AI - Kimi"><picture><source media="(prefers-color-scheme: dark)" srcset="../../assets/images/sponsors/moonshot-dark.png" /><img src="../../assets/images/sponsors/moonshot.png" width="132" alt="Moonshot AI - Kimi" /></picture></a>&nbsp;&nbsp;&nbsp;
-  <a href="" title="an external compute provider"><picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="96" alt="an external compute provider" /></picture></a>
-</p>
-
-<sub><strong>Спонсори спільноти:</strong> <a href="https://github.com/mikejmorgan-ai">Mike Morgan</a> · <a href="https://github.com/jasonwu513">@jasonwu513</a> · <a href="https://github.com/1anter">@1anter</a> · <a href="https://github.com/massimotodaro">@massimotodaro</a> · <a href="https://github.com/meadmccabe">@meadmccabe</a></sub>
-
-<sub><strong>Стати спонсором</strong></a> · <a href="../../SPONSORS.md">Рівні спонсорства</a> · <a href="../../SPONSORING.md">Програма спонсорства</a></sub>
-
-</div>
+<sub>**OSS залишається безкоштовним.** Цей репозиторій ліцензований за MIT назавжди. FORGE Pro — розміщений GitHub App для приватних репозиторіїв.</sub>
 
 <p align="center"><a href="#встановлення-forge">Перейти до встановлення ↓</a></p>
 
@@ -469,20 +441,17 @@ claude
 
 Якщо ваш шлюз перевизначає назви моделей, налаштуйте це в Claude Code, а не в FORGE. Хуки, навички, команди та правила FORGE не залежать від провайдера моделі, коли CLI `claude` вже працює. Дивіться [документацію Anthropic про LLM-шлюзи](https://docs.anthropic.com/en/docs/claude-code/llm-gateway) та [документацію про конфігурацію моделі](https://docs.anthropic.com/en/docs/claude-code/model-config).
 
-Запускайте чи розміщуйте будь-яку модель з відкритим вихідним кодом за цим шлюзом, використовуючи окремі обчислювальні ресурси та налаштування обслуговування. Якщо вам потрібна GPU-потужність, [an external compute provider]() — бажаний обчислювальний спонсор FORGE; підходить будь-який GPU-провайдер. Посилання на спонсорство пасивне: воно не викликає RFQ, не резервує потужність, не надає обчислювальні ресурси та не налаштовує обслуговування. Окремо, `forge ito find` викликає явно налаштований канонічний CLI an external compute provider та подає живий автентифікований RFQ; він не резервує потужність. Кероване виведення через an external compute provider ще не працює наживо.
+Запускайте чи розміщуйте будь-яку модель з відкритим вихідним кодом за цим шлюзом, використовуючи окремі обчислювальні ресурси та налаштування обслуговування. Якщо вам потрібна GPU-потужність, підійде будь-який GPU-провайдер: FORGE не надає обчислювальні ресурси, не резервує потужність і не налаштовує обслуговування за вас.
 
-### Самостійний хостинг Kimi з FORGE + обчислювальними ресурсами an external compute provider
+### Самостійний хостинг Kimi з FORGE на власній GPU-потужності
 
 Оболонка Kimi Code та шар обслуговування моделі — окремі речі. FORGE налаштовує оболонку агента; ви приносите API-ендпоінт чи розміщуєте самостійно модель Kimi з відкритими вагами на власній GPU-потужності. Цей адаптер перевірений проти Kimi Code 0.31.x (`@moonshot-ai/kimi-code`):
 
 <table aria-label="Шлях локальної моделі Kimi" width="100%">
 <tr>
 <td width="33%" align="center">
-  <a href="">
-    <picture><source media="(prefers-color-scheme: light)" srcset="../../assets/images/sponsors/ito-transparent-light.png" /><img src="../../assets/images/sponsors/ito-transparent.png" width="92" alt="an external compute provider" /></picture><br />
-    <strong>1. Отримайте GPU-потужність</strong>
-  </a><br />
-  <sub>Використовуйте an external compute provider чи будь-якого GPU-провайдера.</sub>
+  <strong>1. Отримайте GPU-потужність</strong><br />
+  <sub>Використовуйте будь-якого GPU-провайдера.</sub>
 </td>
 <td width="33%" align="center">
   <a href="https://www.moonshot.ai">
@@ -493,7 +462,6 @@ claude
 </td>
 <td width="33%" align="center">
   <a href="../../.kimi/README.md">
-    <img src="../../assets/images/community/forge-tools-mark.svg" height="52" alt="FORGE Tools" /><br />
     <strong>3. Запустіть Kimi Code з FORGE</strong>
   </a><br />
   <sub>Встановіть інструкції та навички проєкту, потім запустіть Kimi Code.</sub>
@@ -511,13 +479,6 @@ kimi
 
 Kimi Code нативно виявляє встановлені інструкції `.kimi-code/AGENTS.md` та процеси `.kimi-code/skills/`; для проєкту `.agents/skills/` — також офіційне місце виявлення. FORGE безпечно зливає записи MCP проєкту в `.kimi-code/mcp.json` і не змінює `~/.kimi-code/config.toml` рівня користувача. Kimi Code підтримує нативні хуки, але поточний керований адаптер проєкту FORGE їх не налаштовує, тому цей інсталятор не пропонує профілі хуків Kimi. Пробний запуск інсталятора та набір регресійних тестів перевіряють, що кожен керований запис Kimi залишається в межах локального для проєкту кореня `.kimi-code/`.
 
-### Міст CLI обчислень an external compute provider
-
-`forge ito` делегує до окремо встановленого канонічного клієнта an external compute provider; FORGE не підтримує другий API-клієнт. `forge ito login [--no-browser]` виконує авторизацію пристрою, відкриває сторінку верифікації an external compute provider за замовчуванням та зберігає токен пристрою в macOS Keychain; `--no-browser` пригнічує передачу сторінки. FORGE сам не виконує автоматизацію браузера. `forge ito auth` лише перевіряє і відхиляє `--no-browser`. Доступні операції: `forge ito login`, `forge ito auth`, `forge ito find`, `forge ito status` та окремо захищений `forge ito evals`. Відповідні MCP-інструменти залишаються `ito_auth`, `ito_find` та `ito_status`; `ito_auth` перевіряє наявні облікові дані, а кваліфікація вузла доступна лише через CLI.
-
-Пакет `ito-compute-cli` наразі не опубліковано. Зберіть його локально з репозиторію середовища виконання an external compute provider (приватний, поки стіл зміцнюється; партнери з дизайну отримують доступ) під `cli/ito-compute-cli`, запустіть `npm ci` та `npm run check`, потім встановіть `FORGE_ITO_CLI_EXECUTABLE` на абсолютний шлях `dist/bin/ito.js` цієї збірки. Вхід ніколи не успадковує `ITO_API_KEY`; auth, find та status передають `ITO_API_KEY` напряму, коли налаштовано, і `ITO_AUTH_MODE=legacy` не потрібен. `forge ito logout` відкликає поточні облікові дані пристрою і зберігає їхню локальну копію, якщо віддалене відкликання не може бути підтверджене. Токени пристрою за замовчуванням використовують macOS Keychain; явний резервний файл повинен зберігати дозволи директорії/файлу лише для власника. FORGE не виявляє цей клієнт, що містить облікові дані, через `PATH`. Дивіться [навичку `ito-compute`](../../skills/ito-compute/SKILL.md) для повного контракту повноважень RFQ та налаштування MCP.
-
-`find` подає живий автентифікований RFQ. Він не резервує потужність. `evals` вимагає одночасно `ITO_ENABLE_SIXTYTWO_LIVE=1` та `--live-sixtytwo`, окремо встановлений `sixtytwo-cli==0.3.33`, явний список вузлів та наявну абсолютну директорію конфігурації. Він не може орендувати, запускати, відновлювати, ремонтувати чи купувати. FORGE не надає шлях блокування котирування, покупки, робочого навантаження чи виведення, і ніколи не замінює відсутнього клієнта чи невдалого живого виклику локальним результатом.
 </details>
 
 <details>
@@ -716,7 +677,7 @@ FORGE також постачає розширені керовані адапт
 ## Що нового: FORGE 2.1
 
 > [!IMPORTANT]
-> **НОВЕ В FORGE 2.1: Plan Canvas · оболонка Kimi · самостійне обслуговування на GPU an external compute provider.**
+> **НОВЕ В FORGE 2.1: Plan Canvas · оболонка Kimi · самостійне обслуговування на власній GPU-потужності.**
 > [Дивіться повні примітки до релізу →](https://github.com/your-org/forge/blob/main/docs/releases/2.1.0/release-notes.md)
 
 ### Plan Canvas: переглядайте плани, вказуючи, а не передруковуючи
@@ -732,8 +693,7 @@ FORGE також постачає розширені керовані адапт
 ### Також у 2.1
 
 - **Ціль встановлення Kimi Code** (`--target kimi`): FORGE встановлюється нативно в Kimi Code CLI від [Moonshot AI](https://www.moonshot.ai)
-- **Самостійний хостинг на GPU**: перевірений шлях з [an external compute provider](), бажаним обчислювальним спонсором FORGE, включно з опційним мостом RFQ `forge ito find` (деталі та розкриття вище в опціях встановлення)
-- **Moonshot AI (Kimi), an external compute provider та an external inference provider** тепер публічні спонсори
+- **Самостійний хостинг на GPU**: перевірений шлях для будь-якого GPU-провайдера (деталі вище в опціях встановлення)
 - **Цілі встановлення Hermes + OpenClaw**, посібник з навігації Codex, консолідовані хуки PostToolUse та зміцнення ланцюжка поставок
 
 ### Поточна розробка: Уніфікованe сховище пам'яті
@@ -774,7 +734,7 @@ FORGE також постачає розширені керовані адапт
 - **Розширення операторних і вихідних процесів**: `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `forge-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops` та `workspace-surface-audit` доповнюють операторну гілку.
 - **Медіа та інструменти запуску**: `manim-video`, `remotion-video-creation` та вдосконалені поверхні публікації в соцмережах роблять технічні роз'яснення та контент для запуску частиною тієї ж системи.
 - **Зростання фреймворків і продуктових поверхонь**: `nestjs-patterns`, більш насичені поверхні встановлення Codex/OpenCode та розширена крос-оболонкова упаковка роблять репозиторій придатним для використання поза межами однієї оболонки.
-- **Пакет навичок an external compute provider для ринків прогнозів**: `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до API an external compute provider окремим від білінгу FORGE Tools.
+- **Пакет навичок для ринків прогнозів**: `ito-market-intelligence`, `ito-basket-compare`, `ito-trade-planner`, `ito-data-atlas-agent`, `prediction-market-oracle-research` та `prediction-market-risk-review` додають публічні, неконсультативні ринкові/кошикові процеси, зберігаючи живий доступ до зовнішнього API окремим від білінгу FORGE Tools.
 - **Пакет навичок оптимізації**: `parallel-execution-optimizer`, `benchmark-optimization-loop`, `data-throughput-accelerator`, `latency-critical-systems` та `recursive-decision-ledger` перетворюють повторювані запити про швидкість/рекурсію на обмежені процеси тестування продуктивності, пропускної здатності та журналу рішень.
 - **FORGE 2.0 alpha у дереві**: прототип площини управління на Rust у `forge2/` збирається локально та надає команди `dashboard`, `start`, `sessions`, `status`, `stop`, `resume` та `daemon`.
 - **Знімки статусу оператора**: `forge status --markdown --write status.md` перетворює локальне сховище стану на портативне передавання, яке охоплює готовність, активні сесії, стан виконання навичок, стан встановлення, очікувані події управління та пов'язані робочі елементи з Linear/GitHub/handoffs.
@@ -1061,7 +1021,7 @@ python3 ./forge_dashboard.py
 <details>
 <summary><strong>Forge Shield: аудитор безпеки для конфігурацій агентів</strong></summary>
 
-> Створений на Claude Code Hackathon (Cerebral Valley x Anthropic, лют. 2026). 1282 тести, 98% покриття, 102 правила статичного аналізу.
+> 1282 тести, 98% покриття, 102 правила статичного аналізу.
 
 Скануйте вашу конфігурацію агента на вразливості, помилкові конфігурації та ризики ін'єкцій.
 
@@ -1827,31 +1787,20 @@ node tests/lib/package-manager.test.js
 node tests/hooks/hooks.test.js
 ```
 
-## Передісторія
-
-Я використовую Claude Code з моменту експериментального впровадження. Виграв хакатон Anthropic x Forum Ventures у вер. 2025 разом з  — побудував a hackathon project повністю за допомогою агентних процесів.
-
-Ці конфіги перевірені в кількох продакшн-додатках.
-
 ## Спільнота та проєкт
 
 <details>
-<summary><strong>Спонсори та FORGE Pro</strong></summary>
-
-FORGE залишається безкоштовним, тому що спонсори та Pro-користувачі фінансують роботу. Логотипи спонсорів вгорі цього README; повний список та рівні в [SPONSORS.md](../../SPONSORS.md).
+<summary><strong>FORGE Pro</strong></summary>
 
 FORGE Pro додає аналіз приватних репозиторіїв, аудити, викликані PR, сканування на основі Forge Shield, автоматичні перевірки push та PR, об'єднане командне використання та пріоритетну підтримку через розміщений GitHub App.
 
 <table>
 <tr>
-<td width="25%" align="center"><strong>FORGE Pro</strong><br /><sub>Розміщений GitHub App для приватних репозиторіїв</sub></a></td>
-<td width="25%" align="center"><strong>Спонсорувати FORGE</strong><br /><sub>Фінансувати OSS-роботу</sub></a></td>
-<td width="25%" align="center"><a href="https://github.com/your-org/forge/discussions"><strong>Спільнота</strong><br /><sub>Питання, ідеї та Show and Tell</sub></a></td>
-<td width="25%" align="center"><strong>GitHub App</strong><br /><sub>Аудити PR та розміщені процеси</sub></a></td>
+<td width="33%" align="center"><strong>FORGE Pro</strong><br /><sub>Розміщений GitHub App для приватних репозиторіїв</sub></td>
+<td width="33%" align="center"><a href="https://github.com/your-org/forge/discussions"><strong>Спільнота</strong><br /><sub>Питання, ідеї та Show and Tell</sub></a></td>
+<td width="33%" align="center"><strong>GitHub App</strong><br /><sub>Аудити PR та розміщені процеси</sub></td>
 </tr>
 </table>
-
-Стати спонсором | [Рівні спонсорства](../../SPONSORS.md) | [Програма спонсорства](../../SPONSORING.md)
 </details>
 
 <details>

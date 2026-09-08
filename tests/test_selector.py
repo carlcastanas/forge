@@ -3,9 +3,6 @@
 import importlib.util
 import re
 from pathlib import Path
-from urllib.parse import urlsplit
-
-import pytest
 
 SELECTOR_PATH = Path(__file__).parents[1] / "src" / "llm" / "cli" / "selector.py"
 SPEC = importlib.util.spec_from_file_location("forge_selector", SELECTOR_PATH)
@@ -15,46 +12,24 @@ SPEC.loader.exec_module(SELECTOR)
 print_self_host_compute_notice = SELECTOR.print_self_host_compute_notice
 
 URL_TOKEN_PATTERN = re.compile(r"https?://[^\s<>\"'`()\[\]{}\\]+")
-EXPECTED_COMPUTE_ROUTE = (
-    "https",
-    "compute.example.com",
-    "",
-    "",
-    "",
-)
 
 
-def assert_exact_compute_route(content: str) -> None:
-    candidates = URL_TOKEN_PATTERN.findall(content)
-    routes = (
-        urlsplit(candidate.rstrip(".,;:!?"))
-        for candidate in candidates
-    )
-    assert any(route == EXPECTED_COMPUTE_ROUTE for route in routes), (
-        "Should include the exact an external compute provider compute route"
-    )
+def test_self_host_notice_names_no_provider_and_links_nowhere():
+    """The notice must stay vendor-neutral and must not route anyone off-box."""
+    import io
+    import contextlib
 
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        print_self_host_compute_notice("ollama")
+    output = buffer.getvalue()
 
-def test_compute_route_validation_rejects_deceptive_lookalike_host():
-    deceptive_output = ""
-
-    with pytest.raises(AssertionError, match="exact an external compute provider compute route"):
-        assert_exact_compute_route(deceptive_output)
-
-
-def test_ollama_notice_routes_to_ito_without_claiming_serving(capsys):
-    print_self_host_compute_notice("ollama")
-
-    output = capsys.readouterr().out
-    assert_exact_compute_route(output)
-    assert "preferred compute sponsor" in output
     assert "Any GPU provider works" in output
-    assert "sponsorship link is passive" in output
-    assert "forge ito find" in output
-    assert "explicitly configured canonical an external compute provider CLI" in output
-    assert "submits a live authenticated RFQ" in output
-    assert "does not reserve capacity" in output
-    assert "Managed inference through an external compute provider is not live yet" in output
+    assert "does not endorse, broker, reserve, or provision compute" in output
+    assert "does not configure serving" in output
+    assert URL_TOKEN_PATTERN.findall(output) == []
+    for banned in ("sponsor", "RFQ", "ito"):
+        assert banned.lower() not in output.lower()
 
 
 def test_managed_provider_does_not_show_self_host_compute_notice(capsys):
