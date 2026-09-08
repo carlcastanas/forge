@@ -133,10 +133,10 @@ record(test('flags a leaked /Users/<name> path', () => {
 record(test('flags a leaked C:\\Users\\<name> path case-insensitively', () => {
   const testDir = createTestDir();
   try {
-    writeFile(path.join(testDir, 'docs', 'guide.md'), 'See C:\\Users\\the FORGE maintainers\\projects\\thing\n');
+    writeFile(path.join(testDir, 'docs', 'guide.md'), 'See c:\\users\\sugig\\projects\\thing\n');
     const result = runValidatorAgainst(testDir);
     assert.strictEqual(result.code, 1, 'expected non-zero exit on leak');
-    assert.ok(result.stderr.includes('C:\\Users\\the FORGE maintainers'), `expected stderr to mention leaked path; got: ${result.stderr}`);
+    assert.ok(result.stderr.includes('c:\\users\\sugig'), `expected stderr to mention leaked path; got: ${result.stderr}`);
   } finally {
     cleanupTestDir(testDir);
   }

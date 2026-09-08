@@ -307,3 +307,228 @@ export function CompassIcon(props: IconProps) {
     </Svg>
   );
 }
+
+/* --- Commercial surface -------------------------------------------------- */
+
+export function TagIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 12.5V5a1 1 0 0 1 1-1h7.5L20 11.5 12.5 19Z" />
+      <circle cx="8.5" cy="8.5" r="1.25" />
+    </Svg>
+  );
+}
+
+export function CloudIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M7 18a4 4 0 0 1-.4-8A5.5 5.5 0 0 1 17.3 11a3.5 3.5 0 0 1-.3 7Z" />
+    </Svg>
+  );
+}
+
+export function GridIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+    </Svg>
+  );
+}
+
+export function BuildingIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 21V6a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15" />
+      <path d="M13 10h6a1 1 0 0 1 1 1v10" />
+      <path d="M2.5 21h19" />
+      <path d="M7 9h3" />
+      <path d="M7 13h3" />
+      <path d="M7 17h3" />
+      <path d="M16 14h1" />
+      <path d="M16 17.5h1" />
+    </Svg>
+  );
+}
+
+export function HistoryIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" />
+      <path d="M3.5 4v4h4" />
+      <path d="M12 7.5V12l3 1.8" />
+    </Svg>
+  );
+}
+
+export function InfoIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5" />
+      <path d="M12 8h.01" />
+    </Svg>
+  );
+}
+
+export function AlertIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 4 2.8 20h18.4Z" />
+      <path d="M12 10v4" />
+      <path d="M12 17h.01" />
+    </Svg>
+  );
+}
+
+export function DashIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M6 12h12" />
+    </Svg>
+  );
+}
+
+export function BranchIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="7" cy="5.5" r="2.5" />
+      <circle cx="7" cy="18.5" r="2.5" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M7 8v8" />
+      <path d="M17 11.5c0 3-2.5 4.5-5.5 4.8" />
+    </Svg>
+  );
+}
+
+export function KeyIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="8" cy="8" r="4.5" />
+      <path d="m11.5 11.5 8 8" />
+      <path d="m17 17 2-2" />
+      <path d="m14.5 14.5 2-2" />
+    </Svg>
+  );
+}
+
+export function CalendarIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="5" width="17" height="16" rx="2" />
+      <path d="M3.5 10h17" />
+      <path d="M8 3v4" />
+      <path d="M16 3v4" />
+    </Svg>
+  );
+}
+
+export function EyeIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </Svg>
+  );
+}
+
+export function LoopIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 9a8 8 0 0 1 13.7-3.3L20 8" />
+      <path d="M20 4v4h-4" />
+      <path d="M20 15a8 8 0 0 1-13.7 3.3L4 16" />
+      <path d="M4 20v-4h4" />
+    </Svg>
+  );
+}
+
+export function TargetIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1" />
+    </Svg>
+  );
+}
+
+export function ScaleIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 4v16" />
+      <path d="M7 20h10" />
+      <path d="M5 8h14" />
+      <path d="M5 8 2.5 14a2.8 2.8 0 0 0 5 0Z" />
+      <path d="M19 8l2.5 6a2.8 2.8 0 0 1-5 0Z" />
+    </Svg>
+  );
+}
+
+export function PlugIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 3v5" />
+      <path d="M15 3v5" />
+      <path d="M6 8h12v3a6 6 0 0 1-12 0Z" />
+      <path d="M12 17v4" />
+    </Svg>
+  );
+}
+
+export function EyeOffIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c5 0 9 5 9 8a9.7 9.7 0 0 1-1.9 3.1" />
+      <path d="M6.6 6.6C4.2 8.2 3 10.6 3 12c0 3 4 8 9 8a9.3 9.3 0 0 0 4.5-1.15" />
+      <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+      <path d="M3 3l18 18" />
+    </svg>
+  );
+}
+
+export function SeatsIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="8.5" cy="8" r="3" />
+      <path d="M3 20v-1.5A4.5 4.5 0 0 1 7.5 14h2A4.5 4.5 0 0 1 14 18.5V20" />
+      <path d="M16 5.2a3 3 0 0 1 0 5.6" />
+      <path d="M17.5 14A4.5 4.5 0 0 1 21 18.4V20" />
+    </svg>
+  );
+}
+
+export function IsolationIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="18" height="18" rx="2" strokeDasharray="3 2.5" />
+      <rect x="8" y="8" width="8" height="8" rx="1.5" />
+    </svg>
+  );
+}
+
+export function CommentIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 15a2 2 0 0 1-2 2H8l-4 3.5V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />
+      <path d="M8.5 9.5h7M8.5 12.5h4.5" />
+    </svg>
+  );
+}
+
+export function GlobeIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3.2 9h17.6M3.2 15h17.6" />
+      <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z" />
+    </svg>
+  );
+}

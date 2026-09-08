@@ -12,17 +12,17 @@ This guide is for engineers who have run FORGE on single tasks and now want to r
 - [When parallelism helps and when it hurts](#when-parallelism-helps-and-when-it-hurts)
 - [The real cost of a wave](#the-real-cost-of-a-wave)
 - [Decomposition: the write-surface test](#decomposition-the-write-surface-test)
-- [Pattern 1 — Fan-out and fan-in](#pattern-1--fan-out-and-fan-in)
-- [Pattern 2 — The pipeline](#pattern-2--the-pipeline)
-- [Pattern 3 — The review wave](#pattern-3--the-review-wave)
-- [Pattern 4 — Adversarial convergence](#pattern-4--adversarial-convergence)
+- [Pattern 1: Fan-out and fan-in](#pattern-1-fan-out-and-fan-in)
+- [Pattern 2: The pipeline](#pattern-2-the-pipeline)
+- [Pattern 3: The review wave](#pattern-3-the-review-wave)
+- [Pattern 4: Adversarial convergence](#pattern-4-adversarial-convergence)
 - [Handoff contracts](#handoff-contracts)
 - [Shared state and collision hazards](#shared-state-and-collision-hazards)
 - [Budget control](#budget-control)
 - [Verifying the wave, not the workers](#verifying-the-wave-not-the-workers)
-- [Worked example A — Feature across three modules](#worked-example-a--feature-across-three-modules)
-- [Worked example B — Pipelined migration](#worked-example-b--pipelined-migration)
-- [Worked example C — Multi-dimension PR review](#worked-example-c--multi-dimension-pr-review)
+- [Worked example A: Feature across three modules](#worked-example-a-feature-across-three-modules)
+- [Worked example B: Pipelined migration](#worked-example-b-pipelined-migration)
+- [Worked example C: Multi-dimension PR review](#worked-example-c-multi-dimension-pr-review)
 - [Failure catalog](#failure-catalog)
 - [Pre-flight checklist](#pre-flight-checklist)
 
@@ -124,7 +124,7 @@ A decomposition that yields fewer than three genuinely independent lanes is tell
 
 ---
 
-## Pattern 1 — Fan-out and fan-in
+## Pattern 1: Fan-out and fan-in
 
 The simplest wave. One orchestrator splits work, N workers run concurrently, the orchestrator merges results and verifies the whole.
 
@@ -168,7 +168,7 @@ Always run the dry form first. It prints every worktree, branch, and command wit
 
 ---
 
-## Pattern 2 — The pipeline
+## Pattern 2: The pipeline
 
 Fan-out and fan-in waste time whenever stages have different durations: everyone waits for the slowest worker before the next stage begins. The pipeline fixes that. Stage N+1 starts on an item as soon as *that item* clears stage N — not when the whole stage finishes.
 
@@ -208,7 +208,7 @@ Set a hard stop before starting a pipeline: a maximum item count, a maximum wall
 
 ---
 
-## Pattern 3 — The review wave
+## Pattern 3: The review wave
 
 Review is the best-behaved parallel workload in existence: every reviewer reads the same input, writes nothing, and produces findings that merge by concatenation and dedup.
 
@@ -242,7 +242,7 @@ A useful review-wave discipline: require every finding to cite a file and line. 
 
 ---
 
-## Pattern 4 — Adversarial convergence
+## Pattern 4: Adversarial convergence
 
 Sometimes the goal is not throughput but disagreement. Three FORGE surfaces produce structured disagreement rather than parallel work.
 
@@ -446,7 +446,7 @@ The full verification vocabulary — what counts as evidence, how to design an a
 
 ---
 
-## Worked example A — Feature across three modules
+## Worked example A: Feature across three modules
 
 **Task:** add per-tenant rate limiting to an API with a shared middleware layer, a Postgres-backed counter, and an admin toggle in the web app.
 
@@ -507,7 +507,7 @@ The review workflow fans out reviewers over the *merged* diff, which is the only
 
 ---
 
-## Worked example B — Pipelined migration
+## Worked example B: Pipelined migration
 
 **Task:** convert 40 React class components to function components with hooks, with tests and review for each.
 
@@ -553,7 +553,7 @@ node scripts/orchestration-status.js
 
 ---
 
-## Worked example C — Multi-dimension PR review
+## Worked example C: Multi-dimension PR review
 
 **Task:** review a large PR touching authentication and the user table.
 

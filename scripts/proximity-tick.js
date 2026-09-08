@@ -16,7 +16,7 @@
 
 const { resolveControlPaneConfig, buildControlPaneSnapshot } = require('./lib/control-pane/state');
 const { createProximityDispatcher, runProximityTick } = require('./lib/control-pane/proximity');
-const { createEccMessageSink } = require('./lib/control-pane/message-sink');
+const { createForgeMessageSink } = require('./lib/control-pane/message-sink');
 
 function parseArgs(argv) {
   const args = argv.slice(2);
@@ -79,7 +79,7 @@ async function main() {
     return;
   }
   const config = resolveControlPaneConfig(opts);
-  const sink = opts.dryRun ? null : createEccMessageSink({});
+  const sink = opts.dryRun ? null : createForgeMessageSink({});
   const dispatcher = createProximityDispatcher({ sendMessage: sink });
   const buildSnapshot = () =>
     buildControlPaneSnapshot({

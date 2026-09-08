@@ -303,7 +303,7 @@ function printResult(result, json) {
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     return;
   }
-  process.stdout.write(`\nECC ${result.action} ${result.pluginId} at ${result.scope} scope.\n`);
+  process.stdout.write(`\nFORGE ${result.action} ${result.pluginId} at ${result.scope} scope.\n`);
   if (result.sourceScope) {
     process.stdout.write(`Previous scope: ${result.sourceScope}\n`);
   }
@@ -474,7 +474,7 @@ async function main(argv = process.argv.slice(2)) {
     });
   } catch (error) {
     if (isInteractiveCancellation(error)) {
-      process.stdout.write('\nECC setup cancelled. No changes were made.\n');
+      process.stdout.write('\nFORGE setup cancelled. No changes were made.\n');
       return;
     }
     printError(error, options?.json);

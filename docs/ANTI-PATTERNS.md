@@ -231,7 +231,7 @@ metadata:
 ---
 ```
 
-`name` and `description` are the fields the validator requires. Provenance goes in the nested `metadata` block. A `description` containing `: ` must be quoted, or the YAML parse fails.
+`name` and `description` are the fields the validator requires. Provenance goes in the nested `metadata` block. A `description` containing a colon followed by a space must be quoted, or the YAML parse fails.
 
 Then a body that is a procedure: when to use, the mechanics, examples that were actually run. Cut anything that does not change what the model does. If the background genuinely matters, put it in a reference file next to `SKILL.md` and link it, so it loads only when the skill decides it is needed.
 

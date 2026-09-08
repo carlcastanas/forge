@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { resolveEccRoot } = require('../lib/resolve-forge-root');
+const { resolveForgeRoot } = require('../lib/resolve-forge-root');
 
 // Read the raw JSON event from stdin
 const raw = fs.readFileSync(0, 'utf8');
@@ -39,7 +39,7 @@ const rel = path.join('scripts', 'hooks', 'run-with-flags.js');
 
 // Resolve the FORGE plugin root via the shared resolver, probing for the runner
 // so a valid root is one that actually contains run-with-flags.js.
-const root = resolveEccRoot({ probe: rel });
+const root = resolveForgeRoot({ probe: rel });
 const script = path.join(root, rel);
 
 if (fs.existsSync(script)) {

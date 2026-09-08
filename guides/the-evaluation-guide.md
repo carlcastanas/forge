@@ -19,7 +19,7 @@ This guide is for anyone who has installed an agent system and now needs to know
 - [Regression gates in CI](#regression-gates-in-ci)
 - [Cost and latency alongside quality](#cost-and-latency-alongside-quality)
 - [Interpreting a result you do not like](#interpreting-a-result-you-do-not-like)
-- [Worked example — a twelve-task eval set](#worked-example--a-twelve-task-eval-set)
+- [Worked example: a twelve-task eval set](#worked-example-a-twelve-task-eval-set)
 - [Anti-patterns](#anti-patterns)
 
 ---
@@ -566,7 +566,7 @@ A result you dislike and cannot explain is more valuable than one you like. It i
 
 ---
 
-## Worked example — a twelve-task eval set
+## Worked example: a twelve-task eval set
 
 Building one for a TypeScript service, end to end.
 

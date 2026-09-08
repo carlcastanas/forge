@@ -195,6 +195,74 @@ export function truncate(text: string, max = 180): string {
   return `${cut.slice(0, lastSpace > 60 ? lastSpace : max).trimEnd()}...`;
 }
 
+/**
+ * Removes the leading H1 from a body. The page chrome already renders the title as
+ * the document's only h1, so keeping the file's own would produce two.
+ */
+/**
+ * Repository READMEs open with centred raw-HTML furniture: a wordmark, shields.io
+ * badges, and a language switcher. That block is chrome for GitHub, not content —
+ * the site supplies its own header, badges, and language menu. react-markdown also
+ * does not process raw HTML, so left in place the block renders as literal angle
+ * brackets. Strip any run of leading HTML blocks before looking for the H1.
+ */
+function stripLeadingHtmlBlocks(content: string): string {
+  const lines = content.split('\n');
+  let cursor = 0;
+  let removedAny = false;
+
+  while (cursor < lines.length) {
+    while (cursor < lines.length && lines[cursor].trim() === '') cursor += 1;
+    if (cursor >= lines.length) break;
+
+    // Only a block-level HTML open tag qualifies; markdown text must stop us.
+    const open = lines[cursor].match(/^\s{0,3}<(p|div|picture|table|h1|center|img|a|br)\b/i);
+    if (!open) break;
+
+    const tag = open[1].toLowerCase();
+    // Void-ish or self-closing single line: consume just this line.
+    if (/\/>\s*$/.test(lines[cursor]) || tag === 'br' || tag === 'img') {
+      cursor += 1;
+      removedAny = true;
+      continue;
+    }
+
+    // Otherwise consume through the matching closing tag.
+    const close = new RegExp(`</${tag}>`, 'i');
+    let end = cursor;
+    while (end < lines.length && !close.test(lines[end])) end += 1;
+    if (end >= lines.length) break; // unbalanced — leave the content alone
+    cursor = end + 1;
+    removedAny = true;
+  }
+
+  if (!removedAny) return content;
+  const rest = lines.slice(cursor);
+  while (rest.length > 0 && rest[0].trim() === '') rest.shift();
+  return rest.join('\n');
+}
+
+function stripLeadingH1(content: string): string {
+  const lines = content.split('\n');
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (line.trim() === '') continue;
+    if (/^\s{0,3}#\s+/.test(line)) {
+      lines.splice(0, i + 1);
+      while (lines.length > 0 && lines[0].trim() === '') lines.shift();
+      return lines.join('\n');
+    }
+    // Setext-style H1.
+    if (i + 1 < lines.length && /^\s{0,3}={3,}\s*$/.test(lines[i + 1])) {
+      lines.splice(0, i + 2);
+      while (lines.length > 0 && lines[0].trim() === '') lines.shift();
+      return lines.join('\n');
+    }
+    break;
+  }
+  return content;
+}
+
 function humanize(basename: string): string {
   const cleaned = basename.replace(/\.md$/i, '').replace(/[-_]+/g, ' ').trim();
   if (!cleaned) return 'Untitled';
@@ -282,6 +350,8 @@ export type DocEntry = {
   repoPath: string;
   group: string;
   order: number;
+  /** True when the description came from frontmatter rather than the first paragraph. */
+  declaredDescription: boolean;
   /** Inline body for pages the site generates itself when the repo has none. */
   synthetic?: string;
 };
@@ -338,11 +408,13 @@ export function getDocEntries(): DocEntry[] {
     if (raw === null) continue;
     const { data, content } = parse(raw);
     const slug = claim(['project', slugSegment(name)]);
+    const declared = asString(data.description);
     entries.push({
       slug,
       href: `/docs/${slug.join('/')}`,
       title: asString(data.title) ?? firstHeading(content) ?? humanize(name),
-      description: truncate(asString(data.description) ?? firstParagraph(content) ?? ''),
+      description: truncate(declared ?? firstParagraph(content) ?? ''),
+      declaredDescription: Boolean(declared),
       repoPath: name,
       group: 'Project',
       order: index,
@@ -366,11 +438,13 @@ export function getDocEntries(): DocEntry[] {
     const slug = claim([...dirParts.map(slugSegment), slugSegment(filename)]);
     const orderIndex = dirParts.length === 0 ? DOCS_ORDER.indexOf(filename) : -1;
 
+    const declared = asString(data.description);
     entries.push({
       slug,
       href: `/docs/${slug.join('/')}`,
       title: asString(data.title) ?? firstHeading(content) ?? humanize(filename),
-      description: truncate(asString(data.description) ?? firstParagraph(content) ?? ''),
+      description: truncate(declared ?? firstParagraph(content) ?? ''),
+      declaredDescription: Boolean(declared),
       repoPath: `docs/${rel}`,
       group: groupLabel(dirParts),
       order: orderIndex === -1 ? 1000 : orderIndex,
@@ -385,6 +459,7 @@ export function getDocEntries(): DocEntry[] {
       href: '/docs/getting-started',
       title: 'Getting started',
       description: 'Install FORGE, confirm the catalog loaded, and run the loop once end to end.',
+      declaredDescription: true,
       repoPath: '',
       group: 'Reference',
       order: -1,
@@ -434,17 +509,17 @@ export function getDocNeighbors(slug: string[]): { prev?: DocEntry; next?: DocEn
 
 /** Body of a doc page: either the repo file or the site's own fallback. */
 export function getDocBody(entry: DocEntry): { content: string; missing: boolean } {
-  if (entry.synthetic) return { content: entry.synthetic, missing: false };
+  if (entry.synthetic) return { content: stripLeadingH1(stripLeadingHtmlBlocks(entry.synthetic)), missing: false };
   const raw = safeReadFile(path.join(REPO_ROOT, entry.repoPath));
   if (raw === null) return { content: '', missing: true };
-  return { content: parse(raw).content, missing: false };
+  return { content: stripLeadingH1(stripLeadingHtmlBlocks(parse(raw).content)), missing: false };
 }
 
 /** The docs index intro, taken from docs/README.md when it exists. */
 export function getDocsIndexIntro(): string | null {
   const raw = safeReadFile(path.join(REPO_ROOT, 'docs', 'README.md'));
   if (raw === null) return null;
-  const body = parse(raw).content.trim();
+  const body = stripLeadingH1(stripLeadingHtmlBlocks(parse(raw).content)).trim();
   return body.length > 0 ? body : null;
 }
 
@@ -461,6 +536,7 @@ export type GuideEntry = {
   minutes: number;
   words: number;
   order: number;
+  declaredDescription: boolean;
 };
 
 let guidesCache: GuideEntry[] | null = null;
@@ -491,11 +567,13 @@ export function getGuides(): GuideEntry[] {
     const words = content.trim().split(/\s+/).filter(Boolean).length;
     const orderIndex = GUIDES_ORDER.indexOf(dirent.name);
 
+    const declared = asString(data.description);
     entries.push({
       slug,
       href: `/guides/${slug}`,
       title: asString(data.title) ?? firstHeading(content) ?? humanize(dirent.name),
-      description: truncate(asString(data.description) ?? firstParagraph(content) ?? '', 200),
+      description: truncate(declared ?? firstParagraph(content) ?? '', 200),
+      declaredDescription: Boolean(declared),
       repoPath: `guides/${dirent.name}`,
       minutes: Math.max(1, Math.round(words / 220)),
       words,
@@ -515,7 +593,7 @@ export function getGuideBySlug(slug: string): GuideEntry | undefined {
 export function getGuideBody(entry: GuideEntry): { content: string; missing: boolean } {
   const raw = safeReadFile(path.join(REPO_ROOT, entry.repoPath));
   if (raw === null) return { content: '', missing: true };
-  return { content: parse(raw).content, missing: false };
+  return { content: stripLeadingH1(stripLeadingHtmlBlocks(parse(raw).content)), missing: false };
 }
 
 export function getGuideNeighbors(slug: string): { prev?: GuideEntry; next?: GuideEntry } {
@@ -528,7 +606,7 @@ export function getGuideNeighbors(slug: string): { prev?: GuideEntry; next?: Gui
 export function getGuidesIndexIntro(): string | null {
   const raw = safeReadFile(path.join(REPO_ROOT, 'guides', 'README.md'));
   if (raw === null) return null;
-  const body = parse(raw).content.trim();
+  const body = stripLeadingH1(stripLeadingHtmlBlocks(parse(raw).content)).trim();
   return body.length > 0 ? body : null;
 }
 
@@ -557,6 +635,20 @@ function toStringList(value: unknown): string[] {
   }
   return [];
 }
+
+/** Tokens that carry no domain meaning and never make a useful category chip. */
+const CATEGORY_STOPWORDS = new Set([
+  'and',
+  'for',
+  'the',
+  'with',
+  'from',
+  'into',
+  'use',
+  'using',
+  'new',
+  'via',
+]);
 
 let skillsCache: SkillEntry[] | null = null;
 
@@ -592,20 +684,47 @@ export function getSkills(): SkillEntry[] {
     });
   }
 
-  // Categories are derived from the skill names: the leading token becomes a
-  // category once enough skills share it, everything else falls into "other".
+  // Categories are derived from the skill names. Every hyphen-separated token is
+  // counted across the catalog; a skill takes the most widely shared token in its
+  // own name as its category. Tokens too rare to be a useful facet, and skills
+  // with no shared token at all, fall into "other".
   const tokenCounts = new Map<string, number>();
   for (const skill of raw) {
-    const token = skill.name.split('-')[0];
-    tokenCounts.set(token, (tokenCounts.get(token) ?? 0) + 1);
+    for (const token of new Set(skill.name.split('-'))) {
+      if (token.length < 3 || CATEGORY_STOPWORDS.has(token)) continue;
+      tokenCounts.set(token, (tokenCounts.get(token) ?? 0) + 1);
+    }
   }
 
-  const skills: SkillEntry[] = raw
-    .map((skill) => {
-      const token = skill.name.split('-')[0];
+  const MIN_SHARED = 3;
+  const pick = (name: string): string => {
+    let best: string | null = null;
+    let bestCount = 0;
+    for (const token of name.split('-')) {
+      if (token.length < 3 || CATEGORY_STOPWORDS.has(token)) continue;
       const count = tokenCounts.get(token) ?? 0;
-      return { ...skill, category: count >= 4 ? token : 'other' };
-    })
+      if (count >= MIN_SHARED && count > bestCount) {
+        best = token;
+        bestCount = count;
+      }
+    }
+    return best ?? 'other';
+  };
+
+  const assigned = raw.map((skill) => ({ ...skill, category: pick(skill.name) }));
+
+  // A chip that matches one or two skills is noise; fold those back into "other".
+  const bucketSizes = new Map<string, number>();
+  for (const skill of assigned) {
+    bucketSizes.set(skill.category, (bucketSizes.get(skill.category) ?? 0) + 1);
+  }
+
+  const skills: SkillEntry[] = assigned
+    .map((skill) =>
+      (bucketSizes.get(skill.category) ?? 0) < MIN_SHARED
+        ? { ...skill, category: 'other' }
+        : skill,
+    )
     .sort((a, b) => a.name.localeCompare(b.name));
 
   skillsCache = skills;
@@ -619,7 +738,7 @@ export function getSkillByName(name: string): SkillEntry | undefined {
 export function getSkillBody(entry: SkillEntry): { content: string; missing: boolean } {
   const raw = safeReadFile(path.join(REPO_ROOT, entry.repoPath));
   if (raw === null) return { content: '', missing: true };
-  return { content: parse(raw).content, missing: false };
+  return { content: stripLeadingH1(stripLeadingHtmlBlocks(parse(raw).content)), missing: false };
 }
 
 export type CategoryCount = { name: string; count: number };

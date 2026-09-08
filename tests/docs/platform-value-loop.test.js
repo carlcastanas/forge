@@ -89,21 +89,16 @@ test('Ito example preserves non-advisory and gated-access boundaries', () => {
   }
 });
 
-test('release docs link the platform value loop into the rc surface', () => {
+// The per-release surface under docs/releases/ belonged to the upstream project's
+// version history and was removed with it. What still has to hold is that the
+// architecture surface reaches the platform value loop rather than orphaning it.
+test('the architecture surface links the platform value loop', () => {
   const crossHarness = read('docs/architecture/cross-harness.md');
-  const previewManifest = read('docs/releases/2.0.0-rc.1/preview-pack-manifest.md');
-  const itoPack = read('docs/releases/2.0.0-rc.1/ito-prediction-market-skill-pack.md');
-  const hypergrowth = read('docs/releases/2.0.0/forge-2-hypergrowth-release-command-center.md');
 
-  for (const source of [crossHarness, previewManifest, itoPack, hypergrowth]) {
-    assert.ok(
-      source.includes('platform-value-loop.md'),
-      'expected release/cross-harness surface to link platform-value-loop.md'
-    );
-  }
-
-  assert.ok(previewManifest.includes('Product integration and full-stack platform thesis'));
-  assert.ok(hypergrowth.includes('Product integrations should behave like repeatable distribution loops'));
+  assert.ok(
+    crossHarness.includes('platform-value-loop.md'),
+    'expected docs/architecture/cross-harness.md to link platform-value-loop.md'
+  );
 });
 
 test('platform value loop does not overclaim release status or trading ability', () => {

@@ -172,8 +172,9 @@ one stack, three commands cover most of your loop.
 
 ![Chained commands in a terminal session](../assets/images/shortform/02-chaining-commands.jpeg)
 
-Chaining is normal and usually better than one large prompt. `/plan` then `/tdd`-shaped work
-then `/code-review` then `/quality-gate` gives each phase a clean brief and a checkable output.
+Chaining is normal and usually better than one large prompt. `/plan`, then TDD work through
+the `tdd-workflow` skill, then `/code-review`, then `/quality-gate` gives each phase a clean
+brief and a checkable output.
 
 ---
 

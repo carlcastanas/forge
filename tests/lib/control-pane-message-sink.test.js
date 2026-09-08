@@ -6,7 +6,7 @@
 
 const assert = require('assert');
 
-const { KIND_BY_TYPE, buildSendArgs, createEccMessageSink, resolveEccBin } = require('../../scripts/lib/control-pane/message-sink');
+const { KIND_BY_TYPE, buildSendArgs, createForgeMessageSink, resolveForgeBin } = require('../../scripts/lib/control-pane/message-sink');
 const { createProximityDispatcher } = require('../../scripts/lib/control-pane/proximity');
 
 let passed = 0;
@@ -31,9 +31,9 @@ test('buildSendArgs: maps trigger type to message kind and shapes the CLI argv',
   assert.strictEqual(KIND_BY_TYPE.proximity_transmit, 'query');
 });
 
-test('createEccMessageSink: delivers via the injected runner with the resolved binary', () => {
+test('createForgeMessageSink: delivers via the injected runner with the resolved binary', () => {
   const calls = [];
-  const send = createEccMessageSink({
+  const send = createForgeMessageSink({
     binPath: '/fake/forge-tui',
     runCommand: (bin, args) => calls.push({ bin, args })
   });
@@ -44,8 +44,8 @@ test('createEccMessageSink: delivers via the injected runner with the resolved b
   assert.ok(calls[0].args.includes('query'), 'transmit maps to query kind');
 });
 
-test('createEccMessageSink: a failing command propagates (dispatcher will count it skipped)', () => {
-  const send = createEccMessageSink({
+test('createForgeMessageSink: a failing command propagates (dispatcher will count it skipped)', () => {
+  const send = createForgeMessageSink({
     binPath: 'forge-tui',
     runCommand: () => {
       throw new Error('ENOENT');
@@ -54,8 +54,8 @@ test('createEccMessageSink: a failing command propagates (dispatcher will count 
   assert.throws(() => send({ fromSession: 'a', toSession: 'b', content: 'x', msgType: 'proximity_steer' }));
 });
 
-test('resolveEccBin: honors explicit override', () => {
-  assert.strictEqual(resolveEccBin({ binPath: '/x/forge-tui' }), '/x/forge-tui');
+test('resolveForgeBin: honors explicit override', () => {
+  assert.strictEqual(resolveForgeBin({ binPath: '/x/forge-tui' }), '/x/forge-tui');
 });
 
 test('dispatcher: fires once then suppresses the same trigger within cooldown', () => {

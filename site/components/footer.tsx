@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { getCounts, getDocEntries, getGuides } from '@/lib/content';
-import { SITE } from '@/lib/site';
+import { PRODUCT_LINKS, SITE } from '@/lib/site';
 
 type FooterLink = { href: string; label: string; external?: boolean };
 
@@ -15,6 +15,10 @@ export function Footer() {
   const guides = getGuides();
 
   const columns: { label: string; links: FooterLink[] }[] = [
+    {
+      label: 'Product',
+      links: PRODUCT_LINKS.map((link) => ({ href: link.href, label: link.label })),
+    },
     {
       label: 'Start',
       links: [

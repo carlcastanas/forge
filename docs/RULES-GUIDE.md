@@ -145,7 +145,7 @@ Budget guidance:
 node scripts/skills-health.js --dashboard
 ```
 
-That dashboard covers skills; for the rule side, run [`skills/context-budget/`](../skills/context-budget/) or `/context-budget`, which inventories agents, skills, rules, and MCP servers together and produces prioritized savings.
+That dashboard covers skills; for the rule side, run [`skills/context-budget/`](../skills/context-budget/), which inventories agents, skills, rules, and MCP servers together and produces prioritized savings.
 
 The reason to hold this line is that the rule layer competes with the working set. [AGENTS.md](../AGENTS.md) advises avoiding the last 20 percent of the context window for large multi-file work; every kilobyte of always-on rules moves that boundary closer.
 

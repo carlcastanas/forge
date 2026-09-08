@@ -862,7 +862,10 @@ if (
       assert.strictEqual(syncResult.status, 0, `${syncResult.stdout}\n${syncResult.stderr}`);
 
       const syncedAgents = fs.readFileSync(agentsPath, 'utf8');
-      assert.match(syncedAgents, /^# FORGE \(FORGE\) — Agent Instructions/m);
+      // The merged block is delimited by the managed markers the sync emits; the
+      // root AGENTS.md heading itself is prose and is free to be rewritten.
+      assert.match(syncedAgents, /^<!-- BEGIN FORGE -->/m);
+      assert.match(syncedAgents, /^<!-- END FORGE -->/m);
       assert.match(syncedAgents, /^# Codex Supplement \(From FORGE \.codex\/AGENTS\.md\)/m);
 
       const syncedConfig = fs.readFileSync(configPath, 'utf8');

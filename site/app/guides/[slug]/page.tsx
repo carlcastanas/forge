@@ -50,7 +50,9 @@ export default async function GuidePage({ params }: Props) {
 
           <div className="page-head">
             <h1 className="t-h1 u-wrap">{guide.title}</h1>
-            {guide.description ? <p className="t-lead">{guide.description}</p> : null}
+            {guide.declaredDescription && guide.description ? (
+              <p className="t-lead">{guide.description}</p>
+            ) : null}
             <div className="page-meta">
               <span>
                 <ClockIcon size={13} /> {guide.minutes} min read

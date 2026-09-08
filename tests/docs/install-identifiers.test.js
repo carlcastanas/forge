@@ -35,10 +35,10 @@ console.log('\n=== Testing public install identifiers ===\n');
 for (const relativePath of publicInstallDocs) {
   const content = fs.readFileSync(path.join(repoRoot, relativePath), 'utf8');
 
-  test(`${relativePath} does not use the overlong legacy marketplace plugin identifier`, () => {
-    assert.ok(!content.includes('forge@forge'));
-  });
-
+  // Note: the previous project shipped a long marketplace identifier alongside a short
+  // alias, and this loop asserted the long form was absent. FORGE publishes exactly one
+  // identifier, `forge@forge`, so only the positive assertion below still describes a real
+  // requirement; the absence check had become the negation of it.
   test(`${relativePath} documents the short marketplace plugin identifier`, () => {
     assert.ok(content.includes('forge@forge'));
   });
@@ -106,7 +106,7 @@ function executableLegacyInstallerLines(content) {
   return executableLines;
 }
 
-function unrelatedEccPackageLines(content) {
+function unrelatedForgePackageLines(content) {
   return content
     .split('\n')
     .filter(line => /\bnpx\s+forge(?=\s|$)/i.test(line))
@@ -144,7 +144,7 @@ for (const relativePath of publicUniversalInstallDocs) {
   });
 
   test(`${relativePath} does not invoke the unrelated forge package`, () => {
-    const executableLines = unrelatedEccPackageLines(content);
+    const executableLines = unrelatedForgePackageLines(content);
 
     assert.deepStrictEqual(
       executableLines,
@@ -159,7 +159,7 @@ test('repository Markdown does not invoke the unrelated forge package', () => {
 
   for (const filePath of trackedMarkdownFiles(repoRoot)) {
     const content = fs.readFileSync(filePath, 'utf8');
-    for (const line of unrelatedEccPackageLines(content)) {
+    for (const line of unrelatedForgePackageLines(content)) {
       offenders.push(`${path.relative(repoRoot, filePath)}: ${line}`);
     }
   }
@@ -211,11 +211,10 @@ for (const relativePath of pluginAndManualInstallDocs) {
 for (const relativePath of publicCommandNamespaceDocs) {
   const content = fs.readFileSync(path.join(repoRoot, relativePath), 'utf8');
 
+  // Same rebrand collapse as above: the absent-namespace check targeted the previous
+  // project's long slash-command prefix, which no longer exists. `/forge:` is the canonical
+  // namespace, so only the positive assertion is kept.
   test(`${relativePath} uses the canonical plugin command namespace`, () => {
-    assert.ok(
-      !content.includes('/forge:'),
-      'Expected docs not to advertise the overlong legacy plugin command namespace'
-    );
     assert.ok(
       content.includes('/forge:plan'),
       'Expected docs to show the short plugin command namespace'

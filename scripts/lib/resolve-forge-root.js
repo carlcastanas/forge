@@ -52,7 +52,7 @@ const DEFAULT_SKILL_PROBE = path.join('skills', 'continuous-learning-v2');
  *                                    skills) is rejected for skill consumers.
  * @returns {string} Resolved FORGE root path
  */
-function resolveEccRoot(options = {}) {
+function resolveForgeRoot(options = {}) {
   const envRoot = options.envRoot !== undefined
     ? options.envRoot
     : (process.env.CLAUDE_PLUGIN_ROOT || '');
@@ -129,7 +129,7 @@ function resolveEccRoot(options = {}) {
 /**
  * Compact inline locator for embedding in hooks.json and command .md code blocks.
  *
- * Earlier revisions inlined the *entire* resolveEccRoot() search (~700 chars,
+ * Earlier revisions inlined the *entire* resolveForgeRoot() search (~700 chars,
  * duplicated ~80×). That blob used a spread (`...s`) over nested array literals,
  * which broke Windows hook execution due to shell quoting (#2368).
  *
@@ -137,19 +137,19 @@ function resolveEccRoot(options = {}) {
  * escaped double quotes, so it survives `node -e "..."` quoting on every shell.
  * When CLAUDE_PLUGIN_ROOT is set (as Claude Code does for plugin hooks and
  * commands) it is used directly. Otherwise the inline probes the same set of
- * locations resolveEccRoot() knows about — ~/.claude, the exact plugin roots
+ * locations resolveForgeRoot() knows about — ~/.claude, the exact plugin roots
  * under ~/.claude/plugins/, and the versioned plugin cache — only far enough to
  * load the committed resolve-forge-root module, then delegates the authoritative
- * decision to resolveEccRoot(). This keeps discovery behaviour identical to the
+ * decision to resolveForgeRoot(). This keeps discovery behaviour identical to the
  * old inline while centralising the real logic in one tested module.
  *
  * Usage in commands:
  *   const _r = <paste INLINE_RESOLVE>;
  *   const sm = require(_r + '/scripts/lib/session-manager');
  */
-const INLINE_RESOLVE = `(function(){var p=require('path'),f=require('fs'),o=require('os');var e=process.env.CLAUDE_PLUGIN_ROOT;if(e&&e.trim())return e.trim();var d=p.join(o.homedir(),'.claude');function L(x){try{return require(p.join(x,'scripts','lib','resolve-forge-root')).resolveEccRoot()}catch(_){return null}}var r=L(d);if(r)return r;var s=['forge','forge@forge','marketplaces/forge','forge','forge@forge','marketplaces/forge'];for(var i=0;i<s.length;i++){r=L(p.join(d,'plugins',s[i]));if(r)return r}try{var g=['forge','forge'];for(var j=0;j<g.length;j++){var c=p.join(d,'plugins','cache',g[j]);var O=f.readdirSync(c);for(var k=0;k<O.length;k++){var q=p.join(c,O[k]);var V=f.readdirSync(q);for(var m=0;m<V.length;m++){r=L(p.join(q,V[m]));if(r)return r}}}}catch(_){}return d})()`;
+const INLINE_RESOLVE = `(function(){var p=require('path'),f=require('fs'),o=require('os');var e=process.env.CLAUDE_PLUGIN_ROOT;if(e&&e.trim())return e.trim();var d=p.join(o.homedir(),'.claude');function L(x){try{return require(p.join(x,'scripts','lib','resolve-forge-root')).resolveForgeRoot()}catch(_){return null}}var r=L(d);if(r)return r;var s=['forge','forge@forge','marketplaces/forge','forge','forge@forge','marketplaces/forge'];for(var i=0;i<s.length;i++){r=L(p.join(d,'plugins',s[i]));if(r)return r}try{var g=['forge','forge'];for(var j=0;j<g.length;j++){var c=p.join(d,'plugins','cache',g[j]);var O=f.readdirSync(c);for(var k=0;k<O.length;k++){var q=p.join(c,O[k]);var V=f.readdirSync(q);for(var m=0;m<V.length;m++){r=L(p.join(q,V[m]));if(r)return r}}}}catch(_){}return d})()`;
 
 module.exports = {
-  resolveEccRoot,
+  resolveForgeRoot,
   INLINE_RESOLVE,
 };

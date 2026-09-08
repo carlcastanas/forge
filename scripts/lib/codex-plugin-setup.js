@@ -333,13 +333,13 @@ function parseMarketplaceUpgradeResult(stdout, marketplace) {
   return result;
 }
 
-function findEccMarketplace(marketplaces) {
+function findForgeMarketplace(marketplaces) {
   return marketplaces.find(
     marketplace => marketplace.name === OFFICIAL_MARKETPLACE_NAME
   ) || null;
 }
 
-function findInstalledEccPlugin(inventory) {
+function findInstalledForgePlugin(inventory) {
   return inventory.installed.find(
     plugin => plugin.pluginId === CODEX_PLUGIN_ID
   ) || null;
@@ -371,8 +371,8 @@ async function reconcileCodexPlugin(options = {}, dependencies = {}) {
   );
   const marketplaces = await readMarketplaceInventory(run, 'marketplace-inventory');
   const plugins = await readPluginInventory(run, 'plugin-inventory');
-  const marketplace = findEccMarketplace(marketplaces);
-  const installedPlugin = findInstalledEccPlugin(plugins);
+  const marketplace = findForgeMarketplace(marketplaces);
+  const installedPlugin = findInstalledForgePlugin(plugins);
   await assertOfficialMarketplace(marketplace, options, dependencies);
   const pluginReady = (
     installedPlugin?.installed === true
@@ -409,7 +409,7 @@ async function reconcileCodexPlugin(options = {}, dependencies = {}) {
     run,
     'marketplace-verification'
   );
-  if (!findEccMarketplace(verifiedMarketplaces)) {
+  if (!findForgeMarketplace(verifiedMarketplaces)) {
     fail(
       'MARKETPLACE_VERIFICATION_FAILED',
       'Could not verify the FORGE marketplace after reconciliation.',
@@ -417,7 +417,7 @@ async function reconcileCodexPlugin(options = {}, dependencies = {}) {
     );
   }
   await assertOfficialMarketplace(
-    findEccMarketplace(verifiedMarketplaces),
+    findForgeMarketplace(verifiedMarketplaces),
     options,
     dependencies,
     'marketplace-verification'
@@ -426,7 +426,7 @@ async function reconcileCodexPlugin(options = {}, dependencies = {}) {
   const pluginsAfterMarketplace = marketplace
     ? await readPluginInventory(run, 'plugin-verification')
     : plugins;
-  const pluginAfterMarketplace = findInstalledEccPlugin(pluginsAfterMarketplace);
+  const pluginAfterMarketplace = findInstalledForgePlugin(pluginsAfterMarketplace);
   const pluginReadyAfterMarketplace = (
     pluginAfterMarketplace?.installed === true
     && pluginAfterMarketplace.enabled === true
@@ -442,7 +442,7 @@ async function reconcileCodexPlugin(options = {}, dependencies = {}) {
   const verifiedPlugins = pluginReadyAfterMarketplace
     ? pluginsAfterMarketplace
     : await readPluginInventory(run, 'plugin-verification');
-  const verifiedPlugin = findInstalledEccPlugin(verifiedPlugins);
+  const verifiedPlugin = findInstalledForgePlugin(verifiedPlugins);
   if (!(verifiedPlugin?.installed === true && verifiedPlugin.enabled === true)) {
     fail(
       'PLUGIN_VERIFICATION_FAILED',
@@ -466,8 +466,8 @@ module.exports = {
   OFFICIAL_MARKETPLACE_REPO,
   PROVIDER_COMMAND_TIMEOUT_MS,
   executeFile,
-  findEccMarketplace,
-  findInstalledEccPlugin,
+  findForgeMarketplace,
+  findInstalledForgePlugin,
   normalizeGitHubGitOrigin,
   parseMarketplaceInventory,
   parseMarketplaceUpgradeResult,

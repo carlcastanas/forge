@@ -10,9 +10,7 @@ const {
 
 const OFFICIAL_LINKS = Object.freeze({
   github: 'https://github.com/your-org/forge',
-  discord: '',
   documentation: 'https://github.com/your-org/forge#readme',
-  githubApp: '',
 });
 
 let passed = 0;
@@ -49,8 +47,9 @@ test('renders the cfonts block FORGE wordmark with a welcome, version, and boxed
   const boxTop = lines.findIndex(line => line.startsWith('  ╭'));
   const boxBottom = lines.findIndex(line => line.startsWith('  ╰'));
 
-  assert.match(welcome, /███████╗\s+██████╗\s+██████╗/);
-  assert.match(welcome, /╚══════╝\s+╚═════╝\s+╚═════╝/);
+  // The wordmark spells FORGE; assert its first and last rows.
+  assert.match(welcome, /███████╗ ██████╗ ██████╗  ██████╗ ███████╗/);
+  assert.match(welcome, /╚═╝\s+╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝/);
   assert.strictEqual(welcome.includes('◕'), false);
   assert.strictEqual(welcome.includes('ᴗ'), false);
   assert.match(welcome, /Welcome to FORGE!/);
@@ -60,9 +59,10 @@ test('renders the cfonts block FORGE wordmark with a welcome, version, and boxed
   assert.ok(lines.slice(boxTop + 1, boxBottom).every(line => /^ {2}│ .* │$/.test(line)));
   assert.strictEqual(lines[boxTop].length, lines[boxBottom].length);
   assert.ok(welcome.includes(`GitHub:        ${OFFICIAL_LINKS.github}`));
-  assert.ok(welcome.includes(`Discord:       ${OFFICIAL_LINKS.discord}`));
   assert.ok(welcome.includes(`Documentation: ${OFFICIAL_LINKS.documentation}`));
-  assert.ok(welcome.includes(`GitHub App:     ${OFFICIAL_LINKS.githubApp}`));
+  // No community or hosted-app rows: this project has neither.
+  assert.strictEqual(/Discord:/.test(welcome), false);
+  assert.strictEqual(/GitHub App:/.test(welcome), false);
   assert.strictEqual(welcome.includes('\x1b['), false);
 });
 

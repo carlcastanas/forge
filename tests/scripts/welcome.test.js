@@ -23,7 +23,7 @@ function test(name, fn) {
   }
 }
 
-function runEcc(args, env = {}) {
+function runForge(args, env = {}) {
   return spawnSync(process.execPath, [forgeScript, ...args], {
     cwd: repoRoot,
     encoding: 'utf8',
@@ -41,13 +41,16 @@ function containsTerminalControlBytes(value) {
 console.log('\n=== FORGE welcome command tests ===\n');
 
 test('forge welcome renders the install artwork for captured agent output', () => {
-  const result = runEcc(['welcome']);
+  const result = runForge(['welcome']);
 
   assert.strictEqual(result.status, 0, result.stderr);
   assert.match(result.stdout, /Welcome to FORGE!/);
   assert.ok(result.stdout.includes(`v${version}`));
-  assert.match(result.stdout, /GitHub:\s+https:\/\/github\.com\/your-org\/FORGE/);
-  assert.match(result.stdout, /Discord:\s+https:\/\/discord\.gg\/36yGMHGFbR/);
+  assert.match(result.stdout, /GitHub:\s+https:\/\/github\.com\/your-org\/forge/);
+  assert.match(result.stdout, /Documentation:\s+https:\/\/github\.com\/your-org\/forge#readme/);
+  // No community or hosted-app rows: this project has neither.
+  assert.ok(!/Discord:/.test(result.stdout));
+  assert.ok(!/GitHub App:/.test(result.stdout));
   assert.strictEqual(result.stderr, '');
 });
 
@@ -74,21 +77,21 @@ test('forge welcome supports explicit update and configured outcomes', () => {
   ];
 
   for (const [action, expected] of cases) {
-    const result = runEcc(['welcome', '--action', action]);
+    const result = runForge(['welcome', '--action', action]);
     assert.strictEqual(result.status, 0, result.stderr);
     assert.match(result.stdout, expected);
   }
 });
 
 test('forge welcome renders a provider-verified installed version', () => {
-  const result = runEcc(['welcome', '--version', '2.1.0']);
+  const result = runForge(['welcome', '--version', '2.1.0']);
 
   assert.strictEqual(result.status, 0, result.stderr);
   assert.match(result.stdout, /v2\.1\.0/);
 });
 
 test('forge welcome rejects unsafe version text', () => {
-  const result = runEcc(['welcome', '--version', '2.1.0\u001b[31m']);
+  const result = runForge(['welcome', '--version', '2.1.0\u001b[31m']);
 
   assert.strictEqual(result.status, 1);
   assert.match(result.stderr, /Invalid --version value/);
@@ -97,8 +100,8 @@ test('forge welcome rejects unsafe version text', () => {
 });
 
 test('forge welcome keeps parser error output free of terminal control bytes', () => {
-  const actionResult = runEcc(['welcome', '--action', 'broken\u001b[31m']);
-  const argumentResult = runEcc(['welcome', '--bad\u001b[31m']);
+  const actionResult = runForge(['welcome', '--action', 'broken\u001b[31m']);
+  const argumentResult = runForge(['welcome', '--bad\u001b[31m']);
 
   for (const result of [actionResult, argumentResult]) {
     assert.strictEqual(result.status, 1);
@@ -108,7 +111,7 @@ test('forge welcome keeps parser error output free of terminal control bytes', (
 });
 
 test('forge welcome rejects unknown actions before rendering', () => {
-  const result = runEcc(['welcome', '--action', 'broken']);
+  const result = runForge(['welcome', '--action', 'broken']);
 
   assert.strictEqual(result.status, 1);
   assert.match(result.stderr, /Invalid --action value/);

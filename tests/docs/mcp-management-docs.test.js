@@ -56,7 +56,7 @@ test('README MCP guidance avoids settings.json disable instructions', () => {
     'README should route runtime MCP disables through /mcp and ~/.claude.json'
   );
   assert.ok(
-    source.includes('`FORGE_DISABLED_MCPS` is an FORGE install/sync filter, not a live Claude Code toggle.'),
+    source.includes('`FORGE_DISABLED_MCPS` is a FORGE install/sync filter, not a live Claude Code toggle.'),
     'README should explain FORGE_DISABLED_MCPS scope'
   );
   assert.ok(

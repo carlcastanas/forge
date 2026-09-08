@@ -139,7 +139,7 @@ Measure rather than estimate:
 node scripts/skills-health.js --dashboard
 ```
 
-and run the `context-budget` skill or `/context-budget` for the full resident-layer audit including MCP schema overhead.
+and run the `context-budget` skill for the full resident-layer audit including MCP schema overhead.
 
 Three things the cost is not obvious about. A server with many tools is worse than several servers with few, because the schema count is what matters. Cost is paid on every turn, not once per session, so it compounds with conversation length. And a server you use twice a week costs the same as one you use twice an hour.
 

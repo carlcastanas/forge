@@ -55,7 +55,7 @@ export default async function SkillPage({ params }: Props) {
           />
 
           <div className="page-head">
-            <h1 className="t-h1 t-mono u-wrap">{skill.name}</h1>
+            <h1 className="t-h1 u-mono u-wrap">{skill.name}</h1>
             {skill.description ? <p className="t-lead">{skill.description}</p> : null}
             <div className="page-meta">
               <span className="badge">{skill.category}</span>

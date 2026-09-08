@@ -139,13 +139,6 @@ test('cross-harness architecture links to the adapter compliance matrix', () => 
   assert.ok(source.includes('harness-adapter-compliance.md'));
 });
 
-test('GA roadmap records the matrix and validator as current evidence', () => {
-  const source = read('docs/FORGE-2.0-GA-ROADMAP.md');
-  assert.ok(source.includes('docs/architecture/harness-adapter-compliance.md'));
-  assert.ok(source.includes('npm run harness:adapters -- --check'));
-  assert.ok(source.includes('scripts/lib/harness-adapter-compliance.js'));
-});
-
 if (failed > 0) {
   console.log(`\nFailed: ${failed}`);
   process.exit(1);

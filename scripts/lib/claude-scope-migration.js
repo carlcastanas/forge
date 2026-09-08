@@ -8,10 +8,10 @@ const {
   OFFICIAL_MARKETPLACE_URL,
   VALID_HOOK_MODES,
   VALID_SCOPES,
-  assertNoConflictingEccPlugins,
+  assertNoConflictingForgePlugins,
   assertSafeLocalInventory,
   assertGitAvailable,
-  currentEccPlugins,
+  currentForgePlugins,
   createDryRunClaudeRunner,
   deriveHookMode,
   ensureOfficialMarketplace,
@@ -55,8 +55,8 @@ function readPluginInventory(run, projectRoot, phase) {
 }
 
 function assertMigrationInventory(plugins, destinationScope) {
-  assertNoConflictingEccPlugins(plugins);
-  const installed = currentEccPlugins(plugins);
+  assertNoConflictingForgePlugins(plugins);
+  const installed = currentForgePlugins(plugins);
   const observedScopes = installed.map(plugin => plugin.scope);
   const uniqueScopes = new Set(observedScopes);
 
@@ -124,8 +124,8 @@ function assertMigrationInventory(plugins, destinationScope) {
 }
 
 function validateExpectedScopes(plugins, expectedScopes, options = {}) {
-  assertNoConflictingEccPlugins(plugins);
-  const installed = currentEccPlugins(plugins);
+  assertNoConflictingForgePlugins(plugins);
+  const installed = currentForgePlugins(plugins);
   const observedScopes = installed.map(plugin => plugin.scope);
   const actual = [...observedScopes].sort();
   const expected = [...expectedScopes].sort();
@@ -207,8 +207,8 @@ function uninstallSource(run, paths, migration, destinationScope) {
         paths.projectRoot,
         'source-uninstall-verification'
       );
-      assertNoConflictingEccPlugins(plugins);
-      const installed = currentEccPlugins(plugins);
+      assertNoConflictingForgePlugins(plugins);
+      const installed = currentForgePlugins(plugins);
       observedScopes = installed.map(plugin => plugin.scope);
       if (
         installed.length === 1

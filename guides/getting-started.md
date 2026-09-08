@@ -9,14 +9,14 @@ This guide walks through the first twenty minutes with FORGE: installing it, con
 ## Contents
 
 - [What FORGE actually adds](#what-forge-actually-adds)
-- [Step 1 — Install](#step-1--install)
-- [Step 2 — Verify the install](#step-2--verify-the-install)
-- [Step 3 — See what landed](#step-3--see-what-landed)
-- [Step 4 — Prepare a scratch repository](#step-4--prepare-a-scratch-repository)
-- [Step 5 — Plan the work before writing code](#step-5--plan-the-work-before-writing-code)
-- [Step 6 — Implement under test](#step-6--implement-under-test)
-- [Step 7 — Review from a clean vantage point](#step-7--review-from-a-clean-vantage-point)
-- [Step 8 — Read the session residue](#step-8--read-the-session-residue)
+- [Step 1: Install](#step-1-install)
+- [Step 2: Verify the install](#step-2-verify-the-install)
+- [Step 3: See what landed](#step-3-see-what-landed)
+- [Step 4: Prepare a scratch repository](#step-4-prepare-a-scratch-repository)
+- [Step 5: Plan the work before writing code](#step-5-plan-the-work-before-writing-code)
+- [Step 6: Implement under test](#step-6-implement-under-test)
+- [Step 7: Review from a clean vantage point](#step-7-review-from-a-clean-vantage-point)
+- [Step 8: Read the session residue](#step-8-read-the-session-residue)
 - [What just happened](#what-just-happened)
 - [Where everything lives](#where-everything-lives)
 - [Turning the volume down](#turning-the-volume-down)
@@ -47,7 +47,7 @@ Read [`../docs/CONCEPTS.md`](../docs/CONCEPTS.md) for the distinctions between t
 
 ---
 
-## Step 1 — Install
+## Step 1: Install
 
 Pick exactly one path per harness. Stacking two installs into the same harness duplicates skills, commands, and hooks.
 
@@ -70,7 +70,7 @@ Inside a Claude Code session:
 
 **Expected observation:** Claude Code reports the marketplace was added, then that `forge@forge` is installed. Restart the session so the plugin surface loads.
 
-> Claude Code plugins cannot distribute rule files. If you took Path B and want the rule layer, copy the packs you need explicitly — see [Step 3](#step-3--see-what-landed).
+> Claude Code plugins cannot distribute rule files. If you took Path B and want the rule layer, copy the packs you need explicitly — see [Step 3](#step-3-see-what-landed).
 
 ### Path C: repository clone with selective install
 
@@ -93,7 +93,7 @@ Full install mechanics, profiles, and per-harness targets live in [`../docs/INST
 
 ---
 
-## Step 2 — Verify the install
+## Step 2: Verify the install
 
 Do not trust a success message. Ask the installer what it believes it owns.
 
@@ -123,7 +123,7 @@ Then confirm the harness itself sees FORGE. In a Claude Code session:
 
 ---
 
-## Step 3 — See what landed
+## Step 3: See what landed
 
 ```bash
 ls ~/.claude/skills | head -20
@@ -147,7 +147,7 @@ Copy whole directories, never individual files — relative references inside th
 
 ---
 
-## Step 4 — Prepare a scratch repository
+## Step 4: Prepare a scratch repository
 
 Run the first real task somewhere disposable. A fresh Node project takes thirty seconds and removes the fear of a bad diff.
 
@@ -177,7 +177,7 @@ claude
 
 ---
 
-## Step 5 — Plan the work before writing code
+## Step 5: Plan the work before writing code
 
 The first move in FORGE is never implementation. Type:
 
@@ -208,7 +208,7 @@ That wrapper runs the shared pipeline documented in `skills/orch-pipeline/SKILL.
 
 ---
 
-## Step 6 — Implement under test
+## Step 6: Implement under test
 
 Ask for the TDD workflow explicitly:
 
@@ -236,7 +236,7 @@ If the build or test command breaks in a way the agent cannot resolve, `/build-f
 
 ---
 
-## Step 7 — Review from a clean vantage point
+## Step 7: Review from a clean vantage point
 
 The model that wrote the code is the worst reviewer of it — it already believes the code is correct. FORGE's review step delegates to a separate agent with its own context.
 
@@ -263,7 +263,7 @@ git commit -m "feat: add slugify utility with test coverage"
 
 ---
 
-## Step 8 — Read the session residue
+## Step 8: Read the session residue
 
 The value of FORGE is not the one feature. It is what the session leaves behind for the next one.
 

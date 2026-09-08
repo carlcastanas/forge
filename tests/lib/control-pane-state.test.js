@@ -23,7 +23,7 @@ async function test(name, fn) {
   }
 }
 
-async function writeSampleEcc2Database(dbPath) {
+async function writeSampleForge2Database(dbPath) {
   const SQL = await initSqlJs();
   const db = new SQL.Database();
 
@@ -359,7 +359,7 @@ async function runTests() {
       const dbPath = path.join(tempDir, 'forge2.db');
 
       try {
-        await writeSampleEcc2Database(dbPath);
+        await writeSampleForge2Database(dbPath);
         const snapshot = await buildControlPaneSnapshot({
           dbPath,
           repoRoot: path.join(__dirname, '..', '..'),
@@ -409,7 +409,7 @@ async function runTests() {
       const stateDbPath = path.join(tempDir, 'state.db');
 
       try {
-        await writeSampleEcc2Database(dbPath);
+        await writeSampleForge2Database(dbPath);
         await writeSampleWorkItemsDatabase(stateDbPath);
 
         const snapshot = await buildControlPaneSnapshot({
@@ -453,7 +453,7 @@ async function runTests() {
       const stateDbPath = path.join(tempDir, 'corrupt-state.db');
 
       try {
-        await writeSampleEcc2Database(dbPath);
+        await writeSampleForge2Database(dbPath);
         fs.writeFileSync(stateDbPath, 'not a sqlite database', 'utf8');
 
         const snapshot = await buildControlPaneSnapshot({
@@ -668,7 +668,7 @@ async function runTests() {
       const dbPath = path.join(tempDir, 'forge2.db');
 
       try {
-        await writeSampleEcc2Database(dbPath);
+        await writeSampleForge2Database(dbPath);
         await mutateSqlDatabase(dbPath, db => {
           const insertSession = db.prepare(`
           INSERT INTO sessions (

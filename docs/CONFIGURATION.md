@@ -196,7 +196,16 @@ Set by the test suite to stub external behavior. They have no effect on a normal
 
 ### Named in documentation, not read by shipped code
 
-`FORGE_MODE`, `FORGE_DB_PATH`, `FORGE_WORKTREE_ROOT`, and `FORGE_DEFAULT_AGENT` appear in `skills/plan-orchestrate/SKILL.md` and in a research note as proposals or as skill-local shell variables. No shipped script reads them from the environment. Treat them as unverified — confirm against your installed version before depending on them.
+| Variable | Where it appears | Status |
+|---|---|---|
+| `FORGE_MODE` | `skills/plan-orchestrate/SKILL.md` | A skill-local shell variable, not read from the environment by any script |
+| `FORGE_DB_PATH` | a research note | Proposed, not implemented |
+| `FORGE_WORKTREE_ROOT` | a research note | Proposed, not implemented |
+| `FORGE_DEFAULT_AGENT` | a research note | Proposed, not implemented |
+| `FORGE_HARNESS` | `README.md` storage-and-harness example | No shipped script reads it |
+| `FORGE_ITO_CLI_EXECUTABLE` | translated `docs/<locale>/README.md` files only | The compute bridge it configured is no longer present in `scripts/` |
+
+All six are unverified — confirm against your installed version before depending on them.
 
 ### Not environment variables
 

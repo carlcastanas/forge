@@ -7,9 +7,9 @@ metadata:
 
 # Threat Modeling
 
-A threat model is a design artifact that answers four questions: what are we building,
-what can go wrong, what will we do about it, and did the work land. It is done at design
-time, before the code exists, because moving a trust boundary after launch is expensive.
+A threat model is a design artifact answering four questions: what is being built, what
+can go wrong, what will be done about it, and whether that work landed. It belongs at
+design time, before the code exists, because moving a trust boundary later is expensive.
 This skill produces a diagram, a ranked threat list, and a set of tickets — not a
 document that is read once. Done means every high-ranked threat has either a mitigation
 in the backlog or a written, dated acceptance.

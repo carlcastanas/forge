@@ -2,13 +2,14 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 import { CopyCommand } from '@/components/copy-command';
+import { HeroTerminal } from '@/components/hero-terminal';
 import {
   AgentIcon,
   ArrowRightIcon,
-  CheckCircleIcon,
   CommandIcon,
   HookIcon,
-  MinusCircleIcon,
+  LoopIcon,
+  MemoryIcon,
   RuleIcon,
   ShieldIcon,
   SkillIcon,
@@ -29,6 +30,79 @@ function docHref(slug: string, fallback: string): string {
 
 export default function HomePage() {
   const counts = getCounts();
+
+  /**
+   * The six ways a capable model without a process fails. None of them is
+   * exotic; each is something a competent team already guards against.
+   */
+  const failureModes = [
+    {
+      mode: 'It edits before the shape is settled',
+      without:
+        'The first tool call is a write. By the time anyone asks where the boundary should sit, four files already assume an answer, and the cheapest way forward is to keep going.',
+      withoutExample: 'edit  src/cache.ts  ·  edit  src/db.ts  ·  edit  src/api.ts',
+      with: 'Planning is a stage with an output. The plan is written to a file and the run pauses there, so the shape is arguable while it is still cheap to change and the diff can be checked against it afterwards.',
+      withExample: 'plan  4 files · 1 new middleware · no schema change',
+    },
+    {
+      mode: 'It writes tests that agree with the code',
+      without:
+        'The implementation lands first and the test is written to describe it. It asserts what the function returns rather than what the change was for, so it passes on the bug as readily as on the fix.',
+      withoutExample: 'expect(limit(req)).toEqual(result)',
+      with: 'The failing test lands first and states the expectation in the requirement’s terms. Watching it fail for the stated reason is what proves the test can detect the absence of the change.',
+      withExample: 'FAIL  expected 429 after 6 requests, got 200',
+    },
+    {
+      mode: 'It reviews its own work in its own context',
+      without:
+        'The window that argued for the approach is asked to find the flaw in it. Everything that made the approach look right is still loaded, so review becomes a summary of the diff instead of an audit of it.',
+      withoutExample: 'same window · same reasoning · same blind spot',
+      with: 'Review is delegated to a subagent with its own context window, a tool allowlist of Read, Grep and Glob, and no memory of the argument that produced the code. It routes by the files the change touched.',
+      withExample: 'review  fresh context · read-only · 1 finding',
+    },
+    {
+      mode: 'It reports success from the diff',
+      without:
+        'The change looks complete, so the run says it is complete. No build was invoked, no suite was run, and the sentence that reports the result is a prediction rather than an observation.',
+      withoutExample: 'Done. The endpoint is now rate limited.',
+      with: 'Verification is a stage that runs the build, the test suite, and the security scan, and reads each result. A stage that produced no output did not run, and the run says so.',
+      withExample: 'verify  build ok · lint ok · 12 passed, 0 failed',
+    },
+    {
+      mode: 'It forgets a correction an hour later',
+      without:
+        'You explain that the limiter is per-process and will not hold behind the load balancer. Two sessions on, the same assumption is back, because the correction lived only in a transcript that has since been compacted away.',
+      withoutExample: 'context compacted · correction discarded',
+      with: 'What was learned is written to disk at the end of a session and read at the start of the next. The correction outlives the window that received it, and the next run begins already knowing it.',
+      withExample: 'remember  rate limits are per-process here -> saved',
+    },
+    {
+      mode: 'It re-derives the workflow from your prompt',
+      without:
+        'The process exists only in how well you phrased the request. Ask carelessly on a tired afternoon and you get a different engineering standard than you got that morning.',
+      withoutExample: 'quality of output = quality of that one prompt',
+      with: `The process is installed, not requested. ${counts.rules} rule files for the stack are injected at session start, ${counts.skills} skills wait behind their triggers, and hooks fire on lifecycle events whether or not the model cooperates.`,
+      withExample: `${counts.hooks} hooks · ${counts.rules} rules · session start`,
+    },
+  ];
+
+  const costs = [
+    {
+      icon: <EyeOffIcon />,
+      title: 'Review that never happened',
+      body: 'A diff approved inside the context that wrote it has been summarised, not reviewed. The finding it would have caught surfaces later, in a place where it is expensive.',
+    },
+    {
+      icon: <LoopIcon size={20} />,
+      title: 'The same correction, repeatedly',
+      body: 'Every lesson that is not written down is paid for again next session. The cost is not the minute of retyping; it is the change that shipped before you noticed the assumption had returned.',
+    },
+    {
+      icon: <MemoryIcon size={20} />,
+      title: 'A context window spent on setup',
+      body: 'Conventions re-explained in every prompt occupy the one resource that is genuinely scarce. Tokens spent restating your standards are tokens not spent on the problem.',
+    },
+  ];
 
   const pillars = [
     {
@@ -84,92 +158,145 @@ export default function HomePage() {
     {
       icon: <ShieldIcon size={20} />,
       title: SITE.shield,
-      href: docHref('threat-model', '/docs'),
+      href: '/security',
       lines: [
         'A security scanner for the agent surface: prompt injection, exfiltration, unsafe tool use.',
         'It treats fetched pages, MCP responses, and package metadata as untrusted data.',
       ],
-      cta: 'Read the threat model',
+      cta: 'See what it scans',
     },
-  ];
-
-  const without = [
-    'The model starts every session with no memory of the last one and re-derives your conventions.',
-    'A plan exists only in the transcript, so nothing can check whether the work matched it.',
-    'Tests are written after the code, against the code, and pass for the wrong reason.',
-    'Review is whatever the same model that wrote the diff thinks of the diff.',
-    'The build is declared green without the output being read.',
-    'What was learned dies with the context window.',
-  ];
-
-  const withForge = [
-    'Session start loads the rules for the stack and the memory written by the last session.',
-    'The planner writes the plan to a file before a single edit, so the diff can be checked against it.',
-    'A failing test lands first and defines done.',
-    'The diff is routed to a read-only reviewer scoped to the language it touches.',
-    'Verification runs the build, the suite, and the security scan, and reads each result.',
-    'What was learned is written back into memory and into the rules that produced it.',
   ];
 
   return (
     <>
       {/* Hero */}
       <section className="container hero">
-        <div className="hero__inner">
-          <span className="chip chip--dot">Version {SITE.version} · MIT</span>
+        <div className="hero__grid">
+          <div className="hero__inner">
+            <span className="chip chip--dot">Version {SITE.version} · MIT</span>
 
-          <h1 className="t-display">The engineering system your coding agent is missing</h1>
+            <h1 className="t-display">The engineering system your coding agent is missing</h1>
 
-          <p className="t-lead hero__subhead">
-            A coding agent brings a model. FORGE brings the process around it: a written plan, a
-            failing test, a scoped review, a verified build, and a memory that outlives the
-            context window.
-          </p>
-
-          <div className="hero__ctas">
-            <Link className="btn btn--primary" href="/docs/getting-started">
-              Get started
-              <ArrowRightIcon size={16} />
-            </Link>
-            <Link className="btn" href="/skills">
-              Browse skills
-            </Link>
-          </div>
-
-          <div style={{ width: '100%', maxWidth: '34rem' }}>
-            <CopyCommand command={SITE.installCommand} />
-            <p className="t-small" style={{ marginTop: '0.6rem' }}>
-              Installs the catalog to <code className="t-mono">{SITE.installDir}</code> and
-              registers an adapter for each coding agent it finds.
+            <p className="t-lead hero__subhead">
+              A coding agent brings a model. FORGE brings the process around it: a written plan, a
+              failing test, a scoped review, a verified build, and a memory that outlives the
+              context window.
             </p>
+
+            <div className="hero__ctas">
+              <Link className="btn btn--primary" href="/docs/getting-started">
+                Get started
+                <ArrowRightIcon size={16} />
+              </Link>
+              <Link className="btn" href="/why">
+                Why this exists
+              </Link>
+              <Link className="btn btn--ghost" href="/skills">
+                Browse skills
+              </Link>
+            </div>
+
+            <div style={{ width: '100%', maxWidth: '34rem' }}>
+              <CopyCommand command={SITE.installCommand} />
+              <p className="t-small" style={{ marginTop: '0.6rem' }}>
+                Installs the catalog to <code className="t-mono">{SITE.installDir}</code> and
+                registers an adapter for each coding agent it finds.
+              </p>
+            </div>
           </div>
+
+          <HeroTerminal />
         </div>
       </section>
 
-      {/* The loop */}
-      <section className="container section">
+      {/* Why this exists */}
+      <section className="container section" aria-labelledby="why-this-exists">
         <SectionHead
-          eyebrow="The loop"
-          title="One pass, seven stages, every time"
-          lead="FORGE does not make the model smarter. It makes the model finish. Each stage has an owner in the catalog and a check that says whether it ran."
+          eyebrow="Why this exists"
+          id="why-this-exists"
+          title="A capable model with no process fails in predictable ways"
+          lead="Not exotic ways. The ordinary ones a competent team already guards against, arriving one at a time in a session that looks like it is going well. FORGE makes the guard the default instead of something you re-specify in every prompt."
         />
 
-        <div className="loop-strip">
-          {LOOP_STEPS.map((step, index) => (
-            <div className="loop-strip__step" key={step.name}>
-              <span className="loop-strip__index">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span className="loop-strip__name">{step.name}</span>
-              <span className="loop-strip__note">{step.note}</span>
+        <div className="swap">
+          <div className="swap__head" aria-hidden="true">
+            <div className="swap__heading">Failure mode</div>
+            <div className="swap__heading">A model on its own</div>
+            <div className="swap__heading">The same model under FORGE</div>
+          </div>
+
+          {failureModes.map((item) => (
+            <div className="swap__row" key={item.mode}>
+              <div className="swap__cell">
+                <p className="swap__mode">{item.mode}</p>
+              </div>
+              <div className="swap__cell">
+                <span className="swap__tag">On its own</span>
+                <p className="swap__text">
+                  {item.without}
+                  <code className="swap__example u-wrap">{item.withoutExample}</code>
+                </p>
+              </div>
+              <div className="swap__cell swap__cell--with">
+                <span className="swap__tag">Under FORGE</span>
+                <p className="swap__text">
+                  {item.with}
+                  <code className="swap__example u-wrap">{item.withExample}</code>
+                </p>
+              </div>
             </div>
           ))}
         </div>
 
-        <p className="t-small" style={{ marginTop: '1.25rem', maxWidth: '62ch' }}>
-          {SITE.claim} Everything the agent might need is on disk. Only what the current stage
-          needs is in the window.
-        </p>
+        <div style={{ marginTop: 'clamp(2.5rem, 2rem + 2vw, 3.5rem)' }}>
+          <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
+            What replaces it is one loop, run the same way every time
+          </h3>
+          <p className="t-body u-muted measure" style={{ marginBottom: '1.5rem' }}>
+            Each stage has an owner in the catalog and a check that says whether it ran. The
+            stages are not advice in a prompt; they are files on disk that the harness loads.
+          </p>
+
+          <div className="loop-strip">
+            {LOOP_STEPS.map((step, index) => (
+              <div className="loop-strip__step" key={step.name}>
+                <span className="loop-strip__index">{String(index + 1).padStart(2, '0')}</span>
+                <span className="loop-strip__name">{step.name}</span>
+                <span className="loop-strip__note">{step.note}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+            The scarce resource is the context window, so the system loads a narrow slice per task
+            and persists everything else to disk. {SITE.claim}
+          </p>
+        </div>
+
+        <div style={{ marginTop: 'clamp(2.5rem, 2rem + 2vw, 3.5rem)' }}>
+          <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
+            What it costs you not to have it
+          </h3>
+          <p className="t-body u-muted measure" style={{ marginBottom: '1.5rem' }}>
+            None of these show up as an error. They show up as work that has to be done twice.
+          </p>
+
+          <div className="grid grid--3">
+            {costs.map((cost) => (
+              <div className="card" key={cost.title}>
+                <span className="card__icon">{cost.icon}</span>
+                <h4 className="card__title">{cost.title}</h4>
+                <p className="card__body">{cost.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+            <Link href="/why">The long version</Link> covers who this is for and who it is not
+            for, what changes on day one against what changes in month three, and where FORGE does
+            not help — it does not make a weak model strong, and it is not free of cost.
+          </p>
+        </div>
       </section>
 
       {/* Catalog counts */}
@@ -200,6 +327,26 @@ export default function HomePage() {
             <span className="stat__value">{counts.rules}</span>
             <span className="stat__label">Rules</span>
             <span className="stat__note">Per-stack constraints injected at session start</span>
+          </Link>
+          <Link className="stat" href={docHref('hooks-guide', '/docs')}>
+            <span className="stat__value">{counts.hooks}</span>
+            <span className="stat__label">Hooks</span>
+            <span className="stat__note">Lifecycle checks the model cannot decide to skip</span>
+          </Link>
+          <Link className="stat" href="/platforms">
+            <span className="stat__value">{counts.harnesses}</span>
+            <span className="stat__label">Harnesses</span>
+            <span className="stat__note">Coding agents with an adapter in the repository</span>
+          </Link>
+          <Link className="stat" href="/docs">
+            <span className="stat__value">{counts.docs}</span>
+            <span className="stat__label">Doc pages</span>
+            <span className="stat__note">Reference pages, rendered from the repository</span>
+          </Link>
+          <Link className="stat" href="/guides">
+            <span className="stat__value">{counts.guides}</span>
+            <span className="stat__label">Guides</span>
+            <span className="stat__note">Long-form walkthroughs, read start to finish</span>
           </Link>
         </div>
       </section>
@@ -325,41 +472,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Before / after */}
-      <section className="container section">
-        <SectionHead
-          eyebrow="Before and after"
-          title="The same session, twice"
-          lead="Nothing below depends on a better model. It depends on the process around the model."
-        />
-
-        <div className="compare">
-          <div className="compare__col">
-            <h3 className="t-h3">Without FORGE</h3>
-            <ul className="compare__list">
-              {without.map((item) => (
-                <li className="compare__item compare__item--neg" key={item}>
-                  <MinusCircleIcon size={16} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="compare__col compare__col--with">
-            <h3 className="t-h3">With FORGE</h3>
-            <ul className="compare__list">
-              {withForge.map((item) => (
-                <li className="compare__item compare__item--pos" key={item}>
-                  <CheckCircleIcon size={16} />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* Harness support */}
       <section className="container section">
         <SectionHead
@@ -377,10 +489,10 @@ export default function HomePage() {
           ))}
         </div>
 
-        <p className="t-small" style={{ marginTop: '1.25rem', maxWidth: '62ch' }}>
+        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
           An adapter is a projection, never a second source of truth. When an adapter and the
           catalog disagree, the catalog is right.{' '}
-          <Link href={docHref('harness-matrix', '/docs')}>See the full support matrix</Link>.
+          <Link href="/platforms">See the full support matrix</Link>.
         </p>
       </section>
 
@@ -408,5 +520,29 @@ export default function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+/** Local to this page: a struck-through eye, for review that did not happen. */
+function EyeOffIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={20}
+      height={20}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M4 6.5A15.6 15.6 0 0 0 2.5 12S6 18.5 12 18.5a9.7 9.7 0 0 0 4.4-1" />
+      <path d="M9.8 6a10.6 10.6 0 0 1 2.2-.2c6 0 9.5 6.2 9.5 6.2a16.7 16.7 0 0 1-2.8 3.6" />
+      <path d="M10 10a2.8 2.8 0 0 0 4 4" />
+      <path d="m4 4 16 16" />
+    </svg>
   );
 }

@@ -81,7 +81,9 @@ require_file "$CONFIG_FILE" "Global config.toml"
 require_file "$AGENTS_FILE" "Global AGENTS.md"
 
 if [[ -f "$AGENTS_FILE" ]]; then
-  if search_file '^# FORGE \(FORGE\)' "$AGENTS_FILE"; then
+  # Match the managed block marker the sync writes, not a heading from the root
+  # AGENTS.md; that heading is documentation prose and is free to change.
+  if search_file '^<!-- BEGIN FORGE -->' "$AGENTS_FILE"; then
     ok "AGENTS contains FORGE root instructions"
   else
     fail "AGENTS missing FORGE root instructions"

@@ -2,13 +2,22 @@ import Link from 'next/link';
 
 import { GitHubIcon, LogoMark } from '@/components/icons';
 import { MobileDrawer, type DrawerSection } from '@/components/mobile-drawer';
+import { LanguageMenu } from '@/components/language-menu';
 import { NavLinks } from '@/components/nav-links';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { getDocGroups, getGuides, getRepoVersion } from '@/lib/content';
+import { getLocales } from '@/lib/i18n';
 import { SITE } from '@/lib/site';
 
 export function Header() {
   const version = getRepoVersion(SITE.version);
+  const locales = getLocales().map(({ code, endonym, english, href, pages }) => ({
+    code,
+    endonym,
+    english,
+    href,
+    pages,
+  }));
 
   const sections: DrawerSection[] = [
     ...getDocGroups().map((group) => ({
@@ -39,6 +48,7 @@ export function Header() {
         <NavLinks />
 
         <div className="site-header__actions">
+          <LanguageMenu options={locales} />
           <ThemeToggle />
           <a
             className="icon-button"

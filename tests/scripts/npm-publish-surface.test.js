@@ -58,7 +58,9 @@ function buildExpectedPublishPaths(repoRoot) {
     "scripts/install-apply.js",
     "scripts/install-guided.js",
     "scripts/install-plan.js",
-    "scripts/ito.js",
+    // "scripts/ito.js" is intentionally absent: this repository ships no Ito runtime,
+    // no scripts/ito.js, and no skills/ito-* directories. The path was inherited from an
+    // earlier tree and cannot be packed.
     "scripts/list-installed.js",
     "scripts/loop-status.js",
     "scripts/memory.js",
@@ -104,7 +106,7 @@ function buildExpectedPublishPaths(repoRoot) {
     "docs/CODEX-NAVIGATION-GUIDE.md",
     "docs/COMMAND-AGENT-MAP.md",
     "docs/design/forge-memory-vault.md",
-    "assets/images/sponsors",
+    // The sponsorship asset directory was removed along with the sponsorship surface.
   ]
   const exclusionPaths = [
     "!**/__pycache__/**",
@@ -160,7 +162,6 @@ function main() {
         "scripts/consult.js",
         "scripts/control-pane.js",
         "scripts/feedback.js",
-        "scripts/ito.js",
         "scripts/memory.js",
         "scripts/memory-mcp.mjs",
         "scripts/nasiko.js",
@@ -196,7 +197,6 @@ function main() {
         "assets/forge-icon.svg",
         "assets/hero.png",
         "assets/images/community/discord.svg",
-        "assets/images/community/heart.svg",
         "docs/CODEX-NAVIGATION-GUIDE.md",
         "docs/COMMAND-AGENT-MAP.md",
         "docs/design/forge-memory-vault.md",

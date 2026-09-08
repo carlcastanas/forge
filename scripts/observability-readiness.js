@@ -103,6 +103,21 @@ function includesAll(text, needles) {
   return needles.every(needle => text.includes(needle));
 }
 
+/**
+ * `package.json` "files" may list a script explicitly or ship it through a
+ * covering directory entry (`scripts/`). Both publish the file, so the gate
+ * accepts either instead of demanding the literal path.
+ */
+function packageFilesCover(packageFiles, relativePath) {
+  return packageFiles.some(entry => {
+    if (typeof entry !== 'string' || entry.startsWith('!')) return false;
+    const normalized = entry.replace(/^\.\//, '');
+    if (normalized === relativePath) return true;
+    const directory = normalized.replace(/\*+$/, '');
+    return directory.endsWith('/') && relativePath.startsWith(directory);
+  });
+}
+
 function hasObjectKeys(value, keys) {
   return value
     && typeof value === 'object'
@@ -345,7 +360,7 @@ function buildChecks(rootDir) {
       path: 'package.json',
       description: 'Package exposes the observability readiness gate',
       pass: packageScripts['observability:ready'] === 'node scripts/observability-readiness.js'
-        && packageFiles.includes('scripts/observability-readiness.js'),
+        && packageFilesCover(packageFiles, 'scripts/observability-readiness.js'),
       fix: 'Add scripts/observability-readiness.js to package files and observability:ready.'
     }
   ];

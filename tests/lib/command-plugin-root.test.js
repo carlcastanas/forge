@@ -6,7 +6,7 @@ const os = require('os');
 const assert = require('assert');
 const { INLINE_RESOLVE } = require('../../scripts/lib/resolve-forge-root');
 
-// Sentinel FORGE skill that resolveEccRoot() requires alongside the script tree
+// Sentinel FORGE skill that resolveForgeRoot() requires alongside the script tree
 // before accepting a root; kept in sync with the module's DEFAULT_SKILL_PROBE.
 const FORGE_SKILL_SENTINEL = path.join('skills', 'continuous-learning-v2');
 
@@ -67,15 +67,15 @@ test('auto-update command probes for the script it runs, not just scripts/lib', 
       `${docPath} should embed the shared inline resolver`
     );
     assert.ok(
-      doc.includes("resolveEccRoot({probe:p.join('scripts','auto-update.js')})"),
+      doc.includes("resolveForgeRoot({probe:p.join('scripts','auto-update.js')})"),
       `${docPath} should probe for scripts/auto-update.js`
     );
   }
 });
 
-test('resolveEccRoot module covers current and legacy marketplace plugin roots', () => {
-  const { resolveEccRoot } = require('../../scripts/lib/resolve-forge-root');
-  assert.ok(typeof resolveEccRoot === 'function');
+test('resolveForgeRoot module covers current and legacy marketplace plugin roots', () => {
+  const { resolveForgeRoot } = require('../../scripts/lib/resolve-forge-root');
+  assert.ok(typeof resolveForgeRoot === 'function');
 
   const legacyHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'forge-marketplace-legacy-'));
   try {
@@ -83,7 +83,7 @@ test('resolveEccRoot module covers current and legacy marketplace plugin roots',
     fs.mkdirSync(path.join(legacyRoot, 'scripts', 'lib'), { recursive: true });
     fs.writeFileSync(path.join(legacyRoot, 'scripts', 'lib', 'utils.js'), '// stub');
     fs.mkdirSync(path.join(legacyRoot, FORGE_SKILL_SENTINEL), { recursive: true });
-    assert.strictEqual(resolveEccRoot({ envRoot: '', homeDir: legacyHomeDir }), legacyRoot);
+    assert.strictEqual(resolveForgeRoot({ envRoot: '', homeDir: legacyHomeDir }), legacyRoot);
   } finally {
     fs.rmSync(legacyHomeDir, { recursive: true, force: true });
   }
@@ -94,7 +94,7 @@ test('resolveEccRoot module covers current and legacy marketplace plugin roots',
     fs.mkdirSync(path.join(cacheRoot, 'scripts', 'lib'), { recursive: true });
     fs.writeFileSync(path.join(cacheRoot, 'scripts', 'lib', 'utils.js'), '// stub');
     fs.mkdirSync(path.join(cacheRoot, FORGE_SKILL_SENTINEL), { recursive: true });
-    assert.strictEqual(resolveEccRoot({ envRoot: '', homeDir: cacheHomeDir }), cacheRoot);
+    assert.strictEqual(resolveForgeRoot({ envRoot: '', homeDir: cacheHomeDir }), cacheRoot);
   } finally {
     fs.rmSync(cacheHomeDir, { recursive: true, force: true });
   }

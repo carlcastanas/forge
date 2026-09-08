@@ -17,9 +17,9 @@ const CURRENT_PACKAGE_VERSION = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf8')
 ).version;
 
-const { resolveEccRoot, INLINE_RESOLVE } = require('../../scripts/lib/resolve-forge-root');
+const { resolveForgeRoot, INLINE_RESOLVE } = require('../../scripts/lib/resolve-forge-root');
 
-// Sentinel FORGE skill that resolveEccRoot() requires (alongside the script tree)
+// Sentinel FORGE skill that resolveForgeRoot() requires (alongside the script tree)
 // before accepting a root for skill consumers. Kept in sync with the module's
 // DEFAULT_SKILL_PROBE; the #2544 regression test guards the behaviour.
 const FORGE_SKILL_SENTINEL = path.join('skills', 'continuous-learning-v2');
@@ -78,12 +78,12 @@ function runTests() {
   // ─── Env Var Priority ───
 
   if (test('returns CLAUDE_PLUGIN_ROOT when set', () => {
-    const result = resolveEccRoot({ envRoot: '/custom/plugin/root' });
+    const result = resolveForgeRoot({ envRoot: '/custom/plugin/root' });
     assert.strictEqual(result, '/custom/plugin/root');
   })) passed++; else failed++;
 
   if (test('trims whitespace from CLAUDE_PLUGIN_ROOT', () => {
-    const result = resolveEccRoot({ envRoot: '  /trimmed/root  ' });
+    const result = resolveForgeRoot({ envRoot: '  /trimmed/root  ' });
     assert.strictEqual(result, '/trimmed/root');
   })) passed++; else failed++;
 
@@ -91,7 +91,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       setupStandardInstall(homeDir);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'));
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -102,7 +102,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       setupStandardInstall(homeDir);
-      const result = resolveEccRoot({ envRoot: '   ', homeDir });
+      const result = resolveForgeRoot({ envRoot: '   ', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'));
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -115,7 +115,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       setupStandardInstall(homeDir);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'));
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -126,7 +126,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -137,7 +137,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['forge@forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -148,7 +148,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -159,7 +159,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['forge@forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -170,7 +170,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['marketplaces', 'forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -181,7 +181,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['marketplaces', 'forge']);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -193,7 +193,7 @@ function runTests() {
     try {
       const expected = setupLegacyPluginInstall(homeDir, ['marketplaces', 'forge']);
       setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -205,7 +205,7 @@ function runTests() {
     const homeDir = createTempDir();
     try {
       const expected = setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -217,7 +217,7 @@ function runTests() {
     try {
       const claudeDir = setupStandardInstall(homeDir);
       setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, claudeDir,
         'Standard install should take precedence over plugin cache');
     } finally {
@@ -230,7 +230,7 @@ function runTests() {
     try {
       setupPluginCache(homeDir, 'forge', 'legacy-org', '1.7.0');
       const expected = setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       // Should find one of them (either is valid)
       assert.ok(
         result === expected ||
@@ -249,7 +249,7 @@ function runTests() {
     try {
       // Create ~/.claude but don't put scripts there
       fs.mkdirSync(path.join(homeDir, '.claude'), { recursive: true });
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'));
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -259,7 +259,7 @@ function runTests() {
   if (test('falls back gracefully when ~/.claude/ does not exist', () => {
     const homeDir = createTempDir();
     try {
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'));
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -274,7 +274,7 @@ function runTests() {
       const claudeDir = path.join(homeDir, '.claude');
       fs.mkdirSync(path.join(claudeDir, 'custom'), { recursive: true });
       fs.writeFileSync(path.join(claudeDir, 'custom', 'marker.js'), '// probe');
-      const result = resolveEccRoot({
+      const result = resolveForgeRoot({
         envRoot: '',
         homeDir,
         probe: path.join('custom', 'marker.js'),
@@ -299,7 +299,7 @@ function runTests() {
       fs.mkdirSync(path.join(claudeDir, 'skills', 'my-own-skill'), { recursive: true });
       // A COMPLETE FORGE root exists in the plugin cache (scripts + FORGE skill).
       const expected = setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected,
         'a scripts-only ~/.claude must not shadow a complete plugin-cache root');
     } finally {
@@ -317,7 +317,7 @@ function runTests() {
       const scriptDir = path.join(claudeDir, 'scripts', 'lib');
       fs.mkdirSync(scriptDir, { recursive: true });
       fs.writeFileSync(path.join(scriptDir, 'utils.js'), '// stub');
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, claudeDir);
     } finally {
       fs.rmSync(homeDir, { recursive: true, force: true });
@@ -335,7 +335,7 @@ function runTests() {
       fs.writeFileSync(path.join(partialScripts, 'utils.js'), '// stub');
       // A COMPLETE FORGE root exists in the plugin cache (scripts + FORGE skill).
       const expected = setupPluginCache(homeDir, 'forge', 'your-org', CURRENT_PACKAGE_VERSION);
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, expected,
         'a scripts-only exact plugin root must not shadow a complete plugin-cache root');
     } finally {
@@ -355,7 +355,7 @@ function runTests() {
       );
       fs.mkdirSync(cacheScripts, { recursive: true });
       fs.writeFileSync(path.join(cacheScripts, 'utils.js'), '// stub');
-      const result = resolveEccRoot({ envRoot: '', homeDir });
+      const result = resolveForgeRoot({ envRoot: '', homeDir });
       assert.strictEqual(result, path.join(homeDir, '.claude'),
         'a scripts-only plugin-cache root must not be returned; fall back to ~/.claude');
     } finally {
@@ -376,12 +376,12 @@ function runTests() {
       fs.writeFileSync(path.join(marketplaceRoot, 'scripts', 'auto-update.js'), '// stub');
 
       assert.strictEqual(
-        resolveEccRoot({ envRoot: '', homeDir }),
+        resolveForgeRoot({ envRoot: '', homeDir }),
         claudeDir,
         'default probe accepts a root with full resolver evidence'
       );
       assert.strictEqual(
-        resolveEccRoot({
+        resolveForgeRoot({
           envRoot: '',
           homeDir,
           probe: path.join('scripts', 'auto-update.js'),
@@ -423,7 +423,7 @@ function runTests() {
     try {
       const resolverDir = path.join(homeDir, '.claude', 'scripts', 'lib');
       fs.mkdirSync(resolverDir, { recursive: true });
-      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveEccRoot() { return 'delegated:' + process.env.INLINE_RESOLVE_MARKER; } };`);
+      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveForgeRoot() { return 'delegated:' + process.env.INLINE_RESOLVE_MARKER; } };`);
       const { execFileSync } = require('child_process');
       const result = execFileSync('node', [
         '-e', `console.log(${INLINE_RESOLVE})`,
@@ -448,7 +448,7 @@ function runTests() {
       const resolverDir = path.join(homeDir, '.claude', 'scripts', 'lib');
       fs.mkdirSync(resolverDir, { recursive: true });
       fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `const assert = require('assert');
-module.exports = { resolveEccRoot() { assert.strictEqual(process.env.HOME, ${JSON.stringify(homeDir)}); return 'module-loaded'; } };`);
+module.exports = { resolveForgeRoot() { assert.strictEqual(process.env.HOME, ${JSON.stringify(homeDir)}); return 'module-loaded'; } };`);
       const { execFileSync } = require('child_process');
       const result = execFileSync('node', [
         '-e', `console.log(${INLINE_RESOLVE})`,
@@ -467,7 +467,7 @@ module.exports = { resolveEccRoot() { assert.strictEqual(process.env.HOME, ${JSO
     try {
       const resolverDir = path.join(homeDir, '.claude', 'plugins', 'forge', 'scripts', 'lib');
       fs.mkdirSync(resolverDir, { recursive: true });
-      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveEccRoot() { return 'plugin-root'; } };`);
+      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveForgeRoot() { return 'plugin-root'; } };`);
       const { execFileSync } = require('child_process');
       const result = execFileSync('node', [
         '-e', `console.log(${INLINE_RESOLVE})`,
@@ -489,7 +489,7 @@ module.exports = { resolveEccRoot() { assert.strictEqual(process.env.HOME, ${JSO
         'scripts', 'lib'
       );
       fs.mkdirSync(resolverDir, { recursive: true });
-      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveEccRoot() { return 'cache-root'; } };`);
+      fs.writeFileSync(path.join(resolverDir, 'resolve-forge-root.js'), `module.exports = { resolveForgeRoot() { return 'cache-root'; } };`);
       const { execFileSync } = require('child_process');
       const result = execFileSync('node', [
         '-e', `console.log(${INLINE_RESOLVE})`,

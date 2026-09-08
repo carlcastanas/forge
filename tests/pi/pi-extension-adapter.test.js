@@ -74,7 +74,7 @@ function stripComments(source) {
 }
 
 /**
- * Invokes FORGE's hook runner like the adapter (`runEccHook` in
+ * Invokes FORGE's hook runner like the adapter (`runForgeHook` in
  * .pi/extensions/index.ts): it uses the test host's Node executable with the
  * same argv shape and JSON payload on stdin. No shell is used.
  */
@@ -95,7 +95,7 @@ function runHookRunner(forgeRoot, hookId, relScript, profiles, payload, extraEnv
  * real repo. Only the files `run-with-flags.js` -> `session-end-marker.js`
  * actually `require()` at runtime are copied.
  */
-function buildEccSkeleton(repoRoot) {
+function buildForgeSkeleton(repoRoot) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "forge pi test-"))
   const hooksDir = path.join(root, "scripts", "hooks")
   fs.mkdirSync(hooksDir, { recursive: true })
@@ -353,7 +353,7 @@ async function main() {
         path.join(repoRoot, ".pi", "extensions", "hook-runtime.js"),
         "utf8"
       )
-      const runHookStart = extensionSource.indexOf("function runEccHook")
+      const runHookStart = extensionSource.indexOf("function runForgeHook")
       const runHookEnd = extensionSource.indexOf("function resolveHookCwd")
       const runHookSource = extensionSource.slice(runHookStart, runHookEnd)
       const beforeRunHookSource = extensionSource.slice(0, runHookStart)
@@ -365,7 +365,7 @@ async function main() {
         !beforeRunHookSource.includes("resolveHookRuntime()") &&
           /try\s*\{\s*hookRuntime = resolveHookRuntime\(\)\s*\}\s*catch/.test(runHookSource) &&
           /execFile\(\s*hookRuntime,/.test(runHookSource),
-        "expected runEccHook to resolve its runtime inside the guarded hook path rather than " +
+        "expected runForgeHook to resolve its runtime inside the guarded hook path rather than " +
           "during module initialization"
       )
       assert.ok(
@@ -510,7 +510,7 @@ async function main() {
     // ---- Group 2: real hook-runner behavior ---------------------------
 
     ["GLOBAL INSTALL + SPACE IN PATH: hook execution succeeds from a package root whose path contains a space", () => {
-      const skeletonRoot = buildEccSkeleton(repoRoot)
+      const skeletonRoot = buildForgeSkeleton(repoRoot)
       try {
         assert.ok(
           skeletonRoot.includes(" "),
@@ -546,7 +546,7 @@ async function main() {
     }],
 
     ["hook resolution is package-relative, not cwd-relative: still succeeds when cwd points elsewhere", () => {
-      const skeletonRoot = buildEccSkeleton(repoRoot)
+      const skeletonRoot = buildForgeSkeleton(repoRoot)
       try {
         const result = runHookRunner(
           skeletonRoot,
@@ -583,7 +583,7 @@ async function main() {
       // session-end-marker.js never executes against the real checkout: a
       // real run can leave marker artifacts behind and would make this
       // test's outcome depend on whatever state the repo happens to be in.
-      const skeletonRoot = buildEccSkeleton(repoRoot)
+      const skeletonRoot = buildForgeSkeleton(repoRoot)
       try {
         const disabledResult = runHookRunner(
           skeletonRoot,
@@ -728,7 +728,7 @@ async function main() {
       const withoutComments = stripComments(extensionSource)
       assert.ok(
         withoutComments.includes('child.stdin?.on("error"'),
-        "expected runEccHook in .pi/extensions/index.ts to register an error listener on " +
+        "expected runForgeHook in .pi/extensions/index.ts to register an error listener on " +
           'child.stdin via child.stdin?.on("error", ...) as real code, not just described ' +
           "in a comment; stdin.end() writes asynchronously, so a hook that exits before " +
           "reading its payload raises an EPIPE `error` event that a try/catch around " +
@@ -736,23 +736,23 @@ async function main() {
           "crashes the whole Pi session"
       )
 
-      const runEccHookStart = extensionSource.indexOf("function runEccHook")
+      const runForgeHookStart = extensionSource.indexOf("function runForgeHook")
       assert.ok(
-        runEccHookStart !== -1,
-        "expected .pi/extensions/index.ts to define a function named runEccHook"
+        runForgeHookStart !== -1,
+        "expected .pi/extensions/index.ts to define a function named runForgeHook"
       )
-      const nextFunctionStart = extensionSource.indexOf("\nfunction ", runEccHookStart + 1)
-      const runEccHookSource =
+      const nextFunctionStart = extensionSource.indexOf("\nfunction ", runForgeHookStart + 1)
+      const runForgeHookSource =
         nextFunctionStart === -1
-          ? extensionSource.slice(runEccHookStart)
-          : extensionSource.slice(runEccHookStart, nextFunctionStart)
+          ? extensionSource.slice(runForgeHookStart)
+          : extensionSource.slice(runForgeHookStart, nextFunctionStart)
 
-      const catchMatch = runEccHookSource.match(
+      const catchMatch = runForgeHookSource.match(
         /try\s*\{\s*child\.stdin\?\.end\([\s\S]*?\)\)\s*\}\s*catch\s*\(error\)\s*\{([\s\S]*?)\n\s*\}\n/
       )
       assert.ok(
         catchMatch,
-        "expected runEccHook in .pi/extensions/index.ts to wrap child.stdin?.end(...) in " +
+        "expected runForgeHook in .pi/extensions/index.ts to wrap child.stdin?.end(...) in " +
           "a try { ... } catch (error) { ... } block"
       )
       const catchBody = catchMatch[1]
@@ -772,7 +772,7 @@ async function main() {
     }],
 
     ["EPIPE isolation (real behavioral proof): a large stdin write to a child that exits without reading it survives as an `error` event or a clean resolution, never an uncaught exception", async () => {
-      // Mirrors the exact pattern in runEccHook: execFile + process.execPath, an
+      // Mirrors the exact pattern in runForgeHook: execFile + process.execPath, an
       // `error` listener on child.stdin, and a try/catch around child.stdin.end(...).
       // The child below exits immediately without ever reading stdin, so a payload
       // larger than the OS pipe buffer (2MB) cannot be written synchronously and
@@ -831,7 +831,7 @@ async function main() {
         "expected writing a 2MB payload to a child that exits before reading stdin to " +
           "never raise an uncaughtException; this is exactly the " +
           'EPIPE-crashes-the-Pi-session regression the child.stdin?.on("error", ...) ' +
-          "listener in runEccHook exists to prevent"
+          "listener in runForgeHook exists to prevent"
       )
       assert.ok(
         outcome !== undefined,
@@ -859,7 +859,7 @@ async function main() {
 
       const sessionStartSource = stripComments(extensionSource.slice(sessionStartIdx, beforeAgentStartIdx))
       const clearIdx = sessionStartSource.indexOf("pendingContext = undefined")
-      const hookCallIdx = sessionStartSource.indexOf("await runEccHook(")
+      const hookCallIdx = sessionStartSource.indexOf("await runForgeHook(")
       assert.ok(
         clearIdx !== -1,
         "expected the session_start handler in .pi/extensions/index.ts to clear " +
@@ -868,11 +868,11 @@ async function main() {
       )
       assert.ok(
         hookCallIdx !== -1,
-        "expected the session_start handler in .pi/extensions/index.ts to await runEccHook(...)"
+        "expected the session_start handler in .pi/extensions/index.ts to await runForgeHook(...)"
       )
       assert.ok(
         clearIdx < hookCallIdx,
-        "expected pendingContext = undefined to run BEFORE `await runEccHook(...)` in " +
+        "expected pendingContext = undefined to run BEFORE `await runForgeHook(...)` in " +
           "the session_start handler; if the clear happens after (or is skipped when " +
           "the hook fails), a new session start begun while a previous SessionStart " +
           "hook is still running -- or one whose hook later fails -- can replay stale " +

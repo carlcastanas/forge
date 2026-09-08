@@ -366,7 +366,7 @@ function renderDashboard(options = {}) {
   textParts.push(header.join('\n'));
 
   if (selectedPanel) {
-    const result = panelRenderersselectedPanel;
+    const result = panelRenderers[selectedPanel]();
     panels[selectedPanel] = result.data;
     textParts.push(result.text);
   } else {

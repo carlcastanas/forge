@@ -21,8 +21,11 @@ const ciWorkflowPath = path.join(__dirname, '..', '..', '.github', 'workflows', 
 const releaseWorkflowSource = fs.readFileSync(releaseWorkflowPath, 'utf8');
 const reusableReleaseWorkflowSource = fs.readFileSync(reusableReleaseWorkflowPath, 'utf8');
 const ciWorkflowSource = fs.readFileSync(ciWorkflowPath, 'utf8');
-const rootReadmePath = path.join(__dirname, '..', '..', 'README.md');
-const rootReadmeSource = fs.readFileSync(rootReadmePath, 'utf8');
+// The root README no longer carries a release-history section; the localized
+// READMEs that release.sh syncs with the same helper still do, so the heading
+// regression is exercised against one of those.
+const releaseHistoryReadmePath = path.join(__dirname, '..', '..', 'README.zh-CN.md');
+const releaseHistoryReadmeSource = fs.readFileSync(releaseHistoryReadmePath, 'utf8');
 const normalizedCiWorkflowSource = ciWorkflowSource.replace(/\r\n/g, '\n');
 
 function test(name, fn) {
@@ -99,9 +102,9 @@ function runTests() {
     );
   })) passed++; else failed++;
 
-  if (test('a 2.2 bump preserves historical root README release headings', () => {
-    const historicalHeading = rootReadmeSource.match(/^### v2\.0\.0:.*$/m);
-    assert.ok(historicalHeading, 'README fixture should contain the historical v2.0.0 heading');
+  if (test('a 2.2 bump preserves historical README release headings', () => {
+    const historicalHeading = releaseHistoryReadmeSource.match(/^### v1\.0\.0 .*$/m);
+    assert.ok(historicalHeading, 'README fixture should contain a historical release heading');
     assert.ok(
       source.includes('const oldVersion = process.argv[3]'),
       'release heading sync should receive the version being replaced'
@@ -118,13 +121,13 @@ function runTests() {
     const oldVersion = '2.1.0';
     const nextVersion = '2.2.0';
     const escapedOldVersion = oldVersion.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const simulated = rootReadmeSource.replace(
+    const simulated = releaseHistoryReadmeSource.replace(
       new RegExp(`^### v${escapedOldVersion}( .*)$`, 'm'),
       `### v${nextVersion}$1`
     );
     assert.ok(
       simulated.includes(historicalHeading[0]),
-      'syncing the current release must leave the historical v2.0.0 heading unchanged'
+      'syncing the current release must leave historical release headings unchanged'
     );
   })) passed++; else failed++;
 

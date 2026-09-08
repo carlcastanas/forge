@@ -7,6 +7,24 @@
 </p>
 
 <p align="center">
+  <strong>Language:</strong>
+  <a href="README.md">English</a> |
+  <a href="docs/pt-BR/README.md">Português (Brasil)</a> |
+  <a href="README.zh-CN.md">简体中文</a> |
+  <a href="docs/zh-TW/README.md">繁體中文</a> |
+  <a href="docs/ja-JP/README.md">日本語</a> |
+  <a href="docs/ko-KR/README.md">한국어</a> |
+  <a href="docs/tr/README.md">Türkçe</a> |
+  <a href="docs/ru/README.md">Русский</a> |
+  <a href="docs/vi-VN/README.md">Tiếng Việt</a> |
+  <a href="docs/th/README.md">ไทย</a> |
+  <a href="docs/de-DE/README.md">Deutsch</a> |
+  <a href="docs/es/README.md">Español</a> |
+  <a href="docs/uk-UA/README.md">Українська</a> |
+  <a href="docs/ur/README.md">اردو</a>
+</p>
+
+<p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-000000.svg" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/node-%3E%3D18-000000.svg" alt="Node 18 or newer" />
   <img src="https://img.shields.io/badge/harnesses-13-000000.svg" alt="13 harnesses" />
@@ -50,7 +68,8 @@ rules, memory, continuous learning, and Forge Shield security scanning.
 ## Contents
 
 - [Why this exists](#why-this-exists)
-- [Install](#install)
+- [Install with Claude Code](#install-with-claude-code)
+- [Install FORGE on any harness](#install-forge-on-any-harness)
 - [Verify the install](#verify-the-install)
 - [Your first task](#your-first-task)
 - [The mental model](#the-mental-model)
@@ -84,83 +103,304 @@ A capable model with no process produces a specific, recognisable failure patter
 None of that is exotic. It is the process a competent team already follows. FORGE makes
 it the default rather than something you have to re-specify in every prompt.
 
-## Install
+## Install with Claude Code
 
-Pick exactly one path per harness. Stacking a manual install on top of a plugin install
-produces duplicated skills and conflicting hooks.
+Claude Code is the reference harness, and guided setup is the shortest correct path. From a
+terminal:
 
-### Claude Code plugin (recommended)
+```bash
+npx forge-universal setup
+```
 
-Inside Claude Code:
+The command needs Node.js 18 or newer, Git, and Claude Code 2.1 or newer on `PATH`. It
+inventories the marketplace and every native install scope before writing anything, then
+installs, updates, or safely moves `forge@forge` into the scope you pick and records the
+hook profile next to it. Run it again to change any of those; the run is idempotent.
+
+If npm hands back a stale build, ask the registry what exists:
+
+```bash
+npm view forge-universal version
+```
+
+Claude Code's own plugin commands are the other supported route. Inside Claude Code:
 
 ```text
 /plugin marketplace add https://github.com/your-org/forge
 /plugin install forge@forge
 ```
 
-This installs the skills, agents, commands, and plugin-managed hooks together. Stop here.
+Both routes end at the same `forge@forge` plugin: skills, agents, commands, and
+plugin-managed hooks. Take one of them and stop there.
 
-### Universal package
+## Install FORGE on any harness
 
-For Claude Code, Codex, or any supported harness, from a terminal:
+Everything below is the long form: choosing a path, choosing a surface, the per-harness
+details, and how to undo any of it.
 
-```bash
-npx forge-universal@latest
-```
+### Pick one path only
 
-The installer detects your harness, asks which surfaces you want, asks for a hook profile,
-and records the choice so later runs are idempotent. It can install, update, or relocate
-an existing install.
+One method per harness. Installing FORGE into Claude Code and Codex at the same time is
+fine. Installing it twice into the *same* harness is what produces duplicated skills,
+duplicated commands, and hooks that fire twice.
 
-If npm reports a stale version, confirm what the registry has before retrying:
+- **Recommended default:** run the guided Claude plugin setup shown above.
+- Also supported for Claude Code: the native `/plugin` commands.
+- Works: Claude Code plugin alongside the native Codex plugin.
+- Works: Claude Code plugin alongside the legacy Codex sync.
+- Avoid: Claude Code plugin plus a full manual Claude install.
+- Avoid: Codex sync plus the Codex marketplace plugin.
 
-```bash
-npm view forge-universal version
-```
+**Do not stack install methods.** If a harness already looks duplicated, go to
+[Reset / Uninstall FORGE](#reset--uninstall-forge) before installing anything else.
 
-### From a clone
+### Find the right components first
 
-```bash
-git clone https://github.com/your-org/forge.git
-cd forge
-./install.sh          # macOS and Linux
-# .\install.ps1       # Windows PowerShell
-```
-
-Both wrappers resolve the repo root and delegate to the Node installer in
-`scripts/install-apply.js`. They install dependencies on first run.
-
-### Selective install
-
-You rarely want all 322 skills. Preview and pick the surfaces you will actually use:
+You rarely want all 318 skills. Ask the packaged advisor what matches the work you actually
+do, then preview the file plan before writing it:
 
 ```bash
-forge catalog profiles                      # list the install profiles
-forge catalog components --family language  # list components by family
+npx forge-universal consult "security reviews" --target claude
+forge catalog profiles                      # the install profiles
+forge catalog components --family language  # components by family
 forge plan --profile core --target claude   # dry-run what a profile would write
 forge install --profile developer --target claude
 ```
 
-`forge` with no command routes its arguments to `install`, so `forge typescript` is
-shorthand for installing the TypeScript surface. The installer also accepts
-`--with`, `--without`, `--skills`, `--modules`, `--no-hooks`, `--profile`, `--target`,
-`--locale`, `--json`, and `--dry-run`. Run `forge help install` for the authoritative
-list on your version.
-
-The full flag reference is in [docs/INSTALLATION.md](docs/INSTALLATION.md), and the
-reasoning behind surface selection is in
-[docs/capability-surface-selection.md](docs/capability-surface-selection.md).
-
-### Uninstall
+It returns matching components, related profiles, and preview/install commands. You can
+also name surfaces directly:
 
 ```bash
-forge uninstall            # removes only files recorded in install-state
-forge uninstall --keep-data
+./install.sh --target claude --skills tdd-workflow,security-review
+node scripts/forge.js install --profile minimal --target claude --with capability:machine-learning
 ```
 
-The uninstaller works from the install-state manifest, so it removes what FORGE wrote and
-leaves your own files alone. `forge repair` fixes a partial or interrupted install without
-starting over.
+`forge` with no subcommand routes its arguments to `install`, so `forge typescript` is
+shorthand for installing the TypeScript surface. The installer also accepts `--with`,
+`--without`, `--modules`, `--no-hooks`, `--profile`, `--target`, `--locale`, `--json`, and
+`--dry-run`. Run `forge help install` for the authoritative list on your version, and read
+[docs/INSTALLATION.md](docs/INSTALLATION.md) for the full flag reference.
+
+### Guided setup through any package runner
+
+```bash
+npx forge-universal setup             # Claude Code plugin scope and hook profile
+npx forge-universal install --guided  # Claude Code, Codex, and Kimi Code in one reviewed flow
+```
+
+The first command currently configures the Claude Code plugin; use the second when more
+than one harness is involved. It shows each install channel and destination, preflights
+every selection before the first write, and asks for one final confirmation.
+
+| Package runner | Guided setup command |
+| --- | --- |
+| npm | `npx forge-universal setup` |
+| pnpm | `pnpm dlx forge-universal setup` |
+| Yarn 2 and newer | `yarn dlx forge-universal setup` |
+| Bun | `bunx forge-universal setup` |
+
+Yarn Classic 1 does not provide `yarn dlx`. Use `npx`, install `forge-universal` globally,
+or move to a newer Yarn.
+
+Verify a harness before it writes:
+
+```bash
+npx forge-universal install --guided --harness codex --dry-run
+npx forge-universal install --profile core --target kimi --dry-run
+```
+
+`forge-install` is a binary name inside `forge-universal`, not a package published under
+that name, so there is nothing to fetch by that name from the registry.
+
+### Claude Code details
+
+Claude Code owns these built-in commands, including the errors they raise when a
+marketplace, a plugin, or a conflicting scope already exists. FORGE cannot intercept that
+parser. If a native command reports a conflict, resolve the scope or fall back to
+`npx forge-universal setup`. Do not layer a manual install on top of it.
+
+Once the plugin is installed, `/forge:configure-forge` reconfigures it from inside Claude
+Code. It delegates to the same setup flow, it is
+available only after the plugin is installed, and it cannot replace `/plugin` during a
+first install.
+
+Claude Code plugins cannot carry rule files, so copy the packs you want yourself:
+
+```bash
+git clone https://github.com/your-org/forge.git
+cd forge
+mkdir -p ~/.claude/rules/forge
+cp -R rules/common ~/.claude/rules/forge/
+cp -R rules/typescript ~/.claude/rules/forge/   # swap in your stack
+```
+
+Start with `rules/common` plus one language or framework pack you actually use. Rules hold
+context for the whole session, so the set you copy is a running cost. After a
+`/plugin install`, do not run `./install.sh --profile full`: that is the stacked install the
+section above warns about. The reverse holds too — if you install from a clone with
+`./install.sh --profile full`, that is the whole install.
+If you choose this path, stop there. Do not also run `/plugin install`.
+
+A manual Claude install places each skill directly under `~/.claude/skills/`, one directory
+per skill. Claude Code does not discover skills nested a level deeper than that, which is
+the most common reason a hand-built install appears to do nothing.
+
+### Codex details
+
+Current Codex releases install FORGE as a native repo-marketplace plugin. The marketplace
+entry points at the repository root, so the Codex cache receives the manifest together with
+the skills, MCP configuration, hook runtime, and scripts it references.
+
+```bash
+# Recommended current install: add FORGE's native plugin from the repo marketplace
+codex plugin marketplace add your-org/FORGE
+codex plugin add forge@forge
+codex plugin list --json
+node scripts/codex/check-plugin-cache.js
+```
+
+Both add commands are safe to run again. Codex keeps one enabled plugin state in the active
+`CODEX_HOME` and does not use Claude's `user`, `project`, and `local` scopes. Its native
+hooks require an explicit trust decision and do not read FORGE's hook profiles.
+
+Legacy copied-configuration compatibility is still available when you deliberately want
+merged files in `~/.codex`:
+
+```bash
+npm install && bash scripts/sync-forge-to-codex.sh
+node scripts/forge.js uninstall --legacy-codex-sync --dry-run
+```
+
+Where the two harnesses actually differ:
+
+| Capability | Claude Code | Codex |
+| --- | --- | --- |
+| Instructions | Native | Native `AGENTS.md` |
+| Skills | Native installed set | Native plugin set |
+| Delegation | Native agents | Codex multi-agent roles; Claude agent files are not installed as roles |
+| FORGE hooks | Native plugin hooks | Native reviewed subset with explicit trust |
+| MCP | Available, explicit activation | Native plugin manifest; the legacy sync merges TOML |
+
+Codex's narrower native hook set is supplemented by `AGENTS.md`, optional
+`model_instructions_file` overrides, and sandbox permissions. Repository navigation,
+surface ownership, and the PR diff packet workflow are in
+[docs/CODEX-NAVIGATION-GUIDE.md](docs/CODEX-NAVIGATION-GUIDE.md); the native lifecycle is
+documented in [.codex-plugin/README.md](.codex-plugin/README.md).
+
+### Other harnesses
+
+Clone once, then install the adapter that matches your tool:
+
+```bash
+git clone https://github.com/your-org/forge.git
+cd forge
+./install.sh --profile minimal --target cursor
+```
+
+Supported targets are `cursor`, `gemini`, `opencode`, `zed`, `antigravity`, `qwen`,
+`kimi`, `codebuddy`, `joycode`, `hermes`, and `openclaw`. OpenCode needs its plugin payload
+built first: `npm install && npm run build:opencode`, then
+`./install.sh --profile full --target opencode`.
+
+Cursor installs agent definitions under `.cursor/agents/forge-*.md`.
+Cursor-native loading behavior can vary by Cursor build.
+FORGE does not install root `AGENTS.md` into `.cursor/`. The adapter keeps Cursor's context
+inside Cursor's own rules and agent surfaces.
+
+GitHub Copilot needs no install step. `.github/copilot-instructions.md` carries the
+instruction layer, `.github/prompts/` holds the reusable prompt files, and the committed
+`.vscode/settings.json` turns on `chat.promptFiles` so VS Code loads them.
+
+For a harness with no adapter, [docs/MANUAL-ADAPTATION-GUIDE.md](docs/MANUAL-ADAPTATION-GUIDE.md)
+explains how to carry a small set of skills and workflow instructions into a chat-style
+tool without pretending hooks or native skill discovery exist there.
+
+### Low-context / no-hooks path
+
+Rules, agents, commands, and the core workflows, without the hook runtime:
+
+```bash
+npx forge-universal install --profile minimal --target claude
+./install.sh --profile minimal --target claude
+```
+
+Windows:
+
+```powershell
+.\install.ps1 --profile minimal --target claude
+```
+
+This profile intentionally excludes `hooks-runtime`. Pair it with
+`FORGE_SESSION_START_CONTEXT=off` when the model has a small window.
+
+To keep the core profile and still leave hooks out:
+
+```bash
+./install.sh --profile core --without baseline:hooks --target claude
+./install.sh --profile core --no-hooks --target claude
+```
+
+Any plan that would materialise the hook runtime stops for an explicit decision. Without
+`--enable-hooks` or `--no-hooks` the installer prints what the hooks can do and writes
+nothing. The guided installer asks the same question interactively.
+
+### Installing hooks by hand
+
+Do not copy the raw repo `hooks/hooks.json` into `~/.claude/settings.json` or `~/.claude/hooks/hooks.json`.
+That file describes the plugin and repository layout, and its command paths do not resolve
+once they leave it. Let the installer rewrite them:
+
+```bash
+bash ./install.sh --target claude --modules hooks-runtime --enable-hooks
+```
+
+That puts the hook scripts under `~/.claude/` and registers the resolved hook entries in
+`~/.claude/settings.json`. Settings and hooks you already had are preserved; FORGE-owned
+entries carry a stable id so later updates and uninstalls stay idempotent.
+
+On Windows the Claude configuration root is `%USERPROFILE%\.claude`:
+
+```powershell
+pwsh -File .\install.ps1 --target claude --modules hooks-runtime --enable-hooks
+```
+
+After a plugin install, skip this section entirely. Claude Code 2.1 and newer load plugin
+hooks by convention, and a second copy in `settings.json` makes every hook fire twice.
+
+### Reset / Uninstall FORGE
+
+From a published-package install, run these in the directory you installed from:
+
+```bash
+npx forge-universal list-installed
+npx forge-universal doctor
+npx forge-universal repair
+npx forge-universal uninstall --dry-run
+npx forge-universal uninstall
+```
+
+From a source checkout:
+
+```bash
+node scripts/forge.js list-installed
+node scripts/forge.js doctor
+node scripts/forge.js repair
+node scripts/uninstall.js --dry-run
+node scripts/uninstall.js
+```
+
+FORGE only removes files recorded in its install-state. Files it did not write stay where
+they are, which is also why a rules directory you copied by hand is yours to delete.
+
+Plugin users: remove the plugin from Claude Code first, then delete the rule folders you
+copied manually and no longer want.
+
+If you stacked methods, unwind in this order:
+
+1. Remove the Claude Code plugin.
+2. Run the FORGE uninstall from the directory that holds the install-state.
+3. Delete the hand-copied rule folders you no longer want.
+4. Reinstall once, by a single path.
 
 ## Verify the install
 
@@ -266,7 +506,7 @@ Grouped by domain, with the full table in [AGENTS.md](AGENTS.md):
 - **Language specialists** — TypeScript, Python, Go, Rust, Swift, Kotlin, Java, C++, and more
 - **Domain** — data, ML, infrastructure, frontend, mobile, documentation
 
-### Skills (322)
+### Skills (318)
 
 The durable unit. A skill is selected by its description, so the description is really a
 router: it decides whether the skill fires at all. Browse the catalog in
@@ -280,8 +520,11 @@ observability and incident response, data and ML, documentation, and operations.
 ### Commands (94)
 
 Slash entries over the skills, kept for muscle memory during the move to a skills-first
-surface. `/plan`, `/tdd`, `/review-pr`, `/security-scan`, `/refactor-clean`, and the rest
+surface. `/plan`, `/test-coverage`, `/review-pr`, `/security-scan`, `/refactor-clean`, and the rest
 are listed in [COMMANDS-QUICK-REF.md](COMMANDS-QUICK-REF.md).
+
+A Claude Code plugin install namespaces them, so `/plan` is typed as `/forge:plan` and
+`/review-pr` as `/forge:review-pr`. A manual install leaves the bare names in place.
 
 ### Rules (122)
 
@@ -302,6 +545,22 @@ What survives the session: summaries, learned instincts, and project context. Th
 constraint is that memory must earn its context cost on the next session, which means
 most of what happens in a session should *not* be remembered. See
 [docs/MEMORY-GUIDE.md](docs/MEMORY-GUIDE.md).
+
+The Memory Vault stores portable Markdown under `.forge/memory/` and `~/.forge/memory/`, so
+Claude Code, Codex, and the other adapters read one format. Plugin-only, skill-only, and
+minimal installs do not put that runtime on `PATH`; install it separately:
+
+```bash
+npm install -g forge-universal
+forge memory init --scope project
+forge memory search "authentication migration" --target-harness codex
+command -v forge-memory-mcp
+```
+
+The optional `forge-memory-mcp` stdio server exposes the same bounded save, search, read,
+and doctor surface to a harness that wants it, and does not enable itself. Memory is
+unreviewed context, never executable policy; verify anything load-bearing before acting on
+it. The workflow is in [skills/unified-memory/SKILL.md](skills/unified-memory/SKILL.md).
 
 ### Forge Shield
 
@@ -399,6 +658,27 @@ export FORGE_HARNESS=claude-code
 export FORGE_SESSION_RETENTION_DAYS=30
 ```
 
+### MCP servers
+
+A plugin install deliberately leaves FORGE's bundled MCP definitions switched off. That
+keeps plugin MCP tool names short enough for strict provider validators, and it keeps the
+decision with you. FORGE ships one default connector, `chrome-devtools`; the rest are
+opt-in entries in [`mcp-configs/mcp-servers.json`](mcp-configs/mcp-servers.json). Copy the
+ones you want into a project `.mcp.json`.
+
+Use `/mcp` for Claude Code runtime disables; Claude Code persists those choices in `~/.claude.json`.
+
+If you already run your own copy of a bundled server, tell the installer to leave it alone:
+
+```bash
+export FORGE_DISABLED_MCPS="chrome-devtools"
+```
+
+`FORGE_DISABLED_MCPS` is a FORGE install/sync filter, not a live Claude Code toggle.
+Install and sync flows skip those servers instead of writing a duplicate. The connector policy and
+the audit that retired the previous defaults are in
+[docs/MCP-CONNECTOR-POLICY.md](docs/MCP-CONNECTOR-POLICY.md).
+
 ### Low-context and local models
 
 If you are running a small local model, the default context injection will crowd out the
@@ -408,6 +688,9 @@ task. Install without hooks and with a reduced surface:
 forge install --profile core --target claude --no-hooks
 export FORGE_SESSION_START_CONTEXT=off
 ```
+
+The full no-hooks install paths are in
+[Low-context / no-hooks path](#low-context--no-hooks-path).
 
 ## Running agents in parallel
 

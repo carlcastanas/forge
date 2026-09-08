@@ -908,9 +908,13 @@ function extractExecutableContainers(input, options = {}) {
       resolvedCommand = DYNAMIC_EXECUTION_MARKER;
     }
     if (resolvedCommand) {
-      for (let offset = 0; offset < resolvedCommand.length; offset += 1) {
-        masked[index + offset] = resolvedCommand[offset];
-      }
+      // The masked buffer is joined verbatim, so the resolved command is parked
+      // whole in the container's first slot instead of being copied character by
+      // character. Copying spilled past `group.end` whenever the resolution was
+      // longer than the container it replaced (the dynamic-execution marker is a
+      // fixed-width sentinel, so `& (Get-Command Remove-Item) -Force ...` used to
+      // smear the sentinel into the following argument and lose the finding).
+      masked[index] = resolvedCommand;
       if (!withinDoubleQuote) appendContext(resolvedCommand);
     } else if (isScriptBlock) {
       if (invokesContainerResult(prefix)) {

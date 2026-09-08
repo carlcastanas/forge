@@ -2819,7 +2819,7 @@ async function runTests() {
       assert.ok(bootstrapSrc.includes('run-with-flags.js'), 'Bootstrap should resolve the runner script');
       assert.ok(bootstrapSrc.includes('CLAUDE_PLUGIN_ROOT'), 'Bootstrap should consult CLAUDE_PLUGIN_ROOT');
       assert.ok(bootstrapSrc.includes('resolve-forge-root'), 'Bootstrap should delegate to the committed resolver module');
-      assert.ok(bootstrapSrc.includes('resolveEccRoot({ probe: rel })'), 'Bootstrap should call resolveEccRoot with the hook probe');
+      assert.ok(bootstrapSrc.includes('resolveForgeRoot({ probe: rel })'), 'Bootstrap should call resolveForgeRoot with the hook probe');
     })
   )
     passed++;

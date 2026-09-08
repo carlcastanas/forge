@@ -95,6 +95,43 @@ export FORGE_DISABLED_HOOKS="pre:bash:tmux-reminder,stop:desktop-notify"
 | `standard` | Adds write-time checks and verification prompts (default) |
 | `strict` | Blocks on failed checks instead of warning |
 
+Two different settings are easy to confuse, so name them separately.
+
+Runtime hook profiles:
+- `minimal` — session bookkeeping only
+- `standard` — the default; adds write-time checks
+- `strict` — blocks instead of warning
+
+Claude setup-only value: `off` is a choice the Claude plugin setup wizard offers for the
+hook preference it stores. It means "install no hook runtime", not "run a profile named
+off". Nothing reads `off` as a value of `FORGE_HOOK_PROFILE`; to stop hooks at runtime, set
+`FORGE_HOOKS_ENABLED=0`.
+
+## Installing hooks manually
+
+The supported way to get hooks onto a machine is the installer, because it rewrites the
+command paths for their destination. On macOS and Linux:
+
+```bash
+bash ./install.sh --target claude --modules hooks-runtime --enable-hooks
+```
+
+On Windows, where the Claude configuration root is `%USERPROFILE%\.claude`:
+
+```powershell
+pwsh -File .\install.ps1 --target claude --modules hooks-runtime --enable-hooks
+```
+
+Either command writes the hook scripts under the Claude configuration root and registers
+the resolved hook entries in `~/.claude/settings.json`, keyed by stable id so an update or
+an uninstall stays idempotent. Existing user hooks are preserved.
+
+What not to do: do not paste the raw repo `hooks.json` into `~/.claude/settings.json` or copy it directly into `~/.claude/hooks/hooks.json`.
+The paths inside it are written for the plugin and repository layout and will not resolve
+elsewhere. After a plugin install, skip manual hook installation entirely — Claude Code 2.1
+and newer load plugin hooks by convention, and a second registration makes each hook fire
+twice.
+
 ## Two rules that prevent most hook incidents
 
 A hook runs on every matching event, in the critical path of the user's work.

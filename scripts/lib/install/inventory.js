@@ -6,10 +6,36 @@ const path = require('path');
 const { isWithinRoot, realpathNearestExisting } = require('../path-safety');
 
 const CURRENT_PLUGIN_ID = 'forge@forge';
-const LEGACY_PLUGIN_IDS = new Set([
-  'forge@forge',
-  'forge@forge',
-]);
+
+// FORGE has never shipped under another plugin id, so there is no legacy id to
+// retire yet. The detection mechanism stays in place for the first rename: set
+// FORGE_LEGACY_PLUGIN_IDS (comma or whitespace separated) to have setup and the
+// scope migration refuse to run while a retired plugin id is still installed.
+const LEGACY_PLUGIN_IDS = new Set();
+const LEGACY_PLUGIN_IDS_ENV = 'FORGE_LEGACY_PLUGIN_IDS';
+
+function resolveLegacyPluginIds(options = {}) {
+  if (options.legacyPluginIds) {
+    return new Set(
+      [...options.legacyPluginIds]
+        .map(id => String(id).trim())
+        .filter(id => id.length > 0)
+    );
+  }
+
+  const configured = options.env?.[LEGACY_PLUGIN_IDS_ENV]
+    ?? process.env[LEGACY_PLUGIN_IDS_ENV];
+  if (typeof configured !== 'string' || configured.trim() === '') {
+    return new Set(LEGACY_PLUGIN_IDS);
+  }
+
+  return new Set(
+    configured
+      .split(/[\s,]+/)
+      .map(id => id.trim())
+      .filter(id => id.length > 0 && id !== CURRENT_PLUGIN_ID)
+  );
+}
 
 function resolveClaudePaths(options = {}) {
   const homeDir = options.homeDir
@@ -49,8 +75,6 @@ function findManualClaudePlugin(options = {}) {
     ['forge', 'plugin.json'],
     ['forge@forge', '.claude-plugin', 'plugin.json'],
     ['forge@forge', 'plugin.json'],
-    ['forge', '.claude-plugin', 'plugin.json'],
-    ['forge', 'plugin.json'],
   ];
 
   for (const segments of candidates) {
@@ -142,6 +166,8 @@ function findManagedClaudeInstalls(options = {}) {
 module.exports = {
   CURRENT_PLUGIN_ID,
   LEGACY_PLUGIN_IDS,
+  LEGACY_PLUGIN_IDS_ENV,
+  resolveLegacyPluginIds,
   findManagedClaudeInstalls,
   findManualClaudePlugin,
   resolveClaudePaths,

@@ -80,7 +80,7 @@
 
 ## 最新动态
 
-### v2.2.1 — 引导式多 Harness 安装（2026年8月）
+### v1.0.0 — 引导式多 Harness 安装
 
 新增可审查的 Claude Code、Codex 与 Kimi Code 多 Harness 安装流程，并提供同步的 npm 命令入口。
 
@@ -828,25 +828,13 @@ node tests/hooks/hooks.test.js
 
 ---
 
-## 赞助者
-
-本项目免费开源。赞助支持项目持续维护与功能迭代。
-
-成为赞助者 | [赞助档位](SPONSORS.md) | [赞助计划](SPONSORING.md)
-
----
-
-## Star 历史
-
-[![Star History Chart](https://api.star-history.com/svg?repos=your-org/forge&type=Date)](https://star-history.com/#your-org/forge&Date)
-
----
-
 ## 链接
 
-- **快速上手指南（入门首选）：** [FORGE 简明指南](/status/2012378465664745795)
-- **长文指南（高阶进阶）：** [FORGE 完整版深度指南](/status/2014040193557471352)
-- **安全指南：** [安全指南](./the-security-guide.md) | [推文详解](/status/2033263813387223421)
+- **快速上手：** [入门指南](guides/getting-started.md)
+- **日常实践：** [实用指南](guides/the-field-guide.md)
+- **系统全貌：** [完整指南](guides/the-complete-guide.md)
+- **安全：** [安全指南](guides/the-security-guide.md) | [威胁模型](docs/THREAT-MODEL.md)
+- **参考文档：** [文档索引](docs/README.md)
 
 ---
 

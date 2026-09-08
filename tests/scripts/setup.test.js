@@ -78,7 +78,7 @@ function runSetup(fixture, args, options = {}) {
 function quoteShellArgument(value) {
   return `'${String(value).replace(/'/g, `'\\''`)}'`;
 }
-function runInteractiveEccSetup(fixture, options = {}) {
+function runInteractiveForgeSetup(fixture, options = {}) {
   if (process.platform === 'win32') {
     return null;
   }
@@ -217,6 +217,54 @@ test('an existing install without --scope updates its detected scope', () => {
         'plugin', 'update', 'forge@forge', '--scope', 'project',
       ])
     )));
+  });
+});
+
+// FORGE has never shipped under another plugin id, so no retired id is registered
+// by default. The retired id is injected here so the legacy-conflict gate stays
+// covered for the first time a plugin id is renamed.
+const INJECTED_LEGACY_PLUGIN_ID = 'retired-example@retired-example';
+
+test('a registered legacy plugin blocks setup before any mutation', () => {
+  withFixture({
+    plugins: [{
+      id: INJECTED_LEGACY_PLUGIN_ID,
+      scope: 'user',
+      enabled: true,
+      version: '0.0.1',
+    }],
+  }, fixture => {
+    const result = runSetup(fixture, [
+      '--mode', 'claude-plugin',
+      '--scope', 'user',
+      '--hooks', 'standard',
+      '--yes',
+    ], { env: { FORGE_LEGACY_PLUGIN_IDS: INJECTED_LEGACY_PLUGIN_ID } });
+    assert.strictEqual(result.status, 1);
+    assert.match(result.stderr, /legacy plugin/i);
+    assert.ok(result.stderr.includes(INJECTED_LEGACY_PLUGIN_ID), result.stderr);
+    assert.strictEqual(hasMutation(fixture), false);
+  });
+});
+
+test('an unregistered plugin id does not trip the legacy gate', () => {
+  withFixture({
+    plugins: [{
+      id: INJECTED_LEGACY_PLUGIN_ID,
+      scope: 'user',
+      enabled: true,
+      version: '0.0.1',
+    }],
+  }, fixture => {
+    const result = runSetup(fixture, [
+      '--mode', 'claude-plugin',
+      '--scope', 'user',
+      '--hooks', 'standard',
+      '--yes',
+      '--json',
+    ]);
+    assert.strictEqual(result.status, 0, result.stderr);
+    assert.strictEqual(JSON.parse(result.stdout).pluginId, 'forge@forge');
   });
 });
 
@@ -649,7 +697,7 @@ test('forge setup preserves a real terminal for the interactive wizard', () => {
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture);
+    const result = runInteractiveForgeSetup(fixture);
     assert.strictEqual(result.status, 0, `${result.stdout}\n${result.stderr}`);
     assert.ifError(result.error);
     assert.match(result.stdout, /Where should Claude enable forge@forge\?/);
@@ -663,7 +711,7 @@ test('confirmed interactive apply starts immediately and clears the spinner on s
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: [],
       answers: ['2', '2', 'y'],
     });
@@ -691,7 +739,7 @@ test('confirmed interactive apply clears and stops the spinner when apply throws
       times: 1,
     }],
   }, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: [],
       answers: ['1', '3', 'yes'],
     });
@@ -712,7 +760,7 @@ test('all interactive scope and hook choices install and persist the selected co
   for (const [scopeIndex, scope] of scopes.entries()) {
     for (const [hookIndex, hookMode] of hooks.entries()) {
       withFixture({}, fixture => {
-        const result = runInteractiveEccSetup(fixture, {
+        const result = runInteractiveForgeSetup(fixture, {
           args: [],
           answers: [String(scopeIndex + 1), String(hookIndex + 1), 'y'],
         });
@@ -756,7 +804,7 @@ test('all interactive choices from an existing install update or migrate to the 
             scope: sourceScope,
           }],
         }, fixture => {
-          const result = runInteractiveEccSetup(fixture, {
+          const result = runInteractiveForgeSetup(fixture, {
             args: [],
             answers: [String(selectedIndex + 1), String(hookIndex + 1), 'y'],
           });
@@ -798,7 +846,7 @@ test('interactive named choices install and persist the selected configuration',
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: [],
       answers: ['project', 'strict', 'yes'],
     });
@@ -827,7 +875,7 @@ test('invalid interactive choices explain the problem and allow a retry', () => 
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: ['--dry-run'],
       answers: ['1.5', 'not-a-scope', '2', '2junk', '9', '2'],
     });
@@ -845,7 +893,7 @@ test('interactive cancellation after non-default choices performs no mutation', 
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: [],
       answers: ['2', '2', 'n'],
     });
@@ -862,7 +910,7 @@ test('closing interactive input cancels cleanly without mutation', () => {
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: [],
       answers: ['2', '\u0004'],
     });
@@ -879,7 +927,7 @@ test('interactive mode flag still prompts for missing scope and hook choices', (
   if (process.platform === 'win32') return;
 
   withFixture({}, fixture => {
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: ['--mode', 'claude-plugin', '--dry-run'],
       answers: ['3', '4'],
     });
@@ -911,7 +959,7 @@ test('interactive defaults preserve an existing install scope and hook preferenc
         },
       },
     }));
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: ['--dry-run'],
       answers: ['', ''],
     });
@@ -947,7 +995,7 @@ test('partial migration requires an explicit destination and preserves stored ho
         },
       },
     }));
-    const result = runInteractiveEccSetup(fixture, {
+    const result = runInteractiveForgeSetup(fixture, {
       args: ['--dry-run'],
       answers: ['', 'project', ''],
     });

@@ -6,7 +6,7 @@ const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..', '..');
 
-const configureEccDocs = [
+const configureForgeDocs = [
   'skills/configure-forge/SKILL.md',
   'docs/zh-CN/skills/configure-forge/SKILL.md',
   'docs/ja-JP/skills/configure-forge/SKILL.md',
@@ -45,7 +45,7 @@ function test(name, fn) {
   }
 }
 
-function readConfigureEccDoc(relativePath) {
+function readConfigureForgeDoc(relativePath) {
   return fs.readFileSync(path.join(repoRoot, relativePath), 'utf8');
 }
 
@@ -57,9 +57,9 @@ function countEntries(relativePath, predicate) {
 
 console.log('\n=== Testing configure-forge install path guidance ===\n');
 
-for (const relativePath of configureEccDocs) {
+for (const relativePath of configureForgeDocs) {
   test(`${relativePath} delegates to guided plugin setup`, () => {
-    const content = readConfigureEccDoc(relativePath);
+    const content = readConfigureForgeDoc(relativePath);
 
     assert.ok(content.includes('forge setup'));
     assert.ok(content.includes('npx forge-universal setup'));
@@ -72,7 +72,7 @@ for (const relativePath of configureEccDocs) {
   });
 
   test(`${relativePath} defines the Claude in-harness wizard contract`, () => {
-    const content = readConfigureEccDoc(relativePath);
+    const content = readConfigureForgeDoc(relativePath);
 
     for (const instruction of localizedWizardContract[relativePath]) {
       assert.ok(content.includes(instruction), `missing: ${instruction}`);
@@ -89,7 +89,7 @@ for (const relativePath of configureEccDocs) {
   });
 
   test(`${relativePath} verifies before showing the welcome`, () => {
-    const content = readConfigureEccDoc(relativePath);
+    const content = readConfigureForgeDoc(relativePath);
     const applyIndex = content.indexOf('--yes --json');
     const verificationIndex = content.indexOf('claude plugin list --json', applyIndex);
     const welcomeIndex = content.indexOf('renderTerminalWelcome');
@@ -100,7 +100,7 @@ for (const relativePath of configureEccDocs) {
   });
 
   test(`${relativePath} keeps provider capabilities truthful`, () => {
-    const content = readConfigureEccDoc(relativePath);
+    const content = readConfigureForgeDoc(relativePath);
 
     assert.ok(content.includes('codex plugin add forge@forge --json'));
     assert.ok(content.includes('Codex'));
@@ -110,7 +110,7 @@ for (const relativePath of configureEccDocs) {
   });
 
   test(`${relativePath} verifies Codex and Kimi before their concrete welcomes`, () => {
-    const content = readConfigureEccDoc(relativePath);
+    const content = readConfigureForgeDoc(relativePath);
     const codexVerifyIndex = content.indexOf('codex plugin list --json');
     const codexWelcomeIndex = content.indexOf(
       '["<installedPath>/scripts/welcome.js", "--action", "configured", "--version", "<installed-version>"]'
@@ -134,14 +134,14 @@ for (const relativePath of configureEccDocs) {
 }
 
 test('Codex legacy sync docs do not require an unrelated package install', () => {
-  const content = readConfigureEccDoc('.codex-plugin/README.md');
+  const content = readConfigureForgeDoc('.codex-plugin/README.md');
 
   assert.ok(content.includes('bash scripts/sync-forge-to-codex.sh'));
   assert.ok(!content.includes('npm install && bash scripts/sync-forge-to-codex.sh'));
 });
 
 test('Kimi docs scope hooks and compatibility to the verified adapter', () => {
-  const content = readConfigureEccDoc('.kimi/README.md');
+  const content = readConfigureForgeDoc('.kimi/README.md');
 
   assert.ok(content.includes('verified against Kimi Code 0.31.x'));
   assert.ok(content.includes("newer provider releases are outside this adapter's verified range"));
@@ -150,7 +150,7 @@ test('Kimi docs scope hooks and compatibility to the verified adapter', () => {
 });
 
 test('Turkish agent instructions report the live catalog counts', () => {
-  const content = readConfigureEccDoc('docs/tr/AGENTS.md');
+  const content = readConfigureForgeDoc('docs/tr/AGENTS.md');
   const agentCount = countEntries('agents', entry => entry.isFile() && entry.name.endsWith('.md'));
   const skillCount = countEntries('skills', entry => entry.isDirectory());
   const commandCount = countEntries(

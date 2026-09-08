@@ -4,9 +4,7 @@ const { version: FORGE_VERSION } = require('../../package.json');
 
 const COMMUNITY_LINKS = Object.freeze({
   github: 'https://github.com/your-org/forge',
-  discord: '',
   documentation: 'https://github.com/your-org/forge#readme',
-  githubApp: '',
 });
 
 const SUCCESS_ACTIONS = Object.freeze([
@@ -27,12 +25,12 @@ const SUCCESS_MESSAGES = Object.freeze({
 });
 // CFonts' default "block" face: https://github.com/dominikwilkowski/cfonts
 const FORGE_WORDMARK = Object.freeze([
-  ' ███████╗  ██████╗  ██████╗',
-  ' ██╔════╝ ██╔════╝ ██╔════╝',
-  ' █████╗   ██║      ██║',
-  ' ██╔══╝   ██║      ██║',
-  ' ███████╗ ╚██████╗ ╚██████╗',
-  ' ╚══════╝  ╚═════╝  ╚═════╝',
+  ' ███████╗ ██████╗ ██████╗  ██████╗ ███████╗',
+  ' ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝',
+  ' █████╗  ██║   ██║██████╔╝██║  ███╗█████╗',
+  ' ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝',
+  ' ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗',
+  ' ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝',
 ]);
 const FORGE_GRADIENT = Object.freeze({
   start: Object.freeze({ red: 215, green: 151, blue: 107 }),
@@ -77,9 +75,7 @@ function renderWordmark(color) {
 function renderCommunityLinks() {
   const rows = Object.freeze([
     `GitHub:        ${COMMUNITY_LINKS.github}`,
-    `Discord:       ${COMMUNITY_LINKS.discord}`,
     `Documentation: ${COMMUNITY_LINKS.documentation}`,
-    `GitHub App:     ${COMMUNITY_LINKS.githubApp}`,
   ]);
   const contentWidth = Math.max(...rows.map(row => row.length));
   const border = '─'.repeat(contentWidth + 2);

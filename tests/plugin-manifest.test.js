@@ -36,7 +36,6 @@ const opencodePackageLockPath = path.join(repoRoot, '.opencode', 'package-lock.j
 const opencodeHooksPluginPath = path.join(repoRoot, '.opencode', 'plugins', 'forge-hooks.ts');
 const hooksReadmePath = path.join(repoRoot, 'hooks', 'README.md');
 const semverPattern = '[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?';
-const installPrPublishedBaseline = '2.1.0';
 
 let passed = 0;
 let failed = 0;
@@ -99,22 +98,13 @@ test('package.json has version field', () => {
   assert.ok(expectedVersion, 'Expected package.json version field');
 });
 
-test('package.json declares a stable release after the install PR published baseline', () => {
-  const parseStableSemver = (version) => {
-    const match = version.match(/^(\d+)\.(\d+)\.(\d+)$/);
-    assert.ok(match, `Expected a stable semver version, got ${version}`);
-    return match.slice(1).map(Number);
-  };
-  const compareSemver = (left, right) => {
-    for (let index = 0; index < left.length; index++) {
-      if (left[index] !== right[index]) return left[index] - right[index];
-    }
-    return 0;
-  };
-
+// The published surface must carry a stable release, not a prerelease. This previously
+// compared against a fixed 2.1.0 floor taken from an earlier project's release history;
+// FORGE's own history starts at 1.0.0, so the floor described nothing about this package.
+test('package.json declares a stable release version', () => {
   assert.ok(
-    compareSemver(parseStableSemver(expectedVersion), parseStableSemver(installPrPublishedBaseline)) > 0,
-    `Expected package version after install PR baseline ${installPrPublishedBaseline}, got ${expectedVersion}`
+    /^\d+\.\d+\.\d+$/.test(expectedVersion),
+    `Expected a stable semver version, got ${expectedVersion}`
   );
 });
 
@@ -233,11 +223,11 @@ test('claude plugin.json commands is an array', () => {
   assert.ok(Array.isArray(claudePlugin.commands), 'Expected commands to be an array');
 });
 
+// The opt-out originally existed because the previous project's long plugin slug pushed
+// generated MCP tool names past strict provider limits. The `forge` slug is short enough
+// that the length arithmetic no longer proves anything, but the opt-out itself still has to
+// hold: a Claude plugin install must not silently auto-load the root .mcp.json.
 test('claude plugin.json disables bundled MCP servers for provider tool-name compatibility', () => {
-  const legacyPluginName = 'forge';
-  const reportedOverlongToolName = `mcp__plugin_${legacyPluginName}_github__create_pull_request_review`;
-
-  assert.ok(reportedOverlongToolName.length > 64, 'Expected the reported GitHub MCP tool name to exceed strict provider limits without the MCP opt-out');
   assert.ok(Object.prototype.hasOwnProperty.call(claudePlugin, 'mcpServers'), 'Expected mcpServers to be explicitly declared so Claude Code does not auto-load root .mcp.json');
   assert.deepStrictEqual(claudePlugin.mcpServers, {}, 'Claude plugin installs must not auto-bundle root MCP servers; document/manual MCP install remains supported');
 });
@@ -628,24 +618,10 @@ test('.opencode/package-lock.json root version matches package.json', () => {
   assert.strictEqual(opencodePackageLock.packages[''].version, expectedVersion);
 });
 
-test('user-facing docs do not use overlong legacy marketplace install commands', () => {
-  const markdownFiles = [
-    path.join(repoRoot, 'README.md'),
-    path.join(repoRoot, 'README.zh-CN.md'),
-    path.join(repoRoot, 'skills', 'configure-forge', 'SKILL.md'),
-    ...collectMarkdownFiles(path.join(repoRoot, 'docs'))
-  ].filter(filePath => !path.relative(repoRoot, filePath).startsWith(`docs${path.sep}drafts${path.sep}`));
-
-  const offenders = [];
-  for (const filePath of markdownFiles) {
-    const source = fs.readFileSync(filePath, 'utf8');
-    if (/\/plugin\s+(install|list)\s+forge(?:@forge)?\b/.test(source)) {
-      offenders.push(path.relative(repoRoot, filePath));
-    }
-  }
-
-  assert.deepStrictEqual(offenders, [], `Overlong legacy install commands must not appear in user-facing docs: ${offenders.join(', ')}`);
-});
+// Removed: this guarded against the previous project's overlong plugin identifier in
+// `/plugin install ...` lines. Under the FORGE slug the pattern matches the canonical
+// `/plugin install forge@forge`, so the check had inverted into a ban on the documented
+// install command. The remaining marketplace-form guard below still applies.
 
 test('user-facing docs do not use the legacy non-URL marketplace add form', () => {
   const markdownFiles = [path.join(repoRoot, 'README.md'), path.join(repoRoot, 'README.zh-CN.md'), ...collectMarkdownFiles(path.join(repoRoot, 'docs'))];

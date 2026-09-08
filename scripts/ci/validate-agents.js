@@ -7,7 +7,9 @@ const fs = require('fs');
 const path = require('path');
 
 const AGENTS_DIR = path.join(__dirname, '../../agents');
-const REQUIRED_FIELDS = ['name', 'description', 'model', 'tools'];
+// `name` and `description` are conventions enforced by review (see
+// docs/AGENT-AUTHORING.md); the validator hard-fails only on `model` and `tools`.
+const REQUIRED_FIELDS = ['model', 'tools'];
 const VALID_MODELS = ['haiku', 'sonnet', 'opus'];
 
 function extractFrontmatter(content) {

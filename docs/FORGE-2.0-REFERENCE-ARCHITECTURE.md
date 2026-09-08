@@ -1,9 +1,6 @@
 # FORGE 2.0 Reference Architecture
 
-Current execution mirror:
-[`FORGE-2.0-GA-ROADMAP.md`](FORGE-2.0-GA-ROADMAP.md).
-
-This document turns the May 2026 reference sweep into concrete FORGE backlog
+This document turns a reference sweep into concrete FORGE backlog
 shape. It is not a second strategy memo: every reference pressure below should
 land as an adapter, check, observable signal, security policy, PR review
 surface, or release-readiness gate.

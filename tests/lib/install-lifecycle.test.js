@@ -853,7 +853,7 @@ function runTests() {
         .digest('hex');
       const fixture = writeCursorState(projectRoot, {
         source: {
-          repoVersion: '1.0.0',
+          repoVersion: '0.0.1',
           repoCommit: 'old-commit',
           manifestVersion: CURRENT_MANIFEST_VERSION,
         },
@@ -882,7 +882,7 @@ function runTests() {
 
       assert.strictEqual(repair.results[0].status, 'ok');
       assert.strictEqual(repair.results[0].stateRefreshed, true);
-      assert.strictEqual(stateAfterRepair.source.repoVersion, '1.0.0');
+      assert.strictEqual(stateAfterRepair.source.repoVersion, '0.0.1');
       assert.strictEqual(stateAfterRepair.source.manifestVersion, CURRENT_MANIFEST_VERSION);
       assert.ok(doctor.results[0].issues.some(issue => issue.code === 'repo-version-mismatch'));
     } finally {

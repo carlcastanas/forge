@@ -2,6 +2,8 @@
 
 FORGE is a harness-native agent engineering system, providing 68 specialized agents, 318 skills, 94 commands, lifecycle hooks, and selectable rules to any supported coding agent.
 
+**Version:** 1.0.0
+
 This page is the catalog of every FORGE subagent and the contract that governs how they are
 defined, selected, and composed. Use it to decide which specialist should handle a piece of
 work, and to check what a given agent is permitted to touch before you delegate to it.

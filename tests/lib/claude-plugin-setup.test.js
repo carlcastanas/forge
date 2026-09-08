@@ -82,6 +82,7 @@ function withFixture(initialState, fn) {
     CLAUDE_CONFIG_DIR: process.env.CLAUDE_CONFIG_DIR,
     FORGE_TEST_CLAUDE_STATE: process.env.FORGE_TEST_CLAUDE_STATE,
     FORGE_TEST_CLAUDE_CALLS: process.env.FORGE_TEST_CLAUDE_CALLS,
+    FORGE_LEGACY_PLUGIN_IDS: process.env.FORGE_LEGACY_PLUGIN_IDS,
   };
   try {
     process.chdir(fixture.projectRoot);
@@ -91,6 +92,7 @@ function withFixture(initialState, fn) {
     process.env.CLAUDE_CONFIG_DIR = fixture.configDir;
     process.env.FORGE_TEST_CLAUDE_STATE = fixture.statePath;
     process.env.FORGE_TEST_CLAUDE_CALLS = fixture.callsPath;
+    delete process.env.FORGE_LEGACY_PLUGIN_IDS;
     return fn(fixture);
   } finally {
     process.chdir(previous.cwd);
@@ -445,19 +447,38 @@ test('malformed user settings fail preflight without provider mutation or corrup
   });
 });
 
+// FORGE has no retired plugin id yet, so the retired id is injected here to keep
+// the legacy-conflict gate covered for the first time a plugin id is renamed.
+const INJECTED_LEGACY_PLUGIN_ID = 'retired-example@retired-example';
+
 test('legacy plugin inventory fails closed before marketplace or plugin mutation', () => {
   withFixture({
     plugins: [{
-      id: 'forge@forge',
+      id: INJECTED_LEGACY_PLUGIN_ID,
       scope: 'user',
       enabled: true,
     }],
   }, fixture => {
+    process.env.FORGE_LEGACY_PLUGIN_IDS = INJECTED_LEGACY_PLUGIN_ID;
     assertThrowsContaining(
       () => setupClaudePlugin(setupOptions(fixture, { scope: 'user' })),
-      ['legacy', 'uninstall']
+      ['legacy', INJECTED_LEGACY_PLUGIN_ID, 'uninstall']
     );
     assert.deepStrictEqual(mutationCalls(readCalls(fixture)), []);
+  });
+});
+
+test('a plugin id that is not registered as legacy does not block setup', () => {
+  withFixture({
+    plugins: [{
+      id: INJECTED_LEGACY_PLUGIN_ID,
+      scope: 'user',
+      enabled: true,
+    }],
+  }, fixture => {
+    const result = setupClaudePlugin(setupOptions(fixture, { scope: 'user' }));
+    assert.strictEqual(result.pluginId, 'forge@forge');
+    assert.strictEqual(result.scope, 'user');
   });
 });
 

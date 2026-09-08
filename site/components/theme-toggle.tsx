@@ -1,9 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { MoonIcon, SunIcon } from '@/components/icons';
-
-type Theme = 'light' | 'dark';
 
 const STORAGE_KEY = 'forge-theme';
 
@@ -11,43 +9,41 @@ const STORAGE_KEY = 'forge-theme';
  * Explicit light/dark toggle. The choice is written to the root element as
  * data-theme, which overrides the prefers-color-scheme rules in both directions,
  * and persisted so the pre-paint script in the document head can replay it.
+ *
+ * Both icons are rendered and CSS decides which one shows, so the button is
+ * correct in the static HTML — before any JavaScript has run — for a visitor on
+ * either system preference.
  */
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme | null>(null);
-
-  useEffect(() => {
-    const stored = document.documentElement.getAttribute('data-theme');
-    if (stored === 'light' || stored === 'dark') {
-      setTheme(stored);
-      return;
-    }
-    setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  }, []);
-
   const toggle = useCallback(() => {
-    setTheme((current) => {
-      const next: Theme = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try {
-        window.localStorage.setItem(STORAGE_KEY, next);
-      } catch {
-        // Storage can be unavailable; the attribute still applies for this page.
-      }
-      return next;
-    });
-  }, []);
+    const root = document.documentElement;
+    const explicit = root.getAttribute('data-theme');
+    const current =
+      explicit === 'light' || explicit === 'dark'
+        ? explicit
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
 
-  const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // Storage can be unavailable; the attribute still applies to this page.
+    }
+  }, []);
 
   return (
     <button
       type="button"
-      className="icon-button"
+      className="icon-button theme-toggle"
       onClick={toggle}
-      aria-label={label}
-      title={label}
+      aria-label="Switch between the light and dark theme"
+      title="Switch theme"
     >
-      {theme === 'dark' ? <SunIcon size={18} /> : <MoonIcon size={18} />}
+      <MoonIcon size={18} className="theme-toggle__moon" />
+      <SunIcon size={18} className="theme-toggle__sun" />
     </button>
   );
 }

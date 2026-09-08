@@ -242,12 +242,12 @@ function main() {
   // Repair schema-invalid entries emitted by earlier FORGE versions (#2224).
   for (const [name, invalidUrl] of Object.entries(RETIRED_INVALID_URL_SERVERS)) {
     const entry = existing[name];
-    const isBrokenEccForm =
+    const isBrokenForgeForm =
       entry &&
       typeof entry.url === 'string' &&
       entry.url === invalidUrl &&
       typeof entry.command !== 'string';
-    if (isBrokenEccForm) {
+    if (isBrokenForgeForm) {
       toRemoveLog.push(`mcp_servers.${name} (invalid url entry from earlier FORGE versions)`);
       raw = removeServerFromText(raw, name, existing);
       log(`  [repair] mcp_servers.${name} — url is not valid for Codex stdio servers, removing`);

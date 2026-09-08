@@ -52,7 +52,9 @@ export default async function DocPage({ params }: Props) {
 
         <div className="page-head">
           <h1 className="t-h1 u-wrap">{entry.title}</h1>
-          {entry.description ? <p className="t-lead">{entry.description}</p> : null}
+          {entry.declaredDescription && entry.description ? (
+            <p className="t-lead">{entry.description}</p>
+          ) : null}
           <div className="page-meta">
             {entry.repoPath ? (
               <span className="t-mono u-wrap">{entry.repoPath}</span>

@@ -13,7 +13,7 @@ const { createDryRunClaudeRunner } = require('./claude-dry-run-sandbox');
 const { normalizeGitHubGitOrigin } = require('./github-origin');
 const {
   CURRENT_PLUGIN_ID,
-  LEGACY_PLUGIN_IDS,
+  resolveLegacyPluginIds,
   findManagedClaudeInstalls,
   findManualClaudePlugin,
   resolveClaudePaths,
@@ -90,14 +90,14 @@ function parseJsonArray(stdout, label) {
   return parsed;
 }
 
-function parsePluginList(stdout) {
+function parsePluginList(stdout, options = {}) {
+  const legacyPluginIds = resolveLegacyPluginIds(options);
   const plugins = parseJsonArray(stdout, 'plugin');
   for (const plugin of plugins) {
     const isRelevant = plugin && (
       plugin.id === CURRENT_PLUGIN_ID
       || String(plugin.id || '').startsWith('forge@')
-      || LEGACY_PLUGIN_IDS.has(plugin.id)
-      || String(plugin.id || '').startsWith('forge@')
+      || legacyPluginIds.has(plugin.id)
     );
     if (!isRelevant) continue;
     if (
@@ -393,15 +393,13 @@ function writeClaudePluginOptions(settingsPath, hooks) {
   return settingsPath;
 }
 
-function currentEccPlugins(plugins) {
+function currentForgePlugins(plugins) {
   return plugins.filter(plugin => plugin?.id === CURRENT_PLUGIN_ID);
 }
 
-function assertNoConflictingEccPlugins(plugins) {
-  const legacy = plugins.find(plugin => (
-    LEGACY_PLUGIN_IDS.has(plugin?.id)
-    || String(plugin?.id || '').startsWith('forge@')
-  ));
+function assertNoConflictingForgePlugins(plugins, options = {}) {
+  const legacyPluginIds = resolveLegacyPluginIds(options);
+  const legacy = plugins.find(plugin => legacyPluginIds.has(plugin?.id));
   if (legacy) {
     fail(
       'LEGACY_PLUGIN_INSTALLED',
@@ -413,19 +411,19 @@ function assertNoConflictingEccPlugins(plugins) {
     );
   }
 
-  const conflictingEcc = plugins.find(plugin => (
+  const conflictingForge = plugins.find(plugin => (
     typeof plugin?.id === 'string'
     && plugin.id.startsWith('forge@')
     && plugin.id !== CURRENT_PLUGIN_ID
   ));
-  if (conflictingEcc) {
+  if (conflictingForge) {
     fail(
       'DUPLICATE_FORGE_PLUGIN',
-      `${conflictingEcc.id} is already installed and would duplicate FORGE surfaces. Uninstall it before setting up ${CURRENT_PLUGIN_ID}.`,
+      `${conflictingForge.id} is already installed and would duplicate FORGE surfaces. Uninstall it before setting up ${CURRENT_PLUGIN_ID}.`,
       {
-        observedScopes: [conflictingEcc.scope],
+        observedScopes: [conflictingForge.scope],
         recovery: [
-          `claude plugin uninstall ${conflictingEcc.id} --scope ${conflictingEcc.scope} --keep-data`,
+          `claude plugin uninstall ${conflictingForge.id} --scope ${conflictingForge.scope} --keep-data`,
         ],
       }
     );
@@ -433,8 +431,8 @@ function assertNoConflictingEccPlugins(plugins) {
 }
 
 function inspectPluginInventory(plugins, requestedScope) {
-  assertNoConflictingEccPlugins(plugins);
-  const installed = currentEccPlugins(plugins);
+  assertNoConflictingForgePlugins(plugins);
+  const installed = currentForgePlugins(plugins);
   const observedScopes = installed.map(plugin => plugin.scope);
   if (installed.length > 1 || new Set(observedScopes).size !== observedScopes.length) {
     fail(
@@ -549,7 +547,7 @@ function verifyPluginAtScope(options) {
       { cwd: options.projectRoot, phase: options.phase || 'plugin-verification' }
     ).stdout
   );
-  const installed = currentEccPlugins(plugins);
+  const installed = currentForgePlugins(plugins);
   const valid = (
     installed.length === 1
     && installed[0].scope === options.scope
@@ -698,11 +696,11 @@ module.exports = {
   VALID_HOOK_MODES,
   VALID_SCOPES,
   buildWindowsCommandLine,
-  assertNoConflictingEccPlugins,
+  assertNoConflictingForgePlugins,
   assertSafeLocalInventory,
   assertGitAvailable,
   createDryRunClaudeRunner,
-  currentEccPlugins,
+  currentForgePlugins,
   deriveHookMode,
   ensureOfficialMarketplace,
   ensurePluginAtScope,

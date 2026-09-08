@@ -9,14 +9,14 @@ This guide covers adopting FORGE in a repository that already has history: an ex
 ## Contents
 
 - [What adoption actually costs](#what-adoption-actually-costs)
-- [Phase 0 — Audit what you have](#phase-0--audit-what-you-have)
-- [Phase 1 — Choose the surface](#phase-1--choose-the-surface)
-- [Phase 2 — Install selectively](#phase-2--install-selectively)
-- [Phase 3 — Choose a rule set for your stack](#phase-3--choose-a-rule-set-for-your-stack)
-- [Phase 4 — Reconcile your existing CLAUDE.md](#phase-4--reconcile-your-existing-claudemd)
-- [Phase 5 — Convert recurring prompts into skills](#phase-5--convert-recurring-prompts-into-skills)
-- [Phase 6 — Convert aliases and scripts into commands](#phase-6--convert-aliases-and-scripts-into-commands)
-- [Phase 7 — Team rollout sequencing](#phase-7--team-rollout-sequencing)
+- [Phase 0: Audit what you have](#phase-0-audit-what-you-have)
+- [Phase 1: Choose the surface](#phase-1-choose-the-surface)
+- [Phase 2: Install selectively](#phase-2-install-selectively)
+- [Phase 3: Choose a rule set for your stack](#phase-3-choose-a-rule-set-for-your-stack)
+- [Phase 4: Reconcile your existing CLAUDE.md](#phase-4-reconcile-your-existing-claudemd)
+- [Phase 5: Convert recurring prompts into skills](#phase-5-convert-recurring-prompts-into-skills)
+- [Phase 6: Convert aliases and scripts into commands](#phase-6-convert-aliases-and-scripts-into-commands)
+- [Phase 7: Team rollout sequencing](#phase-7-team-rollout-sequencing)
 - [What to delete afterwards](#what-to-delete-afterwards)
 - [Rollback](#rollback)
 - [Migration checklist](#migration-checklist)
@@ -45,7 +45,7 @@ If your current setup works and you cannot name a failure it causes, a partial a
 
 ---
 
-## Phase 0 — Audit what you have
+## Phase 0: Audit what you have
 
 Adoption starts with an inventory. Skipping this is how teams end up with FORGE's `tdd-workflow` skill and their own `run-tests.md` prompt disagreeing about the same thing.
 
@@ -103,7 +103,7 @@ Record a quality baseline in the same pass: ten tasks mined from real sessions, 
 
 ---
 
-## Phase 1 — Choose the surface
+## Phase 1: Choose the surface
 
 FORGE ships far more than any one project needs. Two tools narrow it.
 
@@ -156,7 +156,7 @@ Start at `minimal` or `core`. Add modules when their absence is a problem you ca
 
 ---
 
-## Phase 2 — Install selectively
+## Phase 2: Install selectively
 
 ### Always plan before applying
 
@@ -206,7 +206,7 @@ If you already stacked, uninstall and reinstall one path rather than reconciling
 
 ---
 
-## Phase 3 — Choose a rule set for your stack
+## Phase 3: Choose a rule set for your stack
 
 Rules are always-loaded, so this is the highest-leverage sizing decision in the whole migration.
 
@@ -243,7 +243,7 @@ If the same principle keeps recurring across several of your skills, the `rules-
 
 ---
 
-## Phase 4 — Reconcile your existing CLAUDE.md
+## Phase 4: Reconcile your existing CLAUDE.md
 
 An existing `CLAUDE.md` is usually three different documents that grew together. Split it.
 
@@ -290,7 +290,7 @@ Keep the old file as `CLAUDE.md.pre-forge` — `git mv` it, write the new one, c
 
 ---
 
-## Phase 5 — Convert recurring prompts into skills
+## Phase 5: Convert recurring prompts into skills
 
 The prompts your team pastes repeatedly are the most valuable thing you own and the easiest thing to lose. They encode judgment nobody wrote down.
 
@@ -345,7 +345,7 @@ A converted skill that never triggers has not been converted, it has been archiv
 
 ---
 
-## Phase 6 — Convert aliases and scripts into commands
+## Phase 6: Convert aliases and scripts into commands
 
 Not every alias should become a command. Most should not.
 
@@ -398,7 +398,7 @@ With no argument, `/hookify` uses the `conversation-analyzer` agent to find expl
 
 ---
 
-## Phase 7 — Team rollout sequencing
+## Phase 7: Team rollout sequencing
 
 Rolling out to everyone at once produces a support burden and a rollback. Sequence it.
 

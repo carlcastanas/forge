@@ -141,7 +141,7 @@ export function SkillsBrowser({
         <div className="grid grid--3" style={{ opacity: stale ? 0.6 : 1 }}>
           {visible.map((skill) => (
             <Link className="card" href={`/skills/${skill.name}`} key={skill.name}>
-              <h2 className="card__title t-mono u-wrap">{skill.name}</h2>
+              <h2 className="card__title u-mono u-wrap">{skill.name}</h2>
               <p className="card__body u-clamp-3">{skill.description}</p>
               <span className="badge" style={{ alignSelf: 'flex-start', marginTop: 'auto' }}>
                 {skill.category}

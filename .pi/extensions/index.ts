@@ -183,7 +183,7 @@ interface HookResult {
  * a timeout, or a spawn error all resolve to a `failure` string that the caller
  * surfaces as a warning.
  */
-function runEccHook(
+function runForgeHook(
   spec: HookSpec,
   payload: unknown,
   env: NodeJS.ProcessEnv,
@@ -491,7 +491,7 @@ function countMarkdownFiles(dir: string): number {
   }
 }
 
-function readEccVersion(): string {
+function readForgeVersion(): string {
   try {
     const manifest = JSON.parse(fs.readFileSync(path.join(FORGE_ROOT, "package.json"), "utf8")) as {
       version?: string
@@ -526,7 +526,7 @@ function buildDoctorReport(ctx: ExtensionContext): string {
   const lines = [
     "FORGE adapter for Pi",
     "",
-    `  FORGE version:   ${readEccVersion()}`,
+    `  FORGE version:   ${readForgeVersion()}`,
     `  Package root:  ${FORGE_ROOT}`,
     `  Project cwd:   ${ctx.cwd}`,
     "",
@@ -588,7 +588,7 @@ export default function (pi: ExtensionAPI): void {
     // built for a different session would describe the wrong project state.
     pendingContext = undefined
 
-    const result = await runEccHook(
+    const result = await runForgeHook(
       SESSION_START_HOOK,
       payload,
       buildHookEnv(ctx),
@@ -633,7 +633,7 @@ export default function (pi: ExtensionAPI): void {
       session_id: readSessionId(ctx),
     }
 
-    const result = await runEccHook(
+    const result = await runForgeHook(
       SESSION_END_HOOK,
       payload,
       buildHookEnv(ctx),

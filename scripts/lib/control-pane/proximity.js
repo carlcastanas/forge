@@ -183,7 +183,7 @@ function dispatchProximityTriggers(triggers, deps = {}) {
  * Stateful dispatcher with per-trigger cooldown, so a collision that persists
  * across many ticks fires once and then stays quiet until it clears or the
  * cooldown lapses — agents get steered, not spammed. Inject `sendMessage`
- * (e.g. createEccMessageSink) and optionally `now`/`cooldownMs` for tests.
+ * (e.g. createForgeMessageSink) and optionally `now`/`cooldownMs` for tests.
  */
 function createProximityDispatcher(deps = {}) {
   const send = deps.sendMessage;

@@ -252,6 +252,18 @@ Several families cover adjacent ground. Pick as follows.
 | Consolidate many accumulated lessons | `/evolve` | `/learn` |
 | Stop repeating a correction by hand | `/hookify` | `/learn` |
 
+## Retired shims
+
+Twelve slash entries were retired and are **not** loaded by the default command surface. They
+live in `legacy-command-shims/commands/` for muscle-memory compatibility only:
+
+`/tdd` · `/eval` · `/verify` · `/e2e` · `/orchestrate` · `/context-budget` · `/docs` ·
+`/rules-distill` · `/prompt-optimize` · `/agent-sort` · `/devfleet` · `/claw`
+
+Each one delegates to a maintained skill, so invoke the skill instead. If a team genuinely
+needs an old name back, copy that single file into your project or user commands directory
+rather than enabling the whole archive.
+
 ## Adding a command
 
 1. Create `commands/<name>.md`. The filename is the slash name; lowercase with hyphens.

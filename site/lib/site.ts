@@ -17,11 +17,21 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
+  { href: '/why', label: 'Why' },
   { href: '/docs', label: 'Docs' },
   { href: '/guides', label: 'Guides' },
   { href: '/skills', label: 'Skills' },
   { href: '/agents', label: 'Agents' },
   { href: '/commands', label: 'Commands' },
+  { href: '/security', label: 'Security' },
+] as const;
+
+/** Pages that describe the product rather than document the catalog. */
+export const PRODUCT_LINKS = [
+  { href: '/why', label: 'Why FORGE' },
+  { href: '/security', label: 'Forge Shield' },
+  { href: '/platforms', label: 'Platforms' },
+  { href: '/changelog', label: 'Changelog' },
 ] as const;
 
 export const LOOP_STEPS = [
