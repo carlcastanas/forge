@@ -352,7 +352,7 @@ export FORGE_DISABLED_HOOKS=stop:desktop-notify
 **Installed surface.** If context feels tight, audit before adding anything:
 
 ```text
-Use the context-budget skill to audit what is consuming my context window.
+Use the context-budget skill to audit what is consuming the context window.
 ```
 
 **Expected observation:** a per-component token estimate across agents, skills, rules, MCP servers, and the `CLAUDE.md` chain, with each component bucketed as always needed, sometimes needed, or rarely needed. Details in [the context guide](the-context-guide.md) and [`../docs/token-optimization.md`](../docs/token-optimization.md).

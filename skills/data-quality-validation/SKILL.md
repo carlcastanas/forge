@@ -59,16 +59,12 @@ guess and the argument after an incident has no reference point.
 dataset: analytics.fct_orders
 owner: data-platform
 consumers: [finance-reporting, growth-dashboards, churn-model]
-sla:
-  freshness: 2h            # max lag from source event time
-  availability: 99.5%
-  breaking_change_notice: 14d
+sla: { freshness: 2h, availability: 99.5%, breaking_change_notice: 14d }
 schema:
   order_id:      { type: string,    unique: true, not_null: true }
   customer_id:   { type: string,    not_null: true, references: dim_customer.customer_id }
   status:        { type: string,    accepted: [pending, paid, shipped, refunded, cancelled] }
   total_cents:   { type: integer,   min: 0, max: 100000000 }
-  currency:      { type: string,    accepted: [USD, EUR, GBP, PHP] }
   placed_at:     { type: timestamp, not_null: true, not_future: true }
 semantics:
   grain: one row per order, post-deduplication
@@ -94,6 +90,8 @@ grain.
 # models/schema.yml — dbt
 models:
   - name: fct_orders
+    tests:
+      - dbt_utils.recency: { datepart: hour, field: placed_at, interval: 2 }
     columns:
       - name: order_id
         tests: [unique, not_null]
@@ -107,27 +105,23 @@ models:
       - name: total_cents
         tests:
           - dbt_utils.accepted_range: { min_value: 0, max_value: 100000000 }
-    tests:
-      - dbt_utils.recency: { datepart: hour, field: placed_at, interval: 2 }
 ```
 
 Volume checks are the ones most often skipped and most often the first sign of an
 upstream break. A row count that drops 90% passes every column-level test ever written.
 
 ```sql
--- Row count against the trailing 14-day median for the same weekday
+-- Fail the run when yesterday's volume departs from the trailing median
 with daily as (
   select date_trunc('day', placed_at) as d, count(*) as n
   from {{ ref('fct_orders') }}
   where placed_at >= current_date - interval '15 days'
   group by 1
-),
-baseline as (
+), baseline as (
   select percentile_cont(0.5) within group (order by n) as med
   from daily where d < current_date
 )
-select d, n, med
-from daily, baseline
+select d, n, med from daily, baseline
 where d = current_date - interval '1 day'
   and (n < med * 0.6 or n > med * 1.8)
 ```
@@ -176,22 +170,17 @@ inspectable, with enough context to fix the source.
 
 ```sql
 INSERT INTO quarantine.orders_rejected
-SELECT
-  s.*,
-  current_timestamp AS rejected_at,
-  '{{ invocation_id }}' AS run_id,
+SELECT s.*, current_timestamp AS rejected_at, '{{ invocation_id }}' AS run_id,
   case
-    when s.order_id is null                       then 'missing_order_id'
-    when s.total_cents < 0                        then 'negative_total'
-    when s.placed_at > now()                      then 'future_timestamp'
-    when d.customer_id is null                    then 'unresolved_customer'
+    when s.order_id is null    then 'missing_order_id'
+    when s.total_cents < 0     then 'negative_total'
+    when s.placed_at > now()   then 'future_timestamp'
+    when d.customer_id is null then 'unresolved_customer'
   end AS reject_reason
 FROM staging.orders s
 LEFT JOIN analytics.dim_customer d USING (customer_id)
-WHERE s.order_id is null
-   OR s.total_cents < 0
-   OR s.placed_at > now()
-   OR d.customer_id is null;
+WHERE s.order_id is null OR s.total_cents < 0
+   OR s.placed_at > now() OR d.customer_id is null;
 ```
 
 Then treat quarantine as a queue with an owner, not an archive:

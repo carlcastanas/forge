@@ -100,18 +100,6 @@
       "path": "commands/cpp-test.md"
     },
     {
-      "command": "forge-guide",
-      "description": "Navigate FORGE's current agents, skills, commands, hooks, install profiles, and docs from the live repository surface.",
-      "type": "review",
-      "primaryAgents": [],
-      "allAgents": [],
-      "skills": [
-        "forge-guide",
-        "security-scan"
-      ],
-      "path": "commands/forge-guide.md"
-    },
-    {
       "command": "epic-claim",
       "description": "Claim an epic issue, stamp coordination state, and sync local ownership.",
       "type": "review",
@@ -252,6 +240,18 @@
         "flutter-dart-code-review"
       ],
       "path": "commands/flutter-test.md"
+    },
+    {
+      "command": "forge-guide",
+      "description": "Navigate FORGE's current agents, skills, commands, hooks, install profiles, and docs from the live repository surface.",
+      "type": "review",
+      "primaryAgents": [],
+      "allAgents": [],
+      "skills": [
+        "forge-guide",
+        "security-scan"
+      ],
+      "path": "commands/forge-guide.md"
     },
     {
       "command": "gan-build",

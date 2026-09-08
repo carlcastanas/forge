@@ -65,7 +65,23 @@ for (const file of collect()) {
   const body = fs.readFileSync(file, 'utf8');
   const lines = body.split('\n');
 
+  // Links inside fenced code blocks are illustrative samples, not navigation.
+  // Track the opening fence so nested fences (```` around ```) close correctly.
+  let fence = null;
+
   lines.forEach((line, index) => {
+    const fenceMatch = line.match(/^\s{0,3}(`{3,}|~{3,})/);
+    if (fenceMatch) {
+      const marker = fenceMatch[1];
+      if (fence === null) {
+        fence = marker;
+      } else if (marker[0] === fence[0] && marker.length >= fence.length) {
+        fence = null;
+      }
+      return;
+    }
+    if (fence !== null) return;
+
     for (const match of line.matchAll(LINK)) {
       const raw = match[1];
       const target = raw.split('#')[0];

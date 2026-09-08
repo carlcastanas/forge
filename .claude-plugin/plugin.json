@@ -1,7 +1,7 @@
 {
   "name": "forge",
   "version": "1.0.0",
-  "description": "FORGE - an agent engineering system for Claude Code and adjacent harnesses: 68 agents, 320+ skills, 94 command shims, lifecycle hooks, selectable rules, memory, and security scanning",
+  "description": "FORGE agent engineering system - 68 agents, 318 skills, 94 legacy command shims, lifecycle hooks, selectable rules, selective install profiles, and operator workflows for Claude Code, Codex, OpenCode, Cursor, and related harnesses",
   "author": {
     "name": "FORGE contributors"
   },

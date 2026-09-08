@@ -34,12 +34,15 @@ ships capability-limited adapters for Cursor, OpenCode, Gemini, Zed, Copilot,
 Antigravity, Qwen, and others. Read the [harness matrix](docs/HARNESS-MATRIX.md) before
 assuming parity.
 
+Installing it gives you access to 68 agents, 318 skills, and 94 legacy command shims, plus hooks,
+rules, memory, continuous learning, and Forge Shield security scanning.
+
 | Surface     | Count | What it gives you                                                              |
 | ----------- | ----: | ------------------------------------------------------------------------------ |
-| Agents      |    68 | Specialists for planning, review, build repair, security, architecture, domains |
-| Skills      |  322  | Reusable workflow bundles: TDD, research, security, frontend, data, ops         |
-| Commands    |    94 | Slash-entry shims over the skills, for muscle memory                            |
-| Rules       |   122 | Always-loaded standards you select by language and project                      |
+| Agents      | 68 agents | Specialists for planning, review, build repair, security, architecture, domains |
+| Skills      | 318 skills | Reusable workflow bundles: TDD, research, security, frontend, data, ops         |
+| Commands    | 94 commands | Slash-entry shims over the skills, for muscle memory                            |
+| Rules       | 122 files | Always-loaded standards you select by language and project                      |
 | Hooks       | Runtime | Lifecycle enforcement, session summaries, context and cost monitoring         |
 | Memory      | Runtime | Session storage, learned instincts, continuous improvement                    |
 | Forge Shield | Included | Scanning for prompts, hooks, MCP config, permissions, secrets, agent files  |
@@ -311,6 +314,24 @@ npx forge-shield scan --fix
 ```
 
 The threat model it is built against is in [docs/THREAT-MODEL.md](docs/THREAT-MODEL.md).
+
+## Repository layout
+
+```text
+forge/
+| -- agents/       # 68 specialized subagents for delegation
+| -- skills/       # 318 workflow bundles, one directory each
+| -- commands/     # 94 slash-entry shims over the skills
+| -- rules/        # 122 always-loaded standards, selected by stack
+| -- hooks/        # the lifecycle hook graph
+| -- scripts/      # installer, CLI, hook implementations, CI validators
+| -- manifests/    # install profiles, components, and modules
+| -- schemas/      # JSON schemas for the config surfaces
+| -- docs/         # reference documentation
+| -- guides/       # long-form guides
+| -- site/         # the documentation website
+| -- tests/        # the test suite
+```
 
 ## Configuration
 

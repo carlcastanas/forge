@@ -195,12 +195,6 @@
       ]
     },
     {
-      "id": "capability:ito-compute",
-      "family": "capability",
-      "description": "Authenticated It\u00f4 GPU inventory, RFQ, status, device revocation, and explicitly gated node-qualification workflows through the separately installed canonical CLI.",
-      "modules": []
-    },
-    {
       "id": "capability:nasiko-control-plane",
       "family": "capability",
       "description": "Experimental Nasiko CLI lifecycle bridge guidance for pinned installation, read-only status, qualified uninstall, and opt-in telemetry boundaries.",

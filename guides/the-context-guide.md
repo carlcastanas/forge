@@ -110,7 +110,7 @@ Claude Code reports context usage directly. Check it whenever a session starts f
 ### The context-budget skill
 
 ```text
-Use the context-budget skill to audit my context consumption.
+Use the context-budget skill to audit this session's context consumption.
 ```
 
 It runs four phases: inventory every agent, skill, rule, MCP server, and `CLAUDE.md` in the chain with a token estimate; classify each into **always needed** / **sometimes needed** / **rarely needed**; detect the issue patterns above; and report total overhead against the window with the effective headroom left.
@@ -393,7 +393,7 @@ Once something leaves the window, it has to land somewhere. Choosing wrong eithe
 | "Run the integration suite with `make itest`" | Project `CLAUDE.md` | Short, always relevant, project-scoped |
 | "How to debug the flaky auth test" | Skill | Multi-step, only needed sometimes |
 | "We chose Postgres over DynamoDB because …" | ADR in the repo `docs/` | Durable decision, belongs in version control |
-| "Where I got to on the migration today" | `/save-session` | Session state, not project knowledge |
+| "The migration reached step 4; step 5 is blocked" | `/save-session` | Session state, not project knowledge |
 | "Codex should finish the rollout Claude started" | Memory Vault handoff | Cross-harness, needs to be portable |
 | "This library returns `null`, not `undefined`" | Learned skill via `/learn` | Reusable across projects |
 | "The staging DB password" | Secret manager | Never any of the above |
@@ -437,7 +437,7 @@ export FORGE_MCP_CONFIG_PATH=/path/to/a/smaller/mcp.json
 
 FORGE's `pre:mcp-health-check` and `post:mcp-health-check` hooks track server availability so a dead server is reported rather than silently retried; `FORGE_MCP_HEALTH_TIMEOUT_MS` bounds the check. Guidance on selecting and scoping servers is in [`../docs/MCP-GUIDE.md`](../docs/MCP-GUIDE.md), and the trust implications of connecting one are in [`../docs/MCP-CONNECTOR-POLICY.md`](../docs/MCP-CONNECTOR-POLICY.md).
 
-The test to apply to every server: *would I notice if this were gone?* If the honest answer is no, it is costing you a turn's worth of budget every turn to produce nothing.
+The test to apply to every server: *would anyone notice if it were gone?* If the honest answer is no, it is costing you a turn's worth of budget every turn to produce nothing.
 
 ---
 
@@ -490,7 +490,7 @@ Three or more compactions in a session is not a context problem, it is a scoping
 ### Step 5 — Verify against reality
 
 ```text
-Use the context-budget skill to audit my context consumption.
+Use the context-budget skill to audit this session's context consumption.
 ```
 
 Compare its estimate with your worksheet. Where they disagree, the skill is usually right about component sizes and you are usually right about which components you actually use. Both inputs matter.

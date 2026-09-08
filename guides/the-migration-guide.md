@@ -27,11 +27,11 @@ This guide covers adopting FORGE in a repository that already has history: an ex
 
 Three costs, all real, none of them the install.
 
-**Context.** Every rule file and every MCP tool is resident in every turn. A full install is 122 rule files and 300+ skills; installed indiscriminately, that is a permanent tax on every session. The selective install exists for this reason.
+**Context.** Every rule file and every MCP tool is resident in every turn. A full install is 121 rule files and 300+ skills; installed indiscriminately, that is a permanent tax on every session. The selective install exists for this reason.
 
-**Habit.** A team that types `/plan` before implementing gets value. A team that installs FORGE and keeps prompting the way it always did gets a slower agent. The behavior change is the adoption; the files are just the mechanism.
+**Habit.** A team that types `/plan` before implementing gets value. A team that installs FORGE and keeps prompting the way it always did gets a slower agent. The behavior change is the adoption; the files are the mechanism.
 
-**Maintenance.** Skills go stale, rules accumulate, learned instincts pile up. Budget a recurring hour, not a one-time afternoon.
+**Maintenance.** Skills go stale, rules accumulate, instincts pile up. Budget a recurring hour, not a one-time afternoon.
 
 Do not adopt FORGE if none of these describe you:
 
@@ -52,38 +52,28 @@ Adoption starts with an inventory. Skipping this is how teams end up with FORGE'
 ### Inventory the agent surface
 
 ```bash
-# Project-level agent configuration
-ls -la CLAUDE.md AGENTS.md .claude/ .cursor/ .codex/ 2>/dev/null
-find . -name 'CLAUDE.md' -not -path './node_modules/*'
-wc -l CLAUDE.md 2>/dev/null
-
-# Existing skills, commands, agents, rules
+find . -name 'CLAUDE.md' -not -path './node_modules/*' | xargs wc -l
 ls .claude/skills .claude/commands .claude/agents .claude/rules 2>/dev/null
-
-# User-level, which also loads
 ls ~/.claude/skills ~/.claude/commands ~/.claude/agents 2>/dev/null
-wc -l ~/.claude/CLAUDE.md 2>/dev/null
-
-# Hooks and settings already in place
 cat .claude/settings.json ~/.claude/settings.json 2>/dev/null | head -60
-
-# MCP servers, the quiet context consumer
-cat .mcp.json ~/.claude/mcp.json 2>/dev/null
+cat .mcp.json ~/.claude/mcp.json 2>/dev/null   # MCP is the quiet context consumer
 ```
+
+The user-level chain loads too, so an audit that only looks at the repository misses half of it.
 
 ### Inventory the informal surface
 
 The valuable material is usually not in `.claude/`.
 
-| Where to look | What you are hunting | Command |
-|---|---|---|
-| Team chat, pinned messages | Prompts people copy-paste | Manual |
-| `docs/`, `CONTRIBUTING.md` | Conventions the agent should know | `ls docs/` |
-| `scripts/`, `Makefile`, `justfile` | Repeated operations | `ls scripts/; grep -c '^[a-z].*:' Makefile` |
-| Shell config | Aliases wrapping repeated work | `alias \| grep -iE 'git\|test\|build\|deploy'` |
-| PR review comments | Recurring correction categories | `gh pr list --state merged --limit 50` |
-| Git history | Conventions the code already follows | `git log --oneline -50` |
-| `.github/workflows/` | Quality gates that already exist | `ls .github/workflows/` |
+| Where to look | What you are hunting |
+|---|---|
+| Team chat, pinned messages | Prompts people copy-paste |
+| `docs/`, `CONTRIBUTING.md` | Conventions the agent should know |
+| `scripts/`, `Makefile`, `justfile` | Repeated operations |
+| Shell config (`alias \| grep -iE 'git\|test\|build'`) | Aliases wrapping repeated work |
+| Merged PR review comments | Recurring correction categories |
+| `git log --oneline -50` | Conventions the code already follows |
+| `.github/workflows/` | Quality gates that already exist |
 
 Write each finding into one table. This is the migration plan.
 
@@ -109,9 +99,7 @@ Or `/harness-audit` from inside a session. It scores up to twelve fixed categori
 
 If the repository is unfamiliar to you as well as to the agent, the `codebase-onboarding` skill analyzes it and produces an architecture map, key entry points, conventions, and a starter `CLAUDE.md` — useful raw material for Phase 4 even if you rewrite all of it.
 
-### Establish a quality baseline
-
-Before changing anything, record how the current setup performs. Ten tasks mined from real sessions, three runs each. Without this, every later claim about improvement is an impression. [The evaluation guide](the-evaluation-guide.md) covers the mechanics; the important part is that the baseline is measured *before* the install, because it cannot be measured afterwards.
+Record a quality baseline in the same pass: ten tasks mined from real sessions, three runs each. [The evaluation guide](the-evaluation-guide.md) covers the mechanics. The important part is the timing — a baseline can only be captured before the install, and without one every later claim about improvement is an impression.
 
 ---
 
@@ -145,10 +133,10 @@ The stack map is worth reading directly — it is the repository's own opinion a
 | `python` | `common`, `python` | `python-patterns`, `python-testing`, `tdd-workflow`, `verification-loop` |
 | `django` | `common`, `python` | `django-patterns`, `django-tdd`, `django-verification`, `django-security`, plus the Python set |
 | `golang` | `common`, `golang` | `golang-patterns`, `golang-testing`, `tdd-workflow`, `verification-loop` |
-| `rust` | `common`, `rust` | `rust-patterns`, `rust-testing`, `tdd-workflow`, `verification-loop` |
 | `springboot` | `common`, `java` | `springboot-patterns`, `springboot-tdd`, `springboot-verification`, `springboot-security`, plus the Java set |
-| `swift` | `common`, `swift` | `swiftui-patterns`, `swift-concurrency-6-2`, `swift-actor-persistence`, `swift-protocol-di-testing` |
 | `docker` | none | `docker-patterns`, `deployment-patterns` |
+
+Packs also exist for `rust`, `swift`, `kotlin`, `android`, `csharp-dotnet`, `cpp`, `perl`, `php-laravel`, `dart-flutter`, `nextjs`, `javascript`, and `ruby`.
 
 Notice the pattern: two or three rule packs and a handful of skills. Not 122 and 300.
 
@@ -182,11 +170,6 @@ This resolves modules, expands dependencies, filters by target, and prints every
 
 ```bash
 node scripts/forge.js install --profile core --target claude
-```
-
-Or with explicit module and capability control:
-
-```bash
 node scripts/forge.js install --profile minimal --target claude --with capability:machine-learning
 ./install.sh --target claude --skills tdd-workflow,security-review
 ./install.sh --target claude --modules orchestration --enable-hooks
@@ -197,19 +180,12 @@ node scripts/forge.js install --profile minimal --target claude --with capabilit
 Any install whose profile or modules would materialize the hook runtime requires a deliberate answer. Without `--enable-hooks` or `--no-hooks`, the installer prints what the hooks would do and stops before writing.
 
 ```bash
-./install.sh --profile core --without baseline:hooks --target claude
 ./install.sh --profile core --no-hooks --target claude
+./install.sh --profile core --without baseline:hooks --target claude
 ./install.sh --target claude --modules hooks-runtime --enable-hooks
 ```
 
-For a first adoption, install without hooks. Add them once the team is comfortable with the skills and commands, and start on the `minimal` hook profile:
-
-```bash
-export FORGE_HOOK_PROFILE=minimal      # minimal | standard | strict
-export FORGE_DISABLED_HOOKS=stop:desktop-notify
-```
-
-Hooks are the layer most likely to make someone uninstall FORGE on day one, because they change behavior the user did not ask to change. Introduce them second.
+For a first adoption, install without hooks. Add them once the team is comfortable with the skills and commands, starting on the `minimal` hook profile with anything noisy disabled by id (`FORGE_HOOK_PROFILE=minimal`, `FORGE_DISABLED_HOOKS=stop:desktop-notify`). Hooks are the layer most likely to make someone uninstall FORGE on day one, because they change behavior the user did not ask to change. Introduce them second.
 
 ### One install path per harness
 
@@ -222,13 +198,7 @@ Stacking installs into the same harness duplicates skills, commands, hooks, and 
 | Claude Code plugin + full Claude manual install | Do not |
 | Codex sync + Codex marketplace plugin | Do not |
 
-If you already stacked, uninstall and reinstall one path rather than reconciling by hand — see [rollback](#rollback).
-
-For a second harness on the same machine, keep its data separate:
-
-```bash
-export FORGE_AGENT_DATA_HOME="$HOME/.cursor/forge"
-```
+If you already stacked, uninstall and reinstall one path rather than reconciling by hand — see [rollback](#rollback). For a second harness on the same machine, keep its data separate with `FORGE_AGENT_DATA_HOME="$HOME/.cursor/forge"`.
 
 ### Verify
 
@@ -272,20 +242,7 @@ Copy whole directories, never individual files. Relative references inside the r
 
 Where a FORGE rule and your team's convention disagree, your convention wins — but say so in one place rather than arguing with the rule in every prompt.
 
-```bash
-mkdir -p ~/.claude/rules/project
-cat > ~/.claude/rules/project/overrides.md <<'EOF'
-# Project rule overrides
-
-These override the corresponding FORGE rules for this repository.
-
-## Testing
-Coverage floor is 60%, not 80%. Legacy modules under `src/legacy/` are exempt.
-
-## Git workflow
-Squash merges only. No merge commits on `main`.
-EOF
-```
+Write one `~/.claude/rules/project/overrides.md` (or `.claude/rules/project/overrides.md` for a repo-scoped set) with a short section per deviation — "coverage floor is 60%, not 80%; `src/legacy/` is exempt", "squash merges only, no merge commits on `main`".
 
 Keep the override file short. A long override file means you picked the wrong rule pack.
 
@@ -306,9 +263,7 @@ An existing `CLAUDE.md` is usually three different documents that grew together.
   └── "the API is at api.internal.example"       → stays (short fact)
 ```
 
-The test for each line: **is this needed on every turn?** If not, it belongs somewhere the agent can retrieve it, not somewhere it must carry it.
-
-Target a combined `CLAUDE.md` chain under 300 lines — the threshold the `context-budget` skill flags at. Chains routinely reach a thousand lines because every addition looks small.
+The test for each line: **is this needed on every turn?** If not, it belongs somewhere the agent can retrieve it, not somewhere it must carry it. Target a combined chain under 300 lines — the threshold `context-budget` flags at. Chains routinely reach a thousand because every addition looks small.
 
 A workable shape after the split:
 
@@ -319,13 +274,10 @@ A workable shape after the split:
 One paragraph: what this service does, what it talks to.
 
 ## Commands
-- build: `make build`
-- test: `make test`
-- integration: `make itest` (requires a running Postgres)
-- lint: `make lint`
+build `make build` · test `make test` · integration `make itest` (needs Postgres) · lint `make lint`
 
 ## Conventions
-FORGE rules apply. Project-specific overrides live in `.claude/rules/project/`.
+FORGE rules apply. Project overrides live in `.claude/rules/project/`.
 
 ## Skills
 | Files | Skill |
@@ -335,20 +287,13 @@ FORGE rules apply. Project-specific overrides live in `.claude/rules/project/`.
 | `db/migrations/**` | Load `database-reviewer` before editing |
 
 ## Gotchas
-- The test suite needs `TZ=UTC` or timezone tests fail
+- The suite needs `TZ=UTC` or timezone tests fail
 - `src/legacy/` is exempt from the coverage floor
 ```
 
 The skills table is the highest-value part. It routes work to the right playbook without keeping every playbook resident. Note also the instruction in FORGE's own `CLAUDE.md`: when spawning subagents, pass the conventions from the relevant skill into the agent's prompt — a subagent does not inherit your loaded skills.
 
-Keep the old file until the new arrangement has run for a week:
-
-```bash
-git mv CLAUDE.md CLAUDE.md.pre-forge
-# write the new CLAUDE.md
-git add CLAUDE.md CLAUDE.md.pre-forge
-git commit -m "chore: split CLAUDE.md into rules, skills, and a short project file"
-```
+Keep the old file as `CLAUDE.md.pre-forge` — `git mv` it, write the new one, commit both — until the new arrangement has run for a week.
 
 ---
 
@@ -366,32 +311,13 @@ The prompts your team pastes repeatedly are the most valuable thing you own and 
 | Just a task description | No — it is a prompt, not a skill |
 | Duplicates a shipped FORGE skill | No — use the shipped one |
 
-Before writing anything, check for an existing skill. 300+ ship, and a duplicate is worse than nothing: two skills with overlapping descriptions both compete for the trigger and both cost context.
-
-```bash
-ls skills | grep -i review
-grep -rl "your topic" skills/*/SKILL.md | head
-```
+Before writing anything, check for an existing skill — `ls skills | grep -i <topic>` and `grep -rl "<topic>" skills/*/SKILL.md`. 300+ ship, and a duplicate is worse than nothing: two skills with overlapping descriptions compete for the trigger and both cost context.
 
 ### Three conversion routes
 
-**From git history.** `/skill-create` parses commits, file changes, and message patterns to extract recurring conventions, then generates `SKILL.md` files:
+**From git history.** `/skill-create --commits 200` parses commits, file changes, and message patterns to extract recurring conventions, then generates `SKILL.md` files; `--instincts` also seeds `continuous-learning-v2`. This is the fastest route for conventions the code already follows but nobody documented.
 
-```text
-/skill-create --commits 200
-/skill-create --instincts
-```
-
-This is the fastest route for conventions the code already follows but nobody documented.
-
-**From a session.** After solving something non-trivial:
-
-```text
-/learn
-/learn-eval
-```
-
-`/learn` proposes candidate skills and asks whether each belongs at global scope (`~/.claude/skills/`) or project scope (`.claude/skills/`). `/learn-eval` adds a quality gate and a save-location decision before writing. Both require approval before any file is written, and both treat session content as untrusted — secrets and PII are redacted, and instructions found inside session content are never followed.
+**From a session.** Run `/learn` or `/learn-eval` after solving something non-trivial. `/learn` proposes candidate skills and asks whether each belongs at global scope (`~/.claude/skills/`) or project scope (`.claude/skills/`). `/learn-eval` adds a quality gate and a save-location decision before writing. Both require approval before any file is written, and both treat session content as untrusted — secrets and PII are redacted, and instructions found inside session content are never followed.
 
 **By hand.** For a prompt you already have, the conversion is mostly about the description:
 
@@ -405,15 +331,8 @@ description: Review a diff for N+1 query patterns in the ORM layer. Use when a
 
 # N+1 query review
 
-## When to use
-...
-
-## How it works
-1. ...
-
-## Verification
+## When to use ... ## How it works ... ## Verification
 - [ ] Every flagged site cites file:line
-- [ ] Each finding names the missing eager-load or join
 ```
 
 The description carries the entire trigger decision, and it is resident whether or not the body ever loads. Write it as a trigger condition, not a topic. Format details: [`../docs/SKILL-AUTHORING.md`](../docs/SKILL-AUTHORING.md).
@@ -458,20 +377,12 @@ argument-hint: [version]
 
 # /release
 
-## Steps
-
 1. Confirm the working tree is clean and `main` is up to date.
-2. Run the existing script — do not reimplement it:
-   ```bash
-   ./scripts/release.sh "$1"
-   ```
+2. Run the existing script — do not reimplement it: `./scripts/release.sh "$1"`
 3. Poll the deploy until it reports healthy or fails.
-4. Draft release notes from `git log --oneline <previous-tag>..HEAD`.
-5. Present the notes for approval. Do not publish without confirmation.
+4. Draft release notes from `git log --oneline <previous-tag>..HEAD`, present for approval.
 
-## Stop conditions
-- Working tree dirty: stop and report.
-- Script exits non-zero: stop, print the output, do not continue.
+Stop conditions: working tree dirty, or the script exits non-zero — print the output and halt.
 ```
 
 Place project commands in `.claude/commands/<name>.md` so they ship with the repository.
@@ -486,7 +397,7 @@ Some recurring corrections are not prompts at all — they are behaviors that sh
 
 ```text
 /hookify never commit with --no-verify
-/hookify              # with no argument, analyzes the conversation for corrections worth preventing
+/hookify              # no argument: analyze the conversation for corrections worth preventing
 /hookify-list
 /hookify-configure
 ```
@@ -503,33 +414,27 @@ Rolling out to everyone at once produces a support burden and a rollback. Sequen
   Week 1        Week 2-3        Week 4-5         Week 6+
   ───────       ─────────       ─────────        ────────
   1 person      2-3 people      whole team       steady state
-  minimal       + hooks         + team skills    maintenance
-  no hooks      minimal         standard         cadence
-  measure       compare         document         re-audit
+  minimal       core, hooks     + team skills    maintenance
+  no hooks      on minimal      configuration    cadence
+  measure       compare         committed        re-audit
 ```
 
 **Week 1 — one person, minimal, no hooks.** One engineer installs `minimal` without hooks and works normally. Goal: confirm nothing breaks and collect the first complaints. Record the harness audit score and the eval baseline.
 
-**Weeks 2–3 — small group, hooks on minimal.** Two or three people, `core` profile, `FORGE_HOOK_PROFILE=minimal`. Goal: find the hooks that annoy people and disable them by id rather than abandoning the layer.
-
-```bash
-export FORGE_DISABLED_HOOKS=stop:desktop-notify,post:quality-gate
-```
+**Weeks 2–3 — small group, hooks on minimal.** Two or three people, `core` profile, `FORGE_HOOK_PROFILE=minimal`. Goal: find the hooks that annoy people and disable those by id (`FORGE_DISABLED_HOOKS=stop:desktop-notify,post:quality-gate`) rather than abandoning the layer.
 
 **Weeks 4–5 — whole team.** Commit the shared configuration so nobody configures anything by hand.
 
 ```text
 your-repo/
-├── CLAUDE.md                     # short, split per Phase 4
+├── CLAUDE.md                    # short, split per Phase 4
 ├── .claude/
-│   ├── rules/
-│   │   ├── forge/common/         # copied rule pack
-│   │   ├── forge/typescript/
-│   │   └── project/overrides.md  # your deviations
-│   ├── skills/                   # team skills from Phase 5
-│   ├── commands/                 # team commands from Phase 6
-│   └── settings.json             # hook profile, permissions, env
-└── docs/adr/                     # decisions extracted from CLAUDE.md
+│   ├── rules/forge/{common,typescript}/   # copied rule packs
+│   ├── rules/project/overrides.md         # your deviations
+│   ├── skills/                  # team skills from Phase 5
+│   ├── commands/                # team commands from Phase 6
+│   └── settings.json            # hook profile, permissions, env
+└── docs/adr/                    # decisions extracted from CLAUDE.md
 ```
 
 One documented install command in `CONTRIBUTING.md`. Everything else arrives with a `git pull`.
@@ -578,23 +483,9 @@ Wait two weeks after the team rollout, then work through this list.
 | Rule packs for stacks you do not use | Confirmed unused | `context-budget` classified them "rarely needed" |
 | Legacy command shims you copied | Team uses the canonical skills | `grep -r` for the old names in docs |
 | MCP servers that only wrap a CLI | Bash covers the same job | Nobody notices they are gone for a week |
-| Disabled hooks | Nobody has asked for them | They stayed disabled a month |
-| Stale learned instincts | Older than 30 days, never promoted | `/prune --dry-run` first |
-| Old eval tasks | Passing 3/3 for three months | The set still covers real failure modes |
+| Disabled hooks, stale instincts, solved eval tasks | They stayed unused for a month | `/prune --dry-run` first |
 
-Deletion commands:
-
-```bash
-/prune --dry-run
-/prune
-
-# Sweep ~/.claude interactively, one confirmation per item
-# (via the config-gc skill)
-```
-
-```text
-Use the config-gc skill to clean up my Claude configuration.
-```
+Run `/prune --dry-run` before `/prune`, and sweep `~/.claude` interactively — one confirmation per item — with the `config-gc` skill.
 
 What **not** to delete: `.github/workflows/` quality gates, your test suite, `CONTRIBUTING.md`, and any script a command wraps. FORGE augments those; it does not replace them.
 
@@ -612,33 +503,19 @@ Rollback should be boring. Make sure it is, before you need it.
 | Rule packs | `rm -rf ~/.claude/rules/forge` | Yes |
 | Hooks | `FORGE_HOOK_PROFILE` / `FORGE_DISABLED_HOOKS`, or uninstall | Yes |
 | `CLAUDE.md` changes | `git revert` | Yes, if committed |
-| Learned skills and instincts | Manual removal from `~/.claude/skills/`, `/prune` | Mostly |
-| Team habits | Not reversible | No |
+| Learned skills and instincts | Remove from `~/.claude/skills/`; `/prune` | Mostly |
+| Team habits | Nothing | No |
 
 ### Preview, then remove
 
 ```bash
 node scripts/forge.js uninstall --dry-run
-node scripts/forge.js uninstall
 node scripts/forge.js uninstall --target claude
+node scripts/forge.js uninstall --legacy-codex-sync --dry-run   # legacy Codex sync path
+rm -rf ~/.claude/rules/forge                                     # rule packs are copied, not tracked
 ```
 
-Uninstall removes only files recorded in install-state. Files it cannot prove it owns are preserved and reported for manual review — a deliberate choice that leaves residue rather than deleting something of yours.
-
-For the legacy Codex sync path:
-
-```bash
-node scripts/forge.js uninstall --legacy-codex-sync --dry-run
-node scripts/forge.js uninstall --legacy-codex-sync
-```
-
-Manual leftovers:
-
-```bash
-rm -rf ~/.claude/rules/forge
-ls ~/.claude/skills          # remove FORGE skills you copied by hand
-ls ~/.claude/commands
-```
+Uninstall removes only files recorded in install-state. Files it cannot prove it owns are preserved and reported for manual review — a deliberate choice that leaves residue rather than deleting something of yours. Skills and commands you copied by hand into `~/.claude/` are in that category; check both directories afterwards.
 
 ### Partial rollback
 
@@ -663,14 +540,7 @@ rm -rf ~/.claude/skills/<skill-name>
 
 Diagnose before removing. `node scripts/forge.js doctor` and the `context-budget` skill will usually name the layer, and reverting one layer preserves the value of the other four.
 
-### If a state got tangled
-
-```bash
-node scripts/forge.js list-installed
-node scripts/forge.js doctor
-node scripts/forge.js repair
-node scripts/forge.js status
-```
+If install state is tangled rather than unwanted, `list-installed`, `doctor`, `repair`, and `status` will usually sort it out without removing anything.
 
 For teams moving from an older FORGE major version rather than from no FORGE at all, [`../docs/MIGRATION-1X-TO-2.0.md`](../docs/MIGRATION-1X-TO-2.0.md) covers that path specifically.
 
@@ -692,8 +562,7 @@ Phase 1 — Choose
 [ ] Listed which modules are deliberately excluded
 
 Phase 2 — Install
-[ ] Reviewed `forge plan` output before applying
-[ ] Installed one path per harness, no stacking
+[ ] Reviewed `forge plan` output before applying; one path per harness, no stacking
 [ ] Made the hook decision explicitly (started without, or on minimal)
 [ ] Verified with `list-installed` and `doctor`
 
@@ -702,8 +571,7 @@ Phase 3 — Rules
 [ ] Wrote a short project override file for genuine deviations
 
 Phase 4 — CLAUDE.md
-[ ] Split into rules, skills, ADRs, and a short project file
-[ ] Combined chain under 300 lines
+[ ] Split into rules, skills, ADRs, and a short project file, under 300 combined lines
 [ ] Added the file-pattern to skill routing table
 [ ] Kept the old file as CLAUDE.md.pre-forge for two weeks
 
@@ -711,19 +579,15 @@ Phase 5 — Skills
 [ ] Checked for an existing FORGE skill before writing each new one
 [ ] Converted recurring prompts (git history, /learn, or by hand)
 [ ] Descriptions written as trigger conditions, not topics
-[ ] Project skills committed under .claude/skills/
-[ ] Verified trigger and compliance behavior
+[ ] Project skills committed under .claude/skills/; trigger and compliance verified
 
 Phase 6 — Commands
-[ ] Converted only multi-step judgment workflows
-[ ] Commands wrap existing scripts rather than reimplementing them
+[ ] Converted only multi-step judgment workflows; commands wrap scripts, not reimplement them
 [ ] Recurring corrections converted to hooks via /hookify
 
 Phase 7 — Rollout
-[ ] Week 1: one person, minimal, no hooks
-[ ] Weeks 2-3: small group, hooks on minimal profile
-[ ] Weeks 4-5: whole team, configuration committed
-[ ] Week 6+: maintenance cadence scheduled
+[ ] Week 1 one person minimal no hooks; weeks 2-3 small group hooks on minimal
+[ ] Weeks 4-5 whole team with configuration committed; week 6+ maintenance cadence
 
 Cleanup and rollback
 [ ] Old surface deleted after two weeks
@@ -743,9 +607,8 @@ Cleanup and rollback
 | Install mechanics and targets | [`../docs/INSTALLATION.md`](../docs/INSTALLATION.md) |
 | Settings and environment | [`../docs/CONFIGURATION.md`](../docs/CONFIGURATION.md) |
 | CLI reference | [`../docs/CLI-REFERENCE.md`](../docs/CLI-REFERENCE.md) |
-| Surface routing | [`../docs/capability-surface-selection.md`](../docs/capability-surface-selection.md), [`../docs/CONCEPTS.md`](../docs/CONCEPTS.md) |
-| Selective install internals | [`../docs/SELECTIVE-INSTALL-ARCHITECTURE.md`](../docs/SELECTIVE-INSTALL-ARCHITECTURE.md) |
+| Surface routing | [`../docs/CONCEPTS.md`](../docs/CONCEPTS.md), [`../docs/capability-surface-selection.md`](../docs/capability-surface-selection.md) |
 | Organizational rollout | [`../docs/TEAM-ADOPTION.md`](../docs/TEAM-ADOPTION.md) |
-| Version migration | [`../docs/MIGRATION-1X-TO-2.0.md`](../docs/MIGRATION-1X-TO-2.0.md) |
+| Version migration | [`../docs/MIGRATION-1X-TO-2.0.md`](../docs/MIGRATION-1X-TO-2.0.md), [`../docs/SELECTIVE-INSTALL-ARCHITECTURE.md`](../docs/SELECTIVE-INSTALL-ARCHITECTURE.md) |
 | Platform support | [`../docs/HARNESS-MATRIX.md`](../docs/HARNESS-MATRIX.md) |
 | Security posture before rollout | [The security guide](the-security-guide.md) |

@@ -1210,6 +1210,25 @@ a.stat:hover {
   }
 }
 
+/* Two-column article layout (content + on-this-page), used where there is no
+   sidebar tree: guides and single skill pages. */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 1280px) {
+  .article-layout {
+    grid-template-columns: minmax(0, 1fr) var(--toc-width);
+    gap: clamp(1.5rem, 0.5rem + 2vw, 3rem);
+  }
+}
+
+.article-layout > .docs-content {
+  max-width: 52rem;
+}
+
 .docs-sidebar {
   display: none;
 }

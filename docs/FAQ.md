@@ -122,7 +122,7 @@ Through the skill's `description` frontmatter and its "when to use" section. A v
 
 ### How do I write my own skill?
 
-`/skill-create` scaffolds one. The requirements: a directory under `skills/<name>/` with `SKILL.md`, frontmatter with `name`, `description`, and `origin`, and a body with a "when to use" section, concrete mechanics, and examples that were actually run. Full contract in [SKILL-AUTHORING.md](SKILL-AUTHORING.md).
+`/skill-create` scaffolds one. The requirements: a directory under `skills/<name>/` with `SKILL.md`, frontmatter carrying `name` and `description` with provenance in a nested `metadata.origin`, and a body with a "when to use" section, concrete mechanics, and examples that were actually run. Full contract in [SKILL-AUTHORING.md](SKILL-AUTHORING.md).
 
 ### Where should my own skills live?
 

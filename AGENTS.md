@@ -1,5 +1,7 @@
 # Agents
 
+FORGE is a harness-native agent engineering system, providing 68 specialized agents, 318 skills, 94 commands, lifecycle hooks, and selectable rules to any supported coding agent.
+
 This page is the catalog of every FORGE subagent and the contract that governs how they are
 defined, selected, and composed. Use it to decide which specialist should handle a piece of
 work, and to check what a given agent is permitted to touch before you delegate to it.
@@ -7,6 +9,17 @@ work, and to check what a given agent is permitted to touch before you delegate 
 Prerequisites: you understand the difference between an agent, a skill, and a command — see
 [docs/CONCEPTS.md](docs/CONCEPTS.md). To write a new agent, read
 [docs/AGENT-AUTHORING.md](docs/AGENT-AUTHORING.md) after this page.
+
+
+## Project structure
+
+```text
+agents/ — 68 specialized subagents
+skills/ — 318 workflow skills and domain knowledge
+commands/ — 94 slash commands
+rules/ — always-loaded standards, selected by stack
+hooks/ — the lifecycle hook graph
+```
 
 ## What an agent is
 

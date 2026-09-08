@@ -10,17 +10,15 @@ metadata:
 Response headers are the cheapest defense-in-depth a web application has, and the
 easiest to get subtly wrong: a CSP with `'unsafe-inline'` blocks nothing, a CORS handler
 that echoes the request origin is a same-origin bypass, and HSTS preload is a one-way
-door. This skill authors each header deliberately and rolls out the risky ones behind a
+door. This skill authors each header deliberately and stages the risky ones behind a
 report-only phase. Done means: a policy that actually restricts something, deployed
-without breaking the application, with violation reports going somewhere a human reads.
+without breaking the app, with violation reports going somewhere a human reads.
 
 ## When to activate
 
-- Standing up a new web application or public API
-- A scanner or customer questionnaire flags missing headers
+- Standing up a new web application, or a scanner flags missing headers
 - Adding third-party scripts, embeds, payment iframes, or an analytics tag
-- Debugging a CORS preflight failure or a cookie that is not sent cross-site
-- Hardening against clickjacking or cross-site request forgery
+- Debugging a CORS preflight failure, a cookie not sent cross-site, or clickjacking
 - User says "CSP", "Content-Security-Policy", "CORS error", "SameSite", "HSTS",
   "X-Frame-Options", "clickjacking", "security headers score"
 
@@ -30,18 +28,18 @@ without breaking the application, with violation reports going somewhere a human
   [authn-authz-patterns](../authn-authz-patterns/SKILL.md)
 - Sanitizing user-supplied HTML before rendering — use
   [security-review](../security-review/SKILL.md)
-- API-only services with no browser client: most of this applies weakly; set
-  `Content-Security-Policy: default-src 'none'` and focus on
+- API-only services with no browser client: set
+  `Content-Security-Policy: default-src 'none'` and use
   [api-design](../api-design/SKILL.md)
-- Header configuration for an agent or LLM surface — the relevant risk is
+- An agent or LLM surface, where the relevant risk is
   [prompt-injection-defense](../prompt-injection-defense/SKILL.md)
 
 ## Prerequisites
 
-- Ability to set response headers at the edge, in the framework, or both — and knowledge
-  of which layer wins when they disagree
-- A staging environment that receives representative traffic
-- An endpoint that can accept CSP violation reports and store them
+- Ability to set response headers at the edge or in the framework, and knowledge of
+  which layer wins when they disagree
+- A staging environment with representative traffic, and an endpoint that accepts and
+  stores CSP violation reports
 
 ## Process
 
@@ -79,11 +77,10 @@ Content-Security-Policy:
   upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint
 ```
 
-Reading that `script-src`: modern browsers honor the nonce and ignore both `https:` and
-`'unsafe-inline'`, which are present only as fallbacks for browsers that do not support
-nonces. This is the standard strict-CSP shape, not a mistake.
-
-`default-src` covers none of the following, so each must be stated:
+In that `script-src`, modern browsers honor the nonce and ignore both `https:` and
+`'unsafe-inline'`, which exist only as fallbacks for browsers without nonce support.
+This is the standard strict-CSP shape, not a mistake. `default-src` covers none of the
+following, so each must be stated:
 
 - `base-uri 'none'` — without it, an injected `<base>` tag redirects every relative
   script URL to an attacker host, defeating the rest of the policy.
@@ -125,19 +122,18 @@ A nonce reused across responses, or derived from anything predictable, is equiva
 
 ### 3. Roll out report-only, then enforce
 
-Never ship a first CSP in enforcing mode. The sequence:
+Never ship a first CSP in enforcing mode.
 
 1. Deploy `Content-Security-Policy-Report-Only` with the intended policy.
-2. Collect reports for at least one full business cycle, so weekly jobs, admin screens,
-   and marketing tags all appear.
-3. Triage each violated directive: legitimate resource to allow, dead code to delete,
-   inline handler to refactor, or a browser extension to ignore.
-4. Tighten the policy, redeploy report-only, confirm the report volume drops.
-5. Switch the header name to enforcing. Keep the report-only header alongside it,
-   carrying the next, stricter policy you are working toward.
+2. Collect reports for a full business cycle, so weekly jobs, admin screens, and
+   marketing tags all appear.
+3. Triage each violated directive: resource to allow, dead code to delete, inline
+   handler to refactor, or a browser extension to ignore.
+4. Tighten, redeploy report-only, confirm the report volume drops.
+5. Switch the header name to enforcing, keeping the report-only header alongside it
+   carrying the next, stricter policy.
 
-The report endpoint must be cheap, unauthenticated, rate-limited, and size-capped. It
-receives whatever any browser or extension sends.
+The report endpoint must be cheap, unauthenticated, rate-limited, and size-capped.
 
 ```ts
 export async function POST(req: Request) {
@@ -155,7 +151,7 @@ export async function POST(req: Request) {
 }
 ```
 
-Expect noise from browser extensions injecting scripts. Filter `blocked-uri` values with
+Expect noise from extensions injecting scripts; filter `blocked-uri` values with
 extension schemes before alerting, or the signal drowns.
 
 ### 4. Set cookie attributes per cookie, not per application
@@ -167,15 +163,15 @@ extension schemes before alerting, or the signal drowns.
 | `SameSite=Lax` | Default for session cookies | Sent on top-level GET navigation |
 | `SameSite=Strict` | High-value actions, admin sessions | Breaks inbound links from email |
 | `SameSite=None; Secure` | Genuine cross-site embedding only | Reintroduces CSRF exposure; pair with tokens |
-| `__Host-` prefix | Session cookies | Forces `Secure`, `Path=/`, and no `Domain`; blocks a subdomain from overwriting it |
+| `__Host-` prefix | Session cookies | Forces `Secure`, `Path=/`, no `Domain`; blocks subdomain overwrite |
 
 ```http
 Set-Cookie: __Host-sid=<value>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200
 ```
 
-`SameSite=Lax` reduces CSRF but does not eliminate it: `Lax` still permits top-level
-navigations, so a state-changing GET endpoint remains reachable. Keep anti-CSRF tokens
-on state-changing routes, and never let a GET mutate state.
+`Lax` reduces CSRF but does not eliminate it — it still permits top-level navigations,
+so a state-changing GET endpoint remains reachable. Keep anti-CSRF tokens on
+state-changing routes, and never let a GET mutate state.
 
 ### 5. Configure CORS without reflecting arbitrary origins
 
@@ -185,21 +181,18 @@ const ALLOWED = new Set(["https://app.example.com", "https://admin.example.com"]
 export function cors(req: Request, res: Headers) {
   const origin = req.headers.get("origin");
   if (!origin || !ALLOWED.has(origin)) return;      // omit the header entirely
-
   res.set("Access-Control-Allow-Origin", origin);   // echo only after allowlist match
-  res.set("Vary", "Origin");                        // or a cache serves one tenant's ACAO to another
+  res.set("Vary", "Origin");                        // else a cache leaks one tenant's ACAO
   res.set("Access-Control-Allow-Credentials", "true");
   res.set("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE");
   res.set("Access-Control-Allow-Headers", "content-type,authorization");
-  res.set("Access-Control-Max-Age", "600");
 }
 ```
 
-Three failure patterns to reject in review: `Allow-Origin: *` together with
-`Allow-Credentials: true` (browsers refuse it, and the fix is an allowlist rather than a
-workaround); matching with `origin.endsWith("example.com")`, which admits
-`https://evil-example.com`; and omitting `Vary: Origin` behind a shared cache, which
-serves one requester's allowed origin to everyone.
+Three patterns to reject in review: `Allow-Origin: *` with `Allow-Credentials: true`
+(browsers refuse it; the fix is an allowlist, not a workaround); `origin.endsWith(
+"example.com")`, which admits `https://evil-example.com`; and a missing `Vary: Origin`
+behind a shared cache, which serves one requester's allowed origin to everyone.
 
 CORS relaxes the browser's same-origin restriction. It never grants permission — the
 server must still authenticate and authorize the request.
@@ -213,9 +206,8 @@ Cross-Origin-Embedder-Policy: require-corp
 ```
 
 COOP severs the `window.opener` relationship and is safe for most applications; CORP
-limits who may embed your resources. COEP is the disruptive one — it requires every
-cross-origin subresource to opt in via CORP or CORS, so stage it behind
-`Cross-Origin-Embedder-Policy-Report-Only` and expect to fix third-party assets.
+limits who may embed your resources. COEP requires every cross-origin subresource to opt
+in via CORP or CORS, so stage it behind `Cross-Origin-Embedder-Policy-Report-Only`.
 
 ### 7. Verify from outside the application
 
@@ -227,23 +219,22 @@ curl -sI https://app.example.com | grep -iE \
 curl -si -X OPTIONS https://api.example.com/v1/orders \
   -H 'Origin: https://evil.example' \
   -H 'Access-Control-Request-Method: POST' | head -20
-```
 
-Check error responses and static assets too. Frameworks commonly apply middleware to
-matched routes only, leaving 404 pages, health checks, and CDN-served files unprotected.
+# Frameworks often scope middleware to matched routes only
+curl -sI https://app.example.com/this-does-not-exist | head -20
+```
 
 ## Checklist
 
-- [ ] HSTS set with a long max-age; `includeSubDomains` only after subdomain TLS audit
-- [ ] `preload` withheld until the policy has soaked in production
+- [ ] HSTS set with a long max-age; `includeSubDomains` only after a subdomain TLS audit,
+      and `preload` withheld until the policy has soaked in production
 - [ ] `nosniff`, `Referrer-Policy`, and `Permissions-Policy` present on all responses
-- [ ] CSP uses per-response nonces, not `'unsafe-inline'` for real script execution
-- [ ] `base-uri`, `object-src`, `frame-ancestors`, and `form-action` all set explicitly
+- [ ] CSP uses per-response nonces, not `'unsafe-inline'`, and sets `base-uri`,
+      `object-src`, `frame-ancestors`, and `form-action` explicitly
 - [ ] CSP shipped report-only first; reports triaged before enforcing
 - [ ] Report endpoint is rate-limited, size-capped, and extension noise is filtered
 - [ ] Session cookies are `HttpOnly`, `Secure`, `SameSite`, and `__Host-` prefixed
-- [ ] CORS allowlist compares full origins; `Vary: Origin` is set
-- [ ] No `Allow-Origin: *` on any endpoint that accepts credentials
+- [ ] CORS allowlist compares full origins; `Vary: Origin` set; no `*` with credentials
 - [ ] Headers verified on error pages, static assets, and API routes, not just the home page
 - [ ] A test asserts the presence of each header so a refactor cannot silently drop them
 
@@ -251,21 +242,18 @@ matched routes only, leaving 404 pages, health checks, and CDN-served files unpr
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| CSP present but XSS still executes | `'unsafe-inline'` in `script-src` with no nonce | Move to nonce plus `'strict-dynamic'` |
-| Injected `<base>` redirects all scripts | `base-uri` not set | Add `base-uri 'none'` |
+| CSP present but XSS still executes | `'unsafe-inline'` in `script-src` with no nonce, or `base-uri` unset | Move to nonce plus `'strict-dynamic'`; add `base-uri 'none'` |
 | Site unreachable after an HSTS change | `includeSubDomains` with a subdomain lacking TLS | Fix TLS; the browser will not skip HSTS until max-age lapses |
-| Preflight passes for an unknown origin | Substring matching on origin | Exact-match against an allowlist set |
-| One tenant sees another's CORS header | Missing `Vary: Origin` behind a cache | Add `Vary: Origin` |
-| Cookie missing on cross-site POST | `SameSite=Lax` or `Strict` with genuine cross-site flow | Use `None; Secure` and add CSRF tokens |
+| Preflight passes for an unknown origin | Substring matching on origin | Exact-match against an allowlist set; add `Vary: Origin` |
+| Cookie missing on cross-site POST | `SameSite=Lax` or `Strict` with a genuine cross-site flow | Use `None; Secure` and add CSRF tokens |
 | Headers absent on 404 and static files | Middleware scoped to matched routes | Apply at the edge or the reverse proxy |
 | Report endpoint floods the log platform | Extension violations unfiltered | Drop extension schemes; sample and rate-limit |
-| CSP breaks after a deploy | Nonce cached with the HTML response | Mark HTML `no-store` or move the nonce to a per-request header |
+| CSP breaks intermittently after deploy | Nonce cached with the HTML response | Mark HTML `no-store` |
 
 ## References
 
-- W3C Content Security Policy Level 3
+- W3C Content Security Policy Level 3; Fetch Living Standard, CORS protocol
 - RFC 6797 (HSTS), RFC 6454 (Web Origin), RFC 6265bis (cookie prefixes and SameSite)
-- Fetch Living Standard, CORS protocol
 - OWASP Secure Headers Project; OWASP CSP Cheat Sheet
 - [authn-authz-patterns](../authn-authz-patterns/SKILL.md),
   [security-review](../security-review/SKILL.md),
