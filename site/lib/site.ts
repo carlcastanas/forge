@@ -8,7 +8,7 @@ export const SITE = {
   installDir: '~/.forge',
   shield: 'Forge Shield',
   version: '1.0.0',
-  repo: 'https://github.com/your-org/forge',
+  repo: 'https://github.com/carlcastanas/forge',
   tagline: 'The engineering system your coding agent is missing.',
   claim: 'Optimize the context window. Persist everything else.',
   description:

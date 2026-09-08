@@ -19,7 +19,7 @@ export default async function GuidesIndexPage() {
 
   return (
     <div className="container">
-      <div className="docs-content" style={{ maxWidth: '68rem', marginInline: 'auto' }}>
+      <div className="docs-content docs-content--wide">
         <Breadcrumbs items={[{ href: '/', label: 'FORGE' }, { label: 'Guides' }]} />
 
         <div className="page-head">
@@ -35,12 +35,13 @@ export default async function GuidesIndexPage() {
                 {guides.length} {guides.length === 1 ? 'guide' : 'guides'}
               </span>
               <span>about {totalMinutes} minutes end to end</span>
+              <span className="t-mono u-wrap">guides/&lt;name&gt;.md</span>
             </div>
           ) : null}
         </div>
 
         {intro ? (
-          <div style={{ marginBottom: '2.5rem' }}>
+          <div className="mb-6">
             <Markdown content={intro} sourcePath="guides/README.md" />
           </div>
         ) : null}
@@ -49,6 +50,11 @@ export default async function GuidesIndexPage() {
           <EmptyState
             title="No guides yet"
             body="The site reads ../guides/*.md from the repository. That directory currently has no markdown in it."
+            action={
+              <Link className="btn btn--sm" href="/docs">
+                Read the reference docs
+              </Link>
+            }
           />
         ) : (
           <div className="grid grid--2">

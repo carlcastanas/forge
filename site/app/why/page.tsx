@@ -11,7 +11,7 @@ import {
   InfoIcon,
 } from '@/components/icons';
 import { ContrastTerminals } from '@/components/contrast-terminal';
-import { SectionHead } from '@/components/page-parts';
+import { JumpList, SectionHead } from '@/components/page-parts';
 import { getCounts, getDocEntries, getGuides } from '@/lib/content';
 import { SITE } from '@/lib/site';
 
@@ -39,6 +39,16 @@ type Mode = {
   fix: string;
   owner: string;
 };
+
+/** The page's own contents, shown in the hero and used as its reading order. */
+const SECTIONS = [
+  { href: '#same-request', label: 'The same request, run twice' },
+  { href: '#who', label: 'Who this is for, and who it is not for' },
+  { href: '#failure-modes', label: 'The six failure modes, with examples' },
+  { href: '#timeline', label: 'Day one against month three' },
+  { href: '#limits', label: 'What FORGE cannot do' },
+  { href: '#signals', label: 'How to tell whether it is working' },
+];
 
 export default function WhyPage() {
   const counts = getCounts();
@@ -245,22 +255,26 @@ export default function WhyPage() {
     <>
       {/* Hero */}
       <section className="container hero">
-        <div className="hero__inner">
-          <span className="chip">The argument</span>
-          <h1 className="t-display">Why this exists</h1>
-          <p className="t-lead hero__subhead">
-            A capable model with no engineering process fails in predictable ways. FORGE is the
-            process, installed as files rather than re-specified in every prompt.
-          </p>
-          <div className="hero__ctas">
-            <Link className="btn btn--primary" href="/docs/getting-started">
-              Get started
-              <ArrowRightIcon size={16} />
-            </Link>
-            <Link className="btn" href="#failure-modes">
-              The failure modes
-            </Link>
+        <div className="hero__grid hero__grid--nav">
+          <div className="hero__inner">
+            <span className="chip">The argument</span>
+            <h1 className="t-display">Why this exists</h1>
+            <p className="t-lead hero__subhead">
+              A capable model with no engineering process fails in predictable ways. FORGE is the
+              process, installed as files rather than re-specified in every prompt.
+            </p>
+            <div className="btn-row">
+              <Link className="btn btn--primary" href="/docs/getting-started">
+                Get started
+                <ArrowRightIcon size={16} />
+              </Link>
+              <Link className="btn" href="#failure-modes">
+                The failure modes
+              </Link>
+            </div>
           </div>
+
+          <JumpList items={SECTIONS} />
         </div>
       </section>
 
@@ -277,48 +291,26 @@ export default function WhyPage() {
 
       {/* The argument */}
       <section className="container section">
-        <div className="split split--sidebar">
-          <div className="stack">
-            <h2 className="t-h2">The argument in one paragraph</h2>
-            <p className="t-body u-muted">
-              A model that writes good code is not the same thing as a system that ships good
-              changes. Left to itself, a capable model edits before the shape of the change is
-              settled, writes tests that agree with the code it just wrote, reviews its own work
-              in the context that produced it, reports success from the diff rather than from a
-              run, forgets a correction an hour later, and re-derives your workflow from your
-              prompt every session. None of that is exotic. It is the exact set of failures a
-              competent team already has practices for — planning before implementation,
-              test-first where it pays, review by someone else, verification against output,
-              written decisions, and a shared standard. FORGE installs those practices as the
-              default rather than leaving them to be requested. The scarce resource in this
-              system is the context window, so it loads a narrow slice per task and persists
-              everything else to disk.
-            </p>
-            <p className="t-body u-muted">
-              Nothing below requires a better model. Every improvement described on this page
-              comes from changing what has to exist before a stage is allowed to end.
-            </p>
-          </div>
-
-          <div className="panel">
-            <p className="t-eyebrow" style={{ marginBottom: '0.75rem' }}>
-              On this page
-            </p>
-            <ul className="tick-list">
-              {[
-                { href: '#who', label: 'Who this is for, and who it is not for' },
-                { href: '#failure-modes', label: 'The six failure modes, with examples' },
-                { href: '#timeline', label: 'Day one against month three' },
-                { href: '#limits', label: 'What FORGE cannot do' },
-                { href: '#signals', label: 'How to tell whether it is working' },
-              ].map((item) => (
-                <li className="tick-list__item tick-list__item--muted" key={item.href}>
-                  <ChevronRightIcon size={14} />
-                  <a href={item.href}>{item.label}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="stack measure">
+          <h2 className="t-h2">The argument in one paragraph</h2>
+          <p className="t-body u-muted">
+            A model that writes good code is not the same thing as a system that ships good
+            changes. Left to itself, a capable model edits before the shape of the change is
+            settled, writes tests that agree with the code it just wrote, reviews its own work
+            in the context that produced it, reports success from the diff rather than from a
+            run, forgets a correction an hour later, and re-derives your workflow from your
+            prompt every session. None of that is exotic. It is the exact set of failures a
+            competent team already has practices for — planning before implementation,
+            test-first where it pays, review by someone else, verification against output,
+            written decisions, and a shared standard. FORGE installs those practices as the
+            default rather than leaving them to be requested. The scarce resource in this
+            system is the context window, so it loads a narrow slice per task and persists
+            everything else to disk.
+          </p>
+          <p className="t-body u-muted">
+            Nothing below requires a better model. Every improvement described on this page
+            comes from changing what has to exist before a stage is allowed to end.
+          </p>
         </div>
       </section>
 
@@ -332,7 +324,7 @@ export default function WhyPage() {
         />
 
         <div className="compare">
-          <div className="compare__col compare__col--with">
+          <div className="panel panel--emphasis stack">
             <h3 className="t-h3">Reach for it when</h3>
             <ul className="tick-list">
               {forYou.map((item) => (
@@ -344,7 +336,7 @@ export default function WhyPage() {
             </ul>
           </div>
 
-          <div className="compare__col">
+          <div className="panel panel--plain stack">
             <h3 className="t-h3">Skip it when</h3>
             <ul className="tick-list">
               {notForYou.map((item) => (
@@ -369,16 +361,12 @@ export default function WhyPage() {
 
         <div className="stack stack--loose">
           {modes.map((mode, index) => (
-            <article className="panel" key={mode.id} id={mode.id}>
-              <p className="t-eyebrow" style={{ marginBottom: '0.5rem' }}>
-                Failure mode {String(index + 1).padStart(2, '0')}
-              </p>
-              <h3 className="t-h3" style={{ marginBottom: '0.75rem' }}>
-                {mode.title}
-              </h3>
+            <article className="panel stack" key={mode.id} id={mode.id}>
+              <p className="t-eyebrow">Failure mode {String(index + 1).padStart(2, '0')}</p>
+              <h3 className="t-h3">{mode.title}</h3>
               <p className="t-body u-muted measure">{mode.summary}</p>
 
-              <div className="terminal" style={{ marginTop: '1.25rem' }}>
+              <div className="terminal">
                 <div className="terminal__bar">
                   <span className="terminal__dots" aria-hidden="true">
                     <span className="terminal__dot" />
@@ -387,18 +375,14 @@ export default function WhyPage() {
                   </span>
                   <span className="terminal__label">{mode.example.label}</span>
                 </div>
-                <div className="terminal__body" style={{ height: 'auto' }}>
+                <div className="terminal__body terminal__body--auto">
                   <pre className="terminal__lines">{mode.example.lines.join('\n')}</pre>
                 </div>
               </div>
 
-              <h4 className="t-h4" style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
-                What FORGE does instead
-              </h4>
+              <h4 className="t-h4 mt-2">What FORGE does instead</h4>
               <p className="t-body u-muted measure">{mode.fix}</p>
-              <p className="t-small" style={{ marginTop: '0.75rem' }}>
-                Owned by: {mode.owner}
-              </p>
+              <p className="t-small">Owned by: {mode.owner}</p>
             </article>
           ))}
         </div>
@@ -413,10 +397,10 @@ export default function WhyPage() {
           lead="The first session shows you the loop. The compounding takes longer, and it comes from the two layers you own: memory and rules."
         />
 
-        <div className="split">
-          <div className="compare__col">
+        <div className="compare">
+          <div className="panel panel--plain stack">
             <h3 className="t-h3">Day one</h3>
-            <p className="t-small" style={{ marginBottom: '0.5rem' }}>
+            <p className="t-small">
               Visible in the first session, including the parts that cost you something.
             </p>
             <ul className="tick-list">
@@ -429,9 +413,9 @@ export default function WhyPage() {
             </ul>
           </div>
 
-          <div className="compare__col compare__col--with">
+          <div className="panel panel--emphasis stack">
             <h3 className="t-h3">Month three</h3>
-            <p className="t-small" style={{ marginBottom: '0.5rem' }}>
+            <p className="t-small">
               Only reachable if you prune. An untouched install does not get here on its own.
             </p>
             <ul className="tick-list">
@@ -445,7 +429,7 @@ export default function WhyPage() {
           </div>
         </div>
 
-        <div className="callout" style={{ marginTop: '1.5rem' }}>
+        <div className="callout mt-4">
           <span className="callout__icon">
             <InfoIcon size={18} />
           </span>
@@ -482,7 +466,7 @@ export default function WhyPage() {
           ))}
         </div>
 
-        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+        <p className="t-small measure mt-4">
           The harness-by-harness detail behind the fifth item is on{' '}
           <Link href="/platforms">the platforms page</Link>. The threat model behind the sixth is
           in <Link href={docHref('threat-model', '/docs')}>the threat model</Link>.
@@ -499,7 +483,7 @@ export default function WhyPage() {
         />
 
         <div className="compare">
-          <div className="compare__col compare__col--with">
+          <div className="panel panel--emphasis stack">
             <h3 className="t-h3">Signals that it is</h3>
             <ul className="tick-list">
               {workingSignals.map((item) => (
@@ -511,7 +495,7 @@ export default function WhyPage() {
             </ul>
           </div>
 
-          <div className="compare__col">
+          <div className="panel panel--plain stack">
             <h3 className="t-h3">Signals that it is not</h3>
             <ul className="tick-list">
               {notWorkingSignals.map((item) => (
@@ -524,10 +508,8 @@ export default function WhyPage() {
           </div>
         </div>
 
-        <h3 className="t-h3" style={{ marginTop: '2.5rem', marginBottom: '0.5rem' }}>
-          Four things worth counting
-        </h3>
-        <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="t-h3 mt-6 mb-2">Four things worth counting</h3>
+        <p className="t-body u-muted measure mb-4">
           None of these needs a dashboard. A note in a file at the end of each week is enough to
           see a trend, and a trend is the only thing that answers the question.
         </p>
@@ -566,7 +548,7 @@ export default function WhyPage() {
           </div>
         </div>
 
-        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+        <p className="t-small measure mt-4">
           A fuller treatment, including how to build an evaluation set for your own repository, is
           in <Link href={guideHref('the-evaluation-guide', '/guides')}>the evaluation guide</Link>.
         </p>
@@ -577,15 +559,15 @@ export default function WhyPage() {
         <div className="cta-band">
           <p className="t-eyebrow">Next</p>
           <h2 className="t-h2">Run it once and watch the stages fire</h2>
-          <p className="t-lead" style={{ maxWidth: '54ch' }}>
+          <p className="t-lead measure">
             Pick a change small enough to hold in your head and real enough to matter. The first
             run is not about the output. It is about whether the plan, the failing test, the
             scoped review, and the verified build each actually happened.
           </p>
-          <div style={{ width: '100%', maxWidth: '34rem' }}>
+          <div className="command-slot">
             <CopyCommand command={SITE.installCommand} />
           </div>
-          <div className="hero__ctas">
+          <div className="btn-row">
             <Link className="btn btn--primary" href="/docs/getting-started">
               Get started
               <ArrowRightIcon size={16} />

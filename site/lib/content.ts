@@ -1000,6 +1000,25 @@ export function getRepoVersion(fallback: string): string {
 /* Link resolution for rendered markdown                                      */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Directories under docs/ that hold a translation rather than a reference page.
+ * Keyed by the lowercased directory name, because link paths are compared
+ * case-insensitively; the value is the locale code /lang is routed on.
+ */
+const TRANSLATED_DOC_DIRS = new Map(
+  ['zh-CN', 'zh-TW', 'ja-JP', 'ko-KR', 'es', 'pt-BR', 'de-DE', 'tr', 'ru', 'uk-UA', 'vi-VN', 'th', 'ur'].map(
+    (code) => [code.toLowerCase(), code],
+  ),
+);
+
+let docHrefSet: Set<string> | null = null;
+
+/** True when the site actually builds a page at this /docs href. */
+function docHrefExists(href: string): boolean {
+  if (!docHrefSet) docHrefSet = new Set(getDocEntries().map((entry) => entry.href));
+  return docHrefSet.has(href);
+}
+
 const ROOT_PAGE_SLUGS = new Map(
   ROOT_PROJECT_PAGES.map((name) => [name.toLowerCase(), `/docs/project/${slugSegment(name)}`]),
 );
@@ -1054,7 +1073,14 @@ export function resolveRepoLink(href: string, fromRepoPath: string): string {
     if (parts[parts.length - 1].toLowerCase() === 'readme.md' && parts.length === 1) {
       return `/docs${anchor}`;
     }
-    return `/docs/${parts.map(slugSegment).join('/')}${anchor}`;
+    // Translated documentation is served by /lang, not by /docs.
+    const locale = TRANSLATED_DOC_DIRS.get(parts[0].toLowerCase());
+    if (locale) return parts.length === 2 ? `/lang/${locale}${anchor}` : `/lang/${locale}`;
+
+    const href = `/docs/${parts.map(slugSegment).join('/')}`;
+    // A path that does not resolve to a page the site builds would be a 404.
+    // Send the reader to the index rather than into one.
+    return docHrefExists(href) ? `${href}${anchor}` : '/docs';
   }
 
   if (!resolved.includes('/') && ROOT_PAGE_SLUGS.has(lower)) {
@@ -1062,13 +1088,17 @@ export function resolveRepoLink(href: string, fromRepoPath: string): string {
   }
 
   // Anything else lives only in the repository.
-  return `https://github.com/your-org/forge/blob/main/${resolved}${anchor}`;
+  return `https://github.com/carlcastanas/forge/blob/main/${resolved}${anchor}`;
 }
 
 /** Rewrites an image reference onto the mirrored public asset path. */
 export function resolveRepoImage(src: string, fromRepoPath: string): string | null {
   if (!src) return null;
-  if (/^https?:/i.test(src)) return src;
+  // Remote images are dropped rather than hotlinked. The site loads nothing from
+  // a third party — every remote image in the repository markdown is a status
+  // badge or a generated chart, and a badge for a repository that has no
+  // canonical host renders as an error graphic.
+  if (/^https?:/i.test(src)) return null;
   if (src.startsWith('data:')) return src;
 
   const fromDir = fromRepoPath ? path.posix.dirname(fromRepoPath) : '.';

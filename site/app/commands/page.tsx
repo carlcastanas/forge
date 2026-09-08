@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-import { Breadcrumbs, EmptyState } from '@/components/page-parts';
+import { Breadcrumbs, EmptyState, TableScroll } from '@/components/page-parts';
 import { getCommandGroups, getCommands } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -38,18 +38,21 @@ export default function CommandsPage() {
           <EmptyState
             title="No commands found"
             body="The site reads ../commands/*.md from the repository. That directory currently has no markdown in it."
+            action={
+              <Link className="btn btn--sm" href="/skills">
+                Browse the skills they front
+              </Link>
+            }
           />
         ) : (
           groups.map((group) => (
-            <section key={group.label} style={{ marginBottom: '2.5rem' }}>
-              <h2 className="t-h3" style={{ marginBottom: '0.9rem' }}>
-                {group.label}{' '}
-                <span className="u-subtle" style={{ fontWeight: 400 }}>
-                  {group.items.length}
-                </span>
+            <section className="page-section" key={group.label}>
+              <h2 className="t-h3 page-section__head">
+                {group.label}
+                <span className="page-section__count">{group.items.length}</span>
               </h2>
 
-              <div className="table-scroll" tabIndex={0} role="region" aria-label={group.label}>
+              <TableScroll label={`${group.label} commands`}>
                 <table className="data-table">
                   <caption className="visually-hidden">
                     {group.label} commands, their arguments, and the skill each one fronts
@@ -71,10 +74,10 @@ export default function CommandsPage() {
                         <td className="data-table__desc">
                           {command.description || 'No description.'}
                         </td>
-                        <td className="t-mono u-subtle" style={{ minWidth: '10rem' }}>
+                        <td className="t-mono u-subtle data-table__col">
                           {command.argumentHint ?? 'none'}
                         </td>
-                        <td style={{ minWidth: '10rem' }}>
+                        <td className="data-table__col">
                           {command.skill ? (
                             <Link className="t-mono" href={`/skills/${command.skill}`}>
                               {command.skill}
@@ -87,7 +90,7 @@ export default function CommandsPage() {
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </TableScroll>
             </section>
           ))
         )}

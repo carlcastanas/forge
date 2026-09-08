@@ -12,7 +12,7 @@ import {
   MemoryIcon,
   PlugIcon,
 } from '@/components/icons';
-import { SectionHead } from '@/components/page-parts';
+import { JumpList, SectionHead, TableScroll } from '@/components/page-parts';
 import { dirStats } from '@/components/repo-read';
 import { getCounts, getDocEntries } from '@/lib/content';
 
@@ -475,6 +475,16 @@ function HarnessCard({ harness }: { harness: Harness }) {
 /* Page                                                                        */
 /* -------------------------------------------------------------------------- */
 
+/** The page's own contents, shown in the hero and used as its reading order. */
+const SECTIONS = [
+  { href: '#levels', label: 'Five support levels' },
+  { href: '#matrix', label: 'Every harness, every surface' },
+  { href: '#per-harness', label: 'Where it installs, what arrives, what is missing' },
+  { href: '#in-the-tree', label: 'The tree against what is generated' },
+  { href: '#hooks', label: 'Hook posture' },
+  { href: '#verify', label: 'Check it against your own machine' },
+];
+
 export default function PlatformsPage() {
   const counts = getCounts();
   const matrixHref = docHref('harness-matrix', '/docs');
@@ -501,39 +511,44 @@ export default function PlatformsPage() {
     <>
       {/* Hero */}
       <section className="container hero">
-        <div className="hero__inner">
-          <span className="chip">{HARNESSES.length} harnesses recorded</span>
+        <div className="hero__grid hero__grid--nav">
+          <div className="hero__inner">
+            <span className="chip">{HARNESSES.length} harnesses recorded</span>
 
-          <h1 className="t-display">Platforms</h1>
+            <h1 className="t-display">Platforms</h1>
 
-          <p className="t-lead hero__subhead">
-            An adapter is a projection of the canonical catalog, never a second source of truth.
-            When an adapter and the catalog disagree, the catalog is right.
-          </p>
+            <p className="t-lead hero__subhead">
+              An adapter is a projection of the canonical catalog, never a second source of truth.
+              When an adapter and the catalog disagree, the catalog is right.
+            </p>
 
-          <p className="t-body measure">
-            Claude Code is the reference implementation: the catalog is authored against it and
-            every module resolves for it. Coverage everywhere else is bounded by what each harness
-            exposes, not by how much effort went into the adapter. A harness with no hook contract
-            gets no hooks, and the page says so rather than implying otherwise.
-          </p>
+            <p className="t-body measure">
+              Claude Code is the reference implementation: the catalog is authored against it and
+              every module resolves for it. Coverage everywhere else is bounded by what each
+              harness exposes, not by how much effort went into the adapter. A harness with no
+              hook contract gets no hooks, and the page says so rather than implying otherwise.
+            </p>
 
-          <div className="hero__ctas">
-            <Link className="btn btn--primary" href={matrixHref}>
-              Read the full matrix
-              <ArrowRightIcon size={16} />
-            </Link>
-            <Link className="btn" href={installHref}>
-              Installation paths
-            </Link>
+            <div className="btn-row">
+              <Link className="btn btn--primary" href={matrixHref}>
+                Read the full matrix
+                <ArrowRightIcon size={16} />
+              </Link>
+              <Link className="btn" href={installHref}>
+                Installation paths
+              </Link>
+            </div>
           </div>
+
+          <JumpList items={SECTIONS} />
         </div>
       </section>
 
       {/* How to read the page */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="levels">
         <SectionHead
           eyebrow="How to read this"
+          id="levels"
           title="Five support levels"
           lead="Each level was derived by resolving the full install profile against a target and reading the adapter definitions. None of it is a marketing summary of what a harness could theoretically do."
         />
@@ -549,7 +564,7 @@ export default function PlatformsPage() {
           ))}
         </div>
 
-        <div className="callout" style={{ marginTop: '1.25rem' }}>
+        <div className="callout mt-4">
           <span className="callout__icon">
             <InfoIcon size={18} />
           </span>
@@ -562,15 +577,16 @@ export default function PlatformsPage() {
       </section>
 
       {/* The support matrix */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="matrix">
         <SectionHead
           eyebrow="Support matrix"
+          id="matrix"
           title="Every harness, every surface"
           lead="Rows are ordered by how completely FORGE reaches each harness, from the reference implementation down to the entries the repository only records."
         />
 
-        <div className="table-scroll">
-          <table className="data-table">
+        <TableScroll label="Support level for every surface in every harness FORGE has a record of">
+          <table className="data-table data-table--dense">
             <caption className="visually-hidden">
               Support level for skills, agents, commands, hooks, rules, memory and MCP in every
               harness FORGE has a record of
@@ -600,9 +616,9 @@ export default function PlatformsPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <div className="stack" style={{ marginTop: '1.5rem' }}>
+        <div className="stack mt-4">
           <div className="callout">
             <span className="callout__icon">
               <MemoryIcon size={18} />
@@ -634,15 +650,13 @@ export default function PlatformsPage() {
           </div>
         </div>
 
-        <h3 className="t-h3" style={{ marginTop: '2.5rem' }}>
-          Three lists, and they disagree
-        </h3>
-        <p className="t-small measure" style={{ marginTop: '0.6rem' }}>
+        <h3 className="t-h3 mt-6">Three lists, and they disagree</h3>
+        <p className="t-small measure mt-2">
           The set of harnesses this project knows about is not recorded in one place. The matrix
           above is the union of all three lists plus the surfaces that appear in none of them.
         </p>
 
-        <ol className="step-list" style={{ marginTop: '1.25rem' }}>
+        <ol className="step-list mt-4">
           {LISTS.map((list, index) => (
             <li className="step-list__item" key={list.constant}>
               <span className="step-list__num">{String(index + 1).padStart(2, '0')}</span>
@@ -654,16 +668,17 @@ export default function PlatformsPage() {
           ))}
         </ol>
 
-        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+        <p className="t-small measure mt-4">
           Kiro and Trae ship their own shell installers and appear in none of the three. Copilot has
           instruction and prompt files and no installer at all. All of it is on this page.
         </p>
       </section>
 
       {/* Per-harness detail */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="per-harness">
         <SectionHead
           eyebrow="Per-harness detail"
+          id="per-harness"
           title="Where it installs, what arrives, what is missing"
           lead="A row in a table tells you a level. It does not tell you which directory the files land in, which of them were remapped on the way, or what you still have to wire up yourself."
         />
@@ -678,11 +693,9 @@ export default function PlatformsPage() {
               <div className="stack" key={band.id}>
                 <div>
                   <h3 className="t-h3">{band.title}</h3>
-                  <p className="t-small measure" style={{ marginTop: '0.5rem' }}>
-                    {band.lead}
-                  </p>
+                  <p className="t-small measure mt-2">{band.lead}</p>
                   {band.id === 'instruction' ? (
-                    <p className="t-small measure" style={{ marginTop: '0.5rem' }}>
+                    <p className="t-small measure mt-2">
                       For scale: the catalog Claude Code resolves holds {counts.skills} skills,{' '}
                       {counts.agents} agents and {counts.commands} command shims. These five see a
                       slice of the first number. The other two arrive whole, except in Gemini CLI.
@@ -728,7 +741,7 @@ export default function PlatformsPage() {
           })}
         </div>
 
-        <div className="callout" style={{ marginTop: '2rem' }}>
+        <div className="callout mt-5">
           <span className="callout__icon">
             <LayersIcon size={18} />
           </span>
@@ -741,14 +754,15 @@ export default function PlatformsPage() {
       </section>
 
       {/* Committed adapter surface */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="in-the-tree">
         <SectionHead
           eyebrow="In the repository"
+          id="in-the-tree"
           title="What is in the tree against what is generated"
           lead="An adapter directory at the repository root is not the same thing as what an install produces. A few are the whole surface. Most are a manifest, an instruction file, or nothing but a README, because the adapter is install-time code and the content is projected from the canonical catalog when you run it."
         />
 
-        <div className="table-scroll">
+        <TableScroll label="Adapter directories at the repository root and what each one holds">
           <table className="data-table">
             <caption className="visually-hidden">
               Adapter directories at the repository root, how many files each holds, and what
@@ -773,9 +787,9 @@ export default function PlatformsPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+        <p className="t-small measure mt-4">
           Counted from the repository when this page was built, ignoring nested dot-directories. A
           small number in the second column is not a measure of how well a harness is supported:{' '}
           {'.zed'} holds one file and receives the whole catalog, while {'.agents'} holds many and
@@ -785,14 +799,15 @@ export default function PlatformsPage() {
       </section>
 
       {/* Hook posture */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="hooks">
         <SectionHead
           eyebrow="Hook posture"
+          id="hooks"
           title="Hooks resolve for five targets"
           lead="The hooks-runtime module resolves for claude, claude-project, cursor, opencode and codebuddy, and for nothing else. Separately from that, the capability catalog records a hook mode per harness. The two are not the same statement, and they do not always agree."
         />
 
-        <div className="table-scroll">
+        <TableScroll label="Hook mode recorded per harness and whether FORGE configures it">
           <table className="data-table">
             <caption className="visually-hidden">
               Hook mode recorded per harness, whether FORGE configures hooks for it, and the
@@ -829,9 +844,9 @@ export default function PlatformsPage() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <div className="callout callout--warn" style={{ marginTop: '1.5rem' }}>
+        <div className="callout callout--warn mt-4">
           <span className="callout__icon">
             <AlertIcon size={18} />
           </span>
@@ -845,7 +860,7 @@ export default function PlatformsPage() {
           </div>
         </div>
 
-        <div className="callout" style={{ marginTop: '1rem' }}>
+        <div className="callout mt-3">
           <span className="callout__icon">
             <HookIcon size={18} />
           </span>
@@ -859,16 +874,17 @@ export default function PlatformsPage() {
       </section>
 
       {/* Verify + closing */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="verify">
         <SectionHead
           eyebrow="Verify"
+          id="verify"
           title="Do not trust this page over your machine"
           lead="The matrix was read out of the repository at a point in time. Your installed version is the authority on what your install actually received."
         />
 
         <div className="split split--sidebar">
           <div className="stack">
-            <div style={{ width: '100%', maxWidth: '34rem' }}>
+            <div className="command-slot">
               <CopyCommand command={VERIFY_COMMAND} />
             </div>
             <p className="t-small measure">
@@ -891,7 +907,7 @@ export default function PlatformsPage() {
               the checking commands, the per-harness depth guides, and the manual adaptation route
               for a harness with no adapter at all.
             </p>
-            <div className="hero__ctas">
+            <div className="btn-row">
               <Link className="btn btn--primary" href={matrixHref}>
                 Harness matrix
                 <ArrowRightIcon size={16} />

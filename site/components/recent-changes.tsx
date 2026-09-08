@@ -140,13 +140,13 @@ export function RecentChanges() {
   if (releases.length === 0) return null;
 
   return (
-    <div className="stack--loose stack">
+    <div className="stack stack--loose">
       {releases.map((release) => {
         const shown = release.entries.slice(0, ENTRIES_SHOWN);
         const remaining = release.entries.length - shown.length;
 
         return (
-          <div className="panel" key={release.heading}>
+          <div className="panel stack" key={release.heading}>
             <div className="pill-row">
               <span className="chip">{release.version}</span>
               {release.date ? <span className="chip">{release.date}</span> : null}
@@ -156,12 +156,10 @@ export function RecentChanges() {
             </div>
 
             {release.summary ? (
-              <p className="t-body u-muted measure" style={{ marginTop: '0.9rem' }}>
-                {release.summary}
-              </p>
+              <p className="t-body u-muted measure">{release.summary}</p>
             ) : null}
 
-            <ul className="change-list" style={{ marginTop: '1.25rem' }}>
+            <ul className="change-list">
               {shown.map((entry, index) => (
                 <li className="change-list__item" key={`${entry.term ?? 'entry'}-${index}`}>
                   {index === 0 || shown[index - 1].group !== entry.group ? (
@@ -174,7 +172,7 @@ export function RecentChanges() {
             </ul>
 
             {remaining > 0 ? (
-              <p className="t-small" style={{ marginTop: '1.1rem' }}>
+              <p className="t-small">
                 {remaining} more {remaining === 1 ? 'entry' : 'entries'} in this release.
               </p>
             ) : null}

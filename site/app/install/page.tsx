@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import { InstallBuilder, InstallBuilderSkeleton } from '@/components/install-builder';
-import { Breadcrumbs } from '@/components/page-parts';
+import { Breadcrumbs, TableScroll } from '@/components/page-parts';
 import { getInstallData } from '@/lib/install';
 import { SITE } from '@/lib/site';
 
@@ -71,8 +71,11 @@ export default function InstallPage() {
             The parser in scripts/lib/install/request.js accepts more than the builder produces.
             These are the rest, verbatim from the help text.
           </p>
-          <div className="table-scroll">
+          <TableScroll label="Flags the parser accepts that this page does not emit">
             <table className="data-table">
+              <caption className="visually-hidden">
+                Install flags the CLI accepts that this builder does not produce
+              </caption>
               <thead>
                 <tr>
                   <th scope="col">Flag</th>
@@ -88,7 +91,7 @@ export default function InstallPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableScroll>
         </section>
       </div>
     </div>

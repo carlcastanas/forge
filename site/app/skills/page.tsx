@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 import { Breadcrumbs, EmptyState } from '@/components/page-parts';
@@ -43,6 +44,11 @@ export default function SkillsPage() {
           <EmptyState
             title="No skills found"
             body="The site reads ../skills/*/SKILL.md from the repository. No skill directory currently contains one."
+            action={
+              <Link className="btn btn--sm" href="/docs">
+                Read what a skill is
+              </Link>
+            }
           />
         ) : (
           <SkillsBrowser skills={list} categories={categories} />

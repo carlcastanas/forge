@@ -40,6 +40,8 @@
   --header-height: 64px;
   --sidebar-width: 260px;
   --toc-width: 220px;
+  --measure-prose: 52rem;
+  --measure-wide: 68rem;
 
   --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
   --duration-color: 150ms;
@@ -49,6 +51,27 @@
 /* Root mirror of the theme tokens so plain CSS can read them and so the dark
    overrides below have somewhere to land. */
 :root {
+  /* ------------------------------------------------------------------
+     Spacing scale. Every gap, pad and margin on this site resolves to one
+     of these eight steps. If a value is not on the scale it is a bug, not
+     a decision. --space-section is the single vertical rhythm between the
+     blocks inside a section; .section owns the rhythm between sections.
+     ------------------------------------------------------------------ */
+  --space-1: 0.35rem;
+  --space-2: 0.6rem;
+  --space-3: 1rem;
+  --space-4: 1.25rem;
+  --space-5: 1.75rem;
+  --space-6: 2.5rem;
+  --space-7: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --space-8: clamp(3rem, 1.6rem + 5.5vw, 6rem);
+  --space-section: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+
+  /* One card padding, one panel padding. Nothing else. */
+  --pad-card: clamp(1.05rem, 0.92rem + 0.5vw, 1.35rem);
+  --pad-panel: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  --pad-cell: 0.7rem 0.9rem;
+
   --bg: #ffffff;
   --surface: #fafafa;
   --surface-2: #f4f4f4;
@@ -242,6 +265,24 @@ summary:focus-visible,
   outline-offset: 2px;
 }
 
+/* An outline with a positive offset is clipped by any ancestor that scrolls.
+   Inside every scroll container on this site the ring is drawn inside the
+   element instead, so it is always fully visible. */
+.docs-sidebar :focus-visible,
+.docs-toc :focus-visible,
+.drawer :focus-visible,
+.lang__menu :focus-visible,
+.table-scroll:focus-visible,
+.table-wrap:focus-visible,
+.terminal__body :focus-visible {
+  outline-offset: -2px;
+}
+
+/* Anything an in-page link can target has to clear the sticky header. */
+[id] {
+  scroll-margin-top: calc(var(--header-height) + 1.5rem);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -354,17 +395,85 @@ summary:focus-visible,
   color: var(--fg-muted);
 }
 
+/* --------------------------------------------------------------------------
+   Inline links in body copy
+   A link inside a sentence is accent-coloured and underlined everywhere on
+   the site, whether the sentence was written in a component or rendered from
+   markdown. Component classes that are themselves links (.card, .stat,
+   .drawer__link and friends) opt out by not appearing in this list.
+   -------------------------------------------------------------------------- */
+.t-lead a,
+.t-body a,
+.t-small a,
+.card__body a,
+.callout__body a,
+.kv__val a,
+.step-list__body a,
+.walk__body a,
+.swap__text a,
+.empty-state a,
+.tick-list__item a,
+.note-band a,
+.faq__body a,
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: text-decoration-color var(--duration-color) var(--ease-ui);
+}
+
+.t-lead a:hover,
+.t-body a:hover,
+.t-small a:hover,
+.card__body a:hover,
+.callout__body a:hover,
+.kv__val a:hover,
+.step-list__body a:hover,
+.walk__body a:hover,
+.swap__text a:hover,
+.empty-state a:hover,
+.tick-list__item a:hover,
+.note-band a:hover,
+.faq__body a:hover,
+.prose a:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Spacing utilities — the only way a margin is set outside a component
+   -------------------------------------------------------------------------- */
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+
+/* A block inside a section, separated from the block before it by the one
+   vertical rhythm the whole site uses. */
+.section-block + .section-block {
+  margin-top: var(--space-section);
+}
+
+/* A copy-command sits at a fixed readable width wherever it appears. */
+.command-slot {
+  width: 100%;
+  max-width: 34rem;
+  min-width: 0;
+}
+
 .u-wrap {
   overflow-wrap: anywhere;
   word-break: break-word;
-}
-
-.u-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .u-clamp-3 {
@@ -412,20 +521,38 @@ summary:focus-visible,
 }
 
 .section {
-  padding-block: clamp(3rem, 1.6rem + 5.5vw, 6rem);
+  padding-block: var(--space-8);
   border-top: 1px solid var(--border);
-}
-
-.section--flush {
-  border-top: 0;
 }
 
 .section-head {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  margin-bottom: var(--space-7);
   max-width: 62ch;
+}
+
+/* A titled group of cards or rows inside a document-shell page. The last one
+   does not add trailing space; the page shell owns that. */
+.page-section + .page-section {
+  margin-top: var(--space-6);
+}
+
+.page-section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 0 var(--space-3);
+}
+
+.page-section__count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--fg-subtle);
 }
 
 .skip-link {
@@ -509,6 +636,10 @@ summary:focus-visible,
   }
 }
 
+/* Eight links plus the wordmark and the actions is a tight fit at exactly
+   1024px, so the link padding tightens until there is room for the 1280
+   layout. It is never clipped: an overflow ancestor would cut the focus ring
+   off the first and last link. */
 .site-nav {
   display: none;
   align-items: center;
@@ -520,6 +651,18 @@ summary:focus-visible,
 @media (min-width: 1024px) {
   .site-nav {
     display: flex;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .site-nav {
+    margin-left: 0.35rem;
+    gap: 0;
+  }
+
+  .site-nav__link {
+    padding-inline: 0.45rem;
+    font-size: 13.5px;
   }
 }
 
@@ -789,6 +932,25 @@ summary:focus-visible,
   white-space: nowrap;
 }
 
+/* A chip that is a link is also a tap target. */
+a.chip {
+  min-height: 30px;
+  transition: border-color var(--duration-color) var(--ease-ui),
+    color var(--duration-color) var(--ease-ui);
+}
+
+a.chip:hover {
+  border-color: var(--border-strong);
+  color: var(--fg);
+}
+
+@media (pointer: coarse) {
+  a.chip {
+    min-height: 44px;
+    padding-inline: 0.85rem;
+  }
+}
+
 .chip--dot::before {
   content: "";
   width: 6px;
@@ -869,7 +1031,7 @@ summary:focus-visible,
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 1.25rem;
+  padding: var(--pad-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   background: var(--bg);
@@ -877,9 +1039,14 @@ summary:focus-visible,
   transition: border-color var(--duration-color) var(--ease-ui);
 }
 
-a.card:hover,
-.card--interactive:hover {
+a.card:hover {
   border-color: var(--border-strong);
+}
+
+/* A tag pinned to the bottom of a card, below whatever grew above it. */
+.card__badge {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .card__icon {
@@ -932,12 +1099,25 @@ a.card:hover,
   }
 }
 
+/* The larger of the two surfaces. A panel holds prose or a table; a card
+   holds a title and two lines. There is no third size. */
 .panel {
   border: 1px solid var(--border);
   border-radius: var(--radius-panel);
   background: var(--surface);
-  padding: clamp(1.1rem, 0.85rem + 1vw, 1.75rem);
+  padding: var(--pad-panel);
   min-width: 0;
+}
+
+/* Same box, no fill: used where two panels sit side by side and only one of
+   them is the emphasised half. */
+.panel--plain {
+  background: transparent;
+}
+
+.panel--emphasis {
+  border-color: var(--border-strong);
+  background: var(--surface);
 }
 
 /* ==========================================================================
@@ -960,11 +1140,13 @@ a.card:hover,
   max-width: 46ch;
 }
 
-.hero__ctas {
+/* Every row of buttons on the site, in a hero or at the foot of a section. */
+.btn-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   width: 100%;
+  min-width: 0;
 }
 
 .loop-strip {
@@ -990,10 +1172,6 @@ a.card:hover,
 
 .loop-strip__step:first-child {
   border-inline-start: 0;
-}
-
-.loop-strip__step:nth-child(-n + 1) {
-  border-block-start: 0;
 }
 
 @media (min-width: 1024px) {
@@ -1027,12 +1205,6 @@ a.card:hover,
   border: 1px solid var(--border);
   border-radius: var(--radius-panel);
   overflow: hidden;
-}
-
-@media (min-width: 640px) {
-  .stat-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (min-width: 900px) {
@@ -1099,62 +1271,19 @@ a.stat:hover {
   color: var(--fg-muted);
 }
 
+/* Two panels side by side, the emphasised one first. Used wherever the page
+   sets a "with" against a "without". */
 .compare {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
+  min-width: 0;
 }
 
 @media (min-width: 768px) {
   .compare {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-.compare__col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  padding: clamp(1.1rem, 0.9rem + 0.8vw, 1.5rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  min-width: 0;
-}
-
-.compare__col--with {
-  border-color: var(--border-strong);
-  background: var(--surface);
-}
-
-.compare__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-
-.compare__item {
-  display: flex;
-  gap: 0.6rem;
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--fg-muted);
-  min-width: 0;
-}
-
-.compare__item svg {
-  flex: 0 0 auto;
-  margin-top: 2px;
-}
-
-.compare__item--neg svg {
-  color: var(--danger-text);
-}
-
-.compare__item--pos svg {
-  color: var(--success-text);
 }
 
 .cta-band {
@@ -1226,6 +1355,8 @@ a.stat:hover {
    Tables (page-level, not prose)
    ========================================================================== */
 
+/* A wide table always scrolls inside its own box, never the page, and the box
+   is focusable so it can be scrolled from the keyboard. */
 .table-scroll {
   width: 100%;
   max-width: 100%;
@@ -1233,6 +1364,7 @@ a.stat:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .data-table {
@@ -1245,14 +1377,12 @@ a.stat:hover {
 .data-table th,
 .data-table td {
   text-align: left;
-  padding: 0.7rem 0.9rem;
+  padding: var(--pad-cell);
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 
 .data-table thead th {
-  position: sticky;
-  top: 0;
   background: var(--surface);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1261,7 +1391,6 @@ a.stat:hover {
   color: var(--fg-muted);
   font-weight: 500;
   white-space: nowrap;
-  z-index: 1;
 }
 
 .data-table tbody tr:last-child td {
@@ -1281,6 +1410,22 @@ a.stat:hover {
 .data-table__desc {
   color: var(--fg-muted);
   min-width: 20rem;
+}
+
+/* A column that must not collapse to its content, such as an argument hint. */
+.data-table__col {
+  min-width: 10rem;
+}
+
+/* A matrix of short status pills does not need the 20rem description column
+   width the prose tables use, and gets more room per pill without it. */
+.data-table--dense {
+  min-width: 52rem;
+}
+
+.data-table--dense th,
+.data-table--dense td {
+  padding: 0.55rem 0.75rem;
 }
 
 /* ==========================================================================
@@ -1323,7 +1468,7 @@ a.stat:hover {
 }
 
 .article-layout > .docs-content {
-  max-width: 52rem;
+  max-width: var(--measure-prose);
 }
 
 .docs-sidebar {
@@ -1363,10 +1508,25 @@ a.stat:hover {
   }
 }
 
+/* The content column of every document-shell page. It owns the space under
+   the sticky header, so no page has to remember to add it. */
 .docs-content {
   min-width: 0;
   max-width: 100%;
-  padding-block: clamp(1.75rem, 1.2rem + 2vw, 3rem) 4rem;
+  padding-block: var(--space-7) 4rem;
+}
+
+/* A grid of cards reads better wider than a column of prose does. Centred so
+   the page is not lopsided when there is no sidebar beside it. */
+.docs-content--wide {
+  max-width: var(--measure-wide);
+  margin-inline: auto;
+}
+
+/* A page of rendered markdown with no sidebar: hold it to a reading measure
+   rather than letting a line run the full 1280px container. */
+.docs-content--prose {
+  max-width: var(--measure-prose);
 }
 
 .nav-tree {
@@ -1438,7 +1598,7 @@ a.stat:hover {
 
 .toc__link {
   display: block;
-  padding: 0.25rem 0 0.25rem 0.75rem;
+  padding: 0.35rem 0 0.35rem 0.75rem;
   margin-inline-start: -1px;
   border-inline-start: 1px solid transparent;
   font-size: 13px;
@@ -1461,33 +1621,48 @@ a.stat:hover {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0 0.3rem;
   font-size: 12.5px;
   color: var(--fg-muted);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   min-width: 0;
 }
 
 .breadcrumbs a {
+  display: inline-block;
+  padding-block: 0.35rem;
   color: var(--fg-muted);
   overflow-wrap: anywhere;
 }
 
 .breadcrumbs a:hover {
   color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .breadcrumbs__sep {
   color: var(--fg-subtle);
 }
 
+/* The one page header. Breadcrumb, title, lead, metadata, actions — in that
+   order, on every page that is not a hero. */
 .page-head {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 0.75rem;
   padding-bottom: 1.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-6);
   border-bottom: 1px solid var(--border);
+}
+
+.page-head > .breadcrumbs {
+  margin-bottom: 0;
+}
+
+.page-head > .t-lead {
+  max-width: 68ch;
 }
 
 .page-meta {
@@ -1530,10 +1705,10 @@ a.stat:hover {
 
 .prev-next {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--border);
 }
 
@@ -1547,7 +1722,7 @@ a.stat:hover {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0.9rem 1rem;
+  padding: var(--pad-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   min-width: 0;
@@ -1629,30 +1804,58 @@ a.stat:hover {
   font-size: 12px;
   color: var(--fg-muted);
   letter-spacing: 0.04em;
+  margin: 0;
 }
 
+/* A result list still showing the previous query while the new one resolves. */
+[data-stale='true'] {
+  opacity: 0.6;
+  transition: opacity var(--duration-color) var(--ease-ui);
+}
+
+/* Nothing found is not an error. It reads as a quiet panel with a next step,
+   not as a dashed placeholder box waiting for content. */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
   text-align: center;
-  padding: clamp(2rem, 1.5rem + 2vw, 3.5rem) 1.25rem;
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-card);
+  padding: clamp(2rem, 1.5rem + 2vw, 3.5rem) var(--pad-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
   color: var(--fg-muted);
+}
+
+.empty-state__icon {
+  color: var(--fg-subtle);
+  margin-bottom: 0.15rem;
 }
 
 .empty-state__title {
   font-size: 15px;
   font-weight: 600;
   color: var(--fg);
+  margin: 0;
+}
+
+.empty-state .t-small {
+  max-width: 56ch;
+}
+
+.empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
 }
 
 .load-more {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: var(--space-4);
 }
 
 /* ==========================================================================
@@ -1671,9 +1874,15 @@ a.stat:hover {
   gap: 2rem 1.5rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .footer-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
@@ -1694,10 +1903,17 @@ a.stat:hover {
 }
 
 .footer-col a {
+  display: inline-block;
   font-size: 13.5px;
   color: var(--fg-muted);
-  padding-block: 0.2rem;
+  padding-block: 0.3rem;
   overflow-wrap: anywhere;
+}
+
+@media (pointer: coarse) {
+  .footer-col a {
+    padding-block: 0.55rem;
+  }
 }
 
 .footer-col a:hover {
@@ -2114,29 +2330,7 @@ a.stat:hover {
 }
 
 /* ==========================================================================
-   Header nav at the narrow end of its range
-   Nine links plus the wordmark and the actions is a tight fit at exactly
-   1024px. Tighten the link padding until there is room for the 1280 layout.
-   ========================================================================== */
-
-.site-nav {
-  overflow: hidden;
-}
-
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .site-nav {
-    margin-left: 0.35rem;
-    gap: 0;
-  }
-
-  .site-nav__link {
-    padding-inline: 0.45rem;
-    font-size: 13.5px;
-  }
-}
-
-/* ==========================================================================
-   Hero: two columns above 1024px, copy left, terminal right
+   Hero: two columns above 1024px, copy left, aside right
    ========================================================================== */
 
 .hero__grid {
@@ -2154,6 +2348,13 @@ a.stat:hover {
     grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
     align-items: center;
   }
+
+  /* A navigation aside is narrower than a transcript and hangs from the top
+     of the copy rather than centring against it. */
+  .hero__grid--nav {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+    align-items: start;
+  }
 }
 
 .hero__grid .hero__inner {
@@ -2162,9 +2363,83 @@ a.stat:hover {
 
 .hero__aside {
   min-width: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Jump list — the hero aside on a long page
+   A long argument page has no terminal to show, and a hero that is copy on
+   the left and nothing on the right reads as a mistake. The right column
+   carries the page's own contents instead, which is also the answer to
+   "what do I do next" at the top of the page rather than halfway down it.
+   -------------------------------------------------------------------------- */
+
+.jump {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  padding: var(--pad-card);
+  min-width: 0;
+}
+
+.jump__label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0 0 0.6rem;
+}
+
+.jump__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  counter-reset: jump;
+}
+
+.jump__link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.5rem 0.5rem;
+  margin-inline: -0.5rem;
+  border-radius: var(--radius-chip);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--fg-muted);
+  min-height: 34px;
+  overflow-wrap: anywhere;
+  transition: color var(--duration-color) var(--ease-ui),
+    background-color var(--duration-color) var(--ease-ui);
+}
+
+.jump__link::before {
+  counter-increment: jump;
+  content: counter(jump, decimal-leading-zero);
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+}
+
+.jump__link:hover {
+  color: var(--fg);
+  background: var(--bg);
+}
+
+@media (pointer: coarse) {
+  .jump__link {
+    min-height: 44px;
+    align-items: center;
+  }
 }
 
 /* ==========================================================================
@@ -2246,6 +2521,12 @@ a.stat:hover {
   .terminal__body {
     font-size: 13px;
   }
+}
+
+/* A transcript printed in full rather than replayed: the box grows to the
+   lines it holds instead of being fixed from a line count. */
+.terminal__body--auto {
+  height: auto;
 }
 
 .terminal__lines {
@@ -2634,354 +2915,6 @@ a.stat:hover {
 }
 
 /* ==========================================================================
-   Billing period toggle
-   ========================================================================== */
-
-.billing-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  max-width: 100%;
-  flex-wrap: wrap;
-}
-
-.billing-toggle__option {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 36px;
-  padding: 0.3rem 0.95rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--fg-muted);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color var(--duration-color) var(--ease-ui),
-    color var(--duration-color) var(--ease-ui),
-    border-color var(--duration-color) var(--ease-ui);
-}
-
-.billing-toggle__option:hover {
-  color: var(--fg);
-}
-
-.billing-toggle__option[aria-pressed='true'] {
-  background: var(--bg);
-  border-color: var(--border-strong);
-  color: var(--fg);
-}
-
-@media (pointer: coarse) {
-  .billing-toggle__option {
-    min-height: 44px;
-  }
-}
-
-.billing-toggle__save {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.04em;
-  color: var(--fg-muted);
-}
-
-.billing-toggle__option[aria-pressed='true'] .billing-toggle__save {
-  color: var(--accent);
-}
-
-/* ==========================================================================
-   Plan cards
-   ========================================================================== */
-
-.plan-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-  align-items: stretch;
-  min-width: 0;
-}
-
-@media (min-width: 1024px) {
-  .plan-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.plan-card {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  height: 100%;
-  padding: clamp(1.25rem, 1rem + 0.8vw, 1.6rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
-  background: var(--bg);
-  min-width: 0;
-  transition: border-color var(--duration-color) var(--ease-ui);
-}
-
-.plan-card:hover {
-  border-color: var(--border-strong);
-}
-
-/* One visual emphasis and no more: a border in the accent colour. */
-.plan-card--featured {
-  border-color: var(--accent);
-}
-
-.plan-card--featured:hover {
-  border-color: var(--accent);
-}
-
-/* Below the three-column breakpoint the emphasised plan is read first. */
-@media (max-width: 1023px) {
-  .plan-card--featured {
-    order: -1;
-  }
-}
-
-.plan-card__badge {
-  align-self: flex-start;
-  margin-bottom: 0.7rem;
-  padding: 0.14rem 0.55rem;
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--accent);
-  white-space: nowrap;
-}
-
-.plan-card__name {
-  font-size: 1.0625rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
-.plan-card__pitch {
-  margin: 0.35rem 0 0;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--fg-muted);
-  min-height: 2.6em;
-}
-
-.plan-card__price {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-top: 1.15rem;
-}
-
-.plan-card__amount {
-  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.5rem);
-  font-weight: 600;
-  letter-spacing: -0.038em;
-  line-height: 1.05;
-  font-variant-numeric: tabular-nums;
-}
-
-.plan-card__unit {
-  display: block;
-  margin-top: 0.4rem;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--fg-muted);
-  min-height: 3em;
-}
-
-.plan-card__actions {
-  margin-top: 1.15rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.plan-card__actions .btn {
-  width: 100%;
-}
-
-.plan-card__ctanote {
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--fg-muted);
-  margin: 0;
-}
-
-.plan-card__divider {
-  margin: 1.15rem 0 1rem;
-  border: 0;
-  border-top: 1px solid var(--border);
-}
-
-.plan-card__features {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  min-width: 0;
-}
-
-.plan-card__feature {
-  display: flex;
-  gap: 0.55rem;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--fg-muted);
-  min-width: 0;
-}
-
-.plan-card__feature svg {
-  flex: 0 0 auto;
-  margin-top: 3px;
-  color: var(--fg);
-}
-
-/* Pushes the block that follows it to the bottom of the card. */
-.plan-card__spacer {
-  flex: 1 1 auto;
-  min-height: 1.15rem;
-}
-
-.trust-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1.1rem;
-  margin-top: 1.5rem;
-  font-size: 13px;
-  color: var(--fg-muted);
-}
-
-.trust-row__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.trust-row__item svg {
-  flex: 0 0 auto;
-  color: var(--fg-subtle);
-}
-
-/* ==========================================================================
-   Comparison matrix — scrolls in both axes so the header row can actually stick
-   ========================================================================== */
-
-.matrix-scroll {
-  width: 100%;
-  max-width: 100%;
-  overflow: auto;
-  overscroll-behavior: contain;
-  max-height: min(78vh, 46rem);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-
-.matrix {
-  width: 100%;
-  min-width: 46rem;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 13.5px;
-}
-
-.matrix th,
-.matrix td {
-  text-align: left;
-  padding: 0.65rem 0.9rem;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-
-.matrix thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: var(--surface);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.matrix thead th.matrix__col--plan {
-  color: var(--fg);
-  text-transform: none;
-  letter-spacing: 0;
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  font-weight: 600;
-}
-
-.matrix__section th {
-  background: var(--surface-2);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  font-weight: 500;
-}
-
-.matrix__label {
-  font-weight: 500;
-  min-width: 16rem;
-}
-
-.matrix__note {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.5;
-  color: var(--fg-muted);
-}
-
-.matrix__value {
-  color: var(--fg-muted);
-  white-space: nowrap;
-}
-
-.matrix tbody tr:last-child td,
-.matrix tbody tr:last-child th {
-  border-bottom: 0;
-}
-
-.cell-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.cell-mark--yes {
-  color: var(--fg);
-}
-
-.cell-mark--no {
-  color: var(--fg-subtle);
-}
-
-/* ==========================================================================
    FAQ — details/summary, works with JavaScript switched off
    ========================================================================== */
 
@@ -3113,6 +3046,10 @@ a.stat:hover {
   overflow-wrap: anywhere;
 }
 
+.kv__key .badge {
+  margin-inline-start: 0.4rem;
+}
+
 .kv__val {
   padding: 0 1.1rem 0.9rem;
   font-size: 13.5px;
@@ -3195,89 +3132,6 @@ a.stat:hover {
 }
 
 /* ==========================================================================
-   Intake form — deliberately not wired to anything
-   ========================================================================== */
-
-.intake {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-  min-width: 0;
-}
-
-@media (min-width: 768px) {
-  .intake--split {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .field--wide {
-    grid-column: 1 / -1;
-  }
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  min-width: 0;
-}
-
-.field__label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--fg);
-}
-
-.field__req {
-  color: var(--fg-muted);
-  font-weight: 400;
-}
-
-.field__control {
-  width: 100%;
-  min-width: 0;
-  min-height: 44px;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-chip);
-  background: var(--bg);
-  color: var(--fg);
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 1.5;
-  transition: border-color var(--duration-color) var(--ease-ui);
-}
-
-.field__control:hover {
-  border-color: var(--border-strong);
-}
-
-.field__control::placeholder {
-  color: var(--fg-muted);
-}
-
-textarea.field__control {
-  min-height: 8rem;
-  resize: vertical;
-}
-
-select.field__control {
-  appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
-    linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: right 1.05rem center, right 0.75rem center;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-  padding-inline-end: 2rem;
-}
-
-.field__hint {
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--fg-muted);
-}
-
-/* ==========================================================================
    Small shared bits
    ========================================================================== */
 
@@ -3329,28 +3183,6 @@ select.field__control {
 }
 
 /* ==========================================================================
-   Footer — five columns once there is room for them
-   ========================================================================== */
-
-@media (min-width: 640px) {
-  .footer-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-}
-
-/* ==========================================================================
    Language menu
    A disclosure anchored to the header. Endonyms render in their own scripts,
    so the list is kept wide enough for the longest of them and never truncates.
@@ -3397,7 +3229,7 @@ select.field__control {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.45rem 0.5rem;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-chip);
   color: var(--fg);
   text-decoration: none;
   font-size: 13.5px;
@@ -3685,12 +3517,6 @@ select.field__control {
   flex-wrap: wrap;
   gap: 0.4rem;
 }
-
-/* The windowed list. Fixed row heights keep the offset table exact, and the
-   container owns its own scrollbar so the page never grows sideways. */
-
-
-
 
 
 

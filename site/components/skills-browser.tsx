@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 
 import { SearchIcon } from '@/components/icons';
+import { EmptyState } from '@/components/page-parts';
 
 export type SkillListItem = {
   name: string;
@@ -82,7 +83,7 @@ export function SkillsBrowser({
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '1.5rem' }}>
+      <div className="stack stack--tight mb-4">
         <div className="search-field">
           <SearchIcon size={16} className="search-field__icon" />
           <input
@@ -131,21 +132,29 @@ export function SkillsBrowser({
       </div>
 
       {results.length === 0 ? (
-        <div className="empty-state">
-          <p className="empty-state__title">No skill matches that filter</p>
-          <p className="t-small">
-            Try a shorter query, or clear the category chip to search the whole catalog.
-          </p>
-        </div>
+        <EmptyState
+          title="No skill matches that filter"
+          body="Try a shorter query, or drop the category filter to search the whole catalog."
+          action={
+            <button
+              type="button"
+              className="btn btn--sm"
+              onClick={() => {
+                setQuery('');
+                setCategory(null);
+              }}
+            >
+              Clear the filters
+            </button>
+          }
+        />
       ) : (
-        <div className="grid grid--3" style={{ opacity: stale ? 0.6 : 1 }}>
+        <div className="grid grid--3" data-stale={stale ? 'true' : undefined}>
           {visible.map((skill) => (
             <Link className="card" href={`/skills/${skill.name}`} key={skill.name}>
               <h2 className="card__title u-mono u-wrap">{skill.name}</h2>
               <p className="card__body u-clamp-3">{skill.description}</p>
-              <span className="badge" style={{ alignSelf: 'flex-start', marginTop: 'auto' }}>
-                {skill.category}
-              </span>
+              <span className="badge card__badge">{skill.category}</span>
             </Link>
           ))}
         </div>

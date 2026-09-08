@@ -68,7 +68,7 @@ const COMMANDS = [
 
 export function LearningSection({ skillHref }: { skillHref?: string }) {
   return (
-    <div className="stack--loose stack">
+    <div className="stack stack--loose">
       <ol className="step-list">
         {STAGES.map((stage, index) => (
           <li className="step-list__item" key={stage.title}>
@@ -80,10 +80,8 @@ export function LearningSection({ skillHref }: { skillHref?: string }) {
       </ol>
 
       <div>
-        <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
-          Three controls over how much of it reaches you
-        </h3>
-        <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="t-h3 mb-2">Three controls over how much of it reaches you</h3>
+        <p className="t-body u-muted measure mb-4">
           All three are read from the environment at session start. Every one of them falls back to
           its default on an unparseable value rather than erroring, so a typo degrades quietly
           instead of breaking the session.
@@ -94,9 +92,7 @@ export function LearningSection({ skillHref }: { skillHref?: string }) {
             <div className="kv__row" key={control.name}>
               <div className="kv__key u-mono u-wrap">
                 {control.name}
-                <span className="badge" style={{ marginInlineStart: '0.4rem' }}>
-                  {control.fallback}
-                </span>
+                <span className="badge">{control.fallback}</span>
               </div>
               <p className="kv__val">{control.body}</p>
             </div>

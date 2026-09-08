@@ -8,6 +8,7 @@
  */
 import Link from 'next/link';
 
+import { TableScroll } from '@/components/page-parts';
 import { dirStats, formatBytes, readRepoFile } from '@/components/repo-read';
 
 type Surface = {
@@ -99,7 +100,7 @@ export function InstallFootprint() {
   const largest = profiles[profiles.length - 1];
 
   return (
-    <div className="stack--loose stack">
+    <div className="stack stack--loose">
       {/* Two channels */}
       <div className="grid grid--2">
         <div className="card">
@@ -138,16 +139,14 @@ export function InstallFootprint() {
 
       {/* On disk, and what it costs per session */}
       <div>
-        <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
-          On disk against in context
-        </h3>
-        <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="t-h3 mb-2">On disk against in context</h3>
+        <p className="t-body u-muted measure mb-4">
           The whole catalog is small enough that its size on disk is not the interesting number.
           The interesting number is the third column: almost none of it is in the window at any
           given moment.
         </p>
 
-        <div className="table-scroll">
+        <TableScroll label="Each catalog surface, its size on disk, and when it consumes context">
           <table className="data-table">
             <caption className="visually-hidden">
               Each catalog surface, how large it is on disk, and when it consumes context
@@ -173,9 +172,9 @@ export function InstallFootprint() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <p className="t-small measure" style={{ marginTop: '1rem' }}>
+        <p className="t-small measure mt-3">
           Sizes are measured from the repository when this page is built, so they move when the
           catalog moves. Session start adds one more cost that is not in the table: the previous
           session&rsquo;s carried-over context, capped at 8,000 characters by default and
@@ -187,10 +186,8 @@ export function InstallFootprint() {
 
       {/* Where it lands */}
       <div>
-        <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
-          Where it lands
-        </h3>
-        <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="t-h3 mb-2">Where it lands</h3>
+        <p className="t-body u-muted measure mb-4">
           Fifteen install targets resolve to a root the adapter picks. Four of them, for orientation:
         </p>
 
@@ -234,7 +231,7 @@ export function InstallFootprint() {
           </div>
         </div>
 
-        <p className="t-small measure" style={{ marginTop: '1rem' }}>
+        <p className="t-small measure mt-3">
           The remaining ten, and what each adapter remaps on the way in, are on the{' '}
           <Link href="/platforms">platforms page</Link>.
         </p>
@@ -243,10 +240,8 @@ export function InstallFootprint() {
       {/* Profiles */}
       {profiles.length > 0 ? (
         <div>
-          <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
-            You choose how much of it lands
-          </h3>
-          <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+          <h3 className="t-h3 mb-2">You choose how much of it lands</h3>
+          <p className="t-body u-muted measure mb-4">
             {profiles.length} profiles are defined in{' '}
             <span className="t-mono u-wrap">manifests/install-profiles.json</span>, from{' '}
             <span className="t-mono">{smallest?.id}</span> at{' '}
@@ -265,7 +260,7 @@ export function InstallFootprint() {
             ))}
           </div>
 
-          <p className="t-small measure" style={{ marginTop: '1rem' }}>
+          <p className="t-small measure mt-3">
             Nothing has to be guessed at.{' '}
             <span className="t-mono u-wrap">
               {'forge plan --profile <name> --target <target> --json'}
@@ -281,10 +276,8 @@ export function InstallFootprint() {
 
       {/* State that is not content */}
       <div>
-        <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
-          Four things that are state, not catalog
-        </h3>
-        <p className="t-body u-muted measure" style={{ marginBottom: '1.25rem' }}>
+        <h3 className="t-h3 mb-2">Four things that are state, not catalog</h3>
+        <p className="t-body u-muted measure mb-4">
           These accumulate as you use it, and no uninstall path removes them. Delete them yourself
           if you want the machine clean.
         </p>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 import { AgentsTable } from '@/components/agents-table';
@@ -43,16 +44,19 @@ export default function AgentsPage() {
           <EmptyState
             title="No agents found"
             body="The site reads ../agents/*.md from the repository. That directory currently has no markdown in it."
+            action={
+              <Link className="btn btn--sm" href="/skills">
+                Browse the skills catalog
+              </Link>
+            }
           />
         ) : (
           <>
             <AgentsTable agents={rows} models={models} />
 
-            <div className="panel" style={{ marginTop: '2.5rem' }}>
-              <h2 className="t-h3" style={{ marginBottom: '0.6rem' }}>
-                Reading the table
-              </h2>
-              <p className="t-small" style={{ marginBottom: '0.6rem' }}>
+            <div className="panel stack stack--tight mt-6">
+              <h2 className="t-h3">Reading the table</h2>
+              <p className="t-small">
                 A tool allowlist of <span className="t-mono">Read, Grep, Glob</span> marks a
                 read-only reviewer: it can inspect a diff and report, but it cannot change a file.
                 An allowlist that includes <span className="t-mono">Edit</span>,{' '}

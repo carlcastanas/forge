@@ -11,13 +11,14 @@ import {
   DocIcon,
   HookIcon,
   InfoIcon,
+  IsolationIcon,
   KeyIcon,
   LayersIcon,
   PlugIcon,
   ShieldIcon,
   TerminalIcon,
 } from '@/components/icons';
-import { SectionHead } from '@/components/page-parts';
+import { JumpList, SectionHead, TableScroll } from '@/components/page-parts';
 import { getDocEntries, getGuides } from '@/lib/content';
 import { SITE } from '@/lib/site';
 
@@ -26,33 +27,6 @@ export const metadata: Metadata = {
   description:
     'Forge Shield scans the agent surface itself: prompt files, hooks, MCP configuration, tool permissions, secrets, and agent definitions. What it covers, what it does not, and the controls that bound the rest.',
 };
-
-/**
- * The isolation control has no icon in the shared set, and components/icons.tsx is
- * not this page to edit. Same grid, same stroke, same conventions.
- */
-function IsolationIcon({ size = 20 }: { size?: number }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <rect x="2.5" y="5" width="11" height="14" rx="2" />
-      <path d="M13.5 12h3" />
-      <path d="m18 9.5 4 5" />
-      <path d="m22 9.5-4 5" />
-    </svg>
-  );
-}
 
 function docHref(slug: string, fallback: string): string {
   const match = getDocEntries().find((entry) => entry.slug.join('/') === slug);
@@ -277,38 +251,15 @@ const LAYERS = [
   },
 ];
 
-const LAYER_TABLE = [
-  {
-    capability: 'Scan a checkout on demand',
-    local: 'Included. MIT, no account, no upload; the scan runs against the tree in front of you.',
-    hosted: 'The same surfaces, run without a developer present.',
-  },
-  {
-    capability: 'Scanning on every pull request',
-    local: 'You invoke it. The JSON output is built for a CI job you own and configure.',
-    hosted: 'Automated on pull requests, on Team and Enterprise.',
-  },
-  {
-    capability: 'Baselines',
-    local: 'Each run stands alone, so a finding you have accepted is reported again on the next run.',
-    hosted:
-      'Accepted findings are held as a baseline, so an existing one does not fail every later run. Team and Enterprise.',
-  },
-  {
-    capability: 'Finding history',
-    local: 'Not kept. The report you read is the record, and retaining it is your decision.',
-    hosted: 'Findings are tracked across runs, on Team and Enterprise.',
-  },
-  {
-    capability: 'Custom policy packs',
-    local: 'The built-in surfaces only.',
-    hosted: 'Your own rules layered on top of the built-in surfaces, on Enterprise.',
-  },
-  {
-    capability: 'Price',
-    local: 'Free, and not gated behind a tier.',
-    hosted: 'Priced per active developer seat.',
-  },
+/** The page's own contents, shown in the hero and used as its reading order. */
+const SECTIONS = [
+  { href: '#coverage', label: 'Six surfaces, and the line under each one' },
+  { href: '#running-it', label: 'Three invocations worth knowing' },
+  { href: '#output', label: 'What a report looks like' },
+  { href: '#risk-surfaces', label: 'Where agent security actually goes wrong' },
+  { href: '#conditions', label: 'The condition that turns an injection into a breach' },
+  { href: '#layers', label: 'Four independent layers' },
+  { href: '#further', label: 'The long form, in the repository' },
 ];
 
 export default function SecurityPage() {
@@ -319,50 +270,56 @@ export default function SecurityPage() {
     <>
       {/* Hero */}
       <section className="container hero">
-        <div className="hero__inner">
-          <span className="chip">
-            {SITE.shield} · <span className="u-mono">forge-shield</span>
-          </span>
+        <div className="hero__grid hero__grid--nav">
+          <div className="hero__inner">
+            <span className="chip">
+              {SITE.shield} · <span className="u-mono">forge-shield</span>
+            </span>
 
-          <h1 className="t-display">The configuration around your agent is an attack surface</h1>
+            <h1 className="t-display">The configuration around your agent is an attack surface</h1>
 
-          <p className="t-lead hero__subhead">
-            Classical application security assumes a boundary between code and data. A coding
-            agent has none. The files that decide what it may do — prompt files, hooks, MCP
-            entries, tool allowlists, agent definitions — arrive through source control, take
-            effect at session start, and are almost never scanned. Forge Shield scans them.
-          </p>
-
-          <div className="hero__ctas">
-            <Link className="btn btn--primary" href={threatModel}>
-              Read the threat model
-              <ArrowRightIcon size={16} />
-            </Link>
-            <Link className="btn" href={securityGuide}>
-              Read the security guide
-            </Link>
-          </div>
-
-          <div style={{ width: '100%', maxWidth: '34rem' }}>
-            <CopyCommand command="npx forge-shield scan --path . --format text" />
-            <p className="t-small" style={{ marginTop: '0.6rem' }}>
-              Ships as the separate <code className="t-mono">forge-shield</code> package. Inside a
-              harness, <code className="t-mono">/security-scan</code> runs the same scanner and
-              turns the findings into an ordered remediation plan.
+            <p className="t-lead hero__subhead">
+              Classical application security assumes a boundary between code and data. A coding
+              agent has none. The files that decide what it may do — prompt files, hooks, MCP
+              entries, tool allowlists, agent definitions — arrive through source control, take
+              effect at session start, and are almost never scanned. Forge Shield scans them.
             </p>
+
+            <div className="command-slot">
+              <CopyCommand command="npx forge-shield scan --path . --format text" />
+              <p className="t-small mt-2">
+                Ships as the separate <code className="t-mono">forge-shield</code> package, free
+                and MIT like the rest of the catalog. Inside a harness,{' '}
+                <code className="t-mono">/security-scan</code> runs the same scanner and turns the
+                findings into an ordered remediation plan.
+              </p>
+            </div>
+
+            <div className="btn-row">
+              <Link className="btn btn--primary" href={threatModel}>
+                Read the threat model
+                <ArrowRightIcon size={16} />
+              </Link>
+              <Link className="btn" href={securityGuide}>
+                Read the security guide
+              </Link>
+            </div>
           </div>
+
+          <JumpList items={SECTIONS} />
         </div>
       </section>
 
       {/* Coverage */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="coverage">
         <SectionHead
           eyebrow="Coverage"
+          id="coverage"
           title="Six surfaces, and the line under each one"
           lead="Every row states what the scan decides mechanically and what it deliberately leaves alone. A finding is evidence to triage, not a verdict, and the scanner output is the source of truth for what it found. Anything past that output is judgement and should be labelled as such."
         />
 
-        <div className="table-scroll">
+        <TableScroll label="Each surface Forge Shield scans, what the scan looks for, and what it does not cover">
           <table className="data-table">
             <caption className="visually-hidden">
               Each surface Forge Shield scans, what the scan looks for, and what it does not cover
@@ -386,9 +343,9 @@ export default function SecurityPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <div className="callout" style={{ marginTop: '1.25rem' }}>
+        <div className="callout mt-4">
           <span className="callout__icon">
             <InfoIcon size={18} />
           </span>
@@ -403,9 +360,10 @@ export default function SecurityPage() {
       </section>
 
       {/* Running it */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="running-it">
         <SectionHead
           eyebrow="Running it"
+          id="running-it"
           title="Three invocations worth knowing"
           lead="Run it before publishing a repository, before installing anything from anywhere, and in continuous integration on every change to a hook, an MCP configuration, or a harness adapter."
         />
@@ -422,9 +380,10 @@ export default function SecurityPage() {
       </section>
 
       {/* Sample report */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="output">
         <SectionHead
           eyebrow="Output"
+          id="output"
           title="What a report looks like"
           lead="The scan splits active runtime findings from lower-confidence inventory — documentation examples, template snippets, plugin manifests, project-local optional settings. That split is what makes a long list triageable. Treat the first group as work and the second as awareness."
         />
@@ -438,12 +397,12 @@ export default function SecurityPage() {
             </span>
             <span className="terminal__label">sample output</span>
           </div>
-          <div className="terminal__body" style={{ height: 'auto' }}>
+          <div className="terminal__body terminal__body--auto">
             <pre className="terminal__lines">{SAMPLE_REPORT}</pre>
           </div>
         </div>
 
-        <div className="callout" style={{ marginTop: '1.25rem' }}>
+        <div className="callout mt-4">
           <span className="callout__icon">
             <TerminalIcon size={18} />
           </span>
@@ -455,7 +414,7 @@ export default function SecurityPage() {
           </div>
         </div>
 
-        <div className="grid grid--2" style={{ marginTop: '1.25rem' }}>
+        <div className="grid grid--2 mt-4">
           <div className="card">
             <span className="card__icon">
               <AlertIcon size={20} />
@@ -482,16 +441,17 @@ export default function SecurityPage() {
       </section>
 
       {/* The three risk surfaces */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="risk-surfaces">
         <SectionHead
           eyebrow="Risk surfaces"
+          id="risk-surfaces"
           title="The three places agent security actually goes wrong"
           lead="Not a taxonomy. These are the three surfaces that produce real incidents in agent workflows, each with the shape of the failure and the control that bounds it."
         />
 
         <div className="stack stack--loose">
           {RISK_SURFACES.map((surface) => (
-            <div className="panel" key={surface.title}>
+            <div className="panel stack" key={surface.title}>
               <div className="stack stack--tight">
                 <span className="card__icon">{surface.icon}</span>
                 <h3 className="t-h3">{surface.title}</h3>
@@ -502,7 +462,7 @@ export default function SecurityPage() {
                 ))}
               </div>
 
-              <div className="kv" style={{ marginTop: '1.25rem' }}>
+              <div className="kv">
                 <div className="kv__row">
                   <div className="kv__key">How it goes wrong</div>
                   <div className="kv__val">{surface.wrong}</div>
@@ -518,9 +478,10 @@ export default function SecurityPage() {
       </section>
 
       {/* The three conditions */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="conditions">
         <SectionHead
           eyebrow="The condition that matters"
+          id="conditions"
           title="An injection becomes a breach only when three things share a runtime"
           lead="This is the single most useful sentence in the threat model, because it converts an unbounded worry about model behaviour into a bounded question about process capability."
         />
@@ -580,14 +541,15 @@ export default function SecurityPage() {
       </section>
 
       {/* Layers */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="layers">
         <SectionHead
           eyebrow="Layers"
+          id="layers"
           title="Four independent layers, none sufficient alone"
           lead="Forge Shield is one of them. It reports; it does not prevent. The layers below it do not depend on the model reaching the right conclusion, which is the property that makes them controls rather than mitigations."
         />
 
-        <div className="table-scroll">
+        <TableScroll label="The four defensive layers, the mechanism each uses, and when each one runs">
           <table className="data-table">
             <caption className="visually-hidden">
               The four defensive layers, the mechanism each uses, and when each one runs
@@ -611,9 +573,9 @@ export default function SecurityPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
 
-        <div className="callout callout--warn" style={{ marginTop: '1.25rem' }}>
+        <div className="callout callout--warn mt-4">
           <span className="callout__icon">
             <IsolationIcon size={18} />
           </span>
@@ -627,55 +589,11 @@ export default function SecurityPage() {
         </div>
       </section>
 
-      {/* OSS vs hosted */}
-      <section className="container section">
-        <SectionHead
-          eyebrow="Local and hosted"
-          title="What the CLI does, and what the hosted layer would add"
-          lead="The scanner itself is open source and free at every tier. What the hosted layer adds is not a better scan; it is the same scan running without a developer present, plus the state that only makes sense when something keeps running it."
-        />
-
-        <div className="table-scroll">
-          <table className="data-table">
-            <caption className="visually-hidden">
-              Forge Shield as a local command-line tool compared with the hosted layer, by
-              capability
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Capability</th>
-                <th scope="col">Local CLI</th>
-                <th scope="col">Hosted layer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {LAYER_TABLE.map((row) => (
-                <tr key={row.capability}>
-                  <th scope="row" className="data-table__name">
-                    {row.capability}
-                  </th>
-                  <td className="data-table__desc">{row.local}</td>
-                  <td className="data-table__desc">{row.hosted}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="note-band">
-          <span className="note-band__label">On the two columns</span>
-          The left column is the repository as it stands: MIT, installed with the rest of
-          the catalog, run by you against your own checkout, uploading nothing. The right
-          column is automation that could sit on top of it — scheduled runs, stored
-          baselines, org-wide policy. None of that is built, and nothing in the left column
-          is held back to make room for it.
-        </div>
-      </section>
-
       {/* Where to read further */}
-      <section className="container section">
+      <section className="container section" aria-labelledby="further">
         <SectionHead
           eyebrow="Further"
+          id="further"
           title="The long form, in the repository"
           lead="This page is the summary. The two documents below are the material it was written from, and both are rendered here from the repository rather than restated."
         />
@@ -734,15 +652,15 @@ export default function SecurityPage() {
         <div className="cta-band">
           <p className="t-eyebrow">Next</p>
           <h2 className="t-h2">Scan something before you trust it</h2>
-          <p className="t-lead" style={{ maxWidth: '52ch' }}>
+          <p className="t-lead measure">
             The highest-value moment to run this is the one before an unfamiliar checkout is opened
             in an agent, or before a plugin bundle is installed. It takes seconds and it reads the
             files nobody reads.
           </p>
-          <div style={{ width: '100%', maxWidth: '34rem' }}>
+          <div className="command-slot">
             <CopyCommand command="npx forge-shield scan --path . --format text" />
           </div>
-          <div className="hero__ctas">
+          <div className="btn-row">
             <Link className="btn btn--primary" href={securityGuide}>
               Read the security guide
               <ArrowRightIcon size={16} />

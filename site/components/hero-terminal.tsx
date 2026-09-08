@@ -48,7 +48,7 @@ export function HeroTerminal() {
   };
 
   return (
-    <figure className="hero__aside" style={{ margin: 0 }}>
+    <figure className="hero__aside">
       <div className="terminal">
         <div className="terminal__bar">
           <span className="terminal__dots" aria-hidden="true">

@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
  * repository placeholder in lib/site.ts rather than inventing a domain. Pass
  * NEXT_PUBLIC_SITE_URL at build time to point the absolute URLs at a real deployment.
  */
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://your-org.github.io/forge';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://carlcastanas.github.io/forge';
 
 const PAGE_TITLE = `${SITE.name} — ${SITE.tagline}`;
 

@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 
-import { ArrowLeftIcon, ArrowRightIcon } from '@/components/icons';
+import { ArrowLeftIcon, ArrowRightIcon, SearchIcon } from '@/components/icons';
 import type { Heading } from '@/lib/content';
 
 /* --- Breadcrumbs --------------------------------------------------------- */
@@ -49,6 +50,35 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
         </ul>
       </nav>
     </aside>
+  );
+}
+
+/* --- Jump list ----------------------------------------------------------- */
+
+export type JumpItem = { href: string; label: string };
+
+/**
+ * The hero aside on a long argument page. A hero that is copy on the left and
+ * empty space on the right reads as an unfinished layout, and the most useful
+ * thing to put in that space is the page's own contents: it answers where you
+ * are and what to read next before the first scroll.
+ */
+export function JumpList({ items, label = 'On this page' }: { items: JumpItem[]; label?: string }) {
+  if (items.length === 0) return null;
+
+  return (
+    <nav className="jump" aria-label={label}>
+      <p className="jump__label">{label}</p>
+      <ul className="jump__list">
+        {items.map((item) => (
+          <li key={item.href}>
+            <a className="jump__link" href={item.href}>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
@@ -109,13 +139,44 @@ export function SectionHead({
   );
 }
 
+/* --- Wide table wrapper -------------------------------------------------- */
+
+/**
+ * Every wide table on the site goes through here, so every one of them scrolls
+ * inside its own box rather than widening the page, is reachable from the
+ * keyboard, and announces itself to a screen reader with the same wording.
+ */
+export function TableScroll({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="table-scroll" tabIndex={0} role="region" aria-label={label}>
+      {children}
+    </div>
+  );
+}
+
 /* --- Empty state --------------------------------------------------------- */
 
-export function EmptyState({ title, body }: { title: string; body: string }) {
+/**
+ * Nothing found is a state, not a failure. It reads as a quiet panel carrying
+ * the reason and a way forward, never as an error banner.
+ */
+export function EmptyState({
+  title,
+  body,
+  action,
+}: {
+  title: string;
+  body: string;
+  action?: ReactNode;
+}) {
   return (
     <div className="empty-state">
+      <span className="empty-state__icon" aria-hidden="true">
+        <SearchIcon size={20} />
+      </span>
       <p className="empty-state__title">{title}</p>
       <p className="t-small">{body}</p>
+      {action ? <div className="empty-state__actions">{action}</div> : null}
     </div>
   );
 }

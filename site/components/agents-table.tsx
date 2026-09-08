@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react';
 
+import { EmptyState, TableScroll } from '@/components/page-parts';
+
 export type AgentRow = {
   name: string;
   description: string;
@@ -28,9 +30,7 @@ export function AgentsTable({ agents, models }: { agents: AgentRow[]; models: Mo
 
   return (
     <>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem' }}
-      >
+      <div className="stack stack--tight mb-4">
         <div className="filter-bar" role="group" aria-label="Filter by model tier">
           <button
             type="button"
@@ -59,7 +59,7 @@ export function AgentsTable({ agents, models }: { agents: AgentRow[]; models: Mo
         </p>
       </div>
 
-      <div className="table-scroll" tabIndex={0} role="region" aria-label="Agent catalog">
+      <TableScroll label="Agent catalog">
         <table className="data-table">
           <caption className="visually-hidden">
             Every agent with its description, model tier, and tool allowlist
@@ -93,12 +93,19 @@ export function AgentsTable({ agents, models }: { agents: AgentRow[]; models: Mo
             ))}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
 
       {rows.length === 0 ? (
-        <div className="empty-state" style={{ marginTop: '1rem' }}>
-          <p className="empty-state__title">No agent runs on that tier</p>
-          <p className="t-small">Clear the filter to see the whole catalog.</p>
+        <div className="mt-3">
+          <EmptyState
+            title="No agent runs on that tier"
+            body="Nothing in the catalog is assigned to this model tier."
+            action={
+              <button type="button" className="btn btn--sm" onClick={() => setModel(null)}>
+                Show every agent
+              </button>
+            }
+          />
         </div>
       ) : null}
     </>

@@ -18,7 +18,7 @@ import {
 } from '@/components/icons';
 import { InstallFootprint } from '@/components/install-footprint';
 import { LearningSection } from '@/components/learning-section';
-import { SectionHead } from '@/components/page-parts';
+import { SectionHead, TableScroll } from '@/components/page-parts';
 import { RecentChanges } from '@/components/recent-changes';
 import { SessionWalkthrough } from '@/components/session-walkthrough';
 import { SkillsSampler } from '@/components/skills-sampler';
@@ -192,7 +192,7 @@ export default function HomePage() {
               context window.
             </p>
 
-            <div className="hero__ctas">
+            <div className="btn-row">
               <Link className="btn btn--primary" href="/docs/getting-started">
                 Get started
                 <ArrowRightIcon size={16} />
@@ -205,9 +205,9 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div style={{ width: '100%', maxWidth: '34rem' }}>
+            <div className="command-slot">
               <CopyCommand command={SITE.installCommand} />
-              <p className="t-small" style={{ marginTop: '0.6rem' }}>
+              <p className="t-small mt-2">
                 Installs the catalog to <code className="t-mono">{SITE.installDir}</code> and
                 registers an adapter for each coding agent it finds.
               </p>
@@ -227,7 +227,7 @@ export default function HomePage() {
           lead="Not exotic ways. The ordinary ones a competent team already guards against, arriving one at a time in a session that looks like it is going well. FORGE makes the guard the default instead of something you re-specify in every prompt."
         />
 
-        <div className="swap">
+        <div className="swap section-block">
           <div className="swap__head" aria-hidden="true">
             <div className="swap__heading">Failure mode</div>
             <div className="swap__heading">A model on its own</div>
@@ -257,11 +257,11 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div style={{ marginTop: 'clamp(2.5rem, 2rem + 2vw, 3.5rem)' }}>
-          <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
+        <div className="section-block">
+          <h3 className="t-h3 mb-2">
             What replaces it is one loop, run the same way every time
           </h3>
-          <p className="t-body u-muted measure" style={{ marginBottom: '1.5rem' }}>
+          <p className="t-body u-muted measure mb-4">
             Each stage has an owner in the catalog and a check that says whether it ran. The
             stages are not advice in a prompt; they are files on disk that the harness loads.
           </p>
@@ -276,17 +276,17 @@ export default function HomePage() {
             ))}
           </div>
 
-          <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+          <p className="t-small measure mt-4">
             The scarce resource is the context window, so the system loads a narrow slice per task
             and persists everything else to disk. {SITE.claim}
           </p>
         </div>
 
-        <div style={{ marginTop: 'clamp(2.5rem, 2rem + 2vw, 3.5rem)' }}>
-          <h3 className="t-h3" style={{ marginBottom: '0.5rem' }}>
+        <div className="section-block">
+          <h3 className="t-h3 mb-2">
             What it costs you not to have it
           </h3>
-          <p className="t-body u-muted measure" style={{ marginBottom: '1.5rem' }}>
+          <p className="t-body u-muted measure mb-4">
             None of these show up as an error. They show up as work that has to be done twice.
           </p>
 
@@ -300,7 +300,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+          <p className="t-small measure mt-4">
             <Link href="/why">The long version</Link> covers who this is for and who it is not
             for, what changes on day one against what changes in month three, and where FORGE does
             not help — it does not make a weak model strong, and it is not free of cost.
@@ -371,7 +371,7 @@ export default function HomePage() {
 
         <SessionWalkthrough />
 
-        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+        <p className="t-small measure mt-4">
           The transcript fragments illustrate the shape of a run rather than reproduce one. What is
           fixed is the order of the phases, which of them can write, and the fact that each has an
           owner in the catalog and a check that says whether it ran.
@@ -414,7 +414,7 @@ export default function HomePage() {
         />
 
         <div className="panel">
-          <div className="table-scroll">
+          <TableScroll label="What each part of FORGE is, when it runs, and what it costs in context">
             <table className="data-table">
               <caption className="visually-hidden">
                 What each part of FORGE is, when it runs, and what it costs in context
@@ -490,8 +490,8 @@ export default function HomePage() {
                 </tr>
               </tbody>
             </table>
-          </div>
-          <p className="t-small" style={{ marginTop: '1rem' }}>
+          </TableScroll>
+          <p className="t-small mt-3">
             The rule of thumb: if a behaviour must happen every time, it is a hook. If it must
             never happen, it is a rule. If it is a procedure you reach for sometimes, it is a
             skill. If it needs its own context window, it is an agent.
@@ -510,7 +510,7 @@ export default function HomePage() {
 
         <SkillsSampler />
 
-        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+        <p className="t-small measure mt-4">
           These are read from the catalog when the page is built. All {counts.skills} of them are on
           the <Link href="/skills">skills page</Link>, searchable and grouped. You should not
           install every one —{' '}
@@ -530,7 +530,7 @@ export default function HomePage() {
 
         <InstallFootprint />
 
-        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+        <p className="t-small measure mt-4">
           Every path, flag and leftover is in the{' '}
           <Link href={docHref('installation', '/docs')}>installation reference</Link>; every
           environment variable and its precedence chain is in the{' '}
@@ -569,7 +569,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+        <p className="t-small measure mt-4">
           An adapter is a projection, never a second source of truth. When an adapter and the
           catalog disagree, the catalog is right.{' '}
           <Link href="/platforms">See the full support matrix</Link>.
@@ -605,14 +605,14 @@ export default function HomePage() {
         <div className="cta-band">
           <p className="t-eyebrow">Next</p>
           <h2 className="t-h2">Install it and run the loop once</h2>
-          <p className="t-lead" style={{ maxWidth: '52ch' }}>
+          <p className="t-lead measure">
             Pick a small, real change in a repository you control. The point of the first run is
             to watch each stage fire, not to ship anything.
           </p>
-          <div style={{ width: '100%', maxWidth: '34rem' }}>
+          <div className="command-slot">
             <CopyCommand command={SITE.installCommand} />
           </div>
-          <div className="hero__ctas">
+          <div className="btn-row">
             <Link className="btn btn--primary" href="/docs/getting-started">
               Get started
               <ArrowRightIcon size={16} />

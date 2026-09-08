@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     'Reference documentation for FORGE: installation, configuration, concepts, authoring contracts, and the platform support matrix.',
 };
 
+/** A stable anchor for each group, so the sidebar and the drawer can link to one. */
+function groupId(label: string): string {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 export default async function DocsIndexPage() {
   const groups = getDocGroups();
   const counts = getCounts();
@@ -33,7 +38,7 @@ export default async function DocsIndexPage() {
         </div>
 
         {intro ? (
-          <div style={{ marginBottom: '2.5rem' }}>
+          <div className="mb-6">
             <Markdown content={intro} sourcePath="docs/README.md" />
           </div>
         ) : null}
@@ -42,12 +47,18 @@ export default async function DocsIndexPage() {
           <EmptyState
             title="No documentation pages found"
             body="The site reads ../docs and the root project pages from the repository. Neither currently contains any markdown."
+            action={
+              <Link className="btn btn--sm" href="/guides">
+                Read the guides instead
+              </Link>
+            }
           />
         ) : (
           groups.map((group) => (
-            <section key={group.label} style={{ marginBottom: '2.5rem' }}>
-              <h2 className="t-h3" style={{ marginBottom: '0.9rem' }}>
+            <section className="page-section" key={group.label} id={groupId(group.label)}>
+              <h2 className="t-h3 page-section__head">
                 {group.label}
+                <span className="page-section__count">{group.items.length}</span>
               </h2>
               <div className="grid grid--2">
                 {group.items.map((item) => (

@@ -276,7 +276,7 @@ export function FaqPreview({ faqHref }: { faqHref: string }) {
         ))}
       </div>
 
-      <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+      <p className="t-small measure mt-4">
         These are read from <span className="t-mono">docs/FAQ.md</span> at build time.{' '}
         <Link href={faqHref}>The full FAQ</Link> covers install and setup, day-to-day use, skills
         and agents, cost, security, teams, and the errors that come up most.
