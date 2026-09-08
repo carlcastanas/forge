@@ -4409,7 +4409,7 @@ mod tests {
                 "docs",
                 "--add-dir",
                 "specs",
-                "System instructions:\nReview thoroughly.\n\nECC execution profile:\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 1.25\n- Token budget: 750\n\nTask:\nreview this change",
+                "System instructions:\nReview thoroughly.\n\nFORGE execution profile:\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 1.25\n- Token budget: 750\n\nTask:\nreview this change",
             ]
         );
 
@@ -4473,7 +4473,7 @@ mod tests {
                 "forge-sess-9999",
                 "--model",
                 "anthropic/claude-sonnet-4",
-                "System instructions:\nBuild carefully.\n\nECC execution profile:\n- Additional context dirs: docs\n\nTask:\nstabilize callback flow",
+                "System instructions:\nBuild carefully.\n\nFORGE execution profile:\n- Additional context dirs: docs\n\nTask:\nstabilize callback flow",
             ]
         );
     }
@@ -4517,7 +4517,7 @@ mod tests {
                 "gemini-2.5-pro",
                 "--include-directories",
                 "docs,../shared",
-                "System instructions:\nUse repo context carefully.\n\nECC execution profile:\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 1\n- Token budget: 500\n\nTask:\ninvestigate auth regression",
+                "System instructions:\nUse repo context carefully.\n\nFORGE execution profile:\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 1\n- Token budget: 500\n\nTask:\ninvestigate auth regression",
             ]
         );
     }
@@ -4689,7 +4689,7 @@ mod tests {
                 "--model",
                 "gpt-5.4",
                 "--task",
-                "System instructions:\nUse repo context carefully.\n\nECC execution profile:\n- Additional context dirs: docs, specs\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 2.5\n- Token budget: 900\n\nTask:\nfix callback regression",
+                "System instructions:\nUse repo context carefully.\n\nFORGE execution profile:\n- Additional context dirs: docs, specs\n- Allowed tools: Read\n- Disallowed tools: Bash\n- Permission mode: plan\n- Max budget USD: 2.5\n- Token budget: 900\n\nTask:\nfix callback regression",
             ]
         );
     }

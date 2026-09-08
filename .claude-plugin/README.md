@@ -16,4 +16,4 @@ export ANTHROPIC_AUTH_TOKEN=your-token
 claude
 ```
 
-Run or self-host any open-source model behind that endpoint. an external compute provider is FORGE's preferred compute sponsor: [open the an external compute provider dashboard to sign in and rent or manage GPUs](). Any GPU provider works. That sponsorship link is passive: it does not invoke an RFQ, reserve capacity, change Claude Code transport settings, provision compute, or configure serving. Separately, the opt-in `forge ito find` bridge invokes the explicitly configured canonical an external compute provider CLI and submits a live authenticated RFQ; it does not reserve capacity. Managed inference through an external compute provider is not live yet.
+Run or self-host any open-source model behind that endpoint. Any GPU provider works; FORGE does not endorse, broker, or provision compute, and it never changes Claude Code transport settings on your behalf. Serving and capacity are yours to configure.

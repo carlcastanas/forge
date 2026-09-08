@@ -1,6 +1,6 @@
 # Her Şey Agentic Güvenliğe Dair Kısa Kılavuz
 
-_everything claude code / araştırma / güvenlik_
+_FORGE / araştırma / güvenlik_
 
 ---
 

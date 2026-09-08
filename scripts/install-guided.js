@@ -201,7 +201,7 @@ function validateExecutionMode(options, interactive) {
 }
 
 function printPlan(plan, output) {
-  output.write('\nECC guided install preview\n\n');
+  output.write('\nFORGE guided install preview\n\n');
   output.write('Harness       Channel           Destination\n');
   for (const entry of plan.harnesses) {
     const harness = getHarnessCapability(entry.id);
@@ -292,7 +292,7 @@ async function main(argv = process.argv.slice(2), injected = {}) {
         ownsTerminal = true;
       }
       if (!await confirmPlan(terminal, output)) {
-        output.write('\nECC install cancelled. No changes were made.\n');
+        output.write('\nFORGE install cancelled. No changes were made.\n');
         return 0;
       }
     }
@@ -309,7 +309,7 @@ async function main(argv = process.argv.slice(2), injected = {}) {
     if (options.json) {
       output.write(`${JSON.stringify({ dryRun: false, result }, null, 2)}\n`);
     } else if (result.status === 'complete') {
-      output.write(`\nECC configured for ${result.completed.map(item => getHarnessCapability(item.id).label).join(', ')}.\n`);
+      output.write(`\nFORGE configured for ${result.completed.map(item => getHarnessCapability(item.id).label).join(', ')}.\n`);
       renderWelcome({ action: 'installed', interactive, json: false, output });
     } else {
       const retry = buildRetryArguments(plan, result.retryHarnesses);

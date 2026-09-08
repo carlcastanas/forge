@@ -62,14 +62,14 @@ test('guide keeps the target project as the working directory', () => {
     'Guide should define an absolute FORGE source path separately from the target project'
   );
   assert.ok(
-    guide.includes('$EccRoot = "C:\\absolute\\path\\to\\FORGE"'),
+    guide.includes('$ForgeRoot = "C:\\absolute\\path\\to\\FORGE"'),
     'Guide should define the equivalent absolute source path for PowerShell users'
   );
 });
 
 test('guide installs through dependency-bootstrapping wrappers', () => {
   assert.ok(guide.includes('"$FORGE_ROOT/install.sh" --profile minimal --target antigravity'));
-  assert.ok(guide.includes('& "$EccRoot\\install.ps1" --profile minimal --target antigravity'));
+  assert.ok(guide.includes('& "$ForgeRoot\\install.ps1" --profile minimal --target antigravity'));
   assert.ok(
     !guide.includes('node "$FORGE_ROOT/scripts/install-apply.js"'),
     'Fresh source installs should not bypass the wrapper dependency bootstrap'
@@ -83,8 +83,8 @@ test('guide invokes every post-install lifecycle script through the absolute FOR
       `Guide should invoke ${script} through FORGE_ROOT`
     );
     assert.ok(
-      guide.includes(`node "$EccRoot\\scripts\\${script}"`),
-      `Guide should invoke ${script} through EccRoot in PowerShell`
+      guide.includes(`node "$ForgeRoot\\scripts\\${script}"`),
+      `Guide should invoke ${script} through ForgeRoot in PowerShell`
     );
   }
 

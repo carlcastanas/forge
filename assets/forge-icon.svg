@@ -1,7 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="FORGE">
   <title>FORGE</title>
-  <rect width="64" height="64" rx="14" fill="#0f1218"/>
-  <path d="M14 44 L32 14 L50 44 Z" fill="none" stroke="#ff7a1a" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M23 44 L32 29 L41 44 Z" fill="#ff7a1a"/>
-  <rect x="14" y="48" width="36" height="4" rx="2" fill="#ff7a1a"/>
+  <rect width="64" height="64" rx="14" fill="#000000"/>
+  <g transform="translate(8 8) scale(2)"><g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V4h10"/><path d="M5 12h13"/><path d="m15 8 4 4-4 4"/></g></g>
 </svg>

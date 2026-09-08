@@ -40,6 +40,15 @@ this directory assumes. Read it before authoring anything.
 | [skill-adaptation-policy.md](skill-adaptation-policy.md) | Turning an outside skill into a FORGE-native surface |
 | [PLAN-PRD-PATTERN.md](PLAN-PRD-PATTERN.md) | The markdown-staged planning flow each phase hands to the next |
 
+## Contributing to this repository
+
+| Page | Covers |
+| --- | --- |
+| [DEVELOPMENT.md](DEVELOPMENT.md) | The local loop: repository layout, every npm script, the validator chain in `npm test`, hook debugging, sandboxed installs, editor setup |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Canonical catalog versus harness adapter projections, the profile-to-file install pipeline, hook dispatch, session lifecycle, on-disk state |
+| [TESTING.md](TESTING.md) | Suite layout, the `tests/run-all.js` runner, coverage thresholds, a worked test per surface, and when to delete a test |
+| [../CONTRIBUTING.md](../CONTRIBUTING.md) | The front door: prerequisites, clone to green, what to create for each kind of addition, commit convention, CI, review expectations |
+
 ## Operating a session
 
 | Page | Covers |

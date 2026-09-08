@@ -217,10 +217,10 @@ test("never claims a Fal workflow is saved from a local reference", () => {
   assert.match(skill, /dry[- ]run|dry_run/i);
 });
 
-test("links to the canonical ito-video implementation instead of duplicating it", () => {
+test("links to the canonical tasteforge-video implementation instead of duplicating it", () => {
   const skill = read("skills/tasteforge-video/SKILL.md");
-  assert.match(skill, /ito-video/i);
-  assert.match(skill, /Ito-Markets\/ito-video/i);
+  assert.match(skill, /tasteforge-video/i);
+  assert.match(skill, /your-org\/tasteforge-video/i);
   assert.match(skill, /python3 -m tasteforge/);
   assert.match(skill, /does not (?:vendor|duplicate|copy)/i);
 });

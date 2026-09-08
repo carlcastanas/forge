@@ -1,5 +1,5 @@
 name: Install or runtime problem
-description: Tell us what failed without writing a full diagnostic report.
+description: FORGE will not install, will not load, or interrupts normal work.
 title: "[Problem] "
 labels:
   - bug
@@ -9,9 +9,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for reporting this. Keep it short: what happened and which setup you used are enough to start.
+        Keep it short. What happened and which setup you used are enough to start.
 
-        This issue is public. Do not paste secrets, prompts, private repository names, or unredacted home/project paths. FORGE never uploads diagnostics automatically.
+        This issue is public. Do not paste secrets, prompts, private repository names, or
+        unredacted home and project paths. FORGE never uploads diagnostics automatically.
   - type: dropdown
     id: impact
     attributes:
@@ -30,8 +31,11 @@ body:
     id: happened
     attributes:
       label: What happened?
-      description: Include the shortest error or symptom that explains the problem.
-      placeholder: I expected …, but …
+      description: The exact command you ran and the shortest error or symptom that explains the problem.
+      placeholder: |
+        $ forge install --profile core --target claude
+        ...
+        I expected ..., but ...
     validations:
       required: true
   - type: dropdown
@@ -62,12 +66,14 @@ body:
       options:
         - Claude plugin marketplace
         - forge or forge-install CLI
+        - install.sh or install.ps1
         - Manual clone or copy
         - Codex sync script
         - Codex marketplace plugin
-        - Harness-specific installer target
         - Unknown
         - Other
+    validations:
+      required: true
   - type: dropdown
     id: operating_system
     attributes:
@@ -84,10 +90,10 @@ body:
     id: versions
     attributes:
       label: FORGE and harness versions
-      description: If known. A tag, commit, or package version is enough.
-      placeholder: FORGE 2.1.0; Claude Code 2.x
+      description: A tag, commit, or package version is enough.
+      placeholder: FORGE 1.0.0; Claude Code 2.x
   - type: textarea
     id: diagnostics
     attributes:
       label: Optional redacted diagnostics
-      description: Paste only the relevant lines from `forge doctor`. Remove paths, repository names, prompts, tokens, and secrets.
+      description: Only the relevant lines from `forge doctor`. Remove paths, repository names, prompts, tokens, and secrets.

@@ -237,7 +237,7 @@ function runTests() {
     );
   })) passed++; else failed++;
 
-  console.log('\necc.js --dry-run flag parsing:');
+  console.log('\nforge.js --dry-run flag parsing:');
 
   if (test('--dry-run sets FORGE_DRY_RUN env var for child commands', () => {
     const forgeJs = path.resolve(__dirname, '..', '..', 'scripts', 'forge.js');

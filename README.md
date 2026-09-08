@@ -1,5 +1,8 @@
 <p align="center">
-  <strong><code>F O R G E</code></strong>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/logo-lockup-dark.svg" />
+    <img src="assets/brand/logo-lockup-light.svg" alt="FORGE" width="320" />
+  </picture>
 </p>
 
 <p align="center">

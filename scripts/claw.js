@@ -62,7 +62,7 @@ function normalizeSkillList(raw) {
     .filter(Boolean);
 }
 
-function loadECCContext(skillList) {
+function loadForgeContext(skillList) {
   const requested = normalizeSkillList(skillList !== undefined ? skillList : process.env.CLAW_SKILLS || '');
   if (requested.length === 0) return '';
 
@@ -311,7 +311,7 @@ function main() {
     skills: normalizeSkillList(process.env.CLAW_SKILLS || '')
   };
 
-  let forgeContext = loadECCContext(state.skills);
+  let forgeContext = loadForgeContext(state.skills);
 
   const loadedCount = state.skills.filter(skillExists).length;
 
@@ -380,7 +380,7 @@ function main() {
         if (!state.skills.includes(skill)) {
           state.skills.push(skill);
         }
-        forgeContext = loadECCContext(state.skills);
+        forgeContext = loadForgeContext(state.skills);
         console.log(`Loaded skill: ${skill}`);
         return prompt();
       }
@@ -465,7 +465,7 @@ module.exports = {
   listSessions,
   loadHistory,
   appendTurn,
-  loadECCContext,
+  loadForgeContext,
   buildPrompt,
   askClaude,
   isValidSessionName,

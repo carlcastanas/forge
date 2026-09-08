@@ -32,12 +32,23 @@ function Svg({ size = 20, ...props }: IconProps & { children?: React.ReactNode }
 
 /* --- Chrome ------------------------------------------------------------- */
 
+/**
+ * The FORGE mark: a capital F whose crossbar has been drawn out into a vector. The
+ * spine and the top arm are the letter; the crossbar leaves the letterform and ends in
+ * a 45-degree arrowhead whose back corners sit on x=15, the same vertical the top arm
+ * terminates on. One overshoot, no second idea.
+ *
+ * This is the only icon here that is not stroked at 1.5 — a logo has to hold its own
+ * weight at 18px in the header, so it is stroked at 2. The geometry is generated from
+ * the same constants as assets/brand/*; change it there and re-run
+ * `node assets/brand/generate.mjs`, then mirror the result here.
+ */
 export function LogoMark(props: IconProps) {
   return (
-    <Svg {...props}>
-      <path d="M4 20V4h13" />
-      <path d="M4 12h9" />
-      <path d="m16 12 4 4-4 4" />
+    <Svg strokeWidth={2} {...props}>
+      <path d="M5 20V4h10" />
+      <path d="M5 12h13" />
+      <path d="m15 8 4 4-4 4" />
     </Svg>
   );
 }

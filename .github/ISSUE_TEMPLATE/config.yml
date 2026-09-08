@@ -1,8 +1,11 @@
 blank_issues_enabled: true
 contact_links:
-  - name: FORGE questions and setup help
+  - name: Contributing guide
+    url: https://github.com/your-org/forge/blob/main/CONTRIBUTING.md
+    about: Prerequisites, the local validation gate, and what a reviewable pull request looks like.
+  - name: Questions and setup help
     url: https://github.com/your-org/forge/discussions/categories/q-a
-    about: Ask a public question or get help from the community.
+    about: Ask a public question instead of filing an issue.
   - name: Private security report
     url: https://github.com/your-org/forge/security/advisories/new
-    about: Report vulnerabilities privately. Do not put secrets in a public issue.
+    about: Report vulnerabilities privately. Never put secrets or exploit detail in a public issue.

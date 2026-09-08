@@ -24,6 +24,7 @@ export const NAV_LINKS = [
   { href: '/agents', label: 'Agents' },
   { href: '/commands', label: 'Commands' },
   { href: '/security', label: 'Security' },
+  { href: '/install', label: 'Install' },
 ] as const;
 
 /** Pages that describe the product rather than document the catalog. */

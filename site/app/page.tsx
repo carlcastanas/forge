@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 import { CopyCommand } from '@/components/copy-command';
+import { FaqPreview } from '@/components/faq-preview';
 import { HeroTerminal } from '@/components/hero-terminal';
 import {
   AgentIcon,
@@ -14,8 +15,13 @@ import {
   ShieldIcon,
   SkillIcon,
 } from '@/components/icons';
+import { InstallFootprint } from '@/components/install-footprint';
+import { LearningSection } from '@/components/learning-section';
 import { SectionHead } from '@/components/page-parts';
-import { getCounts, getDocEntries } from '@/lib/content';
+import { RecentChanges } from '@/components/recent-changes';
+import { SessionWalkthrough } from '@/components/session-walkthrough';
+import { SkillsSampler } from '@/components/skills-sampler';
+import { getCounts, getDocEntries, getSkillByName } from '@/lib/content';
 import { HARNESSES, LOOP_STEPS, SITE } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -30,6 +36,8 @@ function docHref(slug: string, fallback: string): string {
 
 export default function HomePage() {
   const counts = getCounts();
+  const learningSkill = getSkillByName('continuous-learning-v2') ?? getSkillByName('continuous-learning');
+  const faqHref = docHref('faq', '/docs');
 
   /**
    * The six ways a capable model without a process fails. None of them is
@@ -351,6 +359,24 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* How a session runs */}
+      <section className="container section" aria-labelledby="how-a-session-runs">
+        <SectionHead
+          eyebrow="A worked example"
+          id="how-a-session-runs"
+          title="How a session actually runs"
+          lead="One ordinary request — support reports that the weekly usage export is missing rows — carried through all seven phases. Each phase shows the line the operator sees when it reports, and what the same request produces when that phase is not there."
+        />
+
+        <SessionWalkthrough />
+
+        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+          The transcript fragments illustrate the shape of a run rather than reproduce one. What is
+          fixed is the order of the phases, which of them can write, and the fact that each has an
+          owner in the catalog and a check that says whether it ran.
+        </p>
+      </section>
+
       {/* What you get */}
       <section className="container section">
         <SectionHead
@@ -472,6 +498,59 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Skills sampler */}
+      <section className="container section" aria-labelledby="a-sample-of-the-catalog">
+        <SectionHead
+          eyebrow="The catalog, sampled"
+          id="a-sample-of-the-catalog"
+          title="What a skill looks like when it fires"
+          lead="A spread across testing, security, frontend, data and operations, each with the description the model matches against. That description is the entire trigger: a vague one means the skill either never loads or loads constantly, which is why authoring one has a contract."
+        />
+
+        <SkillsSampler />
+
+        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+          These are read from the catalog when the page is built. All {counts.skills} of them are on
+          the <Link href="/skills">skills page</Link>, searchable and grouped. You should not
+          install every one —{' '}
+          <span className="t-mono u-wrap">--profile developer</span> plus the capability components
+          a real task needs is the shape that works.
+        </p>
+      </section>
+
+      {/* Install footprint */}
+      <section className="container section" aria-labelledby="what-lands-on-your-machine">
+        <SectionHead
+          eyebrow="Footprint"
+          id="what-lands-on-your-machine"
+          title="What this puts on your machine"
+          lead="A plain answer, with the sizes measured from the repository rather than written down. Two channels reach a harness, four kinds of state outlive an uninstall, and almost nothing in the catalog is in the context window at any given moment."
+        />
+
+        <InstallFootprint />
+
+        <p className="t-small measure" style={{ marginTop: '1.5rem' }}>
+          Every path, flag and leftover is in the{' '}
+          <Link href={docHref('installation', '/docs')}>installation reference</Link>; every
+          environment variable and its precedence chain is in the{' '}
+          <Link href={docHref('configuration', '/docs')}>configuration reference</Link>.
+        </p>
+      </section>
+
+      {/* Continuous learning */}
+      <section className="container section" aria-labelledby="continuous-learning">
+        <SectionHead
+          eyebrow="Continuous learning"
+          id="continuous-learning"
+          title="How a correction becomes an instinct"
+          lead="The remember and improve phases are the two that are easiest to leave out and the two that decide whether month three is better than day one. This is the path a single correction takes from the moment you make it to the moment a later session starts already holding it."
+        />
+
+        <LearningSection
+          skillHref={learningSkill ? `/skills/${learningSkill.name}` : undefined}
+        />
+      </section>
+
       {/* Harness support */}
       <section className="container section">
         <SectionHead
@@ -494,6 +573,30 @@ export default function HomePage() {
           catalog disagree, the catalog is right.{' '}
           <Link href="/platforms">See the full support matrix</Link>.
         </p>
+      </section>
+
+      {/* Recent changes */}
+      <section className="container section" aria-labelledby="recent-changes">
+        <SectionHead
+          eyebrow="Recent changes"
+          id="recent-changes"
+          title="What moved most recently"
+          lead="Read out of the repository changelog at build time. An empty release block renders nothing rather than an announcement with no content behind it."
+        />
+
+        <RecentChanges />
+      </section>
+
+      {/* FAQ */}
+      <section className="container section" aria-labelledby="questions">
+        <SectionHead
+          eyebrow="Questions"
+          id="questions"
+          title="Asked before installing"
+          lead="Taken from the repository FAQ, which answers honestly where a claim could not be checked against the code. The accordion works with JavaScript switched off."
+        />
+
+        <FaqPreview faqHref={faqHref} />
       </section>
 
       {/* Closing CTA */}

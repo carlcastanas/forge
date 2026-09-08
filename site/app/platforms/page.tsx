@@ -13,6 +13,7 @@ import {
   PlugIcon,
 } from '@/components/icons';
 import { SectionHead } from '@/components/page-parts';
+import { dirStats } from '@/components/repo-read';
 import { getCounts, getDocEntries } from '@/lib/content';
 
 export const metadata: Metadata = {
@@ -53,6 +54,8 @@ type Harness = {
   /** Present when the harness gets its own card. */
   arrives?: string;
   missing?: string;
+  /** What an operator has to do differently on this harness. */
+  operator?: string;
 };
 
 const LEVEL_LABEL: Record<Level, string> = {
@@ -120,6 +123,8 @@ const BANDS: { id: BandId; title: string; lead: string }[] = [
 const HARNESSES: Harness[] = [
   {
     name: 'Claude Code',
+    operator:
+      'Install through forge setup and let the harness own the plugin; do not also run forge install --target claude against the same machine. Choose the hook profile at setup time and change it per shell with FORGE_HOOK_PROFILE. The one thing you supply yourself is the MCP server list.',
     band: 'reference',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'full', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'claude, claude-project', destination: '~/.claude or ./.claude', channel: 'native plugin', guided: true },
@@ -131,6 +136,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Cursor',
+    operator:
+      'Run the installer from the project root, not from home — this target is project-scoped. Rules arrive as .mdc, so a rule you hand-wrote as .md will not be picked up. If Claude Code is installed on the same machine, point FORGE_AGENT_DATA_HOME at a separate root before the first session or the two harnesses share session, metrics and learned-skill state.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'full', rules: 'full', memory: 'full', mcp: 'full' },
     install: { target: 'cursor', destination: './.cursor', channel: 'managed project', guided: false },
@@ -142,6 +149,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'CodeBuddy',
+    operator:
+      'Two channels reach this target — forge install --target codebuddy and the adapter’s own install.sh. Pick one. Hooks arrive here, so treat the quality gate and the safety floor as live rather than advisory.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'full', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'codebuddy', destination: './.codebuddy', channel: 'managed project', guided: false },
@@ -152,6 +161,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'JoyCode',
+    operator:
+      'Plan for nothing to be enforced. Anything that has to happen every time cannot be a hook here, so either accept it as advisory guidance in a rule or run the check outside the harness.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'joycode', destination: './.joycode', channel: 'managed project', guided: false },
@@ -162,6 +173,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Zed',
+    operator:
+      'Read .zed/settings.json before you trust the defaults: tool permissions start at confirm, and the deny and confirm lists are the actual safety posture on this harness, standing in for the hooks that do not install.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'zed', destination: './.zed', channel: 'managed project', guided: false },
@@ -172,6 +185,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Qwen Code',
+    operator:
+      'This target writes to your home directory, so an install is machine-wide rather than per project. Rule directories keep their structure here instead of being flattened, which matters if you reference a rule by path.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'qwen', destination: '~/.qwen', channel: 'managed home', guided: false },
@@ -183,6 +198,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Antigravity',
+    operator:
+      'Native install needs FORGE 2.2.0 or newer. Never rename .agent/ to .agents/ by hand — install-state holds absolute paths; rerun the installer instead. If a custom agent hangs, read the rewritten frontmatter first: model tiers and tool names are remapped on the way in.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'antigravity', destination: './.agents', channel: 'managed project', guided: false },
@@ -193,6 +210,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Codex',
+    operator:
+      'Do not expect slash commands to execute. Open the command file and carry out the steps yourself, as the navigation guide instructs. Treat enforcement as instruction text plus the approval_policy and sandbox_mode settings in config.toml, and nothing stronger, until you have confirmed hook behaviour on your own version.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'none', hooks: 'partial', rules: 'none', memory: 'full', mcp: 'full' },
     install: { target: 'codex', destination: '~/.codex', channel: 'native plugin', guided: true },
@@ -204,6 +223,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'OpenCode',
+    operator:
+      'Build the plugin payload before installing: node scripts/build-opencode.js, or npm run build:opencode, from the repository root. The installer refuses to run without it and names the missing artefacts. Hooks are excluded from the opencode profile, so pass --modules hooks-runtime if you want them.',
     band: 'catalog',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'partial', rules: 'none', memory: 'full', mcp: 'partial' },
     install: { target: 'opencode', destination: '$OPENCODE_CONFIG_DIR, else $XDG_CONFIG_HOME/opencode, else ~/.config/opencode', channel: 'managed home', guided: false },
@@ -215,6 +236,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Kimi Code',
+    operator:
+      'Guided install reaches this harness. Expect the workflow and memory skills only — if a task needs a language or framework skill, request it by name with --skills rather than assuming the catalog arrived. The directory is .kimi-code, not .kimi.',
     band: 'instruction',
     coverage: { skills: 'partial', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'full' },
     install: { target: 'kimi', destination: './.kimi-code', channel: 'managed project', guided: true },
@@ -226,6 +249,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Hermes',
+    operator:
+      'A home install, so it applies to every project on the machine. If you run the memory MCP server here as well as elsewhere, give this harness its own FORGE_MEMORY_HARNESS identity and one server process. The installer leaves config.yaml and .env alone, so those stay yours to edit.',
     band: 'instruction',
     coverage: { skills: 'partial', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'hermes', destination: '~/.hermes', channel: 'managed home', guided: false },
@@ -236,6 +261,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'OpenClaw',
+    operator:
+      'Same shape as Hermes and the same caution: a home install applies everywhere, and the memory server needs its own FORGE_MEMORY_HARNESS value if another harness is already running one.',
     band: 'instruction',
     coverage: { skills: 'partial', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'openclaw', destination: '~/.openclaw', channel: 'managed home', guided: false },
@@ -246,6 +273,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'AdaL CLI',
+    operator:
+      'Project-scoped, so decide per repository whether .adal is committed or ignored. Everything the three instruction harnesses lack applies here too: no hooks, and no language or framework skills.',
     band: 'instruction',
     coverage: { skills: 'partial', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'full', mcp: 'partial' },
     install: { target: 'adal', destination: './.adal', channel: 'managed project', guided: false },
@@ -256,6 +285,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Gemini CLI',
+    operator:
+      'Assume one instruction file and plan around it. Anything else you want from FORGE has to be packed in by hand using the manual adaptation guide, and it will not be tracked in install-state.',
     band: 'instruction',
     coverage: { skills: 'partial', agents: 'none', commands: 'none', hooks: 'none', rules: 'none', memory: 'full', mcp: 'partial' },
     install: { target: 'gemini', destination: './.gemini', channel: 'managed project', guided: false },
@@ -267,6 +298,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Kiro',
+    operator:
+      'Install with the adapter’s own shell script, and know what you lose by doing so: forge doctor, forge repair and forge uninstall cannot see any of it, and there is no uninstaller. Note what you copied, because removing it later is a manual job.',
     band: 'outside',
     coverage: { skills: 'partial', agents: 'full', commands: 'none', hooks: 'partial', rules: 'full', memory: 'none', mcp: 'partial' },
     install: { target: 'no install target', destination: './.kiro or ~/.kiro', channel: 'own installer', guided: false },
@@ -277,6 +310,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Trae',
+    operator:
+      'Run .trae/install.sh, and reverse it with .trae/uninstall.sh rather than by hand — the manifest is what makes the removal accurate. Set TRAE_ENV=cn before installing if you need the .trae-cn directory. Passing ~ installs once for every Trae project.',
     band: 'outside',
     coverage: { skills: 'full', agents: 'full', commands: 'full', hooks: 'none', rules: 'full', memory: 'unverified', mcp: 'none' },
     install: { target: 'no install target', destination: './.trae or .trae-cn, or the home equivalent', channel: 'own installer', guided: false },
@@ -287,6 +322,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Pi',
+    operator:
+      'There is nothing to install and no target to pass. Control it through the environment instead: FORGE_HOOK_PROFILE and FORGE_DISABLED_HOOKS gate the SessionStart and SessionEnd runtime, and FORGE_PI_RULES switches rule injection off.',
     band: 'outside',
     coverage: { skills: 'full', agents: 'unverified', commands: 'full', hooks: 'partial', rules: 'partial', memory: 'unverified', mcp: 'na' },
     install: { target: 'no install target', destination: 'reads the checkout in place', channel: 'adapter loaded by Pi', guided: false },
@@ -297,6 +334,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'Copilot',
+    operator:
+      'Nothing to run. The files are already in the repository, so the operator’s job is keeping .github/prompts in step with the command shims by hand, and remembering that the instruction file is guidance the model may not follow.',
     band: 'outside',
     coverage: { skills: 'none', agents: 'none', commands: 'partial', hooks: 'none', rules: 'partial', memory: 'none', mcp: 'none' },
     install: { target: 'no install target', destination: '.github/ and .vscode/ in the repository', channel: 'committed files', guided: false },
@@ -307,6 +346,8 @@ const HARNESSES: Harness[] = [
   },
   {
     name: 'dmux',
+    operator:
+      'Do not try to install into it. Use it the other way round: forge session-inspect reads dmux plans, and forge session-inspect --list-adapters tells you whether the adapter is available.',
     band: 'recorded',
     coverage: { skills: 'na', agents: 'na', commands: 'na', hooks: 'na', rules: 'na', memory: 'unverified', mcp: 'unverified' },
     install: { target: 'no install target', destination: 'not an install destination', channel: 'session inspection source', guided: false },
@@ -352,6 +393,35 @@ const LISTS = [
 
 const VERIFY_COMMAND = 'forge plan --profile full --target <target> --json';
 
+/**
+ * The adapter directories that exist at the repository root. File counts are read
+ * from disk when this page is built, so a directory that grows or disappears
+ * shows up here without anyone editing a number. What is in the tree is
+ * frequently not what an install produces: most adapters project the canonical
+ * catalog at install time and keep only the parts that cannot be generated.
+ */
+const ADAPTER_DIRS: { dir: string; note: string }[] = [
+  { dir: '.claude-plugin', note: 'Plugin and marketplace manifests. The content comes from the catalog, not from here.' },
+  { dir: '.codex', note: 'AGENTS.md, config.toml and the three role layers under agents/.' },
+  { dir: '.codex-plugin', note: 'The Codex plugin manifest, which references hooks/codex-hooks.json.' },
+  { dir: '.cursor', note: 'The deepest adapter in the tree: hook scripts, hooks.json, rules and skills.' },
+  { dir: '.opencode', note: 'A package rather than a copy: opencode.json, commands, agent prompts, TypeScript tools and the hook plugin. The count moves once dist/ has been built.' },
+  { dir: '.gemini', note: 'One instruction file. That is the whole adapter.' },
+  { dir: '.zed', note: 'Project settings only. The security posture is the adapter; content is projected at install.' },
+  { dir: '.qwen', note: 'One instruction file; the rest of the target is projected into ~/.qwen at install.' },
+  { dir: '.agents', note: 'Codex-facing skill packaging with its own marketplace metadata. Not what the antigravity target copies.' },
+  { dir: '.kiro', note: 'Skills, paired agent files, kiro.hook files, steering documents and its own install.sh.' },
+  { dir: '.trae', note: 'install.sh, uninstall.sh and their documentation. The content is copied from the canonical directories when the script runs.' },
+  { dir: '.codebuddy', note: 'install.sh, install.js and the matching uninstallers, alongside the forge install target.' },
+  { dir: '.pi', note: 'The extension Pi loads itself, including its own hook runtime.' },
+  { dir: '.hermes', note: 'A README. The adapter is entirely install-time code; nothing else lives here.' },
+  { dir: '.openclaw', note: 'A README, for the same reason as Hermes.' },
+  { dir: '.adal', note: 'A README, for the same reason as Hermes.' },
+  { dir: '.kimi', note: 'Documentation only. The install target writes to .kimi-code, deliberately not to this name.' },
+  { dir: '.github', note: 'Copilot instructions and prompt files, plus repository workflow configuration.' },
+  { dir: '.vscode', note: 'Editor settings that wire the Copilot instruction file into code and test generation.' },
+];
+
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                     */
 /* -------------------------------------------------------------------------- */
@@ -390,6 +460,13 @@ function HarnessCard({ harness }: { harness: Harness }) {
           <strong>Missing.</strong> {harness.missing}
         </p>
       ) : null}
+
+      {harness.operator ? (
+        <p className="harness-do">
+          <span className="harness-do__label">What you do differently</span>
+          {harness.operator}
+        </p>
+      ) : null}
     </article>
   );
 }
@@ -412,6 +489,13 @@ export default function PlatformsPage() {
   const guided = HARNESSES.filter((harness) => harness.install?.guided).map(
     (harness) => harness.name,
   );
+
+  // A directory that has been removed from the repository drops out rather than
+  // being reported as empty.
+  const committed = ADAPTER_DIRS.map((entry) => ({
+    ...entry,
+    files: dirStats(entry.dir).files,
+  })).filter((entry) => entry.files > 0);
 
   return (
     <>
@@ -629,6 +713,13 @@ export default function PlatformsPage() {
                         <strong>Missing.</strong> Everything, as far as the repository establishes.
                         Treat every content column as unverified and adapt by hand.
                       </p>
+                      <p className="harness-do">
+                        <span className="harness-do__label">What you do differently</span>
+                        Start by establishing the facts yourself, because this page cannot. Run{' '}
+                        <span className="t-mono u-wrap">{VERIFY_COMMAND}</span> to confirm nothing
+                        resolves, then treat the harness as an unadapted one and pack in what you
+                        need by hand. Nothing you copy will be visible to forge doctor.
+                      </p>
                     </article>
                   ) : null}
                 </div>
@@ -647,6 +738,50 @@ export default function PlatformsPage() {
             <span className="t-mono u-wrap">{'forge install --target <id>'}</span>.
           </div>
         </div>
+      </section>
+
+      {/* Committed adapter surface */}
+      <section className="container section">
+        <SectionHead
+          eyebrow="In the repository"
+          title="What is in the tree against what is generated"
+          lead="An adapter directory at the repository root is not the same thing as what an install produces. A few are the whole surface. Most are a manifest, an instruction file, or nothing but a README, because the adapter is install-time code and the content is projected from the canonical catalog when you run it."
+        />
+
+        <div className="table-scroll">
+          <table className="data-table">
+            <caption className="visually-hidden">
+              Adapter directories at the repository root, how many files each holds, and what
+              those files are
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Directory</th>
+                <th scope="col">Files</th>
+                <th scope="col">What is in it</th>
+              </tr>
+            </thead>
+            <tbody>
+              {committed.map((entry) => (
+                <tr key={entry.dir}>
+                  <th scope="row" className="data-table__name">
+                    {entry.dir}/
+                  </th>
+                  <td className="u-mono">{entry.files}</td>
+                  <td className="data-table__desc">{entry.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="t-small measure" style={{ marginTop: '1.25rem' }}>
+          Counted from the repository when this page was built, ignoring nested dot-directories. A
+          small number in the second column is not a measure of how well a harness is supported:{' '}
+          {'.zed'} holds one file and receives the whole catalog, while {'.agents'} holds many and
+          is not what the antigravity target copies. Read the per-harness cards above for what
+          actually arrives.
+        </p>
       </section>
 
       {/* Hook posture */}

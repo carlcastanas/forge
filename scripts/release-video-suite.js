@@ -33,7 +33,7 @@ const REQUIRED_SOURCE_ASSETS = [
   },
   {
     id: 'what-is-forge-wide',
-    file: 'sf-thread-2-whatisecc.mp4',
+    file: 'sf-thread-2-whatisforge.mp4',
     lane: 'what-is-forge',
     proof: 'category clarity and GitHub App explanation',
   },

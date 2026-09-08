@@ -1,6 +1,6 @@
 # エージェンティックセキュリティのすべて 簡潔ガイド
 
-_everything claude code / research / security_
+_FORGE / research / security_
 
 ---
 

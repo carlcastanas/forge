@@ -2655,7 +2655,7 @@ async function runTests() {
         CLAUDE_PLUGIN_ROOT: root,
         FORGE_HOOK_PROFILE: 'standard',
         GATEGUARD_STATE_DIR: stateDir,
-        CLAUDE_SESSION_ID: 'ecc039-configured-route-test'
+        CLAUDE_SESSION_ID: 'forge039-configured-route-test'
       };
       for (const key of ['FORGE_GATEGUARD', 'GATEGUARD_DISABLED', 'GATEGUARD_BASH_ROUTINE_DISABLED', 'FORGE_DISABLED_HOOKS']) {
         delete env[key];

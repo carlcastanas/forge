@@ -70,7 +70,7 @@ dry-run/dry_run semantics — say "dry-run spec" or "deterministic plan", never
 
 ## Canonical Implementation
 
-- Repository: `Ito-Markets/ito-video` — find it under the workspace's
+- Repository: `your-org/tasteforge-video` — find it under the workspace's
   canonical local GitHub checkout root (never a hard-coded machine path);
   package directory `tasteforge/`.
 - CLI: `python3 -m tasteforge <command>` — `provenance`, `inspect`, `validate`,
@@ -178,7 +178,7 @@ weakening validation.
 ## Example Session
 
 ```bash
-# in the canonical ito-video checkout
+# in the canonical tasteforge-video checkout
 python3 -m tasteforge validate stylepacks/flashethereal
 python3 -m tasteforge interview --answers answers.json --genre flashethereal --out profile.json
 python3 -m tasteforge distill --profile profile.json --pack stylepacks/flashethereal --out spec.json

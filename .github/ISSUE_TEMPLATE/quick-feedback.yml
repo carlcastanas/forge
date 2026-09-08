@@ -8,11 +8,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for telling us what got in the way. This form is intentionally short.
+        This form is intentionally short. One dropdown is enough.
 
-        This is a public GitHub issue. Do not include secrets, prompts, customer data, or private repository details.
+        This is a public GitHub issue. Do not include secrets, prompts, customer data, or
+        private repository details.
 
-        Report a vulnerability through [GitHub's private security advisory form](https://github.com/your-org/forge/security/advisories/new), not here. Non-vulnerability security or trust concerns are welcome in this form.
+        Report a vulnerability through [the private security advisory form](https://github.com/your-org/forge/security/advisories/new),
+        not here. Non-vulnerability security or trust concerns are welcome in this form.
   - type: dropdown
     id: reason
     attributes:
@@ -26,7 +28,6 @@ body:
         - My harness or operating system was missing or unreliable
         - I had a security or trust concern
         - A feature I needed was missing
-        - Support was too slow
         - I was only testing and no longer need it
         - Something worked especially well
         - Other

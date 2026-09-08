@@ -35,10 +35,10 @@ FORGE_ROOT="/absolute/path/to/FORGE"
 PowerShell uses the same project-root working-directory contract:
 
 ```powershell
-$EccRoot = "C:\absolute\path\to\FORGE"
+$ForgeRoot = "C:\absolute\path\to\FORGE"
 
-& "$EccRoot\install.ps1" --profile minimal --target antigravity
-& "$EccRoot\install.ps1" --target antigravity typescript python go
+& "$ForgeRoot\install.ps1" --profile minimal --target antigravity
+& "$ForgeRoot\install.ps1" --target antigravity typescript python go
 ```
 
 Start a new Antigravity conversation after installing so the agent receives the
@@ -94,8 +94,8 @@ rg --files .agents/agents -g '*.md'
 PowerShell:
 
 ```powershell
-node "$EccRoot\scripts\list-installed.js" --target antigravity
-node "$EccRoot\scripts\doctor.js" --target antigravity
+node "$ForgeRoot\scripts\list-installed.js" --target antigravity
+node "$ForgeRoot\scripts\doctor.js" --target antigravity
 Get-ChildItem .agents\skills -Recurse -Filter SKILL.md
 Get-ChildItem .agents\agents -Recurse -Filter *.md
 ```
@@ -127,9 +127,9 @@ node "$FORGE_ROOT/scripts/uninstall.js" --target antigravity --dry-run
 PowerShell:
 
 ```powershell
-node "$EccRoot\scripts\doctor.js" --target antigravity
-node "$EccRoot\scripts\repair.js" --target antigravity --dry-run
-node "$EccRoot\scripts\uninstall.js" --target antigravity --dry-run
+node "$ForgeRoot\scripts\doctor.js" --target antigravity
+node "$ForgeRoot\scripts\repair.js" --target antigravity --dry-run
+node "$ForgeRoot\scripts\uninstall.js" --target antigravity --dry-run
 ```
 
 ## Troubleshooting

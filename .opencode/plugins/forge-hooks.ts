@@ -54,7 +54,7 @@ interface TodoEvent {
  * Read FORGE version from package.json
  * Falls back to a default if package.json cannot be read
  */
-function getECCVersion(): string {
+function getForgeVersion(): string {
   try {
     const packageJsonPath = path.resolve(__dirname, "../../package.json")
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
@@ -483,7 +483,7 @@ export const ForgeHooksPlugin: ForgeHooksPluginFn = async ({
      */
     "shell.env": async () => {
       const env: Record<string, string> = {
-        FORGE_VERSION: getECCVersion(),
+        FORGE_VERSION: getForgeVersion(),
         FORGE_PLUGIN: "true",
         FORGE_HOOK_PROFILE: currentProfile,
         FORGE_DISABLED_HOOKS: process.env.FORGE_DISABLED_HOOKS || "",

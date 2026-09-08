@@ -17,7 +17,7 @@ const {
   listSessions,
   loadHistory,
   appendTurn,
-  loadECCContext,
+  loadForgeContext,
   buildPrompt,
   askClaude,
   isValidSessionName,
@@ -118,17 +118,17 @@ function runTests() {
 
   console.log('\nContext:');
 
-  if (test('loadECCContext() returns "" when no skills specified', () => {
-    const result = loadECCContext('');
+  if (test('loadForgeContext() returns "" when no skills specified', () => {
+    const result = loadForgeContext('');
     assert.strictEqual(result, '');
   })) passed++; else failed++;
 
-  if (test('loadECCContext() skips missing skill directories gracefully', () => {
-    const result = loadECCContext('nonexistent-skill-xyz');
+  if (test('loadForgeContext() skips missing skill directories gracefully', () => {
+    const result = loadForgeContext('nonexistent-skill-xyz');
     assert.strictEqual(result, '');
   })) passed++; else failed++;
 
-  if (test('loadECCContext() concatenates multiple skill files', () => {
+  if (test('loadForgeContext() concatenates multiple skill files', () => {
     // Use real skills from the FORGE repo if they exist
     const skillsDir = path.join(process.cwd(), 'skills');
     if (!fs.existsSync(skillsDir)) {
@@ -144,7 +144,7 @@ function runTests() {
       return;
     }
     const twoSkills = available.slice(0, 2).join(',');
-    const result = loadECCContext(twoSkills);
+    const result = loadForgeContext(twoSkills);
     assert.ok(result.length > 0, 'Should return non-empty context');
     // Should contain content from both skills
     for (const name of available.slice(0, 2)) {
@@ -198,7 +198,7 @@ function runTests() {
     const claw = require(path.join(__dirname, '..', '..', 'scripts', 'claw.js'));
     const required = [
       'getClawDir', 'getSessionPath', 'listSessions', 'loadHistory',
-      'appendTurn', 'loadECCContext', 'askClaude', 'main'
+      'appendTurn', 'loadForgeContext', 'askClaude', 'main'
     ];
     for (const fn of required) {
       assert.strictEqual(typeof claw[fn], 'function',

@@ -1,44 +1,57 @@
-## What Changed
-<!-- Describe the specific changes made in this PR -->
+# Pull request
 
-## Why This Change
-<!-- Explain the motivation and context for this change -->
+## What this changes
 
-## Testing Done
-<!-- Describe the testing you performed to validate your changes -->
-- [ ] Manual testing completed
-- [ ] Automated tests pass locally (`node tests/run-all.js`)
-- [ ] Edge cases considered and tested
+<!-- One or two sentences. What is different after this merges? -->
 
-## Type of Change
-- [ ] `fix:` Bug fix
-- [ ] `feat:` New feature
-- [ ] `refactor:` Code refactoring
-- [ ] `docs:` Documentation
-- [ ] `test:` Tests
-- [ ] `chore:` Maintenance/tooling
-- [ ] `ci:` CI/CD changes
+## Why
 
-## Security & Quality Checklist
-- [ ] No secrets or API keys committed (ghp_, sk-, AKIA, xoxb, xoxp patterns checked)
-- [ ] JSON files validate cleanly
-- [ ] Shell scripts pass shellcheck (if applicable)
-- [ ] Pre-commit hooks pass locally (if configured)
-- [ ] No sensitive data exposed in logs or output
-- [ ] Follows conventional commits format
+<!-- The problem being solved, or the issue number. If the approach is not obvious, say what
+     else you considered. -->
 
-## If you changed dependencies or `package.json` (`bin` / `files` / deps)
-- [ ] Ran `yarn install --mode=update-lockfile` and committed the `yarn.lock` change. CI runs Yarn in hardened mode on public PRs and fails if the lockfile would be modified, so an out of date `yarn.lock` breaks the build even when nothing else is wrong.
+## Validator output
 
-## If you added a skill, command, agent, hook, or CLI tool
-- [ ] Registered in `package.json` (`bin` and `files`), `manifests/install-components.json`, `manifests/install-modules.json`, and `agent.yaml`
-- [ ] Regenerated the catalog (`npm run catalog:sync`) and command registry (`npm run command-registry:write`)
-- [ ] Updated the docs tables it belongs in (`README.md`, `COMMANDS-QUICK-REF.md`, `docs/COMMAND-AGENT-MAP.md`)
-- [ ] If it ships a new script path, added it to the publish surface allowlist (`tests/scripts/npm-publish-surface.test.js`)
-- [ ] Cross-harness surfaces updated if applicable (for Codex, `.agents/skills/<name>/` plus `agents/openai.yaml`; the Codex frontmatter validator allows only `name`, `description`, `metadata`, `license`, `allowed-tools`, so drop keys like `version` from that copy)
-- [ ] Full gauntlet passes locally (`npm test`)
+Paste the tail of `npm test`. A pasted result is checkable; a ticked box is not.
 
-## Documentation
-- [ ] Updated relevant documentation
-- [ ] Added comments for complex logic
-- [ ] README updated (if needed)
+```text
+npm test
+
+```
+
+If `npm test` does not pass, say so here and explain what is left.
+
+Lint output for the files you changed (`npx markdownlint <files>`, `npx eslint <files>`). The
+repository-wide `npm run lint` has pre-existing findings, so scope it to your diff:
+
+```text
+
+```
+
+## What you verified by hand
+
+<!-- The commands you actually ran and what they printed. For a behavior change, before and
+     after. For a hook, the payload you fed it and the exit code. For an install change, the
+     `--dry-run` plan. Delete this section only if the change is documentation with no
+     executable claim. -->
+
+## Regeneration
+
+Applies if you added, renamed, or deleted anything in `agents/`, `skills/`, or `commands/`.
+
+- Ran `npm run catalog:sync` and committed the result: <!-- yes / not applicable -->
+- Ran `npm run command-registry:write` and committed the result: <!-- yes / not applicable -->
+- New skills are listed in `manifests/install-modules.json` and in `files` in `package.json`:
+  <!-- yes / not applicable -->
+- Docs updated in this same change (`AGENTS.md`, `COMMANDS-QUICK-REF.md`, `docs/README.md`, or
+  the relevant index): <!-- yes / not applicable -->
+
+## Anything a reviewer should push back on
+
+<!-- Widened tool allowlist, a new blocking hook, a model tier above sonnet, a new dependency,
+     a behavior change for existing installs, an adapter file edited directly. Name it here
+     rather than letting review find it. Write "nothing" if there is nothing. -->
+
+---
+
+Contribution contract: [CONTRIBUTING.md](../CONTRIBUTING.md).
+Commits follow Conventional Commits with a lower-case subject, per `commitlint.config.js`.
