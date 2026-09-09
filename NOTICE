@@ -1,0 +1,16 @@
+FORGE
+Copyright (c) 2026 Carl Andrew Castañas
+
+This product includes software developed as the "Everything Claude Code" (ECC)
+project, Copyright (c) 2026 Affaan Mustafa, licensed under the MIT License.
+
+FORGE is a derivative work. The agent, skill, command, and rule catalog, the
+installer and CLI, the hook runtime, the harness adapters, and the test suite
+originate in that project and have been renamed, restructured, and extended.
+The documentation set, the long-form guides, the added skills, the brand
+assets, and the website are new work.
+
+The MIT License requires that the original copyright notice be retained in
+copies and substantial portions of the software. This file satisfies that
+requirement. It is a statement of provenance, not of endorsement: the upstream
+project and its author are not affiliated with FORGE and do not support it.

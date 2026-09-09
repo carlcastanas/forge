@@ -1,0 +1,35 @@
+{
+  "schema_version": "forge.evaluator-rag.verifier.v1",
+  "scenario_id": "forge-shield-policy-exception",
+  "run_id": "2026-05-12-forge-shield-policy-exception-prototype",
+  "read_only": true,
+  "candidates": [
+    {
+      "candidate_id": "sarif-backed-timeboxed-exception-review",
+      "decision": "accepted",
+      "score": 0.93,
+      "reasons": [
+        "names SARIF/code-scanning or report evidence for the Forge Shield finding",
+        "preserves finding id, category, severity, affected surface, and policy-pack source",
+        "records owner, ticket, scope, expiry, and active/expiring/expired lifecycle state",
+        "rejects expired exceptions and requires remediation or a time-boxed exception",
+        "keeps Forge Shield code, policy packs, enforcement settings, and release actions out of the read-only evaluator run"
+      ],
+      "rollback": "Do not apply the future exception or suppression; re-run Forge Shield, restore the prior organization policy, and keep the finding enforced until owner/ticket/scope/expiry evidence is current."
+    },
+    {
+      "candidate_id": "blanket-policy-suppression",
+      "decision": "rejected",
+      "score": 0.11,
+      "reasons": [
+        "has no SARIF or report evidence",
+        "blanket-suppresses Forge Shield policy packs and organization-policy gates",
+        "treats expired exceptions as active",
+        "drops owner, ticket, scope, and expiry fields",
+        "would edit Forge Shield or policy gate behavior from an FORGE evaluator run"
+      ],
+      "rollback": "Do not suppress the policy category; restart from scanner evidence, lifecycle state, and a bounded remediation or exception request."
+    }
+  ],
+  "promoted_candidate_id": "sarif-backed-timeboxed-exception-review"
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "forge.evaluator-rag.trace.v1",
+  "scenario_id": "forge-shield-policy-exception",
+  "run_id": "2026-05-12-forge-shield-policy-exception-prototype",
+  "read_only": true,
+  "events": [
+    {
+      "phase": "observation",
+      "summary": "A policy finding or exception request references Forge Shield organization-policy output. The evaluator records the affected finding without editing Forge Shield code, policy packs, or enforcement settings.",
+      "evidence": [
+        "docs/FORGE-2.0-GA-ROADMAP.md",
+        "commands/security-scan.md"
+      ]
+    },
+    {
+      "phase": "retrieval",
+      "summary": "Retrieved SARIF/report evidence, policy-pack source, exception lifecycle state, owner, ticket, scope, expiry, and whether remediation is immediately available.",
+      "evidence": [
+        "forge-shield-policy/* SARIF result",
+        "Forge Shield report exception counts",
+        "skills/security-scan/SKILL.md"
+      ]
+    },
+    {
+      "phase": "proposal",
+      "summary": "Generated two candidate playbooks: SARIF-backed time-boxed exception review, and blanket policy suppression for the affected category.",
+      "candidate_ids": [
+        "sarif-backed-timeboxed-exception-review",
+        "blanket-policy-suppression"
+      ]
+    },
+    {
+      "phase": "verification",
+      "summary": "Accepted the evidence-backed exception review because it preserves finding details and lifecycle fields. Rejected blanket suppression because it bypasses policy gates and ignores expired exceptions.",
+      "evidence": [
+        "examples/evaluator-rag-prototype/forge-shield-policy-exception/verifier-result.json"
+      ]
+    },
+    {
+      "phase": "promotion",
+      "summary": "Promoted only the read-only Forge Shield policy exception playbook. The evaluator does not modify Forge Shield code, policy packs, enforcement settings, release state, or live security posture.",
+      "promoted_candidate_id": "sarif-backed-timeboxed-exception-review"
+    }
+  ]
+}

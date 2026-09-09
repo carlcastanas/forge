@@ -1,0 +1,44 @@
+{
+  "name": "forge",
+  "owner": {
+    "name": "FORGE contributors"
+  },
+  "metadata": {
+    "description": "Harness-native FORGE skills, agents, hooks, rules, and MCP conventions"
+  },
+  "plugins": [
+    {
+      "name": "forge",
+      "source": "./",
+      "description": "FORGE agent engineering system - 68 agents, 318 skills, 94 legacy command shims, lifecycle hooks, selectable rules, selective install profiles, and operator workflows for Claude Code, Codex, OpenCode, Cursor, and related harnesses",
+      "version": "1.0.0",
+      "author": {
+        "name": "FORGE contributors"
+      },
+      "repository": "https://github.com/carlcastanas/forge",
+      "license": "MIT",
+      "keywords": [
+        "agents",
+        "skills",
+        "hooks",
+        "commands",
+        "tdd",
+        "code-review",
+        "security",
+        "best-practices"
+      ],
+      "category": "workflow",
+      "tags": [
+        "agents",
+        "skills",
+        "hooks",
+        "commands",
+        "tdd",
+        "code-review",
+        "security",
+        "best-practices"
+      ],
+      "strict": false
+    }
+  ]
+}

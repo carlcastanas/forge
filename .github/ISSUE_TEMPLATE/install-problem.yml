@@ -1,0 +1,99 @@
+name: Install or runtime problem
+description: FORGE will not install, will not load, or interrupts normal work.
+title: "[Problem] "
+labels:
+  - bug
+  - needs-triage
+  - area:install
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Keep it short. What happened and which setup you used are enough to start.
+
+        This issue is public. Do not paste secrets, prompts, private repository names, or
+        unredacted home and project paths. FORGE never uploads diagnostics automatically.
+  - type: dropdown
+    id: impact
+    attributes:
+      label: What is the impact?
+      options:
+        - FORGE will not install
+        - FORGE installs, but nothing loads
+        - Some components are missing or silently ignored
+        - FORGE is duplicated or conflicts with another install
+        - A hook or command interrupts normal work
+        - Doctor or repair does not recover the install
+        - Other runtime problem
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened?
+      description: The exact command you ran and the shortest error or symptom that explains the problem.
+      placeholder: |
+        $ forge install --profile core --target claude
+        ...
+        I expected ..., but ...
+    validations:
+      required: true
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Harness
+      options:
+        - Claude Code
+        - Codex app or CLI
+        - Cursor
+        - OpenCode
+        - GitHub Copilot
+        - Kimi Code
+        - Gemini CLI
+        - Zed
+        - Antigravity
+        - Qwen
+        - Hermes
+        - OpenClaw
+        - CodeBuddy or JoyCode
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: install_method
+    attributes:
+      label: Install method
+      options:
+        - Claude plugin marketplace
+        - forge or forge-install CLI
+        - install.sh or install.ps1
+        - Manual clone or copy
+        - Codex sync script
+        - Codex marketplace plugin
+        - Unknown
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating system
+      options:
+        - Windows (native)
+        - Windows (WSL)
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: FORGE and harness versions
+      description: A tag, commit, or package version is enough.
+      placeholder: FORGE 1.0.0; Claude Code 2.x
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Optional redacted diagnostics
+      description: Only the relevant lines from `forge doctor`. Remove paths, repository names, prompts, tokens, and secrets.

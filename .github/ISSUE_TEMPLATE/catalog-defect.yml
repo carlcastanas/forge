@@ -1,0 +1,72 @@
+name: Catalog defect
+description: A skill, agent, command, rule, or hook that is wrong, stale, or misfires.
+title: "[Defect] "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when FORGE is installed and working but one piece of the catalog behaves
+        wrongly. If FORGE will not install or nothing loads, use the install or runtime problem
+        template instead.
+
+        This issue is public. Do not paste secrets, prompts, private repository names, or
+        unredacted home and project paths.
+  - type: input
+    id: surface
+    attributes:
+      label: Which file
+      description: The repository path, so triage can go straight to it.
+      placeholder: skills/postgres-patterns/SKILL.md
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of defect?
+      options:
+        - Wrong or outdated content
+        - Triggers when it should not
+        - Does not trigger when it should
+        - Duplicates another catalog entry
+        - Hook blocks or warns incorrectly
+        - Broken link or reference
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What happened, and what you expected instead
+      description: Include the shortest reproduction you have. A prompt, a command, or a file that triggers it.
+    validations:
+      required: true
+  - type: dropdown
+    id: harness
+    attributes:
+      label: Harness
+      options:
+        - Claude Code
+        - Codex
+        - Cursor
+        - OpenCode
+        - Gemini CLI
+        - Zed
+        - Qwen
+        - Another harness
+        - Not harness-specific
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: FORGE version or commit
+      placeholder: 1.0.0, or a commit SHA
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Optional
+      options:
+        - label: I am willing to open a pull request for this.
